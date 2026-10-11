@@ -1,4 +1,4 @@
-import { Phone, ShieldCheck } from 'lucide-react';
+import { Phone } from 'lucide-react';
 
 type Line = {
   speaker?: 'agent' | 'caller' | 'system';
@@ -28,16 +28,13 @@ export function CodeWindow({ title, lines, caption }: Props) {
           </span>
           <div className="flex flex-col leading-tight">
             <span className="font-body text-white text-[13px] font-medium">
-              Live call with Implenix
+              Conversation with Ron
             </span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan/80">
               {title ?? 'Real conversation'}
             </span>
           </div>
         </div>
-        <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-brand-cyan border border-brand-cyan/40 px-2 py-1">
-          <ShieldCheck size={11} /> Verified
-        </span>
       </div>
 
       <div className="p-4 sm:p-6 flex flex-col gap-3">
@@ -70,7 +67,7 @@ export function CodeWindow({ title, lines, caption }: Props) {
                     isAgent ? 'text-brand-cyan' : 'text-brand-purple'
                   }`}
                 >
-                  {isAgent ? 'Implenix' : 'Caller'}
+                  {isAgent ? 'Ron' : 'Caller'}
                 </span>
                 <span className="font-mono text-[10px] text-white/40">
                   {ts}

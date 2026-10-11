@@ -119,7 +119,7 @@ export default function DashboardPreviewPage() {
             <div className="p-5 md:p-8 grid gap-5">
               <RevenueHeroCard />
 
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3">
                 <SecondaryStat
                   Icon={Phone}
                   label="Calls handled"
@@ -178,7 +178,7 @@ export default function DashboardPreviewPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} />
             </Link>
             <Link
               href="/pricing"
@@ -202,7 +202,7 @@ function RevenueHeroCard() {
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
           ▸ Revenue captured · this month
         </span>
-        <p className="font-heading text-5xl sm:text-6xl md:text-7xl text-white mt-3 leading-none tabular-nums">
+        <p className="font-heading text-4xl sm:text-6xl md:text-7xl text-white mt-3 leading-none tabular-nums">
           $147,250
         </p>
         <p className="text-sm font-body text-white/65 mt-3 max-w-md">

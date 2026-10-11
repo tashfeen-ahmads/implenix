@@ -15,7 +15,7 @@ import { buildMetadata } from '@/lib/seo';
 export const metadata: Metadata = buildMetadata({
   title: 'Book Implenix, Talk to Ron or Pick a Slot',
   description:
-    'Talk to Ron, our AI receptionist, in your browser, or book a 30-minute slot with the team on the calendar. No form, no email.',
+    'Talk to Ron, our AI receptionist, in your browser, or book a 30-minute slot with the team on the calendar. No sales form.',
   path: '/contact',
 });
 
@@ -51,7 +51,7 @@ export default function ContactPage() {
               <Badge label="Skip the form" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 Two ways to start.{' '}
-                <span className="text-brand-purple">No form, no email.</span>
+                <span className="text-brand-purple">No sales form.</span>
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Talk to Ron, our AI receptionist, right here in your
@@ -67,7 +67,7 @@ export default function ContactPage() {
                   data-cta-type="calendar"
                   className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  <CalendarCheck size={16} /> Pick a calendar slot
+                  <CalendarCheck size={16} /> Book a 30-min call
                 </a>
               </div>
               <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-mono text-brand-cyan pt-2">
@@ -139,9 +139,9 @@ export default function ContactPage() {
                 ▸ Privacy
               </p>
               <p className="mt-2 text-xs text-white/65 font-body leading-relaxed">
-                We do not collect emails through this site. Calendar
-                bookings capture only your name, email, phone, and any
-                notes you add, nothing else.
+                No newsletters or marketing lists. A calendar booking
+                captures only your name, email, phone and any notes you add,
+                so we can send the invite and prepare for the call.
               </p>
             </div>
           </aside>

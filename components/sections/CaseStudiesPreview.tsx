@@ -47,9 +47,9 @@ export function CaseStudiesPreview() {
             See all case studies <ArrowRight size={14} />
           </Link>
         </div>
-        <div className="mt-16 md:mt-20 grid md:grid-cols-3 gap-6 md:gap-8">
+        <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {FEATURED.map((cs, i) => (
-            <Reveal key={cs.href} index={i} className="h-full">
+            <Reveal key={cs.href} index={i} className="h-full min-w-0">
               <Spotlight className="h-full">
                 <CaseStudyCard {...cs} />
               </Spotlight>

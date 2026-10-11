@@ -163,7 +163,7 @@ export default function TryItPage() {
               data-cta-type="primary"
               className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Book my real demo <ArrowRight size={16} />
+              Book a 30-min call <ArrowRight size={16} />
             </Link>
           </div>
         </div>

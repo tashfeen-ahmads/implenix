@@ -461,7 +461,7 @@ export default function AIPhoneAnsweringServicePage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} />
             </Link>
             <Link
               href="/pricing"

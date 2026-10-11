@@ -30,11 +30,16 @@ const inputSchema = z.object({
     .string()
     .min(1, 'Enter your average client value')
     .regex(/^\d+$/, 'Numbers only'),
+  // Optional: blank falls back to the industry median.
+  weeklyCalls: z
+    .string()
+    .regex(/^\d*$/, 'Numbers only')
+    .refine((v) => v === '' || (Number(v) >= 1 && Number(v) <= 5000), 'Between 1 and 5,000'),
 });
 type InputValues = z.infer<typeof inputSchema>;
 
 const inputClass =
-  'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-sm placeholder:text-white/40';
+  'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/40';
 
 type Stage = 'input' | 'result';
 
@@ -44,18 +49,21 @@ export function AuditTool() {
     phone: string;
     industry: IndustryKey;
     averageClientValue: number;
+    weeklyCalls?: number;
   } | null>(null);
 
   const form = useForm<InputValues>({
     resolver: zodResolver(inputSchema),
-    defaultValues: { phone: '', industry: '', averageClientValue: '' },
+    defaultValues: { phone: '', industry: '', averageClientValue: '', weeklyCalls: '' },
   });
+  const selectedIndustry = form.watch('industry');
 
   const onSubmit = (values: InputValues) => {
     setSnapshot({
       phone: values.phone,
       industry: values.industry as IndustryKey,
       averageClientValue: Number(values.averageClientValue),
+      weeklyCalls: values.weeklyCalls ? Number(values.weeklyCalls) : undefined,
     });
     setStage('result');
     trackConversion(GA4_EVENTS.auditRun, {
@@ -67,6 +75,7 @@ export function AuditTool() {
         phone: values.phone,
         industry: values.industry,
         averageClientValue: Number(values.averageClientValue),
+        weeklyCalls: values.weeklyCalls ? Number(values.weeklyCalls) : undefined,
       },
       'audit',
     );
@@ -77,6 +86,7 @@ export function AuditTool() {
     return runAudit({
       industry: snapshot.industry,
       averageClientValue: snapshot.averageClientValue,
+      weeklyCallVolume: snapshot.weeklyCalls,
     });
   }, [snapshot]);
 
@@ -138,10 +148,27 @@ export function AuditTool() {
               id="audit-value"
               inputMode="numeric"
               placeholder="1500"
-              className="flex-1 bg-transparent py-2.5 text-white font-mono text-sm focus:outline-none"
+              className="flex-1 bg-transparent py-2.5 text-white font-mono text-base focus:outline-none"
               {...form.register('averageClientValue')}
             />
           </div>
+        </Field>
+        <Field
+          label="Inbound calls per week (optional)"
+          htmlFor="audit-calls"
+          error={form.formState.errors.weeklyCalls?.message}
+        >
+          <input
+            id="audit-calls"
+            inputMode="numeric"
+            placeholder={
+              selectedIndustry && selectedIndustry in INDUSTRY_PROFILES
+                ? `Industry median: ${INDUSTRY_PROFILES[selectedIndustry as IndustryKey].weeklyCalls}`
+                : 'Leave blank to use the industry median'
+            }
+            className={inputClass}
+            {...form.register('weeklyCalls')}
+          />
         </Field>
         <button
           type="submit"
@@ -153,7 +180,7 @@ export function AuditTool() {
         </button>
         <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/45">
           <ShieldCheck size={12} className="text-brand-cyan" />
-          We do not call this number. We use industry medians to estimate.
+          We only use this number to follow up on your audit. No spam, no sharing.
         </div>
       </form>
 
@@ -170,7 +197,7 @@ export function AuditTool() {
               ▸ Your report appears here
             </span>
             <p className="font-heading text-2xl text-white/60 max-w-sm">
-              Run the audit to see what you're losing.
+              Run the audit to see what you’re losing.
             </p>
           </motion.aside>
         ) : (
@@ -256,7 +283,7 @@ export function AuditTool() {
                   }
                   className="flex-1 inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  <CalendarCheck size={16} /> Book on calendar
+                  <CalendarCheck size={16} /> Book a 30-min call
                 </a>
               </div>
             </div>

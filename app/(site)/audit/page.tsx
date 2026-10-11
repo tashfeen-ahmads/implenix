@@ -21,7 +21,7 @@ const STEPS = [
   {
     Icon: BarChart,
     title: 'Step 1 · Quick profile',
-    body: 'Phone number, industry, average client value. 30 seconds.',
+    body: 'Phone number, industry, client value and (optionally) weekly calls. 30 seconds.',
   },
   {
     Icon: Clock,
@@ -30,8 +30,8 @@ const STEPS = [
   },
   {
     Icon: ShieldCheck,
-    title: 'Step 3 · Full report by email',
-    body: 'Annual lost figure, recoverable revenue, and a deployment plan.',
+    title: 'Step 3 · Walk through it live',
+    body: 'Book a 30-minute call and we turn the estimate into a deployment plan for your business.',
   },
 ];
 

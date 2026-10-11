@@ -71,7 +71,7 @@ const TIERS = [
       'Dedicated implementation engineer',
       'Quarterly business review',
     ],
-    cta: 'Talk to sales',
+    cta: 'Book a 30-min call',
     href: '/contact',
     accent: 'cyan' as const,
   },

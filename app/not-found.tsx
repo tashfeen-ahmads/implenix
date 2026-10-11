@@ -52,7 +52,7 @@ export default function NotFound() {
               href="/contact"
               className="inline-flex items-center justify-center border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
             >
-              Talk to the team
+              Book a 30-min call
             </Link>
           </div>
         </div>

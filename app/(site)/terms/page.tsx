@@ -74,7 +74,7 @@ export default function TermsPage() {
           <h2>1. Agreement to these Terms</h2>
 
           <p>
-            By using the Website, calling our AI voice agent, or booking a
+            By using the Website, talking to our AI voice agent, or booking a
             consultation, you accept these Terms. If you are entering into
             these Terms on behalf of a business or other legal entity, you
             represent that you have the authority to bind that entity to
@@ -96,9 +96,9 @@ export default function TermsPage() {
               related calculators, provided for informational purposes.
             </li>
             <li>
-              <strong>AI voice agent consultations</strong>, a phone
-              number connected to our AI voice agent for prospective
-              customers to hear a live demonstration.
+              <strong>AI voice agent demonstrations</strong>, an
+              in-browser voice conversation with Ron, our AI voice agent,
+              for prospective customers to hear a live demonstration.
             </li>
             <li>
               <strong>Booking service</strong>, a calendar widget for

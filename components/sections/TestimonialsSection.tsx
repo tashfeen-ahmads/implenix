@@ -72,9 +72,9 @@ export function TestimonialsSection() {
           title="From real businesses"
           description="Six clients, six different industries, all still deployed. The first three include the real call recording, tap play to hear the agent live."
         />
-        <div className="mt-16 md:mt-20 grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {TESTIMONIALS.map((t, i) => (
-            <Reveal key={t.businessName} index={i % 3} className="h-full">
+            <Reveal key={t.businessName} index={i % 3} className="h-full min-w-0">
               <Spotlight className="h-full">
                 <TestimonialCard {...t} />
               </Spotlight>

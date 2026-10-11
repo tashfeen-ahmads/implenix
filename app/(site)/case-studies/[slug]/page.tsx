@@ -282,7 +282,7 @@ export default function CaseStudyPage({ params }: { params: Params }) {
               data-cta-type="calendar"
               className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
             >
-              Book on calendar <ArrowRight size={14} />
+              Book a 30-min call <ArrowRight size={14} />
             </Link>
           </div>
           <Link

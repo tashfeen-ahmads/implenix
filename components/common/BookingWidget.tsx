@@ -18,6 +18,36 @@ import { buildIcs, googleCalendarUrl } from '@/lib/calendarLinks';
 
 type Slot = { startIso: string; endIso: string; label: string };
 
+// Slot times are computed in the booking timezone; every later step must
+// show them in that same zone (with its label), not the browser's.
+const DEFAULT_TIMEZONE = 'America/New_York';
+function formatSlot(iso: string, timeZone: string): string {
+  return new Date(iso).toLocaleString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone,
+    timeZoneName: 'short',
+  });
+}
+
+// "America/New_York" -> "Eastern Time"
+function timeZoneName(timeZone: string): string {
+  try {
+    const part = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      timeZoneName: 'longGeneric',
+    })
+      .formatToParts(new Date())
+      .find((p) => p.type === 'timeZoneName');
+    return part?.value ?? timeZone;
+  } catch {
+    return timeZone;
+  }
+}
+
 const UNAVAILABLE_MESSAGE =
   'We can’t load open times right now. Please try again in a minute, or email support@implenix.net and we’ll set up a time with you.';
 const BOOKING_FAILED_MESSAGE =
@@ -61,6 +91,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [bookError, setBookError] = useState<string | null>(null);
   const [booked, setBooked] = useState<BookedResponse | null>(null);
+  const [timezone, setTimezone] = useState(DEFAULT_TIMEZONE);
   // Moving between steps unmounts the focused control; send keyboard and
   // screen-reader focus to the new step instead of dropping it to <body>.
   const stepRef = useRef<HTMLDivElement>(null);
@@ -91,7 +122,18 @@ export function BookingWidget({ ctaLocation, height }: Props) {
     year: 'numeric',
   });
 
-  const days = useMemo(() => buildMonthGrid(monthDate), [monthDate]);
+  const [rules, setRules] = useState<BookingRules>(DEFAULT_RULES);
+  useEffect(() => {
+    fetch('/api/booking-config')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((cfg: (BookingRules & { timezone?: string }) | null) => {
+        if (!cfg) return;
+        setRules({ workingDays: cfg.workingDays, maxLeadDays: cfg.maxLeadDays });
+        if (cfg.timezone) setTimezone(cfg.timezone);
+      })
+      .catch(() => {});
+  }, []);
+  const days = useMemo(() => buildMonthGrid(monthDate, rules), [monthDate, rules]);
 
   useEffect(() => {
     if (!selectedDate) return;
@@ -118,6 +160,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
       .then((data) => {
         if (cancelled) return;
         setAvailability(data);
+        if (data.timezone) setTimezone(data.timezone);
       })
       .catch((err) => {
         if (cancelled) return;
@@ -224,6 +267,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
             onPrev={() => setMonthOffset((n) => Math.max(0, n - 1))}
             onNext={() => setMonthOffset((n) => n + 1)}
             canGoBack={monthOffset > 0}
+            maxLeadDays={rules.maxLeadDays}
           />
         ) : null}
 
@@ -243,6 +287,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
         {step === 'form' && selectedSlot ? (
           <FormStep
             slot={selectedSlot}
+            timezone={timezone}
             form={form}
             setForm={setForm}
             error={bookError}
@@ -252,7 +297,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
         ) : null}
 
         {step === 'confirmed' && booked ? (
-          <ConfirmedStep booked={booked} form={form} />
+          <ConfirmedStep booked={booked} timezone={timezone} form={form} />
         ) : null}
       </div>
     </div>
@@ -271,6 +316,7 @@ function DateStep({
   onPrev,
   onNext,
   canGoBack,
+  maxLeadDays,
 }: {
   monthLabel: string;
   days: { iso: string; day: number; disabled: boolean; inMonth: boolean }[];
@@ -279,6 +325,7 @@ function DateStep({
   onPrev: () => void;
   onNext: () => void;
   canGoBack: boolean;
+  maxLeadDays: number;
 }) {
   return (
     <>
@@ -317,7 +364,9 @@ function DateStep({
             type="button"
             onClick={() => !d.disabled && onSelect(d.iso)}
             disabled={d.disabled}
-            className={`aspect-square flex items-center justify-center font-body text-sm transition-colors ${
+            aria-label={dayLabel(d.iso)}
+            aria-pressed={selectedDate === d.iso}
+            className={`h-11 flex items-center justify-center font-body text-sm transition-colors ${
               !d.inMonth
                 ? 'text-white/15'
                 : d.disabled
@@ -332,8 +381,8 @@ function DateStep({
         ))}
       </div>
       <p className="font-body text-xs text-white/55 leading-relaxed">
-        Pick a day to see open times. Working days only. All times shown in your
-        booking timezone.
+        Pick a day to see open times. Working days only, up to {maxLeadDays}{' '}
+        days ahead.
       </p>
     </>
   );
@@ -363,9 +412,16 @@ function TimeStep({
   });
   return (
     <>
-      <div className="flex items-center gap-2">
-        <Clock size={14} className="text-brand-cyan" />
-        <span className="font-heading text-white text-base">{readable}</span>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2">
+          <Clock size={14} className="text-brand-cyan" aria-hidden />
+          <span className="font-heading text-white text-base">{readable}</span>
+        </div>
+        {availability?.timezone ? (
+          <span className="font-body text-xs text-white/55">
+            Times shown in {timeZoneName(availability.timezone)}
+          </span>
+        ) : null}
       </div>
       {loading ? (
         <div role="status" className="flex flex-col items-center justify-center py-10 gap-2 text-white/60">
@@ -402,6 +458,7 @@ function TimeStep({
 
 function FormStep({
   slot,
+  timezone,
   form,
   setForm,
   error,
@@ -409,6 +466,7 @@ function FormStep({
   onSubmit,
 }: {
   slot: Slot;
+  timezone: string;
   form: { name: string; email: string; phone: string; notes: string };
   setForm: (f: {
     name: string;
@@ -420,15 +478,9 @@ function FormStep({
   submitting: boolean;
   onSubmit: () => void;
 }) {
-  const slotLabel = new Date(slot.startIso).toLocaleString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
+  const slotLabel = formatSlot(slot.startIso, timezone);
   const inputClass =
-    'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-sm placeholder:text-white/40';
+    'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/40';
 
   return (
     <form
@@ -519,18 +571,14 @@ function FormStep({
 
 function ConfirmedStep({
   booked,
+  timezone,
   form,
 }: {
   booked: BookedResponse;
+  timezone: string;
   form: { name: string; email: string };
 }) {
-  const slotLabel = new Date(booked.start).toLocaleString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
+  const slotLabel = formatSlot(booked.start, timezone);
   const calendarEvent = {
     title: 'Implenix consultation',
     startIso: booked.start,
@@ -637,7 +685,19 @@ function Field({
 // Calendar grid helpers
 // ---------------------------------------------------------------------------
 
-function buildMonthGrid(monthDate: Date) {
+type BookingRules = { workingDays: number[]; maxLeadDays: number };
+const DEFAULT_RULES: BookingRules = { workingDays: [1, 2, 3, 4, 5], maxLeadDays: 30 };
+
+function dayLabel(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function buildMonthGrid(monthDate: Date, rules: BookingRules) {
   const year = monthDate.getFullYear();
   const month = monthDate.getMonth();
   const firstOfMonth = new Date(year, month, 1);
@@ -646,6 +706,8 @@ function buildMonthGrid(monthDate: Date) {
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const lastBookable = new Date(today);
+  lastBookable.setDate(today.getDate() + rules.maxLeadDays);
 
   const cells: {
     iso: string;
@@ -659,10 +721,12 @@ function buildMonthGrid(monthDate: Date) {
     const iso = toIsoDate(d);
     const inMonth = d.getMonth() === month;
     const past = d.getTime() < today.getTime();
+    const tooFar = d.getTime() > lastBookable.getTime();
+    const offDay = !rules.workingDays.includes(d.getDay());
     cells.push({
       iso,
       day: d.getDate(),
-      disabled: past || !inMonth,
+      disabled: past || !inMonth || tooFar || offDay,
       inMonth,
     });
   }

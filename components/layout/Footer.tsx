@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { Badge } from '@/components/common/Badge';
 import { LogoLockup } from '@/components/common/LogoLockup';
 import { TestRonCTA } from '@/components/ron/TestRonCTA';
+import { FooterCta } from './FooterCta';
 
 const COLUMNS = [
   {
@@ -79,38 +78,7 @@ const COLUMNS = [
 export function Footer() {
   return (
     <footer>
-      <section className="bg-brand-dark border-t border-brand-purple/20">
-        <div className="max-w-content mx-auto px-6 py-20 grid lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 flex flex-col gap-4">
-            <Badge label="Find out what you're losing" variant="purple" />
-            <h2 className="font-heading text-3xl md:text-5xl text-white leading-[1.05] max-w-2xl">
-              See what missed calls cost you last month.
-            </h2>
-            <p className="font-body text-white/70 max-w-xl">
-              Free 60-second audit. Industry-grade estimate of your lost
-              pipeline, then a deployment plan to recover it.
-            </p>
-          </div>
-          <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end">
-            <Link
-              href="/audit"
-              data-cta-location="footer-cta"
-              data-cta-type="primary"
-              className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
-            >
-              Get my free audit <ArrowRight size={16} />
-            </Link>
-            <Link
-              href="/try-it"
-              data-cta-location="footer-cta"
-              data-cta-type="secondary"
-              className="inline-flex items-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
-            >
-              Test Ron now
-            </Link>
-          </div>
-        </div>
-      </section>
+      <FooterCta />
 
       <div className="bg-black border-t border-brand-purple/20">
         <div className="max-w-content mx-auto px-6 py-16 grid grid-cols-2 lg:grid-cols-8 gap-8">

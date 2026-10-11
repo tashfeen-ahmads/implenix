@@ -4,18 +4,6 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { CaseStudyCard } from '@/components/common/CaseStudyCard';
 
-const FILTERS = [
-  'All',
-  'HVAC',
-  'Dental',
-  'Real Estate',
-  'Law Firms',
-  'Plumbing',
-  'Med Spa',
-  'Auto Repair',
-  'Roofing',
-];
-
 type CaseStudyItem = {
   slug: string;
   industry: string;
@@ -25,6 +13,11 @@ type CaseStudyItem = {
 
 export function CaseStudiesClient({ studies }: { studies: CaseStudyItem[] }) {
   const [filter, setFilter] = useState('All');
+  // Chips come from the studies themselves: no dead filters, none missing.
+  const FILTERS = useMemo(
+    () => ['All', ...Array.from(new Set(studies.map((s) => s.industry))).sort()],
+    [studies],
+  );
 
   const filtered = useMemo(() => {
     if (filter === 'All') return studies;
@@ -40,6 +33,8 @@ export function CaseStudiesClient({ studies }: { studies: CaseStudyItem[] }) {
             return (
               <button
                 key={f}
+                type="button"
+                aria-pressed={active}
                 onClick={() => setFilter(f)}
                 className={`px-4 py-2 text-sm font-body rounded-sm transition-colors ${
                   active

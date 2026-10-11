@@ -72,7 +72,7 @@ function Stat({ label, value }: { label: string; value: string }) {
       <dt className="text-xs uppercase tracking-widest text-white/55 font-mono">
         {label}
       </dt>
-      <dd className="mt-2 font-heading text-2xl md:text-3xl text-white tabular-nums">{value}</dd>
+      <dd className="mt-2 font-heading text-xl sm:text-2xl md:text-3xl text-white tabular-nums whitespace-nowrap">{value}</dd>
     </div>
   );
 }

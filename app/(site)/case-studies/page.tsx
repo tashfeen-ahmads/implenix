@@ -67,8 +67,8 @@ export default function CaseStudiesPage() {
             </h1>
             <p className="font-body text-white/75 text-lg max-w-2xl leading-relaxed">
               Filter by industry to see what we have shipped for businesses
-              like yours. Every case study is paired with a real call
-              recording.
+              like yours. Several include the real call recording, so you
+              can hear the agent work.
             </p>
           </div>
         </div>

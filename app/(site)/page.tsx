@@ -42,7 +42,7 @@ const HOME_FAQS = [
   {
     question: 'How much does an AI receptionist cost?',
     answer:
-      'Implenix AI Receptionist pricing starts at $297/month for single-location businesses handling 100-500 calls/month, $497/month for growing multi-line operations, and $697-$1,497/month for multi-location deployments. All tiers include 24/7 coverage, unlimited concurrent calls, two-way CRM sync, and live calendar booking at fixed monthly cost, no per-minute billing that punishes growth.',
+      'Implenix AI Receptionist pricing is $297/month (Solo Operator, up to 100 inbound calls a month), $597/month (Growing Agency, up to 500 calls) and $997/month (Established Firm, unlimited calls). All tiers include 24/7 coverage, unlimited concurrent calls, two-way CRM sync, and live calendar booking at fixed monthly cost, no per-minute billing that punishes growth.',
   },
   {
     question: 'How is Implenix different from a traditional answering service?',
@@ -126,7 +126,7 @@ export default function HomePage() {
                 Implenix replaces voicemail and per-minute answering
                 services with{' '}
                 <span className="text-white font-medium">fixed monthly
-                pricing, $297-$697/month</span>, and handles unlimited
+                pricing from $297/month</span>, and handles unlimited
                 concurrent calls.
               </p>
             </div>

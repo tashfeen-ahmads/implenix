@@ -7,7 +7,8 @@ type Props = {
   variant?: 'cyan' | 'purple';
 };
 
-// Koyeb-style pill eyebrow above hero headlines.
+// Small eyebrow label. w-fit keeps it from stretching across flex-col
+// parents.
 export function Badge({ href, label, variant = 'cyan' }: Props) {
   const tone =
     variant === 'cyan'
@@ -15,7 +16,7 @@ export function Badge({ href, label, variant = 'cyan' }: Props) {
       : 'border-brand-purple/50 text-brand-purple';
   const inner = (
     <span
-      className={`inline-flex items-center gap-2 border ${tone} bg-black/40 px-3 py-1 rounded-sm text-xs font-mono uppercase tracking-widest`}
+      className={`inline-flex w-fit items-center gap-2 border ${tone} bg-black/40 px-3 py-1 rounded-sm text-xs font-mono uppercase tracking-widest`}
     >
       <span className="w-1.5 h-1.5 bg-current" />
       {label}
@@ -24,7 +25,7 @@ export function Badge({ href, label, variant = 'cyan' }: Props) {
   );
   if (href) {
     return (
-      <Link href={href} className="inline-flex">
+      <Link href={href} className="inline-flex w-fit">
         {inner}
       </Link>
     );

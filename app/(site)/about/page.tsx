@@ -136,7 +136,7 @@ export default function AboutPage() {
                 data-cta-type="primary"
                 className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
               >
-                Talk to the team <ArrowRight size={16} />
+                Book a 30-min call <ArrowRight size={16} />
               </Link>
               <Link
                 href="/case-studies"
@@ -248,8 +248,7 @@ compact
                 every single day to a missed inbound. <span className="text-brand-cyan">That is the problem worth solving.</span>
               </p>
               <p>
-                Implenix is the team that solves it. We design industry-
-                specific voice agents, deploy them on real phone lines,
+                Implenix is the team that solves it. We design industry-specific voice agents, deploy them on real phone lines,
                 and integrate them into your CRM, calendar, and dispatch.
                 <span className="text-white font-medium"> We deploy. We tune. We ship.</span>
               </p>
@@ -469,7 +468,7 @@ compact
               data-cta-type="primary"
               className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Book a Demo <ArrowRight size={16} />
+              Book a 30-min call <ArrowRight size={16} />
             </Link>
           </div>
         </div>
