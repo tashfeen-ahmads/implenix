@@ -40,7 +40,7 @@ export function ComparisonSection() {
               },
               {
                 label: 'Time to deploy',
-                cells: ['7-14 days', 'Instant', '4-8 weeks', '2-4 weeks'],
+                cells: ['72 hours', 'Instant', '4-8 weeks', '2-4 weeks'],
               },
             ]}
           />

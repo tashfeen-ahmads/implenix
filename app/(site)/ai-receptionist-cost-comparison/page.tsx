@@ -22,7 +22,7 @@ const FAQS = [
   {
     question: 'How much does an AI receptionist cost?',
     answer:
-      'Plans range from $297/month (solo operators) to $997/month (multi-location). Pricing is fixed regardless of call volume. Implementation includes script tuning, voice selection, integrations, and a deployment engineer.',
+      'Implenix is a custom build, so pricing depends on your business. Book a short call with a lead specialist at /contact; they review your call flow and recommend the best solution and price for your needs. There is no per-minute billing, and implementation includes script tuning, voice selection, integrations, and a deployment engineer.',
   },
   {
     question: 'Why is the AI fixed-cost when other options bill per minute?',
@@ -37,7 +37,7 @@ const FAQS = [
   {
     question: 'Is hiring a part-time receptionist cheaper than the AI?',
     answer:
-      'Only on the headline number, and only barely. A part-time hire runs $1,800-$2,400/month for 20 hours of coverage. The AI is $297-$997/month for 168 hours of unlimited concurrent coverage. Per-hour, the AI is ~30x cheaper.',
+      'Only on the headline number, and only barely. A part-time hire runs $1,800-$2,400/month for 20 hours of coverage. The AI covers all 168 hours a week with unlimited concurrent calls, so per hour of coverage it costs a fraction of the hire.',
   },
   {
     question: 'What hidden costs should I factor in for a human hire?',
@@ -52,7 +52,7 @@ const FAQS = [
   {
     question: 'Are there hidden costs in the AI option?',
     answer:
-      'No. The plan price is what you pay monthly, no per-minute charges, no after-hours upcharges, no overage fees. Optional white-glove setup ($497 one-time) and custom voice cloning (premium tier) are clearly priced.',
+      'No. Your price is set up front on a short call with a lead specialist, based on your call flow: no per-minute charges, no after-hours upcharges, no overage fees. Anything optional, such as custom voice cloning, is scoped and quoted before you commit.',
   },
 ];
 
@@ -83,9 +83,9 @@ const COSTS = [
   },
   {
     label: 'Implenix · AI Receptionist',
-    monthly: '$297-$997',
-    annual: '$3,564-$11,964',
-    hiddenCost: 'None, fixed price',
+    monthly: 'Custom quote',
+    annual: 'Custom quote',
+    hiddenCost: 'None, no per-minute billing',
     coverage: '24/7 unlimited concurrent',
     realRanking: 'Best per-hour cost',
     highlight: true,
@@ -401,13 +401,13 @@ every option, real numbers.
               rows={[
                 {
                   label: 'Annualized cost',
-                  cells: ['$3,564-$11,964', '$50,200-$82,000', '$3,600-$18,000', '$0 (lost pipeline)'],
+                  cells: ['Custom quote', '$50,200-$82,000', '$3,600-$18,000', '$0 (lost pipeline)'],
                 },
                 { label: 'Hours of coverage / week', cells: ['168', '40', '40+ (premium for 24/7)', '168 silent'] },
                 { label: 'Concurrent calls', cells: ['unlimited', '1', 'staff-bound', 'n/a'] },
                 { label: 'Books to your calendar live', cells: [true, true, 'partial', false] },
                 { label: 'Two-way CRM sync', cells: [true, 'partial', 'partial', false] },
-                { label: 'Pricing model', cells: ['fixed', 'salary + benefits', 'per-minute', 'free'] },
+                { label: 'Pricing model', cells: ['custom, no per-minute', 'salary + benefits', 'per-minute', 'free'] },
                 { label: 'Cost grows with volume', cells: [false, true, true, false] },
               ]}
             />
@@ -444,9 +444,9 @@ every option, real numbers.
           <div className="mt-12">
             <DividedStats
               stats={[
-                { number: '$40K+', label: 'annualized savings vs full-time hire' },
-                { number: '<30 d', label: 'typical break-even on subscription cost' },
-                { number: 'Fixed', label: 'cost regardless of call volume growth' },
+                { number: '$50K+', label: 'fully loaded annual cost of a full-time hire' },
+                { number: '<30 d', label: 'typical break-even on recovered pipeline' },
+                { number: '$0/min', label: 'per-minute billing as call volume grows' },
               ]}
             />
           </div>

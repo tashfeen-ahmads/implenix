@@ -156,7 +156,7 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
             </h1>
             <p className="font-body text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed">
               {cfg.subhead} Live in{' '}
-              <span className="whitespace-nowrap">7-14 days</span>.
+              <span className="whitespace-nowrap">72 hours</span>.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <a
@@ -222,7 +222,7 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
               pick a time for your free 30-minute audit.
             </p>
             <ul className="flex flex-col gap-3">
-              {['Free, no commitment', '30 minutes on a video call', 'Live in 7-14 days if you go ahead'].map((x) => (
+              {['Free, no commitment', '30 minutes on a video call', 'Live in 72 hours if you go ahead'].map((x) => (
                 <li key={x} className="flex items-center gap-3 font-body text-white/85">
                   <Check size={16} className="text-brand-cyan shrink-0" aria-hidden />
                   {x}
@@ -265,7 +265,7 @@ function VariantB({ cfg }: { cfg: LandingConfig }) {
               </a>
             </div>
             <ul className="flex flex-wrap gap-x-6 gap-y-2 font-body text-white/70 text-sm">
-              {['Answers in one ring, 24/7', 'Live in 7-14 days', 'Fixed monthly price'].map((x) => (
+              {['Answers in one ring, 24/7', 'Live in 72 hours', 'No per-minute billing'].map((x) => (
                 <li key={x} className="flex items-center gap-2">
                   <Check size={14} className="text-brand-cyan" aria-hidden /> {x}
                 </li>

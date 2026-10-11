@@ -34,7 +34,7 @@ const FAQS = [
   {
     question: 'Is an AI receptionist actually cheaper than hiring?',
     answer:
-      'Yes, on cash cost and substantially. A full-time receptionist runs $3,500-$5,000/month for 40 hours of coverage plus benefits and HR overhead. Implenix is $297-$997/month for 24/7 unlimited concurrency. The annualized difference is typically $40,000-$60,000.',
+      'Yes, on cash cost and substantially. A full-time receptionist runs $3,500-$5,000/month for 40 hours of coverage plus benefits and HR overhead. Implenix covers 24/7 with unlimited concurrency at a fraction of that. Pricing is custom: a lead specialist reviews your call flow on a short call and recommends the best solution and price for your needs.',
   },
   {
     question: 'Can an AI replace a real human at the front desk?',
@@ -64,7 +64,7 @@ const FAQS = [
   {
     question: 'How long does an AI take to deploy vs hiring a human?',
     answer:
-      'AI deployment runs 7-14 business days end-to-end. Hiring a receptionist runs 2-6 weeks plus 4-8 weeks of training. The AI is faster to live and stays consistent, no ramp.',
+      'Implenix goes live in 72 hours from kickoff. Hiring a receptionist runs 2-6 weeks plus 4-8 weeks of training. The AI is faster to live and stays consistent, no ramp.',
   },
   {
     question: 'Will my callers know the difference?',
@@ -101,7 +101,7 @@ const ANNUAL_COSTS = [
   },
   {
     label: 'Implenix subscription',
-    ai: '$3,564 - $11,964',
+    ai: 'Custom quote',
     human: ', ',
   },
 ];
@@ -180,11 +180,11 @@ export default function AIReceptionistVsHumanReceptionistPage() {
                   ▸ Annualized
                 </span>
                 <p className="font-heading text-5xl md:text-6xl text-brand-cyan mt-3 leading-none">
-                  $40K+
+                  $50K+
                 </p>
                 <p className="mt-3 font-body text-white/80 max-w-xs">
-                  typical annual cost difference between hiring a full-time
-                  receptionist and deploying Implenix.
+                  fully loaded annual cost of a full-time receptionist, for
+                  40 hours of coverage a week.
                 </p>
               </div>
             </div>
@@ -289,7 +289,7 @@ part-time, in-house, or on a small live answering service
                 <tr className="bg-black">
                   <td className="p-4 font-heading text-white">Annual total</td>
                   <td className="p-4 font-heading text-2xl text-brand-cyan border-x border-x-brand-cyan/40 border-b border-b-brand-cyan/40">
-                    $3,564 - $11,964
+                    Custom quote
                   </td>
                   <td className="p-4 font-heading text-2xl text-white/85">
                     $50,200 - $82,000
@@ -323,10 +323,10 @@ part-time, in-house, or on a small live answering service
                 { label: 'Live calendar booking', cells: [true, true] },
                 { label: 'Two-way CRM sync', cells: [true, 'partial'] },
                 { label: 'Industry-specific script', cells: [true, 'partial'] },
-                { label: 'Time to live', cells: ['7-14 days', '6-14 weeks'] },
+                { label: 'Time to live', cells: ['72 hours', '6-14 weeks'] },
                 {
                   label: 'Monthly cost',
-                  cells: ['$297 - $997', '$3,500 - $5,000'],
+                  cells: ['Custom quote', '$3,500 - $5,000'],
                 },
                 {
                   label: 'Best for',

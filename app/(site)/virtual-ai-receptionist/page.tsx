@@ -21,7 +21,7 @@ import { buildMetadata, SITE_NAME } from '@/lib/seo';
 export const metadata: Metadata = buildMetadata({
   title: 'Virtual AI Receptionist | Cloud-Hosted Agent | Implenix',
   description:
-    'Virtual AI receptionist hosted in the cloud. No hardware, no on-prem install. Deploy in 7-14 days, scale to peak instantly, integrate with your CRM live.',
+    'Virtual AI receptionist hosted in the cloud. No hardware, no on-prem install. Live in 72 hours, scale to peak instantly, integrate with your CRM live.',
   path: '/virtual-ai-receptionist',
 });
 
@@ -39,7 +39,7 @@ const FAQS = [
   {
     question: 'Do I need to install anything on-site?',
     answer:
-      'No. The agent runs entirely in the cloud. Your existing business number forwards (or ports) to our SIP trunk. Setup is configuration-only, no hardware installation.',
+      'No. The agent runs entirely in the cloud. Your existing business number forwards to our SIP trunk, so you are live in 72 hours; if you want to port the number instead, porting runs in parallel through your carrier. Setup is configuration-only, no hardware installation.',
   },
   {
     question: 'Can it handle my call volume?',
@@ -178,9 +178,9 @@ export default function VirtualAIReceptionistPage() {
               <p>
                 Setup is <span className="text-white font-medium">configuration
                 only</span>, no hardware install, no PBX changes, no
-                IT project. Most deployments go live in 7-14 business
-                days, parallel-tested for a week, then routed to real
-                traffic.
+                IT project. Deployments go live in 72 hours from kickoff:
+                script and integrations built, test calls signed off, then
+                routed to real traffic.
               </p>
             </div>
             <div className="lg:col-span-7 border border-brand-cyan/25 bg-black p-5 md:p-6 flex flex-col gap-4">
@@ -194,7 +194,7 @@ export default function VirtualAIReceptionistPage() {
               </div>
               <ol className="flex flex-col gap-2">
                 <PathStep index="1" label="Caller's phone" note="Any inbound number" color="cyan" />
-                <PathStep index="2" label="Your business number" note="Forwards or ports to Implenix" color="cyan" />
+                <PathStep index="2" label="Your business number" note="Forwards to Implenix · porting optional" color="cyan" />
                 <PathStep index="3" label="Implenix SIP trunk" note="Cloud endpoint · unlimited concurrent" color="purple" />
                 <PathStep index="4" label="Speech-to-text (streaming)" note="Real-time caller audio → text" color="purple" />
                 <PathStep index="5" label="Tuned dialogue model" note="Intent + your script + business context" color="cyan" />
@@ -212,7 +212,7 @@ export default function VirtualAIReceptionistPage() {
                   <p className="font-mono text-[9px] uppercase tracking-widest text-white/50 mt-1.5">PBX changes</p>
                 </div>
                 <div>
-                  <p className="font-heading text-2xl text-brand-cyan leading-none">7-14d</p>
+                  <p className="font-heading text-2xl text-brand-cyan leading-none">72h</p>
                   <p className="font-mono text-[9px] uppercase tracking-widest text-white/50 mt-1.5">Deploy</p>
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default function VirtualAIReceptionistPage() {
           <div className="mt-16">
             <DividedStats
               stats={[
-                { number: '7-14 days', label: 'Cloud deploy time, no hardware, no on-prem install' },
+                { number: '72 hours', label: 'Cloud deploy time, no hardware, no on-prem install' },
                 { number: '<800ms', label: 'Turn-taking latency end-to-end through the cloud' },
                 { number: 'unlimited', label: 'Concurrent calls, scales instantly with peak hours' },
               ]}
@@ -328,7 +328,7 @@ export default function VirtualAIReceptionistPage() {
                 { label: 'Email and admin work', cells: [false, true] },
                 { label: 'Training overhead', cells: ['none', '20-60 hours'] },
                 { label: 'Turnover risk', cells: ['none', 'high'] },
-                { label: 'Monthly cost', cells: ['from $297', '$1,500-$4,000'] },
+                { label: 'Monthly cost', cells: ['Custom quote', '$1,500-$4,000'] },
               ]}
             />
           </div>
@@ -365,7 +365,7 @@ export default function VirtualAIReceptionistPage() {
       <section className="bg-black border-t border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7">
-            <Badge label="Cloud-deploy in 14 days" variant="purple" />
+            <Badge label="Cloud-deploy in 72 hours" variant="purple" />
             <h2 className="font-heading text-3xl md:text-5xl mt-5 leading-[1.05]">
               See what cloud-hosted phone handling looks like for your business.
             </h2>

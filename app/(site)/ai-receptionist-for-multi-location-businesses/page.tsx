@@ -50,12 +50,12 @@ const FAQS = [
   {
     question: 'How long does multi-location deployment take?',
     answer:
-      '14-28 business days depending on location count and per-location customization. The shared brand script is built once; per-location config layers on after.',
+      '72 hours from kickoff. The shared brand script is built once and per-location config (hours, capacity, on-call rules) layers on top inside the same window, then we keep monitoring and tuning each location over the first weeks.',
   },
   {
-    question: 'What plan tier is required for multi-location?',
+    question: 'How is multi-location priced?',
     answer:
-      'The Established Firm tier ($997/month) supports unlimited inbound calls and multi-location routing. Larger operations (15+ locations) typically work on a custom enterprise quote.',
+      'Every Implenix deployment is custom, and pricing depends on location count, call volume, and routing. Book a short call with a lead specialist at /contact; they review your call flow across locations and recommend the best solution and price for your operation. Unlimited inbound calls and multi-location routing are included.',
   },
 ];
 
@@ -251,7 +251,7 @@ export default function AIReceptionistForMultiLocationPage() {
               stats={[
                 { number: '90%+', label: 'consistent capture rate across all locations' },
                 { number: 'Per-loc', label: 'reporting + roll-up to ownership' },
-                { number: '14-28 d', label: 'deployment timeline (location count dependent)' },
+                { number: '72 hrs', label: 'from kickoff to live calls across locations' },
               ]}
             />
           </div>
@@ -287,7 +287,7 @@ export default function AIReceptionistForMultiLocationPage() {
             <p className="mt-4 font-body text-white/75 max-w-xl">
               Talk to our enterprise team. We'll scope the
               multi-location deployment, integrations, and reporting
-              tier for your operation.
+              for your operation.
             </p>
           </div>
           <div className="lg:col-span-5 flex flex-col sm:flex-row lg:justify-end gap-3">

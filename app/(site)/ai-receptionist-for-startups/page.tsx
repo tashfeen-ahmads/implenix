@@ -22,7 +22,7 @@ import { buildMetadata, SITE_NAME } from '@/lib/seo';
 export const metadata: Metadata = buildMetadata({
   title: 'AI Receptionist for Startups | Implenix',
   description:
-    'AI receptionist for startups. Qualify inbound leads, screen vendor pitches, and look like an established business, for $297/mo, no hire needed.',
+    'AI receptionist for startups. Qualify inbound leads, screen vendor pitches, and look like an established business. Live in 72 hours, no hire needed.',
   path: '/ai-receptionist-for-startups',
 });
 
@@ -30,7 +30,7 @@ const FAQS = [
   {
     question: 'Why would a startup need an AI receptionist?',
     answer:
-      'Startups deal with the same inbound problems established businesses have, lead qualification, partner inquiries, vendor solicitation noise, customer support routing, without the headcount or runway to hire a receptionist. The AI handles all of it for $297/month.',
+      'Startups deal with the same inbound problems established businesses have, lead qualification, partner inquiries, vendor solicitation noise, customer support routing, without the headcount or runway to hire a receptionist. The AI handles all of it, at custom pricing set on a short call with a lead specialist who reviews your call flow.',
   },
   {
     question: 'Doesn\'t a startup just use voicemail or a Google Voice number?',
@@ -62,9 +62,9 @@ const FAQS = [
 const FEATURES = [
   {
     Icon: Rocket,
-    title: 'Live in 7-14 days',
+    title: 'Live in 72 hours',
     description:
-      'Deploy fast, no PBX, no IT project, no hire. Your business number forwards to our cloud agent, you\'re live in two weeks.',
+      'Deploy fast, no PBX, no IT project, no hire. Your business number forwards to our cloud agent, you\'re live in 72 hours.',
     span: 'lg' as const,
     accent: 'purple' as const,
   },
@@ -167,7 +167,7 @@ export default function AIReceptionistForStartupsPage() {
                   data-cta-type="secondary"
                   className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  See startup plan
+                  See how pricing works
                 </Link>
               </div>
             </div>
@@ -210,8 +210,9 @@ export default function AIReceptionistForStartupsPage() {
                 inbound call, runs your defined qualification logic
                 (role, deal size, decision-maker, anti-fit signals),
                 routes founders only the calls that need them, and
-                screens out the rest. Cost is $297-$597/month flat.
-                Setup is 7-14 days, no PBX or IT involvement. For most
+                screens out the rest. Pricing is custom, set on a short
+                call with a lead specialist who reviews your call flow.
+                Setup takes 72 hours, no PBX or IT involvement. For most
                 pre-Series-A startups, this is the right answer until
                 you're large enough that a dedicated office manager
                 makes sense, at which point the AI typically stays
@@ -247,8 +248,8 @@ export default function AIReceptionistForStartupsPage() {
           <div className="mt-12">
             <DividedStats
               stats={[
-                { number: '7-14d', label: 'time to live with full integrations' },
-                { number: '$297', label: 'flat monthly cost vs $50K+ for a hire' },
+                { number: '72 hrs', label: 'time to live with full integrations' },
+                { number: '$50K+', label: 'yearly cost of the hire you skip' },
                 { number: '-89%', label: 'cold-pitch calls kept off founders' },
               ]}
             />
@@ -311,10 +312,6 @@ export default function AIReceptionistForStartupsPage() {
             topic="Keep reading"
             type="resource"
             links={[
-              {
-                href: '/ai-receptionist-for-agencies',
-                label: 'AI Receptionist for Agencies',
-              },
               {
                 href: '/ai-receptionist-for-marketing-agencies',
                 label: 'AI Receptionist for Marketing Agencies',

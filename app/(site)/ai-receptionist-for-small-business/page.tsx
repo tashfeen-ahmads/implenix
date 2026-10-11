@@ -39,7 +39,7 @@ const FAQS = [
   {
     question: 'How is this cheaper than hiring a receptionist?',
     answer:
-      'A part-time receptionist runs $1,800-$2,400/month for 20 hours of coverage. A full-time hire runs $3,500-$5,000/month for 40 hours. Implenix starts at $297/month and covers all 168 hours in a week with no sick days, vacation, or turnover.',
+      'A part-time receptionist runs $1,800-$2,400/month for 20 hours of coverage. A full-time hire runs $3,500-$5,000/month for 40 hours. Implenix covers all 168 hours in a week with no sick days, vacation, or turnover, at a fraction of the cost of a full-time hire. Pricing is custom: a lead specialist reviews your call flow on a short call and recommends the best solution and price for your needs.',
   },
   {
     question: 'Will it work for my industry?',
@@ -49,12 +49,12 @@ const FAQS = [
   {
     question: 'I am a solo operator. Will this work for me?',
     answer:
-      'Yes. Solo operators are one of our most-served customer profiles, owners who are on a roof, in a chair, in a meeting, or otherwise unable to pick up. The Solo Operator plan starts at $297/month and includes 24/7 coverage and CRM sync.',
+      'Yes. Solo operators are one of our most-served customer profiles, owners who are on a roof, in a chair, in a meeting, or otherwise unable to pick up. Every deployment includes 24/7 coverage and CRM sync, and pricing is set around your call volume on a short call with a lead specialist.',
   },
   {
     question: 'How long does deployment take?',
     answer:
-      '7 to 14 business days for most small businesses. We tune your script, voice, and integrations during onboarding, then run a parallel test period before cutting over real traffic.',
+      '72 hours from kickoff. We tune your script, voice, and integrations, run test calls for your sign-off, and go live, then keep monitoring and tuning over the first weeks.',
   },
   {
     question: 'Will my customers know they are talking to an AI?',
@@ -181,7 +181,7 @@ export default function AIReceptionistForSmallBusinessPage() {
               </div>
               <dl className="grid grid-cols-3 max-w-lg pt-8 border-t border-brand-purple/15">
                 <Stat label="Coverage" value="24 / 7" />
-                <Stat label="From" value="$297/mo" />
+                <Stat label="Pricing" value="Custom" />
                 <Stat label="vs hire" value="$3,500+" />
               </dl>
             </div>
@@ -195,7 +195,7 @@ export default function AIReceptionistForSmallBusinessPage() {
                 </p>
                 <p className="mt-3 font-body text-white/80 max-w-xs">
                   monthly pipeline a typical local-services SMB loses to
-                  unanswered calls, recoverable in 14 days.
+                  unanswered calls, recoverable once you go live in 72 hours.
                 </p>
               </div>
             </div>
@@ -239,10 +239,12 @@ export default function AIReceptionistForSmallBusinessPage() {
                 during onboarding, books appointments directly into your
                 calendar, and writes everything back to your CRM in real
                 time. Coverage is 24/7. Concurrent capacity is unlimited.
-                Cost is fixed at $297-$997/month regardless of call volume.
-                For a solo operator running a service business on a phone
-                that never quits, this is the most leveraged $300 on your
-                P&L.
+                Pricing is custom and does not climb per minute with call
+                volume: a lead specialist reviews your call flow on a short
+                call and recommends the best solution and price for your
+                business. For a solo operator running a service business on
+                a phone that never quits, it is one of the most leveraged
+                lines on your P&L.
               </p>
             </div>
           </div>
@@ -332,7 +334,7 @@ export default function AIReceptionistForSmallBusinessPage() {
                 { label: 'No HR overhead', cells: [true, false, true, true] },
                 {
                   label: 'Monthly cost',
-                  cells: ['from $297', '$1,800-$2,400', '$0', '$30-$200'],
+                  cells: ['Custom quote', '$1,800-$2,400', '$0', '$30-$200'],
                 },
               ]}
             />

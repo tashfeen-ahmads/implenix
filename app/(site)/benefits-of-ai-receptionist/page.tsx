@@ -77,10 +77,10 @@ const BENEFITS = [
   },
   {
     Icon: DollarSign,
-    headline: '$40K+ annualized savings vs hiring',
+    headline: '$50K-$82K/year hire avoided',
     title: 'Skip the receptionist hire',
     description:
-      'A full-time receptionist runs $50K-$82K/year fully loaded. An AI receptionist runs $3,564-$11,964/year at a fixed price. The annualized gap pays for the rest of your tech stack.',
+      'A full-time receptionist runs $50K-$82K/year fully loaded. An AI receptionist covers all 168 hours a week at a fraction of that, with pricing set on a short call with a lead specialist who reviews your call flow.',
   },
   {
     Icon: Zap,
@@ -391,7 +391,7 @@ export default function BenefitsOfAIReceptionistPage() {
               stats={[
                 { number: '~$30K', label: 'monthly missed-call pipeline recovered (typical SMB)' },
                 { number: '+38%', label: 'qualified bookings inside the first 30 days' },
-                { number: '$40K+', label: 'annualized savings vs a full-time receptionist' },
+                { number: '$50K+', label: 'yearly cost of the full-time receptionist you skip' },
               ]}
             />
           </div>

@@ -65,7 +65,7 @@ const FAQS = [
   {
     question: 'How long does setup take?',
     answer:
-      '7 to 14 business days for most deployments. The work splits across script tuning, voice selection, integration setup, transfer rule definition, and a parallel-test phase before cutting over real traffic.',
+      '72 hours from kickoff. Hours 0-24 cover discovery and the script draft; hours 24-48 cover voice selection, transfer rules, and calendar and CRM integrations; hours 48-72 cover test calls, your sign-off, and go-live. Monitoring and tuning continue over the first weeks.',
   },
 ];
 
@@ -85,7 +85,7 @@ const PIPELINE_STEPS = [
   {
     title: 'Call hits your business number',
     description:
-      'Your existing number forwards (or ports) to the Implenix SIP trunk. From the caller\'s side, nothing has changed, they dial the same number they always did.',
+      'Your existing number forwards to the Implenix SIP trunk, which is how you go live in 72 hours. If you prefer to port the number, porting runs in parallel through your carrier (typically 5-10 business days) without delaying go-live. From the caller\'s side, nothing has changed, they dial the same number they always did.',
   },
   {
     title: 'Voice AI picks up within one ring',

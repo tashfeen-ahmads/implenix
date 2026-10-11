@@ -22,7 +22,7 @@ import { buildMetadata, SITE_NAME } from '@/lib/seo';
 export const metadata: Metadata = buildMetadata({
   title: 'AI Receptionist for Solopreneurs | Implenix',
   description:
-    'AI receptionist for solo operators. Answer every call while you work the job. Book appointments, sync your CRM, transfer urgent calls, for $297/mo.',
+    'AI receptionist for solo operators. Answer every call while you work the job. Book appointments, sync your CRM, transfer urgent calls. Live in 72 hours.',
   path: '/ai-receptionist-for-solopreneurs',
 });
 
@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: 'Can I afford this as a solo operator?',
     answer:
-      'The Solo Operator plan is $297/month, typically less than the lost pipeline from a single missed booking call per month. For most solo trades, this is the most leveraged subscription on the P&L.',
+      'Pricing is custom and sized to a one-person business. Book a short call with a lead specialist at /contact; they review your call flow and recommend the best solution and price for your needs. For most solo trades, the cost is easily covered by the bookings you stop missing.',
   },
   {
     question: 'Will it know how to handle my specific business?',
@@ -50,7 +50,7 @@ const FAQS = [
   {
     question: 'How do I set this up alone, I don\'t have IT?',
     answer:
-      'You don\'t need IT. We handle the technical setup during onboarding. You provide your phone number routing, calendar access, CRM access (if any), and approve the script. Live in 7-14 business days.',
+      'You don\'t need IT. We handle the technical setup during onboarding. You provide your phone number routing, calendar access, CRM access (if any), and approve the script. Live in 72 hours.',
   },
   {
     question: 'What happens when I\'m on vacation?',
@@ -70,7 +70,7 @@ const FEATURES = [
   },
   {
     Icon: Clock,
-    title: '24/7 coverage at $297/mo',
+    title: '24/7 coverage, no after-hours premium',
     description:
       'Nights, weekends, vacations. The phone never goes to voicemail again, no premium for after-hours.',
   },
@@ -168,7 +168,7 @@ usually all at once. Implenix is the AI receptionist
                   data-cta-type="secondary"
                   className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  See solo plan
+                  See how pricing works
                 </Link>
               </div>
             </div>
@@ -208,8 +208,9 @@ more than the average solo operator's monthly software
                 within one ring, runs your tuned intake script, books
                 appointments against your calendar, captures leads to
                 your CRM, and transfers calls to your mobile only when
-                your rules say to interrupt. Coverage is 24/7. Cost is
-                $297/month flat. Setup takes 7-14 days and requires no
+                your rules say to interrupt. Coverage is 24/7. Pricing is
+                custom, set on a short call with a lead specialist who
+                reviews your call flow. Setup takes 72 hours and requires no
                 technical work on your end. For most solo operators,
                 this is the highest-leverage subscription you'll add to
                 the business.
@@ -244,7 +245,7 @@ more than the average solo operator's monthly software
           <div className="mt-12">
             <DividedStats
               stats={[
-                { number: '$297', label: 'monthly cost, less than 1 missed booking' },
+                { number: '72 hrs', label: 'from kickoff to live calls, no IT needed' },
                 { number: '8-15', label: 'calls per week typical solo operator misses' },
                 { number: '24/7', label: 'coverage at no premium upcharge' },
               ]}

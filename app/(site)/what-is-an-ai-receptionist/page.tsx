@@ -188,9 +188,9 @@ export default function WhatIsAnAIReceptionistPage() {
                   bad
                 />
                 <CostRow
-                  label="AI Receptionist"
-                  cost="297-697"
-                  note="24/7 · unlimited · fixed"
+                  label="Implenix AI Receptionist"
+                  cost="Custom quote"
+                  note="24/7 · unlimited · no per-minute"
                   good
                 />
               </div>
@@ -340,7 +340,7 @@ export default function WhatIsAnAIReceptionistPage() {
                   'Inbound volume is genuinely tiny (under 30 calls per month)',
                   'Your competitive positioning depends on a human voice answering',
                   'Most calls are emotionally complex / sensitive (crisis lines, etc.)',
-                  'You have no budget tolerance for $300+/month subscription cost',
+                  'You have no budget for any monthly phone-coverage cost',
                 ].map((line) => (
                   <li
                     key={line}
@@ -476,7 +476,7 @@ function CostRow({
               : 'text-white'
         }`}
       >
-        ${cost}/mo
+        {/^[0-9]/.test(cost) ? `$${cost}/mo` : cost}
       </span>
     </div>
   );

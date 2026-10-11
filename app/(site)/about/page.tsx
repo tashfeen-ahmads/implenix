@@ -69,24 +69,24 @@ const TEAM_DISCIPLINES = [
 
 const TIMELINE = [
   {
-    title: 'Discovery',
+    title: 'Hours 0-24 · Discovery',
     description:
-      'We map your current call flow, top intents, and CRM stack in a 30-minute working session.',
+      'We map your current call flow, top intents, and CRM stack in a 30-minute working session, then draft your script.',
   },
   {
-    title: 'Agent build',
+    title: 'Hours 24-48 · Build',
     description:
-      'We assemble your call script, voice, qualification logic, and transfer rules.',
+      'We assemble your voice, qualification logic, and transfer rules, and connect your CRM, calendar, and phone routing.',
   },
   {
-    title: 'Integration',
+    title: 'Hours 48-72 · Test and go-live',
     description:
-      'We connect to your CRM, calendar, and phone routing, and run live tests against your business.',
+      'We run test calls against your business, get your sign-off, and route real traffic.',
   },
   {
-    title: 'Go-live',
+    title: 'After go-live · Tune',
     description:
-      'We route real traffic, monitor the first week, and tune scripts based on outcomes.',
+      'We monitor the first weeks of live calls and tune scripts based on outcomes.',
   },
 ];
 
@@ -182,9 +182,9 @@ export default function AboutPage() {
                 },
                 {
                   Icon: Briefcase,
-                  number: '7-14d',
+                  number: '72h',
                   label: 'deploy cycle',
-                  description: 'From kickoff to live traffic in two weeks.',
+                  description: 'From kickoff to live traffic in 72 hours.',
                 },
               ]}
             />
@@ -304,7 +304,7 @@ compact
               <TimelineItem
                 year="Early 2026"
                 title="Implenix launches"
-                body="Team ships production-ready deployments across 25 industries with fixed monthly pricing."
+                body="Team ships production-ready deployments across 25 industries, each priced around the business it serves."
                 color="purple"
                 highlight
               />
@@ -319,7 +319,7 @@ compact
             <SectionHeader
 compact
               eyebrow="How we work"
-              title="Four phases. Two weeks. Live traffic."
+              title="Four phases. Live in 72 hours."
             />
           </div>
           <div className="lg:col-span-7">

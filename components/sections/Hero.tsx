@@ -51,7 +51,7 @@ export function Hero() {
               <dl className="grid grid-cols-3 gap-6 md:gap-10 max-w-lg">
                 <Stat label="Pickup" value="<1 ring" />
                 <Stat label="Coverage" value="24 / 7" />
-                <Stat label="Live in" value="7-14 d" />
+                <Stat label="Live in" value="72 hrs" />
               </dl>
             </div>
           </div>

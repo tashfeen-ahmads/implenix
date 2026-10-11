@@ -164,7 +164,7 @@ export default function DashboardPreviewPage() {
           <div className="lg:col-span-7">
             <Badge label="See yours next" variant="purple" />
             <h2 className="font-heading text-3xl md:text-5xl mt-5 leading-[1.05]">
-              The numbers above are mock. Yours can be live in 7-14 days.
+              The numbers above are mock. Yours can be live in 72 hours.
             </h2>
             <p className="mt-4 font-body text-white/75 max-w-xl">
               Run the audit to see what missed calls cost you, then ship a
@@ -382,17 +382,17 @@ function UpsellRow() {
     {
       title: 'Outbound follow-up calls',
       body: '23 unbooked leads sitting · enable outbound to recover them.',
-      cta: 'Add Outbound · +$197/mo',
+      cta: 'Add Outbound · ask your specialist',
     },
     {
       title: 'SMS follow-up sequences',
       body: 'Queue text reminders before, during, and after appointments.',
-      cta: 'Add SMS · +$99/mo',
+      cta: 'Add SMS · ask your specialist',
     },
     {
       title: 'Branded voice cloning',
-      body: 'Replace Ron with your own voice · premium tier.',
-      cta: 'Upgrade · contact sales',
+      body: 'Replace Ron with your own voice · quoted on request.',
+      cta: 'Add voice · ask your specialist',
     },
   ];
   return (

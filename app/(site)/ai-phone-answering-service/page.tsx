@@ -44,7 +44,7 @@ const FAQS = [
   {
     question: 'How much does an AI phone answering service cost?',
     answer:
-      'Implenix starts at $297/month for solo operators and $597/month for growing teams, billed at a fixed rate. A traditional human answering service runs $300-$1,500/month at typical SMB volumes and rises with usage.',
+      'Implenix is a custom build, so pricing depends on your call volume, integrations, and call flow. Book a short call with a lead specialist at /contact; they review your call flow and recommend the best solution and price for your needs, with no per-minute billing. A traditional human answering service runs $300-$1,500/month at typical SMB volumes and rises with usage.',
   },
   {
     question: 'Can the AI book appointments live?',
@@ -69,7 +69,7 @@ const FAQS = [
   {
     question: 'How long does setup take?',
     answer:
-      'Most deployments go live in 7 to 14 business days. Faster than hiring; slower than a self-serve free tier elsewhere, because we tune the script and integrations to your business before going live.',
+      'Deployments go live in 72 hours from kickoff, with the script and integrations tuned to your business before the first real call. Far faster than hiring, and without the generic setup of a self-serve free tier elsewhere.',
   },
 ];
 
@@ -208,11 +208,11 @@ export default function AIPhoneAnsweringServicePage() {
                   ▸ vs traditional
                 </span>
                 <p className="font-heading text-5xl md:text-6xl text-brand-cyan mt-3 leading-none">
-                  -$700/mo
+                  $0/min
                 </p>
                 <p className="mt-3 font-body text-white/80 max-w-xs">
-                  typical savings vs a per-minute live answering service at
-                  moderate SMB volumes.
+                  per-minute charges on Implenix. A live answering service
+                  bills every minute, so cost climbs with your call volume.
                 </p>
               </div>
             </div>
@@ -274,11 +274,11 @@ export default function AIPhoneAnsweringServicePage() {
                       Implenix AI answering
                     </p>
                     <p className="font-body text-[11px] text-white/60 mt-0.5">
-                      Same 400 calls/mo · fixed price
+                      Same 400 calls/mo · no per-minute billing
                     </p>
                   </div>
                   <span className="font-mono text-lg text-brand-cyan">
-                    $297-597
+                    Custom quote
                   </span>
                 </div>
               </div>
@@ -345,14 +345,14 @@ export default function AIPhoneAnsweringServicePage() {
           <SectionHeader
             eyebrow="The pricing math"
             title="Why fixed-cost wins as call volume grows"
-            description="A live answering service at 200 calls/month: $400-$700. At 800 calls: $1,200-$2,400. Implenix stays at $297-$597 either way."
+            description="A live answering service at 200 calls/month: $400-$700. At 800 calls: $1,200-$2,400. Implenix pricing is set up front for your call flow and does not climb per minute."
             badgeVariant="purple"
           />
           <div className="mt-12">
             <DividedStats
               stats={[
                 { number: '$0', label: 'per-minute / per-call billing on Implenix' },
-                { number: '$700+', label: 'typical monthly difference at moderate volume' },
+                { number: '$1,200+', label: 'monthly live answering service cost at 800 calls' },
                 { number: '24/7', label: 'continuous coverage with no premium upcharge' },
               ]}
             />
@@ -384,7 +384,7 @@ export default function AIPhoneAnsweringServicePage() {
                 { label: 'Live transfer to human', cells: [true, true, false] },
                 { label: 'Recording + transcript', cells: [true, 'partial', 'partial'] },
                 { label: 'Multi-language', cells: [true, 'partial', false] },
-                { label: 'Typical SMB cost', cells: ['$297-$597', '$300-$1,500', '$0'] },
+                { label: 'Typical SMB cost', cells: ['Custom quote', '$300-$1,500', '$0'] },
               ]}
             />
           </div>

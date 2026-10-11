@@ -28,7 +28,7 @@ import { buildMetadata } from '@/lib/seo';
 export const metadata: Metadata = buildMetadata({
   title: 'AI Receptionist for Local Business | Implenix',
   description:
-    'AI Receptionist that answers, qualifies, and books every inbound call 24/7. Fixed monthly pricing. Deployed in 7-14 days. Built by voice AI operators.',
+    'AI Receptionist that answers, qualifies, and books every inbound call 24/7. Custom pricing for your call flow. Live in 72 hours. Built by voice AI operators.',
   path: '/',
   author: 'Tashfeen Ahmad',
 });
@@ -42,7 +42,7 @@ const HOME_FAQS = [
   {
     question: 'How much does an AI receptionist cost?',
     answer:
-      'Implenix AI Receptionist pricing is $297/month (Solo Operator, up to 100 inbound calls a month), $597/month (Growing Agency, up to 500 calls) and $997/month (Established Firm, unlimited calls). All tiers include 24/7 coverage, unlimited concurrent calls, two-way CRM sync, and live calendar booking at fixed monthly cost, no per-minute billing that punishes growth.',
+      'Implenix is a custom build, so pricing depends on your business: call volume, integrations, and how your calls need to be handled. Book a short call with a lead specialist at /contact. They review your call flow and recommend the best solution and price for your needs. Every deployment includes 24/7 coverage, unlimited concurrent calls, two-way CRM sync, and live calendar booking, with no per-minute billing that punishes growth.',
   },
   {
     question: 'How is Implenix different from a traditional answering service?',
@@ -52,7 +52,7 @@ const HOME_FAQS = [
   {
     question: 'How long does deployment take?',
     answer:
-      'Most Implenix deployments ship in 7-14 business days: 1-2 days discovery (we listen to 20-40 of your recent inbound calls to learn your vocabulary), 3-7 days script build and integration wiring, 3-5 days parallel testing against a shadow number, then cutover with 48-hour silent monitor. Legal, healthcare, and financial deployments run 14-28 days because of compliance review cycles.',
+      'Implenix deployments go live in 72 hours from kickoff. Hours 0-24: discovery and script draft (we listen to 20-40 of your recent inbound calls to learn your vocabulary). Hours 24-48: build, plus calendar and CRM integrations. Hours 48-72: test calls, your sign-off, and go-live, followed by silent monitoring and tuning over the first weeks. Legal, healthcare, and financial deployments run on the same 72-hour timeline; your own compliance sign-off is scheduled before kickoff.',
   },
   {
     question: 'Does the AI actually replace a human receptionist?',
@@ -125,8 +125,8 @@ export default function HomePage() {
               <p className="font-body text-white/60 leading-relaxed text-base">
                 Implenix replaces voicemail and per-minute answering
                 services with{' '}
-                <span className="text-white font-medium">fixed monthly
-                pricing from $297/month</span>, and handles unlimited
+                <span className="text-white font-medium">custom pricing
+                set around your call flow</span>, and handles unlimited
                 concurrent calls.
               </p>
             </div>
