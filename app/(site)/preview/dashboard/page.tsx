@@ -103,11 +103,11 @@ export default function DashboardPreviewPage() {
         <div className="max-w-content mx-auto px-6 py-12 md:py-16">
           <div className="border border-brand-purple/30 bg-brand-dark">
             <header className="flex items-center justify-between px-5 py-3 border-b border-brand-purple/25">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-brand-purple rounded-full" />
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="w-2.5 h-2.5 bg-brand-purple rounded-full shrink-0" />
                 <span className="w-2.5 h-2.5 bg-brand-cyan rounded-full" />
                 <span className="w-2.5 h-2.5 bg-white/40 rounded-full" />
-                <span className="ml-3 font-mono text-[11px] uppercase tracking-widest text-white/55">
+                <span className="ml-3 font-mono text-[11px] uppercase tracking-widest text-white/55 truncate">
                   app.implenix.net · northwind hvac
                 </span>
               </div>
@@ -116,7 +116,7 @@ export default function DashboardPreviewPage() {
               </span>
             </header>
 
-            <div className="p-5 md:p-8 grid gap-5">
+            <div className="p-5 md:p-8 grid grid-cols-1 gap-5 min-w-0">
               <RevenueHeroCard />
 
               <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -148,7 +148,7 @@ export default function DashboardPreviewPage() {
 
               <CostOfNothingCard />
 
-              <div className="grid lg:grid-cols-[1.4fr_1fr] gap-5">
+              <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-5 [&>*]:min-w-0">
                 <ConversationsCard />
                 <HandoffCard />
               </div>
@@ -198,11 +198,11 @@ export default function DashboardPreviewPage() {
 function RevenueHeroCard() {
   return (
     <div className="border-l-[3px] border-brand-cyan bg-black p-6 md:p-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
-      <div>
+      <div className="min-w-0">
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
           ▸ Revenue captured · this month
         </span>
-        <p className="font-heading text-4xl sm:text-6xl md:text-7xl text-white mt-3 leading-none tabular-nums">
+        <p className="font-heading text-[2rem] sm:text-6xl md:text-7xl text-white mt-3 leading-none tabular-nums">
           $147,250
         </p>
         <p className="text-sm font-body text-white/65 mt-3 max-w-md">
@@ -287,7 +287,7 @@ function CostOfNothingCard() {
 function ConversationsCard() {
   return (
     <div className="bg-black border border-brand-purple/25">
-      <header className="flex items-center justify-between px-5 py-3 border-b border-brand-purple/20">
+      <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3 border-b border-brand-purple/20">
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
           ▸ Conversations · today
         </span>

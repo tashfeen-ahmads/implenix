@@ -209,7 +209,7 @@ export default function IndustryPage({ params }: { params: Params }) {
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-7 flex flex-col gap-6">
               <Badge label={`Industry · ${data.industryName}`} variant="cyan" />
-              <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
+              <h1 className="font-heading text-[2rem] sm:text-4xl md:text-6xl lg:text-7xl leading-[1.04] [overflow-wrap:anywhere]">
                 {/* Keep "for" with the industry name instead of alone on a line. */}
                 {data.title.replace(' for ', ' for\u00a0')}
               </h1>
@@ -335,7 +335,7 @@ export default function IndustryPage({ params }: { params: Params }) {
 
       {study ? (
         <section className="bg-brand-dark border-t border-brand-purple/15">
-          <div className="max-w-content mx-auto px-6 md:px-10 py-24 md:py-32 grid lg:grid-cols-2 gap-6 md:gap-8 items-stretch">
+          <div className="max-w-content mx-auto px-6 md:px-10 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-stretch">
             <CaseStudyCard
               industry={study.industry}
               resultHeadline={study.resultHeadline}

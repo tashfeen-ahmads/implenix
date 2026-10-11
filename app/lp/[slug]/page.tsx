@@ -119,7 +119,7 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   const cfg = ALL.find((c) => c.slug === params.slug);
   if (!cfg) return {};
   return buildMetadata({
-    title: `${cfg.headline} | Implenix`,
+    title: `${cfg.headline}: Free Audit | Implenix`,
     description: cfg.subhead,
     path: `/lp/${cfg.slug}`,
     noindex: true,
@@ -146,8 +146,8 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
   return (
     <>
       <section className="grid-bg border-b border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 md:px-10 pt-12 pb-20 md:pt-20 md:pb-28 grid lg:grid-cols-12 gap-x-12 gap-y-12 items-start">
-          <div className="lg:col-span-7 lg:col-start-1 lg:row-start-1 flex flex-col gap-6">
+        <div className="max-w-content mx-auto px-6 md:px-10 pt-12 pb-20 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-12 items-start">
+          <div className="min-w-0 lg:col-span-7 lg:col-start-1 lg:row-start-1 flex flex-col gap-6">
             <div className="self-start">
               <Badge label={`Built for ${cfg.industryName}`} variant="cyan" />
             </div>
@@ -181,7 +181,7 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
 
           <aside
             id="lp-form"
-            className="scroll-mt-20 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-6 flex flex-col gap-4"
+            className="min-w-0 scroll-mt-20 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-6 flex flex-col gap-4"
           >
             <div className="border border-brand-purple/30 bg-black p-6 flex flex-col gap-3">
               <h2 className="font-heading text-2xl text-white leading-snug">
@@ -195,7 +195,7 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
             <BookingWidget ctaLocation={`lp-${cfg.slug}-top`} height={620} />
           </aside>
 
-          <div className="lg:col-span-7 lg:col-start-1 lg:row-start-2 flex flex-col gap-8">
+          <div className="min-w-0 lg:col-span-7 lg:col-start-1 lg:row-start-2 flex flex-col gap-8">
             <CodeWindow
               title={`${cfg.industryName.toLowerCase().replace(/\s+/g, '-')}.call.log`}
               lines={SAMPLE_LP_CALL}

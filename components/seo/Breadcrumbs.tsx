@@ -27,7 +27,7 @@ export function Breadcrumbs({ crumbs, className = '' }: Props) {
           {crumbs.map((c, i) => {
             const isLast = i === crumbs.length - 1;
             return (
-              <li key={c.href} className="flex items-center gap-2">
+              <li key={`${i}-${c.href}`} className="flex items-center gap-2">
                 {isLast ? (
                   <span aria-current="page" className="text-brand-cyan">
                     {c.label}

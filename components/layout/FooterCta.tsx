@@ -31,9 +31,13 @@ const HIDDEN_ON = new Set([
   '/what-is-an-ai-receptionist',
 ]);
 
+// Comparison pages are prerendered at their internal path (/v/x) but
+// served at /ai-receptionist-vs-x. Both must give the same answer, or the
+// server HTML and the client render disagree (React hydration error).
 const hasOwnClosingCta = (path: string) =>
   HIDDEN_ON.has(path) ||
   path.startsWith('/ai-receptionist-vs-') ||
+  path.startsWith('/v/') ||
   path.endsWith('-alternative');
 
 export function FooterCta() {

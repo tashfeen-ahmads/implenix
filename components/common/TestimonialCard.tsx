@@ -47,7 +47,7 @@ export function TestimonialCard({
   };
 
   return (
-    <article className="bg-black border border-brand-purple/25 hover:border-brand-purple p-6 flex flex-col gap-5 h-full transition-colors">
+    <article className="min-w-0 bg-black border border-brand-purple/25 hover:border-brand-purple p-6 flex flex-col gap-5 h-full transition-colors">
       <header className="flex items-center justify-between gap-3">
         <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-brand-cyan border border-brand-cyan/35 px-2 py-1">
           <ShieldCheck size={11} /> Verified

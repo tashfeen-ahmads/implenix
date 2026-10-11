@@ -98,8 +98,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
           <Breadcrumbs
             crumbs={[
               { label: 'Home', href: '/' },
-              { label: 'Compare', href: url },
-              { label: profile.alternativeName, href: url },
+              { label: `AI receptionist vs ${profile.alternativeName}`, href: url },
             ]}
             className="mb-8"
           />
