@@ -132,3 +132,14 @@ Use Chrome DevTools → Toggle Device Toolbar → iPhone 14 (390×844) and iPad 
 - [ ] Run Lighthouse audit, fix any issue scoring under 90 on Performance / SEO
 - [ ] Create branded Search Console URL group for the money keywords
 - [ ] Pull 30-day Search Console + GA4 report on day 30
+
+## 10. Scheduled blog posts
+
+Blog posts with a future `publishedAt` are hidden everywhere (index, hubs,
+related links, RSS, sitemap, and the post URL itself 404s) until a build
+runs after that date. 13 posts are scheduled weekly from Oct 14 2026 to
+Jan 6 2027, so set up a weekly rebuild:
+
+1. Vercel → Project → Settings → Git → Deploy Hooks → create one for `main`.
+2. Call it weekly, e.g. a GitHub Actions cron (`curl -X POST <hook-url>`
+   every Wednesday 06:00 UTC) or any scheduler.

@@ -5,14 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-const CATEGORIES = [
-  'All',
-  'Decision Frameworks',
-  'Operator Playbooks',
-  'AI Voice Agents',
-  'Integration Notes',
-  'Case Studies',
-];
 
 type Post = {
   url: string;
@@ -27,6 +19,12 @@ type Post = {
 
 export function BlogIndexClient({ posts }: { posts: Post[] }) {
   const [category, setCategory] = useState('All');
+  // Chips come from the posts themselves, so there is never an empty
+  // category and every real one is filterable.
+  const CATEGORIES = useMemo(
+    () => ['All', ...Array.from(new Set(posts.map((p) => p.category))).sort()],
+    [posts],
+  );
   const filtered = useMemo(() => {
     if (category === 'All') return posts;
     return posts.filter((p) => p.category === category);

@@ -26,6 +26,10 @@ import { COMPETITOR_PROFILES } from '@/lib/seo/competitors';
 
 type Params = { slug: string };
 
+// Every valid slug is prebuilt; anything else is a real 404 (not a
+// streamed 200 that renders the not-found UI).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return COMPARISON_SLUGS.map((slug) => ({ slug }));
 }

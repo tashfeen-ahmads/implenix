@@ -270,7 +270,7 @@ export default function AIFollowupPage() {
           <BookingWidget ctaLocation="solutions-ai-followup" height={620} />
         </div>
         <div className="max-w-content mx-auto px-6 pb-16">
-          <RelatedContent topic="AI Follow-up" type="industry" />
+          <RelatedContent topic="More solutions" type="industry" />
         </div>
       </section>
     </>

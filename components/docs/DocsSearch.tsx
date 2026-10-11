@@ -9,6 +9,8 @@ export type DocSearchEntry = {
   description: string;
   section: string;
   url: string;
+  // Plain-text excerpt of the article, so body words are searchable.
+  body?: string;
 };
 
 type Props = {
@@ -45,14 +47,14 @@ export function DocsSearch({ entries }: Props) {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return entries.slice(0, 8);
+    // Every word must appear somewhere; title hits rank first.
+    const words = q.split(/\s+/).filter(Boolean);
     return entries
       .map((entry) => {
-        const haystack = `${entry.title} ${entry.description} ${entry.section}`.toLowerCase();
-        const score = haystack.includes(q)
-          ? entry.title.toLowerCase().includes(q)
-            ? 2
-            : 1
-          : 0;
+        const title = entry.title.toLowerCase();
+        const haystack = `${title} ${entry.description} ${entry.section} ${entry.body ?? ''}`.toLowerCase();
+        if (!words.every((w) => haystack.includes(w))) return { entry, score: 0 };
+        const score = 1 + words.filter((w) => title.includes(w)).length;
         return { entry, score };
       })
       .filter((r) => r.score > 0)
@@ -90,7 +92,7 @@ export function DocsSearch({ entries }: Props) {
           <Search size={14} className="text-brand-cyan" />
           Search docs
         </span>
-        <kbd className="font-mono text-[10px] uppercase tracking-widest border border-brand-purple/30 px-1.5 py-0.5">
+        <kbd className="hidden sm:inline font-mono text-[10px] uppercase tracking-widest border border-brand-purple/30 px-1.5 py-0.5">
           ⌘K
         </kbd>
       </button>

@@ -37,7 +37,7 @@ export function RelatedContent({ topic, type, links }: Props) {
   return (
     <aside className="border-t border-brand-purple/20 pt-10 mt-12">
       <h2 className="font-heading text-xl text-white mb-4">
-        Related: {topic}
+        {topic}
       </h2>
       <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {items.slice(0, 3).map((link) => (

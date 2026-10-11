@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
-import { allBlogPosts } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
 import { Badge } from '@/components/common/Badge';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { RelatedContent } from '@/components/common/RelatedContent';
@@ -18,6 +18,10 @@ import { buildMetadata, SITE_NAME } from '@/lib/seo';
 import { TOPICS, TOPIC_SLUGS, getTopic } from '@/lib/blogTopics';
 
 type Params = { hub: string };
+
+// Every valid slug is prebuilt; anything else is a real 404 (not a
+// streamed 200 that renders the not-found UI).
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return TOPIC_SLUGS.map((hub) => ({ hub }));
@@ -38,8 +42,8 @@ export default function TopicHubPage({ params }: { params: Params }) {
   if (!topic) notFound();
 
   const posts = topic.postSlugs
-    .map((slug) => allBlogPosts.find((p) => p.slug === slug))
-    .filter(Boolean) as (typeof allBlogPosts)[number][];
+    .map((slug) => publishedBlogPosts.find((p) => p.slug === slug))
+    .filter(Boolean) as (typeof publishedBlogPosts)[number][];
 
   const otherHubs = TOPICS.filter((t) => t.slug !== topic.slug);
 
@@ -105,7 +109,7 @@ export default function TopicHubPage({ params }: { params: Params }) {
         <div className="max-w-content mx-auto px-6 py-16 md:py-20">
           <SectionHeader
             eyebrow="In this hub"
-            title={`Every ${topic.name.toLowerCase()} post from Implenix`}
+            title={`All ${topic.name} posts`}
             badgeVariant="cyan"
           />
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -193,7 +197,7 @@ export default function TopicHubPage({ params }: { params: Params }) {
               type="resource"
               links={[
                 { href: '/audit', label: 'Free missed-call audit' },
-                { href: '/contact', label: 'Book a 30-min consultation' },
+                { href: '/contact', label: 'Book a 30-min call' },
                 { href: '/', label: 'AI Receptionist, main pillar' },
               ]}
             />

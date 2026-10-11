@@ -19,7 +19,7 @@ export default function LandingLayout({
       <main id="main" className="flex-1">{children}</main>
       <footer className="border-t border-brand-purple/20 bg-black">
         <div className="max-w-content mx-auto px-6 py-6 text-xs text-white/60 flex flex-wrap items-center justify-between gap-2 font-body">
-          <span>© 2025 Implenix. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Implenix. All rights reserved.</span>
           <Link href="/privacy-policy" className="hover:text-brand-cyan">
             Privacy
           </Link>

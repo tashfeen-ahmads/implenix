@@ -10,10 +10,14 @@ export const mdxComponents: MDXComponents = {
   DividedStats: DividedStats as unknown as React.ComponentType<unknown>,
   ComparisonTable: ComparisonTable as unknown as React.ComponentType<unknown>,
   Badge: Badge as unknown as React.ComponentType<unknown>,
+  // A <div>, not a <p>: multi-line <Pull> content arrives already wrapped
+  // in MDX paragraphs, and <p> inside <p> breaks hydration (React #418).
   Pull: ({ children }: { children: React.ReactNode }) => (
-    <div className="my-8 border-l-[3px] border-brand-cyan bg-black px-6 py-5">
-      <p className="font-heading text-xl text-white leading-snug">{children}</p>
-    </div>
+    <aside className="my-8 border-l-[3px] border-brand-cyan bg-black px-6 py-5">
+      <div className="font-heading text-xl text-white leading-snug [&>p]:m-0 [&>p]:font-heading [&>p]:text-xl [&>p]:text-white [&>p]:leading-snug [&>p+p]:mt-3">
+        {children}
+      </div>
+    </aside>
   ),
   Stat: ({ number, label }: { number: string; label: string }) => (
     <span className="inline-flex flex-col items-start border border-brand-cyan/30 bg-black px-4 py-3 my-3">

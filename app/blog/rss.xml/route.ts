@@ -1,4 +1,4 @@
-import { allBlogPosts } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/seo';
 
 export const dynamic = 'force-static';
@@ -13,7 +13,7 @@ function escape(s: string): string {
 }
 
 export function GET() {
-  const posts = [...allBlogPosts].sort(
+  const posts = [...publishedBlogPosts].sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   );

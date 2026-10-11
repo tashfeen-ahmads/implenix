@@ -83,6 +83,10 @@ const RECORDINGS: Record<string, { src: string; label: string }> = {
 
 type Params = { slug: string };
 
+// Every valid slug is prebuilt; anything else is a real 404 (not a
+// streamed 200 that renders the not-found UI).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return allCaseStudies.map((c) => ({ slug: c.slug }));
 }

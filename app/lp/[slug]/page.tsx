@@ -1,15 +1,21 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Play, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck } from 'lucide-react';
+import { allIndustries } from 'contentlayer/generated';
 import { BookingWidget } from '@/components/common/BookingWidget';
 import { StatCard } from '@/components/common/StatCard';
 import { TestimonialCard } from '@/components/common/TestimonialCard';
 import { Badge } from '@/components/common/Badge';
 import { CodeWindow } from '@/components/common/CodeWindow';
+import { IPhoneMock } from '@/components/common/IPhoneMock';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
+import { TESTIMONIALS } from '@/components/sections/TestimonialsSection';
 import { buildMetadata } from '@/lib/seo';
 import { INDUSTRIES } from '@/lib/industries';
+import { getIndustryProfile } from '@/lib/seo/industries';
 
 type Variant = 'a' | 'b';
+type Testimonial = (typeof TESTIMONIALS)[number];
 type LandingConfig = {
   slug: string;
   variant: Variant;
@@ -17,28 +23,73 @@ type LandingConfig = {
   headline: string;
   subhead: string;
   benefits?: string[];
-  testimonialQuote?: string;
+  testimonial?: Testimonial;
   stat?: { number: string; label: string };
-  hookHeadline?: string;
 };
 
+// Per-industry copy comes from the same sources as the SEO industry
+// pages: MDX for the 8 original industries, INDUSTRY_PROFILES for the
+// rest. Ads match on the industry keyword, so the page must too.
+function industryCopy(slug: string, fallbackName: string, painPoint: string) {
+  const mdx = allIndustries.find((d) => d.slug === slug);
+  if (mdx) {
+    const solutions = mdx.solutions as { title: string }[];
+    return {
+      headline: mdx.title,
+      pain: (mdx.painPoints as { title: string }[])[0]?.title ?? painPoint,
+      benefits: solutions.slice(0, 3).map((x) => x.title),
+      stat: { number: mdx.heroStat, label: mdx.heroStatLabel },
+    };
+  }
+  const profile = getIndustryProfile(slug);
+  if (profile) {
+    return {
+      headline: `AI Receptionist for ${profile.name}`,
+      pain: profile.painPoints[0]?.title ?? painPoint,
+      benefits: profile.useCases.slice(0, 3).map((x) => x.title),
+      stat: { number: profile.heroStat, label: profile.heroStatLabel },
+    };
+  }
+  return {
+    headline: `AI Receptionist for ${fallbackName}`,
+    pain: painPoint,
+    benefits: [
+      '24/7 inbound coverage with custom call scripts',
+      'Live calendar booking and CRM sync',
+      'Live transfer to your team when needed',
+    ],
+    stat: { number: '<1 ring', label: 'average pickup time' },
+  };
+}
+
+// Show the closest real, named client. Never a generic attribution.
+const TESTIMONIAL_FOR: Record<string, string> = {
+  dentists: 'Ohio Dental',
+  'real-estate': 'Columbus Property',
+  'mortgage-brokers': 'Columbus Property',
+  'auto-repair': 'Parnell Motors',
+  'marketing-agencies': 'Franklin Agency',
+  contractors: 'GTR Improvements',
+  roofers: 'GTR Improvements',
+  landscapers: 'GTR Improvements',
+};
+const testimonialFor = (slug: string) =>
+  TESTIMONIALS.find((t) => t.businessName === (TESTIMONIAL_FOR[slug] ?? 'PA HVAC Experts'));
+
 // PRIMARY KEYWORD-MATCHED LANDING PAGES (Variant A, Google Search Ad)
-const variantA: LandingConfig[] = INDUSTRIES.map((i) => ({
-  slug: `ai-receptionist-${i.slug}`,
-  variant: 'a' as const,
-  industryName: i.name,
-  headline: `AI Receptionist for ${i.name} Businesses`,
-  subhead:
-    'Answer every inbound call. Qualify the lead. Book the appointment. Built for your industry, deployed in 7-14 days.',
-  benefits: [
-    '24/7 inbound coverage with custom call scripts',
-    'Live calendar booking and CRM sync',
-    'Live transfer to your team when needed',
-  ],
-  testimonialQuote:
-    'We stopped losing after-hours calls overnight. The agent books while we sleep.',
-  stat: { number: '<60s', label: 'average pickup time' },
-}));
+const variantA: LandingConfig[] = INDUSTRIES.map((i) => {
+  const copy = industryCopy(i.slug, i.name, i.painPoint);
+  return {
+    slug: `ai-receptionist-${i.slug}`,
+    variant: 'a' as const,
+    industryName: i.name,
+    headline: copy.headline,
+    subhead: `${copy.pain}. Implenix answers every call in one ring, books the appointment on your calendar, and logs it to your CRM.`,
+    benefits: copy.benefits,
+    testimonial: testimonialFor(i.slug),
+    stat: copy.stat,
+  };
+});
 
 // META AWARENESS LANDING PAGES (Variant B)
 const variantB: LandingConfig[] = [
@@ -46,16 +97,19 @@ const variantB: LandingConfig[] = [
     slug: 'never-miss-a-call',
     variant: 'b',
     industryName: 'Local Business',
-    hookHeadline: 'You missed 6 calls today. We can fix that.',
     headline: 'You missed 6 calls today. We can fix that.',
     subhead:
-      'Implenix deploys an AI voice agent that answers every inbound call for your business. Free 30-minute audit.',
+      'Implenix deploys an AI receptionist that answers every inbound call for your business. Hear it yourself, then book a free 30-minute audit.',
   },
 ];
 
 const ALL: LandingConfig[] = [...variantA, ...variantB];
 
 type Params = { slug: string };
+
+// Every valid slug is prebuilt; anything else is a real 404 (not a
+// streamed 200 that renders the not-found UI).
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALL.map((c) => ({ slug: c.slug }));
@@ -86,88 +140,98 @@ const SAMPLE_LP_CALL = [
   { ts: '00:12', speaker: 'system' as const, text: 'Booking confirmed · CRM updated' },
 ];
 
-// Variant A, Google Search Ad: form above the fold, single focused CTA.
+// Variant A, Google Search Ad. Mobile order: pitch, booking form, proof.
+// Desktop: pitch + proof on the left, sticky form on the right.
 function VariantA({ cfg }: { cfg: LandingConfig }) {
   return (
     <>
       <section className="grid-bg border-b border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 pt-16 pb-16 md:pt-20 md:pb-20 grid lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-7 flex flex-col gap-6">
-            <Badge label={`Built for ${cfg.industryName}`} variant="cyan" />
-            <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
+        <div className="max-w-content mx-auto px-6 md:px-10 pt-12 pb-20 md:pt-20 md:pb-28 grid lg:grid-cols-12 gap-x-12 gap-y-12 items-start">
+          <div className="lg:col-span-7 lg:col-start-1 lg:row-start-1 flex flex-col gap-6">
+            <div className="self-start">
+              <Badge label={`Built for ${cfg.industryName}`} variant="cyan" />
+            </div>
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
               {cfg.headline}
             </h1>
-            <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
-              {cfg.subhead}
+            <p className="font-body text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed">
+              {cfg.subhead} Live in{' '}
+              <span className="whitespace-nowrap">7-14 days</span>.
             </p>
-            <ul className="grid sm:grid-cols-3 gap-3 mt-2">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="#lp-form"
+                data-cta-location={`lp-${cfg.slug}-hero`}
+                data-cta-type="primary"
+                className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-7 py-4 rounded-sm transition hover:opacity-90 active:translate-y-px"
+              >
+                Book my free audit <ArrowRight size={16} aria-hidden />
+              </a>
+              <TestRonCTA ctaLocation={`lp-${cfg.slug}-hero`} variant="secondary" size="lg" />
+            </div>
+            <ul className="flex flex-col gap-3 mt-2">
               {cfg.benefits?.map((b) => (
-                <li
-                  key={b}
-                  className="border border-brand-purple/20 bg-black p-4 flex items-start gap-2 font-body text-white text-sm"
-                >
-                  <ShieldCheck size={16} className="text-brand-cyan mt-0.5 shrink-0" />
+                <li key={b} className="flex items-start gap-3 font-body text-white/85">
+                  <ShieldCheck size={18} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                   {b}
                 </li>
               ))}
             </ul>
-            <div className="mt-6">
-              <CodeWindow
-                title={`${cfg.industryName.toLowerCase().replace(/\s+/g, '-')}.call.log`}
-                lines={SAMPLE_LP_CALL}
-                caption={`Sample ${cfg.industryName} inbound call · 12s`}
-              />
-            </div>
-            {cfg.testimonialQuote && (
-              <div className="mt-8">
-                <TestimonialCard
-                  businessName={`${cfg.industryName} Operator`}
-                  ownerName="Operations lead"
-                  industry={cfg.industryName}
-                  quote={cfg.testimonialQuote}
-                />
-              </div>
-            )}
-            {cfg.stat && (
-              <div className="mt-2 max-w-sm">
-                <StatCard
-                  number={cfg.stat.number}
-                  label={cfg.stat.label}
-                  accent="cyan"
-                />
-              </div>
-            )}
           </div>
 
           <aside
             id="lp-form"
-            className="lg:col-span-5 lg:sticky lg:top-6 flex flex-col gap-4"
+            className="scroll-mt-20 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-6 flex flex-col gap-4"
           >
-            <div className="border border-brand-purple/30 bg-black p-6 flex flex-col gap-4">
-              <Badge label="Free audit · 30 min" variant="purple" />
+            <div className="border border-brand-purple/30 bg-black p-6 flex flex-col gap-3">
               <h2 className="font-heading text-2xl text-white leading-snug">
-                Get a free audit
+                Book your free 30-minute audit
               </h2>
               <p className="text-sm text-white/70 font-body leading-relaxed">
-                We will run an Implenix audit on your inbound calls and book a
-                30-minute walkthrough.
+                Pick a time. We review your inbound calls and show you what an
+                AI receptionist would capture, on a video call.
               </p>
             </div>
             <BookingWidget ctaLocation={`lp-${cfg.slug}-top`} height={620} />
           </aside>
+
+          <div className="lg:col-span-7 lg:col-start-1 lg:row-start-2 flex flex-col gap-8">
+            <CodeWindow
+              title={`${cfg.industryName.toLowerCase().replace(/\s+/g, '-')}.call.log`}
+              lines={SAMPLE_LP_CALL}
+              caption={`Sample ${cfg.industryName} inbound call · 12s`}
+            />
+            {cfg.stat ? (
+              <div className="max-w-sm">
+                <StatCard number={cfg.stat.number} label={cfg.stat.label} accent="cyan" />
+              </div>
+            ) : null}
+            {cfg.testimonial ? <TestimonialCard {...cfg.testimonial} /> : null}
+          </div>
         </div>
       </section>
 
       <section className="bg-black border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-16 grid lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <Badge label="Last chance" variant="purple" />
-            <h2 className="font-heading text-2xl md:text-4xl mt-5">
-              One more time, let’s book it.
+        <div className="max-w-content mx-auto px-6 md:px-10 py-20 md:py-28 grid lg:grid-cols-2 gap-12 items-start">
+          <div className="flex flex-col gap-6 lg:sticky lg:top-6">
+            <h2 className="font-heading text-3xl md:text-4xl leading-tight">
+              Still deciding? Hear it first.
             </h2>
-            <p className="mt-3 text-white/70 font-body">
-              30 seconds. We will call you back today.
+            <p className="text-white/70 font-body text-lg leading-relaxed">
+              Talk to Ron, our AI receptionist, right in your browser. Then
+              pick a time for your free 30-minute audit.
             </p>
+            <ul className="flex flex-col gap-3">
+              {['Free, no commitment', '30 minutes on a video call', 'Live in 7-14 days if you go ahead'].map((x) => (
+                <li key={x} className="flex items-center gap-3 font-body text-white/85">
+                  <Check size={16} className="text-brand-cyan shrink-0" aria-hidden />
+                  {x}
+                </li>
+              ))}
+            </ul>
+            <div className="self-start">
+              <TestRonCTA ctaLocation={`lp-${cfg.slug}-bottom`} />
+            </div>
           </div>
           <BookingWidget ctaLocation={`lp-${cfg.slug}-bottom`} height={620} />
         </div>
@@ -176,49 +240,48 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
   );
 }
 
-// Variant B, Meta Awareness: hook headline + minimal form.
+// Variant B, Meta awareness: hook headline, hear Ron, book.
 function VariantB({ cfg }: { cfg: LandingConfig }) {
   return (
     <>
       <section className="grid-bg border-b border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-24 text-center flex flex-col items-center gap-6">
-          <Badge label="Implenix · 60-second pitch" variant="purple" />
-          <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl max-w-3xl mx-auto leading-[1.04]">
-            {cfg.hookHeadline ?? cfg.headline}
-          </h1>
-          <p className="font-body text-white/80 max-w-2xl mx-auto text-lg">
-            {cfg.subhead}
-          </p>
-          <div className="mt-4 w-full max-w-2xl mx-auto border border-brand-purple/30 bg-black aspect-video flex items-center justify-center relative">
-            <div className="absolute top-3 left-3 flex gap-1.5">
-              <span className="w-2 h-2 bg-brand-purple rounded-full" />
-              <span className="w-2 h-2 bg-brand-cyan rounded-full" />
-              <span className="w-2 h-2 bg-white/40 rounded-full" />
+        <div className="max-w-content mx-auto px-6 md:px-10 pt-12 pb-20 md:pt-20 md:pb-28 grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
+              {cfg.headline}
+            </h1>
+            <p className="font-body text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed">
+              {cfg.subhead}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <TestRonCTA ctaLocation={`lp-${cfg.slug}-hero`} size="lg" />
+              <a
+                href="#lp-form"
+                data-cta-location={`lp-${cfg.slug}-hero`}
+                data-cta-type="secondary"
+                className="inline-flex items-center justify-center gap-2 border border-brand-cyan/70 text-brand-cyan font-medium px-7 py-4 rounded-sm transition hover:bg-brand-cyan/10"
+              >
+                Book my free audit <ArrowRight size={16} aria-hidden />
+              </a>
             </div>
-            <button
-              type="button"
-              className="w-16 h-16 bg-brand-purple flex items-center justify-center rounded-sm hover:opacity-90"
-              aria-label="Play video"
-            >
-              <Play size={28} className="text-white" />
-            </button>
-            <span className="absolute bottom-3 right-3 text-[11px] font-mono uppercase tracking-widest text-white/40">
-              implenix.demo.mp4
-            </span>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 font-body text-white/70 text-sm">
+              {['Answers in one ring, 24/7', 'Live in 7-14 days', 'Fixed monthly price'].map((x) => (
+                <li key={x} className="flex items-center gap-2">
+                  <Check size={14} className="text-brand-cyan" aria-hidden /> {x}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="flex justify-center gap-3 flex-wrap font-mono text-xs uppercase tracking-widest text-white/60 mt-2">
-            <span className="border border-brand-cyan/40 px-3 py-1">10 specialists</span>
-            <span className="border border-brand-cyan/40 px-3 py-1">7-14 day deploy</span>
-            <span className="border border-brand-cyan/40 px-3 py-1">24/7 coverage</span>
+          <div className="lg:col-span-5 flex justify-center">
+            <IPhoneMock />
           </div>
         </div>
       </section>
 
-      <section className="bg-black border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-16 flex flex-col items-center gap-6">
-          <Badge label="Free audit" variant="cyan" />
-          <h2 className="font-heading text-2xl md:text-3xl text-center max-w-xl">
-            We will call you back within one business hour.
+      <section id="lp-form" className="scroll-mt-6 bg-black border-t border-brand-purple/15">
+        <div className="max-w-content mx-auto px-6 md:px-10 py-20 md:py-28 flex flex-col items-center gap-8">
+          <h2 className="font-heading text-3xl md:text-4xl text-center max-w-xl leading-tight">
+            Pick a time for your free 30-minute audit.
           </h2>
           <div className="w-full max-w-md">
             <BookingWidget ctaLocation={`lp-${cfg.slug}`} height={620} />

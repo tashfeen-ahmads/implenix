@@ -10,7 +10,7 @@ const RECORDING_REAL_ESTATE =
 const RECORDING_IMPROVEMENT =
   'https://storage.vapi.ai/019d44c4-320d-799d-9aa1-e7b20b6a25ea-1774975462085-72a7c940-a44b-4c69-819f-09d6e6d163a9-mono.mp3';
 
-const TESTIMONIALS = [
+export const TESTIMONIALS = [
   {
     businessName: 'PA HVAC Experts',
     ownerName: 'Alex',

@@ -5,76 +5,25 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-export type DocsNavItem = {
-  title: string;
-  href: string;
-};
+import { DOCS_NAV, type DocsNavSection } from '@/lib/docsNav';
 
-export type DocsNavSection = {
-  title: string;
-  items: DocsNavItem[];
-};
-
-export const DOCS_NAV: DocsNavSection[] = [
-  {
-    title: 'Getting Started',
-    items: [
-      { title: 'Quick Start', href: '/docs/getting-started/quick-start' },
-      { title: 'Prerequisites', href: '/docs/getting-started/prerequisites' },
-      { title: 'First Call Test', href: '/docs/getting-started/first-call-test' },
-    ],
-  },
-  {
-    title: 'Agent Configuration',
-    items: [
-      { title: 'Call Scripts', href: '/docs/agent-configuration/call-scripts' },
-      { title: 'Transfer Rules', href: '/docs/agent-configuration/transfer-rules' },
-      { title: 'Business Hours', href: '/docs/agent-configuration/business-hours' },
-      { title: 'Voicemail Handling', href: '/docs/agent-configuration/voicemail-handling' },
-    ],
-  },
-  {
-    title: 'CRM Integrations',
-    items: [
-      { title: 'GoHighLevel', href: '/docs/crm-integrations/gohighlevel' },
-      { title: 'HubSpot', href: '/docs/crm-integrations/hubspot' },
-      { title: 'Salesforce', href: '/docs/crm-integrations/salesforce' },
-      { title: 'Zoho', href: '/docs/crm-integrations/zoho' },
-      { title: 'Custom Webhook', href: '/docs/crm-integrations/custom-webhook' },
-    ],
-  },
-  {
-    title: 'Phone Setup',
-    items: [
-      { title: 'Number Provisioning', href: '/docs/phone-setup/number-provisioning' },
-      { title: 'SIP Trunk Basics', href: '/docs/phone-setup/sip-trunk-basics' },
-      { title: 'Call Forwarding Setup', href: '/docs/phone-setup/call-forwarding-setup' },
-    ],
-  },
-  {
-    title: 'Implementation Guide',
-    items: [
-      { title: 'How Implenix Deploys Your Agent', href: '/docs/implementation-guide/overview' },
-      { title: 'Timeline', href: '/docs/implementation-guide/timeline' },
-      { title: 'What You Need to Provide', href: '/docs/implementation-guide/what-you-provide' },
-    ],
-  },
-  {
-    title: 'Troubleshooting',
-    items: [
-      { title: 'Common Issues', href: '/docs/troubleshooting/common-issues' },
-      { title: 'Support Contact', href: '/docs/troubleshooting/support-contact' },
-    ],
-  },
-];
-
-export function DocsSidebar() {
+// `collapseInactive` (mobile): only the section holding the current page
+// starts open, so the article is not pushed a full screen down.
+export function DocsSidebar({ collapseInactive = false }: { collapseInactive?: boolean }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Documentation">
       <ul className="space-y-1">
         {DOCS_NAV.map((section) => (
-          <SidebarSection key={section.title} section={section} pathname={pathname} />
+          <SidebarSection
+            key={section.title}
+            section={section}
+            pathname={pathname}
+            startOpen={
+              !collapseInactive ||
+              section.items.some((item) => item.href === pathname)
+            }
+          />
         ))}
       </ul>
     </nav>
@@ -84,21 +33,24 @@ export function DocsSidebar() {
 function SidebarSection({
   section,
   pathname,
+  startOpen,
 }: {
   section: DocsNavSection;
   pathname: string | null;
+  startOpen: boolean;
 }) {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(startOpen);
   return (
     <li>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="w-full flex items-center justify-between text-left text-xs uppercase tracking-widest text-white/60 hover:text-white py-2"
+        className="w-full flex items-center justify-between text-left text-xs uppercase tracking-widest text-white/60 hover:text-white py-3 lg:py-2"
       >
         {section.title}
         <ChevronDown
+          aria-hidden
           size={14}
           className={`transition-transform ${open ? 'rotate-180' : ''}`}
         />
@@ -112,7 +64,7 @@ function SidebarSection({
                 <Link
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  className={`block py-1.5 text-sm font-body transition-colors ${
+                  className={`block py-2.5 lg:py-1.5 text-sm font-body transition-colors ${
                     active
                       ? 'text-brand-purple'
                       : 'text-white/80 hover:text-brand-cyan'

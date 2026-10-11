@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Rss } from 'lucide-react';
-import { allBlogPosts } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
 import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { SchemaOrg } from '@/components/seo/SchemaOrg';
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogIndexPage() {
-  const posts = [...allBlogPosts]
+  const posts = [...publishedBlogPosts]
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() -
@@ -87,8 +87,8 @@ export default function BlogIndexPage() {
               <span className="text-brand-purple">run on calls</span>.
             </h1>
             <p className="font-body text-white/75 text-lg max-w-2xl leading-relaxed">
-              Operator playbooks, agent tuning notes, and verified case
-              studies, published by the team deploying voice AI for local
+              Operator playbooks, agent tuning notes, and deployment
+              lessons, published by the team deploying voice AI for local
               business.
             </p>
             <Link

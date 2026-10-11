@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
-import { allBlogPosts } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
+import { getRelatedPosts, getTopicsForPost } from '@/lib/blogTopics';
 import { mdxComponents } from '@/components/docs/MdxComponents';
 import { Badge } from '@/components/common/Badge';
 import { TestRonCTA } from '@/components/ron/TestRonCTA';
@@ -21,12 +22,16 @@ import { buildMetadata } from '@/lib/seo';
 
 type Params = { slug: string };
 
+// Every valid slug is prebuilt; anything else is a real 404 (not a
+// streamed 200 that renders the not-found UI).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return allBlogPosts.map((p) => ({ slug: p.slug }));
+  return publishedBlogPosts.map((p) => ({ slug: p.slug }));
 }
 
 export function generateMetadata({ params }: { params: Params }): Metadata {
-  const doc = allBlogPosts.find((p) => p.slug === params.slug);
+  const doc = publishedBlogPosts.find((p) => p.slug === params.slug);
   if (!doc) return {};
   return buildMetadata({
     title: doc.metaTitle,
@@ -41,13 +46,23 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
 }
 
 export default function BlogPostPage({ params }: { params: Params }) {
-  const doc = allBlogPosts.find((p) => p.slug === params.slug);
+  const doc = publishedBlogPosts.find((p) => p.slug === params.slug);
   if (!doc) notFound();
   const MDX = useMDXComponent(doc.body.code);
 
-  const related = allBlogPosts
-    .filter((p) => p.slug !== doc.slug)
+  // Same category, newest first, skipping posts the topic-hub block
+  // below already links to.
+  const hubLinked = new Set(getRelatedPosts(doc.slug).map((r) => r.slug));
+  const related = publishedBlogPosts
+    .filter(
+      (p) =>
+        p.slug !== doc.slug &&
+        p.category === doc.category &&
+        !hubLinked.has(p.slug),
+    )
+    .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
     .slice(0, 3);
+  const hub = getTopicsForPost(doc.slug)[0];
 
   const initials = doc.author
     .split(' ')
@@ -98,7 +113,9 @@ export default function BlogPostPage({ params }: { params: Params }) {
             crumbs={[
               { label: 'Home', href: '/' },
               { label: 'Blog', href: '/blog' },
-              { label: doc.category, href: doc.url },
+              ...(hub
+                ? [{ label: hub.name, href: `/blog/topics/${hub.slug}` }]
+                : []),
             ]}
             className="mb-6"
           />
@@ -142,7 +159,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
       ) : null}
 
       <article className="max-w-3xl mx-auto px-6 py-12">
-        <header className="flex items-center gap-4 border-y border-brand-purple/20 py-5">
+        <header className="flex flex-wrap items-center gap-x-4 gap-y-3 border-y border-brand-purple/20 py-5">
           <div className="w-11 h-11 bg-brand-purple text-white flex items-center justify-center font-heading rounded-sm">
             {initials}
           </div>
@@ -150,7 +167,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
             <p className="text-white">{doc.author}</p>
             <p className="text-white/55 text-xs">{doc.authorRole}</p>
           </div>
-          <div className="hidden sm:flex items-center gap-3 text-xs font-mono text-white/55 uppercase tracking-widest">
+          <div className="basis-full sm:basis-auto flex items-center gap-3 text-xs font-mono text-white/55 uppercase tracking-widest">
             <time
               dateTime={new Date(doc.publishedAt).toISOString()}
               className="flex items-center gap-1.5"
@@ -211,7 +228,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
               data-cta-type="calendar"
               className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
             >
-              Book slot <ArrowRight size={14} />
+              Book a 30-min call <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
         </aside>

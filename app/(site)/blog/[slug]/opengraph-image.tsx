@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { allBlogPosts } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
 
 export const runtime = 'edge';
 export const alt = 'Implenix blog post';
@@ -16,7 +16,7 @@ export default function BlogOgImage({
 }: {
   params: { slug: string };
 }) {
-  const doc = allBlogPosts.find((p) => p.slug === params.slug);
+  const doc = publishedBlogPosts.find((p) => p.slug === params.slug);
   const title = doc?.title ?? 'Implenix Blog';
   const description =
     doc?.description ?? 'Field-tested operator playbooks from Implenix.';

@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
-import { allIndustries, allBlogPosts } from 'contentlayer/generated';
+import { allIndustries } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
 import { CaseStudyCard } from '@/components/common/CaseStudyCard';
 import { BookingWidget } from '@/components/common/BookingWidget';
 import { RelatedContent } from '@/components/common/RelatedContent';
@@ -56,6 +57,10 @@ const MDX_SLUGS = allIndustries.map((d) => d.slug);
 const ALL_VALID_SLUGS = Array.from(
   new Set([...MDX_SLUGS, ...INDUSTRY_PROFILE_SLUGS]),
 );
+
+// Every valid slug is prebuilt; anything else is a real 404 (not a
+// streamed 200 that renders the not-found UI).
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALL_VALID_SLUGS.map((slug) => ({ slug }));
@@ -358,7 +363,7 @@ export default function IndustryPage({ params }: { params: Params }) {
         {(() => {
           const blogLinks = getBlogLinksForIndustry(params.slug)
             .map((bl) => {
-              const post = allBlogPosts.find((p) => p.slug === bl.slug);
+              const post = publishedBlogPosts.find((p) => p.slug === bl.slug);
               return post ? { href: post.url, label: bl.label } : null;
             })
             .filter(Boolean) as { href: string; label: string }[];

@@ -18,6 +18,11 @@ import { buildIcs, googleCalendarUrl } from '@/lib/calendarLinks';
 
 type Slot = { startIso: string; endIso: string; label: string };
 
+const UNAVAILABLE_MESSAGE =
+  'We can’t load open times right now. Please try again in a minute, or email support@implenix.net and we’ll set up a time with you.';
+const BOOKING_FAILED_MESSAGE =
+  'We couldn’t confirm that booking. Please try again, or email support@implenix.net and we’ll lock in the time for you.';
+
 type Availability = {
   date: string;
   timezone: string;
@@ -100,7 +105,13 @@ export function BookingWidget({ ctaLocation, height }: Props) {
           const data = (await res.json().catch(() => ({}))) as {
             error?: string;
           };
-          throw new Error(data.error ?? `Availability request failed (${res.status})`);
+          // Server-side failures (missing config, Google outage) are
+          // logged for us; visitors get a plain message with a way out.
+          if (res.status >= 500) {
+            console.error('[booking] availability failed:', data.error);
+            throw new Error(UNAVAILABLE_MESSAGE);
+          }
+          throw new Error(data.error ?? UNAVAILABLE_MESSAGE);
         }
         return (await res.json()) as Availability;
       })
@@ -110,7 +121,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
       })
       .catch((err) => {
         if (cancelled) return;
-        setSlotError(err instanceof Error ? err.message : 'Failed to load slots');
+        setSlotError(err instanceof Error ? err.message : UNAVAILABLE_MESSAGE);
       })
       .finally(() => {
         if (!cancelled) setLoadingSlots(false);
@@ -142,9 +153,12 @@ export function BookingWidget({ ctaLocation, height }: Props) {
         | BookedResponse
         | { error?: string };
       if (!res.ok || !('success' in data)) {
-        throw new Error(
-          ('error' in data && data.error) || `Booking failed (${res.status})`,
-        );
+        const detail = 'error' in data ? data.error : undefined;
+        if (res.status >= 500) {
+          console.error('[booking] booking failed:', detail);
+          throw new Error(BOOKING_FAILED_MESSAGE);
+        }
+        throw new Error(detail || BOOKING_FAILED_MESSAGE);
       }
       setBooked(data);
       setStep('confirmed');
@@ -153,7 +167,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
         cta_location: ctaLocation,
       });
     } catch (err) {
-      setBookError(err instanceof Error ? err.message : 'Booking failed');
+      setBookError(err instanceof Error ? err.message : BOOKING_FAILED_MESSAGE);
     } finally {
       setSubmitting(false);
     }
@@ -185,9 +199,9 @@ export function BookingWidget({ ctaLocation, height }: Props) {
               if (step === 'form') setStep('time');
               else if (step === 'time') setStep('date');
             }}
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 min-h-10 px-2 -mr-2 font-mono text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors"
           >
-            <ArrowLeft size={12} /> Back
+            <ArrowLeft size={14} aria-hidden /> Back
           </button>
         ) : null}
       </div>

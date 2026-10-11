@@ -11,6 +11,12 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
     description: d.description,
     section: d.section,
     url: d.url,
+    // Strip MDX/markdown syntax and cap the size; enough for keyword hits
+    // without shipping every article into each page's HTML.
+    body: d.body.raw
+      .replace(/<[^>]+>|[#*_`>\[\]()|-]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .slice(0, 1500),
   }));
 
   return (
@@ -18,7 +24,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
       <header className="border-b border-brand-purple/20 bg-brand-dark sticky top-0 z-30">
         <div className="max-w-content mx-auto px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 shrink-0">
-            <LogoLockup size="sm" href="/docs/getting-started/quick-start" />
+            <LogoLockup size="sm" href="/docs" />
             <span className="font-mono text-[10px] uppercase tracking-widest text-white/45 border border-brand-purple/30 px-2 py-0.5">
               Docs
             </span>
@@ -32,9 +38,20 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <div className="max-w-content mx-auto px-6 grid lg:grid-cols-[260px_1fr] gap-10 py-10">
-        <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pb-10 flex flex-col gap-5">
+        <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pb-10 flex flex-col gap-4">
           <DocsSearch entries={entries} />
-          <DocsSidebar />
+          <div className="hidden lg:block">
+            <DocsSidebar />
+          </div>
+          <details className="lg:hidden group border border-brand-purple/25">
+            <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-body text-white [&::-webkit-details-marker]:hidden">
+              Browse docs
+              <span aria-hidden className="text-brand-cyan transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div className="px-4 pb-3">
+              <DocsSidebar collapseInactive />
+            </div>
+          </details>
         </aside>
         <main id="main" className="min-w-0 max-w-3xl">
           <article>{children}</article>

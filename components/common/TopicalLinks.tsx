@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Layers } from 'lucide-react';
-import { allBlogPosts } from 'contentlayer/generated';
+import { publishedBlogPosts } from '@/lib/blog';
 import {
   getTopicsForPost,
   getRelatedPosts,
@@ -18,8 +18,8 @@ export function TopicalLinks({ postSlug }: Props) {
   const topics = getTopicsForPost(postSlug);
   const related = getRelatedPosts(postSlug, 4);
   const relatedPosts = related
-    .map((r) => allBlogPosts.find((p) => p.slug === r.slug))
-    .filter(Boolean) as (typeof allBlogPosts)[number][];
+    .map((r) => publishedBlogPosts.find((p) => p.slug === r.slug))
+    .filter(Boolean) as (typeof publishedBlogPosts)[number][];
 
   if (topics.length === 0 && relatedPosts.length === 0) return null;
 
