@@ -36,7 +36,9 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
           <DocsSearch entries={entries} />
           <DocsSidebar />
         </aside>
-        <article className="min-w-0 max-w-3xl">{children}</article>
+        <main id="main" className="min-w-0 max-w-3xl">
+          <article>{children}</article>
+        </main>
       </div>
     </div>
   );

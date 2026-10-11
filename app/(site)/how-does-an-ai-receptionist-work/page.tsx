@@ -275,6 +275,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
         <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-5">
             <SectionHeader
+compact
               eyebrow="The pipeline"
               title="What happens on every call, step by step"
               badgeVariant="purple"

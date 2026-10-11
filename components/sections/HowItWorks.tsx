@@ -62,22 +62,18 @@ export function HowItWorks() {
       id="how-it-works"
       className="bg-black border-t border-brand-purple/15"
     >
-      <div className="max-w-content mx-auto px-6 py-24">
+      <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
         <header className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 border border-brand-cyan/40 text-brand-cyan bg-black/40 px-3 py-1 rounded-sm text-xs font-mono uppercase tracking-widest">
-            <span className="w-1.5 h-1.5 bg-current" />
-            How it works
-          </div>
-          <h2 className="font-heading text-3xl md:text-5xl mt-5 leading-[1.05] text-white">
+          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl leading-[1.04] tracking-tight text-white">
             Three steps. Zero missed calls.
           </h2>
-          <p className="mt-4 font-body text-white/70 text-lg">
+          <p className="mt-6 font-body text-white/70 text-lg md:text-xl leading-relaxed max-w-[60ch]">
             From the first ring to the CRM update, Implenix handles the
             entire call cycle. Watch each step happen in order.
           </p>
         </header>
 
-        <ol className="mt-12 md:mt-16 flex flex-col gap-16 md:gap-24">
+        <ol className="mt-16 md:mt-24 flex flex-col gap-24 md:gap-36">
           {STEPS.map((step, i) => (
             <StepRow key={step.index} step={step} reversed={i % 2 === 1} />
           ))}

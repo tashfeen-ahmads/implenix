@@ -9,8 +9,8 @@ import { IndustrySlider } from '@/components/common/IndustrySlider';
 export function IndustriesGrid() {
   return (
     <section className="bg-brand-dark border-t border-brand-purple/15">
-      <div className="max-w-content mx-auto px-6 py-24">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <SectionHeader
             eyebrow="Built for"
             title="The businesses that run on calls"
@@ -25,7 +25,7 @@ export function IndustriesGrid() {
             See all industries <ArrowRight size={14} />
           </Link>
         </div>
-        <div className="mt-12">
+        <div className="mt-16 md:mt-20">
           <IndustrySlider />
         </div>
       </div>

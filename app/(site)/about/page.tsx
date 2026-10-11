@@ -196,6 +196,7 @@ export default function AboutPage() {
         <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5">
             <SectionHeader
+compact
               eyebrow="Mission"
               title="Build the voice infrastructure local business runs on."
               badgeVariant="purple"
@@ -317,6 +318,7 @@ export default function AboutPage() {
         <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5">
             <SectionHeader
+compact
               eyebrow="How we work"
               title="Four phases. Two weeks. Live traffic."
             />
@@ -389,6 +391,7 @@ export default function AboutPage() {
         <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5">
             <SectionHeader
+compact
               eyebrow="What you can expect"
               title="Our operator commitment to every caller and customer"
             />

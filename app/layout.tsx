@@ -91,10 +91,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#070538' },
-  ],
+  // The site is dark-only, so the browser chrome matches in every mode.
+  themeColor: '#070538',
   colorScheme: 'dark',
 };
 
@@ -144,7 +142,7 @@ export default function RootLayout({
               fbq('init','${process.env.NEXT_PUBLIC_META_PIXEL_ID}');fbq('track','PageView');`}
           </Script>
         ) : null}
-        {/* GOOGLE ADS: set NEXT_PUBLIC_GOOGLE_ADS_ID (AW-XXXXXXXXXX) to enable. */}
+        {/* GOOGLE ADS: set NEXT_PUBLIC_GOOGLE_ADS_ID to enable. */}
         {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ? (
           <>
             <Script
@@ -161,12 +159,6 @@ export default function RootLayout({
         ) : null}
       </head>
       <body className="min-h-screen bg-brand-dark text-white antialiased">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:bg-brand-purple focus:text-white focus:px-4 focus:py-2 focus:rounded-sm focus:font-medium"
-        >
-          Skip to content
-        </a>
         {process.env.NEXT_PUBLIC_GTM_ID ? (
           <noscript>
             <iframe
@@ -177,7 +169,7 @@ export default function RootLayout({
             />
           </noscript>
         ) : null}
-        <main id="main">{children}</main>
+        {children}
       </body>
     </html>
   );

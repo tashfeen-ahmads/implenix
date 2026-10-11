@@ -4,11 +4,11 @@ import { QuoteBlock } from '@/components/common/QuoteBlock';
 export function QuoteSection() {
   return (
     <section className="bg-black border-t border-brand-purple/15">
-      <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-12 gap-10 items-center">
+      <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         <div className="lg:col-span-5">
           <SectionHeader
-            eyebrow="Owner perspective"
             title="What deploying Implenix actually feels like."
+            compact
           />
         </div>
         <div className="lg:col-span-7">

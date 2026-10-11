@@ -90,8 +90,6 @@ const SAMPLE_LP_CALL = [
 function VariantA({ cfg }: { cfg: LandingConfig }) {
   return (
     <>
-      {/* META PIXEL: REPLACE 000000000000000, fires PageView automatically. */}
-      {/* GOOGLE ADS CONVERSION: REPLACE AW-XXXXXXXXXX/CONVERSION_LABEL on lead submit */}
       <section className="grid-bg border-b border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 pt-16 pb-16 md:pt-20 md:pb-20 grid lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-7 flex flex-col gap-6">
@@ -182,7 +180,6 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
 function VariantB({ cfg }: { cfg: LandingConfig }) {
   return (
     <>
-      {/* META PIXEL: REPLACE 000000000000000, fires PageView automatically. */}
       <section className="grid-bg border-b border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-24 text-center flex flex-col items-center gap-6">
           <Badge label="Implenix · 60-second pitch" variant="purple" />

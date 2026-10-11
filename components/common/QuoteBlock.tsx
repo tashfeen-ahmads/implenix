@@ -17,7 +17,7 @@ export function QuoteBlock({
   const isLight = variant === 'light';
   return (
     <figure
-      className={`p-8 lg:p-10 border ${
+      className={`p-8 md:p-12 lg:p-14 border ${
         isLight
           ? 'bg-white border-brand-purple/20 text-black'
           : 'bg-black border-brand-purple/20 text-white'
@@ -28,14 +28,14 @@ export function QuoteBlock({
         className={isLight ? 'text-brand-purple' : 'text-brand-cyan'}
       />
       <blockquote
-        className={`mt-5 font-heading text-2xl md:text-3xl leading-snug ${
+        className={`mt-8 font-heading text-2xl md:text-3xl leading-snug ${
           isLight ? 'text-black' : 'text-white'
         }`}
       >
         “{quote}”
       </blockquote>
       <figcaption
-        className={`mt-6 flex items-center gap-3 text-sm font-body ${
+        className={`mt-10 flex items-center gap-4 text-sm font-body ${
           isLight ? 'text-black/70' : 'text-white/70'
         }`}
       >

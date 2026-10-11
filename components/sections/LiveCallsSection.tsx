@@ -23,14 +23,14 @@ export function LiveCallsSection() {
 
   return (
     <section className="bg-black border-t border-brand-purple/15">
-      <div className="max-w-content mx-auto px-6 py-24">
+      <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
         <SectionHeader
           eyebrow="Live · real calls"
           title="Watch the AI take a real call"
-          description="Four real conversations from production deployments, Spanish-language window booking, roof assessment, mid-call address correction, and a real-estate seller call. Tap a tab to see each one type out live."
+          description="Four real conversations from live deployments. Pick one and watch it play out."
           badgeVariant="purple"
         />
-        <div className="mt-10 flex flex-wrap gap-2">
+        <div className="mt-12 md:mt-16 flex flex-wrap gap-3">
           {TABS.map((tab) => {
             const isActive = tab.id === active;
             return (
@@ -38,7 +38,7 @@ export function LiveCallsSection() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActive(tab.id)}
-                className={`px-4 py-3 text-left font-body text-sm transition-colors border ${
+                className={`px-5 py-4 text-left font-body text-sm transition-colors border ${
                   isActive
                     ? 'bg-brand-purple text-white border-brand-purple'
                     : 'border-brand-purple/30 text-white/80 hover:border-brand-purple'
@@ -56,7 +56,7 @@ export function LiveCallsSection() {
             );
           })}
         </div>
-        <div className="mt-10 grid lg:grid-cols-12 gap-8 items-start">
+        <div className="mt-10 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-8">
             <AnimatedCallTranscript
               key={transcript.id}
@@ -65,8 +65,8 @@ export function LiveCallsSection() {
               lines={transcript.lines}
             />
           </div>
-          <aside className="lg:col-span-4 flex flex-col gap-4">
-            <div className="border border-brand-purple/25 bg-brand-dark p-6">
+          <aside className="lg:col-span-4 flex flex-col gap-6">
+            <div className="border border-brand-purple/25 bg-brand-dark p-8">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                 ▸ Every call is real
               </span>
@@ -77,7 +77,7 @@ export function LiveCallsSection() {
                 logic, and booking handoff are exactly what shipped.
               </p>
             </div>
-            <div className="border border-brand-cyan/25 bg-black p-6">
+            <div className="border border-brand-cyan/25 bg-black p-8">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
                 ▸ Languages live today
               </span>

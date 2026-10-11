@@ -30,8 +30,8 @@ const FEATURED = [
 export function CaseStudiesPreview() {
   return (
     <section className="bg-black border-t border-brand-purple/15">
-      <div className="max-w-content mx-auto px-6 py-24">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <SectionHeader
             eyebrow="Case studies"
             title="Real businesses. Real revenue captured."
@@ -45,7 +45,7 @@ export function CaseStudiesPreview() {
             See all case studies <ArrowRight size={14} />
           </Link>
         </div>
-        <div className="mt-12 grid md:grid-cols-3 gap-5">
+        <div className="mt-16 md:mt-20 grid md:grid-cols-3 gap-6 md:gap-8">
           {FEATURED.map((cs) => (
             <CaseStudyCard key={cs.href} {...cs} />
           ))}

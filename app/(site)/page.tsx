@@ -98,26 +98,21 @@ export default function HomePage() {
       <Hero />
 
       <section className="bg-brand-dark border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-16 md:py-24">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-5 flex flex-col gap-5">
-              <span
-                data-speakable
-                className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan flex items-center gap-1.5"
-              >
-                <span className="w-1.5 h-1.5 bg-brand-cyan" /> Quick answer
-              </span>
+        <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
+          <div className="grid lg:grid-cols-12 gap-14 lg:gap-16 items-center">
+            <div className="lg:col-span-5 flex flex-col gap-6">
+              
               <h2
                 data-answer
                 data-speakable
-                className="font-heading text-2xl md:text-3xl lg:text-4xl text-white leading-[1.1]"
+                className="font-heading text-4xl md:text-5xl text-white leading-[1.05] tracking-tight"
               >
                 What is an AI receptionist?
               </h2>
               <p
                 data-answer
                 data-speakable
-                className="font-body text-white/85 leading-relaxed text-base md:text-lg"
+                className="font-body text-white/80 leading-relaxed text-lg md:text-xl"
               >
                 A voice AI that answers your business phone{' '}
                 <span className="text-brand-cyan">within one ring</span>,{' '}
@@ -127,26 +122,13 @@ export default function HomePage() {
                 calendar</span>, and writes every call to your CRM before
                 the caller hangs up.
               </p>
-              <p className="font-body text-white/70 leading-relaxed text-sm md:text-base">
-                Implenix replaces both the missed-call cost of voicemail
-                and the per-minute cost of live answering services with{' '}
+              <p className="font-body text-white/60 leading-relaxed text-base">
+                Implenix replaces voicemail and per-minute answering
+                services with{' '}
                 <span className="text-white font-medium">fixed monthly
                 pricing, $297-$697/month</span>, and handles unlimited
-                concurrent calls without extra headcount. Built by voice
-                AI operators who ship deployments into regulated and
-                unregulated industries every week.
+                concurrent calls.
               </p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                <span className="inline-flex items-center gap-1.5 border border-brand-cyan/40 text-brand-cyan text-[10px] font-mono uppercase tracking-widest px-3 py-1.5">
-                  Fixed monthly pricing
-                </span>
-                <span className="inline-flex items-center gap-1.5 border border-brand-purple/40 text-brand-purple text-[10px] font-mono uppercase tracking-widest px-3 py-1.5">
-                  Live CRM sync
-                </span>
-                <span className="inline-flex items-center gap-1.5 border border-brand-cyan/40 text-brand-cyan text-[10px] font-mono uppercase tracking-widest px-3 py-1.5">
-                  Unlimited concurrent
-                </span>
-              </div>
             </div>
             <div className="lg:col-span-7">
               <AIReceptionistFlow />
@@ -165,45 +147,51 @@ export default function HomePage() {
       <TestimonialsSection />
       <CaseStudiesPreview />
       <section className="bg-brand-dark border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-24">
+        <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
           <SectionHeader
-            eyebrow="ROI calculator"
             title="Calculate what missed calls are costing you"
             description="Plug in your numbers. See the monthly cost. Talk to the team about a real deployment."
             badgeVariant="purple"
           />
-          <div className="mt-12">
+          <div className="mt-16 md:mt-20">
             <ROICalculator />
           </div>
         </div>
       </section>
 
       <section className="bg-black border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-20 md:py-24">
+        <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
           <SectionHeader
-            eyebrow="FAQ"
-            title="AI Receptionist, frequently asked"
-            description="Fastest way to answer the questions every operator asks before booking a scoping call."
+            title="Questions owners ask first"
+            description="Straight answers before you book a call."
           />
-          <div className="mt-12 grid md:grid-cols-2 gap-5">
+          <div className="mt-16 md:mt-20 max-w-4xl border-t border-white/10">
             {HOME_FAQS.map((f) => (
-              <div
+              <details
                 key={f.question}
-                className="border border-brand-purple/25 bg-black p-6"
+                className="group border-b border-white/10"
               >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-7 md:py-8 [&::-webkit-details-marker]:hidden">
+                  <span
+                    className="font-heading text-white text-xl md:text-2xl leading-snug faq-question"
+                    data-speakable
+                  >
+                    {f.question}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="shrink-0 w-9 h-9 flex items-center justify-center border border-white/20 text-brand-cyan text-xl transition-transform group-open:rotate-45"
+                  >
+                    +
+                  </span>
+                </summary>
                 <p
-                  className="font-heading text-white text-lg leading-snug faq-question"
-                  data-speakable
-                >
-                  {f.question}
-                </p>
-                <p
-                  className="mt-3 font-body text-sm text-white/75 leading-relaxed faq-answer"
+                  className="pb-8 -mt-1 font-body text-base md:text-lg text-white/70 leading-relaxed max-w-[65ch] faq-answer"
                   data-speakable
                 >
                   {f.answer}
                 </p>
-              </div>
+              </details>
             ))}
           </div>
         </div>

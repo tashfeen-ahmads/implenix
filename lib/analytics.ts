@@ -46,6 +46,12 @@ export function trackEvent(eventName: string, params: EventParams = {}): void {
 // GA4 named conversion event. Pushes to dataLayer for GTM tag-managed
 // firing AND directly to gtag if available. Fires Google Ads conversion
 // in parallel for paid-traffic attribution.
+const GOOGLE_ADS_SEND_TO =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_ID &&
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL
+    ? `${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}/${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL}`
+    : null;
+
 export function trackConversion(
   eventName: GA4EventName,
   params: EventParams = {},
@@ -54,12 +60,14 @@ export function trackConversion(
   // GA4 named event (configure as Conversion in GA4 Admin)
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, params);
-    // Google Ads conversion event placeholder, replace with real label
-    // <!-- GOOGLE ADS CONVERSION: REPLACE AW-XXXXXXXXXX/CONVERSION_LABEL -->
-    window.gtag('event', 'conversion', {
-      send_to: 'AW-XXXXXXXXXX/CONVERSION_LABEL',
-      event_label: eventName, ...params,
-    });
+    // Google Ads conversion, only when both the account ID and the
+    // conversion label are configured (see LAUNCH_CHECKLIST.md).
+    if (GOOGLE_ADS_SEND_TO) {
+      window.gtag('event', 'conversion', {
+        send_to: GOOGLE_ADS_SEND_TO,
+        event_label: eventName, ...params,
+      });
+    }
   }
   trackEvent(eventName, params);
 }
@@ -73,8 +81,8 @@ export function trackLead(
   params: EventParams = {},
 ): void {
   if (typeof window === 'undefined') return;
-  // Meta Pixel Lead event placeholder.
-  // <!-- META PIXEL: REPLACE 000000000000000 -->
+  // Meta Pixel Lead event. fbq only exists when NEXT_PUBLIC_META_PIXEL_ID
+  // is set (the pixel loads in app/layout.tsx).
   if (typeof window.fbq === 'function') {
     window.fbq('track', 'Lead', { source, ...params });
   }

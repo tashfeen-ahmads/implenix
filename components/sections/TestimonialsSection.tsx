@@ -65,13 +65,12 @@ const TESTIMONIALS = [
 export function TestimonialsSection() {
   return (
     <section className="bg-brand-dark border-t border-brand-purple/15">
-      <div className="max-w-content mx-auto px-6 py-24">
+      <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
         <SectionHeader
-          eyebrow="Verified results"
           title="From real businesses"
           description="Six clients, six different industries, all still deployed. The first three include the real call recording, tap play to hear the agent live."
         />
-        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-16 md:mt-20 grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {TESTIMONIALS.map((t) => (
             <TestimonialCard key={t.businessName} {...t} />
           ))}

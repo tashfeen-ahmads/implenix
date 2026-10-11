@@ -6,17 +6,17 @@
 //
 // You can also override per-environment via NEXT_PUBLIC_GHL_FORM_*.
 
-const env = (key: string, fallback: string) =>
-  (process.env[key] as string | undefined) ?? fallback;
-
+// Each key must be read with a literal `process.env.NEXT_PUBLIC_*` access:
+// Next.js only inlines public env vars into the client bundle when the
+// name is written out statically.
 export const GHL_FORM_IDS = {
-  demo: env('NEXT_PUBLIC_GHL_FORM_DEMO', 'GHL_FORM_ID_DEMO'),
-  contact: env('NEXT_PUBLIC_GHL_FORM_CONTACT', 'GHL_FORM_ID_CONTACT'),
-  lp: env('NEXT_PUBLIC_GHL_FORM_LP', 'GHL_FORM_ID_LP'),
-  industry: env('NEXT_PUBLIC_GHL_FORM_INDUSTRY', 'GHL_FORM_ID_INDUSTRY'),
-  caseStudy: env('NEXT_PUBLIC_GHL_FORM_CASESTUDY', 'GHL_FORM_ID_CASESTUDY'),
-  newsletter: env('NEXT_PUBLIC_GHL_FORM_NEWSLETTER', 'GHL_FORM_ID_NEWSLETTER'),
-  roiGate: env('NEXT_PUBLIC_GHL_FORM_ROI_GATE', 'GHL_FORM_ID_ROI_GATE'),
+  demo: process.env.NEXT_PUBLIC_GHL_FORM_DEMO || 'GHL_FORM_ID_DEMO',
+  contact: process.env.NEXT_PUBLIC_GHL_FORM_CONTACT || 'GHL_FORM_ID_CONTACT',
+  lp: process.env.NEXT_PUBLIC_GHL_FORM_LP || 'GHL_FORM_ID_LP',
+  industry: process.env.NEXT_PUBLIC_GHL_FORM_INDUSTRY || 'GHL_FORM_ID_INDUSTRY',
+  caseStudy: process.env.NEXT_PUBLIC_GHL_FORM_CASESTUDY || 'GHL_FORM_ID_CASESTUDY',
+  newsletter: process.env.NEXT_PUBLIC_GHL_FORM_NEWSLETTER || 'GHL_FORM_ID_NEWSLETTER',
+  roiGate: process.env.NEXT_PUBLIC_GHL_FORM_ROI_GATE || 'GHL_FORM_ID_ROI_GATE',
 } as const;
 
 export type GhlFormKey = keyof typeof GHL_FORM_IDS;
