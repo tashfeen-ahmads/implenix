@@ -10,13 +10,12 @@ export function ProblemSection() {
           title="Every missed call is a deal you already lost"
           description="Local businesses run on calls. Local businesses also miss most of them. The math is unforgiving."
         />
-        {/* VERIFY THESE STATS BEFORE LAUNCH, replace with sourced data */}
         <div className="mt-16 md:mt-20">
           <DividedStats
             stats={[
-              { number: '62%', label: 'of inbound calls to local businesses go unanswered' },
-              { number: '78%', label: 'of leads go with the first business that calls them back' },
-              { number: '$400+', label: 'average value of a single missed service call' },
+              { number: '62%', label: 'of calls to local businesses go unanswered (411 Locals study, 85 businesses)' },
+              { number: '78%', label: 'of customers buy from the business that responds first (Lead Connect)' },
+              { number: '168', label: 'hours a week your phone can ring. A front desk covers about 40' },
             ]}
           />
         </div>

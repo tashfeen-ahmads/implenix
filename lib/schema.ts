@@ -195,12 +195,6 @@ export function softwareApplicationSchema(opts?: {
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     description: SITE_DESCRIPTION,
-    offers: {
-      '@type': 'Offer',
-      price: '297',
-      priceCurrency: 'USD',
-      url: `${SITE_URL}/pricing`,
-    },
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,
@@ -542,52 +536,6 @@ export function webApplicationSchema({
       '@type': 'Organization',
       name: SITE_NAME,
       url: SITE_URL,
-    },
-  };
-}
-
-// Product schema with Offers, for the pricing page. Emits three
-// tier Offers so Google sees the price range. Combined with the
-// AggregateRating from softwareApplicationSchema, this lifts pricing-
-// page rich-result eligibility.
-export function productWithOffersSchema({
-  name,
-  description,
-  url,
-  offers,
-}: {
-  name: string;
-  description: string;
-  url: string;
-  offers: {
-    name: string;
-    price: string;
-    priceCurrency?: string;
-    description?: string;
-  }[];
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name,
-    description,
-    url: `${SITE_URL}${url}`,
-    brand: { '@type': 'Brand', name: SITE_NAME },
-    offers: offers.map((o) => ({
-      '@type': 'Offer',
-      name: o.name,
-      price: o.price,
-      priceCurrency: o.priceCurrency ?? 'USD',
-      availability: 'https://schema.org/InStock',
-      url: `${SITE_URL}${url}`,
-      ...(o.description ? { description: o.description } : {}),
-    })),
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: 5,
-      reviewCount: 6,
-      bestRating: 5,
-      worstRating: 1,
     },
   };
 }

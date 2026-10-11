@@ -30,7 +30,6 @@ const COLUMNS = [
       { href: '/ai-receptionist-for-solopreneurs', label: 'Solopreneurs' },
       { href: '/ai-receptionist-for-small-business', label: 'Small Business' },
       { href: '/ai-receptionist-for-startups', label: 'Startups' },
-      { href: '/ai-receptionist-for-agencies', label: 'Agencies' },
       { href: '/ai-receptionist-for-multi-location-businesses', label: 'Multi-location' },
     ],
   },

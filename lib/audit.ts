@@ -1,9 +1,7 @@
-// Industry medians for the Missed Call Audit tool. These figures are
-// directional, they are used to give prospects an instant estimate
-// before the real audit runs. Values are conservative and based on
-// public benchmarks for local-business inbound call volume.
-//
-// REPLACE WITH SOURCED DATA before launch and credit the source.
+// Starting estimates for the Missed Call Audit tool, per industry. They are
+// Implenix planning assumptions, not published benchmarks, and the UI says
+// so: visitors are asked to enter their own call volume and client value
+// for a figure based on their business.
 
 export type IndustryKey =
   | 'hvac'

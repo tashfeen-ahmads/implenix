@@ -43,7 +43,7 @@ export default function AuditPage() {
           webApplicationSchema({
             name: 'Missed-Call Audit, Implenix',
             description:
-              'Free interactive tool that estimates monthly lost revenue from missed inbound calls using industry medians and your business profile.',
+              'Free interactive tool that estimates monthly lost revenue from missed inbound calls using typical call patterns for your industry and your own numbers.',
             url: '/audit',
           }),
           breadcrumbListSchema([

@@ -30,7 +30,7 @@ const inputSchema = z.object({
     .string()
     .min(1, 'Enter your average client value')
     .regex(/^\d+$/, 'Numbers only'),
-  // Optional: blank falls back to the industry median.
+  // Optional: blank falls back to the typical estimate for the industry.
   weeklyCalls: z
     .string()
     .regex(/^\d*$/, 'Numbers only')
@@ -163,8 +163,8 @@ export function AuditTool() {
             inputMode="numeric"
             placeholder={
               selectedIndustry && selectedIndustry in INDUSTRY_PROFILES
-                ? `Industry median: ${INDUSTRY_PROFILES[selectedIndustry as IndustryKey].weeklyCalls}`
-                : 'Leave blank to use the industry median'
+                ? `Typical estimate: ${INDUSTRY_PROFILES[selectedIndustry as IndustryKey].weeklyCalls}`
+                : 'Leave blank to use a typical estimate'
             }
             className={inputClass}
             {...form.register('weeklyCalls')}
@@ -226,7 +226,13 @@ export function AuditTool() {
               </p>
               <p className="text-sm font-body text-white/70 mt-2">
                 Based on ~{result.weeklyMissed} missed calls per week at{' '}
-                {formatUsd(result.effectiveClientValue)} client value.
+                {formatUsd(result.effectiveClientValue)} client value. Miss
+                and conversion rates are typical estimates for{' '}
+                {result.industryLabel.startsWith('Other')
+                  ? 'local'
+                  : result.industryLabel.toLowerCase()}{' '}
+                businesses, not measured
+                from your calls.
               </p>
             </div>
 

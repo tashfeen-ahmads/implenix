@@ -16,7 +16,6 @@ const HIDDEN_ON = new Set([
   '/24-7-ai-receptionist',
   '/ai-phone-answering-service',
   '/ai-receptionist-cost-comparison',
-  '/ai-receptionist-for-agencies',
   '/ai-receptionist-for-multi-location-businesses',
   '/ai-receptionist-for-small-business',
   '/ai-receptionist-for-solopreneurs',
@@ -27,6 +26,7 @@ const HIDDEN_ON = new Set([
   '/how-does-an-ai-receptionist-work',
   '/industries',
   '/preview/dashboard',
+  '/pricing',
   '/virtual-ai-receptionist',
   '/what-is-an-ai-receptionist',
 ]);

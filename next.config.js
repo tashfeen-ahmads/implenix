@@ -18,7 +18,6 @@ const SLUG_REDIRECTS = [
 // to the dynamic /i/[slug] handler — they have their own dedicated
 // pillar pages and should resolve to those.
 const STATIC_FOR_SLUGS = [
-  'agencies',
   'small-business',
   'solopreneurs',
   'startups',
@@ -53,6 +52,13 @@ const nextConfig = {
     // any existing backlinks or bookmarks flow to the primary landing
     // page without content duplication.
     const pillarConsolidation = [
+      // Retired: competed with /ai-receptionist-for-marketing-agencies for
+      // the same keyword.
+      {
+        source: '/ai-receptionist-for-agencies',
+        destination: '/ai-receptionist-for-marketing-agencies',
+        permanent: true,
+      },
       {
         source: '/ai-receptionist',
         destination: '/',
