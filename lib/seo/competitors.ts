@@ -60,8 +60,8 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     targetKeyword: 'smith.ai alternative',
     intro:
       "I have migrated dozens of operations off Smith.ai to Implenix over the last two years, so I have a specific read on when it is the right move and when it is not. Smith.ai is a mature product with real human operators, strong outbound capability, and mature CRM integrations. For businesses that want a US-based human-first answering experience with an AI safety net, it is a defensible choice. The reason buyers search for an alternative usually comes down to three things: pricing, AI capability, and concurrency. Smith.ai bills per call or per minute, so cost scales directly with volume, an operator running 400+ calls per month typically lands in the $800-$1,500 range. Their AI Voice Assistant tier is newer and less customizable than dedicated AI-first products. And because the service is human-anchored, concurrent call capacity is bounded by their staffing. Implenix is built differently: AI-first, fixed monthly pricing regardless of volume, unlimited concurrency (a hundred simultaneous callers all get answered in under one ring), and two-way live CRM sync instead of next-morning email summaries. The trade-off is real: Smith.ai's human operators handle nuanced or emotionally complex calls in ways well-scoped AI still does not. The decision comes down to whether your call profile is mostly routine high-volume work (where AI-first wins decisively) or low-volume nuanced work where human warmth is the primary value.",
-    punchlineStat: '$700+',
-    punchlineLabel: 'monthly difference at typical SMB volumes',
+    punchlineStat: '$0',
+    punchlineLabel: 'per-call charges, no matter how many calls you take',
     whatTheyDoWell: [
       'Mature product with a track record going back to 2015',
       'Real human operators handle nuanced and emotionally complex calls',
@@ -83,8 +83,8 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       { label: 'Outbound campaign capability', cells: [true, true] },
       { label: 'Human operators on every call', cells: [false, true] },
       { label: 'Live transfer to human', cells: [true, true] },
-      { label: 'Typical SMB monthly cost', cells: ['$297-$597', '$300-$1,500'] },
-      { label: 'Time to live', cells: ['7-14 days', '24-72 hours'] },
+      { label: 'Typical SMB monthly cost', cells: ['Custom quote', '$300-$1,500'] },
+      { label: 'Time to live', cells: ['72 hours', '24-72 hours'] },
     ],
     whenChooseThem: {
       headline: 'When Smith.ai is the right call',
@@ -109,7 +109,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       {
         question: 'How does Implenix pricing compare to Smith.ai for a typical small business?',
         answer:
-          'A small business handling 200-400 calls per month typically spends $400-$900 on Smith.ai and $297-$597 on Implenix. The fixed-vs-variable difference grows with volume: at 800+ calls/month the gap widens to $700+ per month.',
+          'A small business handling 200-400 calls per month typically spends $400-$900 on Smith.ai, and that bill grows with volume because it is billed per call or per minute. Implenix does not bill per call. Pricing is custom: a lead specialist reviews your call flow on a short call and recommends the right setup and price, so the gap widens as your volume grows.',
       },
       {
         question: 'Does Implenix sound as natural as a Smith.ai human operator?',
@@ -119,7 +119,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       {
         question: 'Can I migrate from Smith.ai to Implenix without losing my workflow?',
         answer:
-          'Yes. We can mirror your Smith.ai script, integrations, and routing rules during onboarding, then run both in parallel for a week before cutting over. Most migrations finish in under three weeks.',
+          'Yes. We can mirror your Smith.ai script, integrations, and routing rules during onboarding, go live in 72 hours from kickoff, then run both in parallel for a week before cutting over.',
       },
       {
         question: 'Does Implenix do outbound campaigns like Smith.ai?',
@@ -160,7 +160,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       'Looking for a Goodcall alternative? Compare Implenix vs Goodcall on customization, integrations, industry depth, and pricing. Honest comparison inside.',
     targetKeyword: 'goodcall alternative',
     intro:
-      "Goodcall is a Tier-1 templated AI receptionist. It fits solo operators and very small businesses with simple call profiles who want to be live in an afternoon at low monthly cost. That is a real use case and I do not deprecate it. The reason operators come to me looking for an alternative usually falls into three buckets: they have outgrown the free tier and the paid tiers feel limited, they need deeper CRM and calendar integrations than the templated defaults allow, or their industry's call profile needs more customization than a wizard can produce. Implenix and Goodcall target the same category but from opposite operating models. Goodcall optimizes for zero-touch self-serve. Implenix optimizes for businesses where the script, integrations, and routing rules need to be tuned during a real discovery week by someone who has shipped in the industry. The trade-off is time-to-live: Implenix takes 7-14 business days; Goodcall takes an afternoon. For a solo operator with a straightforward booking flow, that gap matters and Goodcall wins. For a multi-location service business with industry-specific intake and real integration needs, the depth pays for itself inside the first month. The framework below breaks down which side of that line your operation is on.",
+      "Goodcall is a Tier-1 templated AI receptionist. It fits solo operators and very small businesses with simple call profiles who want to be live in an afternoon at low monthly cost. That is a real use case and I do not deprecate it. The reason operators come to me looking for an alternative usually falls into three buckets: they have outgrown the free tier and the paid tiers feel limited, they need deeper CRM and calendar integrations than the templated defaults allow, or their industry's call profile needs more customization than a wizard can produce. Implenix and Goodcall target the same category but from opposite operating models. Goodcall optimizes for zero-touch self-serve. Implenix optimizes for businesses where the script, integrations, and routing rules need to be tuned during real discovery by someone who has shipped in the industry. The trade-off is time-to-live: Implenix is live in 72 hours from kickoff; Goodcall takes an afternoon. For a solo operator with a straightforward booking flow, that gap matters and Goodcall wins. For a multi-location service business with industry-specific intake and real integration needs, the depth pays for itself inside the first month. The framework below breaks down which side of that line your operation is on.",
     punchlineStat: 'Industry-tuned',
     punchlineLabel: 'vs templated default',
     whatTheyDoWell: [
@@ -173,18 +173,18 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       'Industry-specific call scripts tuned by humans, not templates filled in by users',
       'Deeper two-way CRM integrations across HubSpot, Salesforce, GoHighLevel, Zoho, and major industry tools',
       'Custom intake logic per industry, emergency triage, crisis routing, insurance pre-screen',
-      'Dedicated implementation engineer during onboarding, not self-serve only',
+      'Dedicated implementation engineer during onboarding, not a self-serve setup',
     ],
     comparisonRows: [
       { label: 'Free tier', cells: [false, true] },
-      { label: 'Time to live', cells: ['7-14 days', 'same day'] },
+      { label: 'Time to live', cells: ['72 hours', 'same day'] },
       { label: 'Industry-specific scripts', cells: [true, 'partial'] },
       { label: 'Two-way CRM sync depth', cells: ['deep', 'basic'] },
       { label: 'Custom transfer rules', cells: [true, 'partial'] },
       { label: 'Multi-location routing', cells: [true, false] },
       { label: 'Branded voice (custom voice cloning)', cells: ['available', false] },
       { label: 'Implementation engineer included', cells: [true, false] },
-      { label: 'Typical SMB monthly cost', cells: ['$297-$597', '$0-$59'] },
+      { label: 'Typical SMB monthly cost', cells: ['Custom quote', '$0-$59'] },
       { label: 'Best fit', cells: ['established business', 'solo operator'] },
     ],
     whenChooseThem: {
@@ -210,12 +210,12 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       {
         question: 'Is Implenix more expensive than Goodcall?',
         answer:
-          "Yes, Goodcall has a free tier and lower-priced entry plans. Implenix starts at $297/month because every deployment includes industry tuning, integrations, and an implementation engineer. The right comparison is what each tier delivers, not the headline price.",
+          "Usually, yes. Goodcall has a free tier and lower-priced entry plans. Implenix is a custom build: every deployment includes industry tuning, integrations, and an implementation engineer, so pricing is set on a short call with a lead specialist who reviews your call flow and recommends the right setup and price. The right comparison is what each option delivers, not the headline price.",
       },
       {
         question: 'Can I migrate from Goodcall to Implenix?',
         answer:
-          'Yes. We can review your current Goodcall configuration during scoping and mirror the relevant parts. Most migrations complete in under two weeks.',
+          'Yes. We can review your current Goodcall configuration during scoping and mirror the relevant parts. Migrations are live in 72 hours from kickoff.',
       },
       {
         question: 'What industries does Implenix support that Goodcall does not tune for?',
@@ -230,7 +230,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       {
         question: 'Can Implenix scale to multi-location operations?',
         answer:
-          'Yes. Multi-location routing, account-based call handling, and per-location reporting are all supported on the Established Firm tier.',
+          'Yes. Multi-location routing, account-based call handling, and per-location reporting are all supported.',
       },
     ],
     sampleCall: [
@@ -264,8 +264,8 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     targetKeyword: 'ruby receptionists alternative',
     intro:
       "Ruby has been the premium human-first answering service for two decades. I have watched many high-touch professional firms use them successfully, and I have also watched many operators outgrow the pricing model. If your practice depends on human warmth as part of the brand (boutique law, design studios, premium medical), Ruby has been a defensible choice. The reason buyers come to me looking for an alternative usually comes down to math. Ruby starts around $350/month and rises sharply with volume, often crossing $1,000/month for moderate call traffic. They charge per call or per minute on most plans. The service is human-only, so 24/7 coverage requires premium upcharges or is not available on standard tiers. Ruby operators take excellent messages, but real-time calendar booking and two-way CRM sync are weaker than what AI-first products ship natively. Implenix replaces the Ruby function for the majority of inbound work (booking, qualification, recurring service requests, after-hours coverage) at a fraction of the cost, with native calendar booking and CRM sync. Where Ruby still wins is the specific moments when a caller genuinely needs human warmth: a sensitive consultation request, a high-value prospect calling outside normal qualification patterns, an existing client in distress. Many firms I ship for now run a hybrid, Implenix handles the volume at fixed cost and a small Ruby block (or in-house staff) handles the calls flagged for human handling. The framework below breaks down which side of that line fits your practice.",
-    punchlineStat: '$600+',
-    punchlineLabel: 'monthly difference at moderate volumes',
+    punchlineStat: '24/7',
+    punchlineLabel: 'coverage included, no after-hours upcharge',
     whatTheyDoWell: [
       'Domestic-US operators with 20+ years of warm, professional brand reputation',
       'Excellent for high-touch professional services where the receptionist is part of the brand',
@@ -287,8 +287,8 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       { label: 'Domestic-US human operators', cells: [false, true] },
       { label: 'Live transfer to human', cells: [true, true] },
       { label: 'Recordings + transcripts', cells: [true, 'partial'] },
-      { label: 'Typical SMB monthly cost', cells: ['$297-$597', '$350-$1,200+'] },
-      { label: 'Time to live', cells: ['7-14 days', '5-10 days'] },
+      { label: 'Typical SMB monthly cost', cells: ['Custom quote', '$350-$1,200+'] },
+      { label: 'Time to live', cells: ['72 hours', '5-10 days'] },
     ],
     whenChooseThem: {
       headline: 'When Ruby Receptionists is the right call',
@@ -314,7 +314,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       {
         question: 'How does Implenix compare to Ruby on cost for a typical professional firm?',
         answer:
-          'A solo or small professional firm running 150-300 calls per month typically spends $500-$900 on Ruby and $297-$597 on Implenix. The gap widens with volume since Ruby bills per minute or per call.',
+          'A solo or small professional firm running 150-300 calls per month typically spends $500-$900 on Ruby, and the bill grows with volume since Ruby charges per minute or per call. Implenix does not bill per call. Pricing is custom, set on a short call with a lead specialist who reviews your call flow and recommends the right setup and price.',
       },
       {
         question: 'Will my callers notice the difference between Ruby and Implenix?',
@@ -352,7 +352,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     outcomes: [
       { number: '24/7', label: 'Coverage included vs Ruby premium after-hours upcharge' },
       { number: 'live-book', label: 'Real-time calendar booking vs message + book-tomorrow workflow' },
-      { number: '$600+/mo', label: 'Typical savings vs Ruby at moderate volumes' },
+      { number: 'unlimited', label: 'Concurrent calls vs staff-bound capacity on Ruby' },
     ],
   },
 ];

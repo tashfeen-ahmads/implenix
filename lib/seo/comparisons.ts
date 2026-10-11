@@ -59,8 +59,8 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
     metaDescription:
       'AI receptionist vs answering service: compare cost, coverage, integrations, and lead capture. See which is right for a small business in 2026.',
     targetKeyword: 'ai receptionist vs answering service',
-    punchlineStat: '$1,200',
-    punchlineLabel: 'typical monthly difference for a small business',
+    punchlineStat: '<1 ring',
+    punchlineLabel: 'pickup on every call, 24/7, vs 3-8 rings on a typical answering service',
     intro:
       "I have replaced live answering services with AI receptionists in dozens of small businesses over the last six years. The pattern that decides which is right for your operation is not about ideology, it is about your call mix. Live answering services handle emotionally complex, judgment-heavy inbound better than any AI today. But most local-business inbound is not that. It is booking, rescheduling, qualification, and routine intake, work where AI is faster, cheaper, more consistent, and available 24/7 without premium pricing. The constraints that drove businesses to answering services twenty years ago (real human warmth for the moments that matter) still exist. The constraints that make answering services expensive today (per-minute billing that scales cost with volume, operator turnover degrading script quality, one-way email handoffs instead of real CRM sync, absent after-hours coverage) also still exist. This page walks through where each wins and where each fails, with the honest edges I have seen from actual side-by-side deployments.",
     comparisonRows: [
@@ -73,7 +73,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Per-minute / per-call billing', cells: [false, true] },
       { label: 'Live transfer to human', cells: [true, true] },
       { label: 'Pickup time', cells: ['<1 ring', '3-8 rings typical'] },
-      { label: 'Monthly cost (small business)', cells: ['from $297', '$300-$1,500'] },
+      { label: 'Monthly cost (small business)', cells: ['Custom quote', '$300-$1,500'] },
     ],
     alternativePros: [
       'Real human operators handle nuanced, emotionally loaded calls well',
@@ -116,7 +116,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How does pricing compare for a small business?',
         answer:
-          'A typical small-business plan with an AI receptionist is $297-$597/month flat. A live answering service for the same call volume runs $300-$1,500/month and rises with usage. The fixed-cost difference compounds at higher volumes.',
+          'A live answering service for a typical small business runs $300-$1,500/month and rises with usage. Implenix is a custom build, so pricing is set on a short call with a lead specialist who reviews your call flow and recommends the right setup and price. There is no per-minute billing, so the gap compounds at higher volumes.',
       },
       {
         question: 'Can I use both, an AI for routine and a live service for overflow?',
@@ -131,7 +131,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'Which is faster to deploy?',
         answer:
-          'A live answering service can take messages within 24-48 hours. An AI receptionist takes 7-14 days because we tune the script, voice, and integrations to your business. The trade-off is that day-one quality is much higher.',
+          'A live answering service can take messages within 24-48 hours. Implenix is live in 72 hours from kickoff, with the script, voice, and integrations tuned to your business, so day-one quality is much higher.',
       },
     ],
     sampleCall: [
@@ -173,8 +173,8 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Email and admin work', cells: [false, true] },
       { label: 'Training overhead', cells: ['none', '20-60 hours'] },
       { label: 'Turnover risk', cells: ['none', 'high'] },
-      { label: 'Monthly cost', cells: ['from $297', '$1,500-$4,000'] },
-      { label: 'Time to live', cells: ['7-14 days', '2-4 weeks'] },
+      { label: 'Monthly cost', cells: ['Custom quote', '$1,500-$4,000'] },
+      { label: 'Time to live', cells: ['72 hours', '2-4 weeks'] },
     ],
     alternativePros: [
       'Can do non-phone work (email, calendar, research, document handling)',
@@ -221,7 +221,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'What is the cost difference?',
         answer:
-          'A US-based VA runs $1,500-$4,000/month for 20-40 hours/week. An AI receptionist plan covering unlimited concurrent calls 24/7 starts at $297/month. For phone-only work, the AI is dramatically cheaper.',
+          'A US-based VA runs $1,500-$4,000/month for 20-40 hours/week. An Implenix AI receptionist covers unlimited concurrent calls 24/7 for a fraction of that. Pricing is custom: a lead specialist reviews your call flow on a short call and recommends the right setup and price.',
       },
       {
         question: 'Will I lose the human touch?',
@@ -231,7 +231,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How long does each take to onboard?',
         answer:
-          'A VA needs 2-4 weeks of training to know your business. An AI receptionist deploys in 7-14 days with the same depth of business knowledge, and never forgets it.',
+          'A VA needs 2-4 weeks of training to know your business. Implenix is live in 72 hours from kickoff with the same depth of business knowledge, and never forgets it.',
       },
     ],
     sampleCall: [
@@ -263,10 +263,10 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
     metaDescription:
       'AI receptionist vs IVR (press-1 phone tree): why conversational AI beats automated menus on every metric customers care about.',
     targetKeyword: 'ai receptionist vs ivr',
-    punchlineStat: '67%',
+    punchlineStat: '40-60%',
     punchlineLabel: 'of callers hang up on IVR menus',
     intro:
-      "IVR, \"press 1 for sales, press 2 for support\", is what most businesses end up with when they outgrow voicemail but cannot afford a real receptionist. It is the cheapest possible automated phone solution, and it is universally hated by the callers it is supposed to serve. Customers consistently rank IVR among the worst service experiences in any industry. Most studies put hangup rates above 50%, and the callers who stay frequently end up at the wrong department anyway. IVR exists for one reason: routing calls to humans. It does not book appointments, it does not qualify leads, it does not capture intake, it does not answer questions. It is a switchboard with extra steps. AI receptionist replaces IVR plus the receptionist plus voicemail with one system that actually has conversations. A caller asks for a service, the AI checks the calendar, books it, and writes the booking back to the CRM, without a single \"press 1\" prompt. For any business where the inbound caller wants something done (a booking, a quote, a status check), the AI receptionist is a strict upgrade. The only reason to keep IVR alongside the AI is for legacy workflows that depend on extension-based routing.",
+      "IVR, \"press 1 for sales, press 2 for support\", is what most businesses end up with when they outgrow voicemail but cannot afford a real receptionist. It is the cheapest possible automated phone solution, and it is universally hated by the callers it is supposed to serve. Customers consistently rank IVR among the worst service experiences in any industry. Studies put hangup rates at 40-60%, and the callers who stay frequently end up at the wrong department anyway. IVR exists for one reason: routing calls to humans. It does not book appointments, it does not qualify leads, it does not capture intake, it does not answer questions. It is a switchboard with extra steps. AI receptionist replaces IVR plus the receptionist plus voicemail with one system that actually has conversations. A caller asks for a service, the AI checks the calendar, books it, and writes the booking back to the CRM, without a single \"press 1\" prompt. For any business where the inbound caller wants something done (a booking, a quote, a status check), the AI receptionist is a strict upgrade. The only reason to keep IVR alongside the AI is for legacy workflows that depend on extension-based routing.",
     comparisonRows: [
       { label: 'Conversational interaction', cells: [true, false] },
       { label: 'Books appointments', cells: [true, false] },
@@ -275,8 +275,8 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Routes to humans when needed', cells: [true, true] },
       { label: 'Customer satisfaction', cells: ['high', 'low'] },
       { label: 'Hangup rate', cells: ['<5%', '40-60%'] },
-      { label: 'Monthly cost', cells: ['from $297', '$30-$200'] },
-      { label: 'Setup time', cells: ['7-14 days', '1-2 hours'] },
+      { label: 'Monthly cost', cells: ['Custom quote', '$30-$200'] },
+      { label: 'Setup time', cells: ['72 hours', '1-2 hours'] },
       { label: 'Updates require IT', cells: [false, true] },
     ],
     alternativePros: [
@@ -324,7 +324,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How much do I save replacing IVR with an AI receptionist?',
         answer:
-          'Net cost goes up by $200-$400/month, but you replace receptionist labor at the same time. Most businesses come out net-positive once you account for the receptionist hours saved.',
+          'Your phone spend goes up compared with a basic IVR, but you replace receptionist labor at the same time. Most businesses come out net-positive once you account for the receptionist hours saved. Pricing is custom, set on a short call with a lead specialist who reviews your call flow.',
       },
       {
         question: 'Can I keep my existing extensions?',
@@ -334,7 +334,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How long does it take to migrate from IVR?',
         answer:
-          'Most migrations complete in 7-14 days, including script tuning and a parallel-run period where both systems are live before cutover.',
+          'Implenix is live in 72 hours from kickoff with a tuned script. Many businesses then run both systems in parallel for a short period before cutover.',
       },
     ],
     sampleCall: [
@@ -380,7 +380,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Caller leaves a message', cells: ['n/a, answered', '~25%'] },
       { label: 'Two-way CRM sync', cells: [true, false] },
       { label: 'After-hours coverage', cells: [true, true] },
-      { label: 'Monthly cost', cells: ['from $297', '$0'] },
+      { label: 'Monthly cost', cells: ['Custom quote', '$0'] },
       { label: 'True cost (lost pipeline)', cells: ['low', 'high'] },
       { label: 'Customer experience', cells: ['fast', 'frustrating'] },
     ],
@@ -439,7 +439,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How fast can I replace voicemail with an AI receptionist?',
         answer:
-          '7-14 business days for most businesses. The AI runs on top of your existing phone routing, so the transition is invisible to your callers.',
+          '72 hours from kickoff. The AI runs on top of your existing phone routing, so the transition is invisible to your callers.',
       },
     ],
     sampleCall: [
@@ -484,8 +484,8 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Complex sales conversations', cells: ['partial', true] },
       { label: 'Compliance recording', cells: [true, true] },
       { label: 'Operator turnover', cells: ['none', 'high'] },
-      { label: 'Monthly cost (SMB)', cells: ['from $297', '$1,500-$5,000'] },
-      { label: 'Time to live', cells: ['7-14 days', '4-8 weeks'] },
+      { label: 'Monthly cost (SMB)', cells: ['Custom quote', '$1,500-$5,000'] },
+      { label: 'Time to live', cells: ['72 hours', '4-8 weeks'] },
     ],
     alternativePros: [
       'Real human operators handle complex multi-turn conversations',
@@ -524,7 +524,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'What is the typical cost difference for a small business?',
         answer:
-          'A dedicated call-center seat for SMB coverage runs $1,500-$5,000/month. An AI receptionist plan handling the same volume starts at $297/month. The fixed-cost difference is dramatic and grows with volume.',
+          'A dedicated call-center seat for SMB coverage runs $1,500-$5,000/month. An Implenix AI receptionist handles the same volume for a fraction of that, and the difference grows with volume. Pricing is custom, set on a short call with a lead specialist who reviews your call flow.',
       },
       {
         question: 'Can the AI handle complex sales conversations?',

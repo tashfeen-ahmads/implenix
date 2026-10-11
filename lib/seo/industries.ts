@@ -216,7 +216,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast can we deploy?',
         answer:
-          '7 to 14 business days for most shops. We can compress for storm-season prep.',
+          '72 hours from kickoff, so you can be live well ahead of storm season.',
       },
     ],
     caseStudySlug: 'pa-hvac-experts',
@@ -309,7 +309,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How quickly can we go live?',
         answer:
-          '10 to 14 business days for a typical shop. Faster if you already have a CRM with API access.',
+          '72 hours from kickoff, including your CRM and calendar integrations.',
       },
     ],
     caseStudySlug: 'columbus-property',
@@ -402,7 +402,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How long is deployment?',
         answer:
-          '7 to 10 business days for most salons. Faster if you are already on a supported booking platform.',
+          '72 hours from kickoff, including the connection to your booking platform.',
       },
     ],
     caseStudySlug: 'ohio-dental',
@@ -588,7 +588,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How long is deployment?',
         answer:
-          '7 to 10 business days. Most agencies are live in two weeks with their qualification logic tuned.',
+          '72 hours from kickoff, with your qualification logic tuned to your business.',
       },
     ],
     caseStudySlug: 'columbus-property',
@@ -681,7 +681,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '7 to 10 business days for most cleaning operators.',
+          '72 hours from kickoff for most cleaning operators.',
       },
     ],
     caseStudySlug: 'pa-hvac-experts',
@@ -867,7 +867,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '10 to 14 business days for most agencies. Faster if you are on a supported AMS.',
+          '72 hours from kickoff, including the connection to your AMS.',
       },
     ],
     caseStudySlug: 'columbus-property',
@@ -960,7 +960,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '10 to 14 business days for most practices.',
+          '72 hours from kickoff for most practices.',
       },
     ],
     caseStudySlug: 'ohio-dental',
@@ -1053,7 +1053,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '10 to 14 business days for most chiropractic practices.',
+          '72 hours from kickoff for most chiropractic practices.',
       },
     ],
     caseStudySlug: 'ohio-dental',
@@ -1239,7 +1239,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How long is deployment?',
         answer:
-          '7 to 10 business days for most spas.',
+          '72 hours from kickoff for most spas.',
       },
     ],
     caseStudySlug: 'ohio-dental',
@@ -1332,7 +1332,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '7 to 14 business days. We can compress for spring-season prep.',
+          '72 hours from kickoff, so you can be live well ahead of spring season.',
       },
     ],
     caseStudySlug: 'pa-hvac-experts',
@@ -1425,7 +1425,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '7 to 10 business days for most pest-control operators.',
+          '72 hours from kickoff for most pest-control operators.',
       },
     ],
     caseStudySlug: 'pa-hvac-experts',
@@ -1518,7 +1518,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '7 to 14 business days. Faster if you want to be ready before peak season.',
+          '72 hours from kickoff, so you can be ready well before peak season.',
       },
     ],
     caseStudySlug: 'pa-hvac-experts',
@@ -1611,7 +1611,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       {
         question: 'How fast is deployment?',
         answer:
-          '7 to 10 business days for most training studios.',
+          '72 hours from kickoff for most training studios.',
       },
     ],
     caseStudySlug: 'ohio-dental',

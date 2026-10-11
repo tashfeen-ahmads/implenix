@@ -59,7 +59,7 @@ export const GLOSSARY_ENTRIES: GlossaryEntry[] = [
       {
         question: 'How much does an AI receptionist cost?',
         answer:
-          'Implenix plans range from $297-$997/month flat. Compared to $3,500-$5,000/month for a full-time human receptionist or $300-$1,500 for a per-minute live answering service.',
+          'For comparison, a full-time human receptionist runs $3,500-$5,000/month and a per-minute live answering service $300-$1,500. Implenix is a custom build, so pricing depends on your business: a lead specialist reviews your call flow on a short call and recommends the right setup and price.',
       },
     ],
   },
@@ -165,12 +165,8 @@ export const GLOSSARY_ENTRIES: GlossaryEntry[] = [
     ],
     related: [
       {
-        href: '/ai-receptionist-for-agencies',
-        label: 'AI Receptionist for Agencies (RFP qualification)',
-      },
-      {
         href: '/ai-receptionist-for-marketing-agencies',
-        label: 'For Marketing Agencies',
+        label: 'AI Receptionist for Marketing Agencies (RFP qualification)',
       },
       { href: '/glossary/call-routing', label: 'Call routing' },
     ],
@@ -419,7 +415,7 @@ export const GLOSSARY_ENTRIES: GlossaryEntry[] = [
     metaDescription:
       "IVR defined: menu-based phone systems that route callers via 'press 1 for sales.' Why customers hate it and how AI replaces it.",
     intro:
-      'IVR (Interactive Voice Response) refers to menu-based phone systems that route callers by DTMF (touch-tone) digit selection or simple speech recognition, the familiar "press 1 for sales, press 2 for support" experience. IVR predates modern voice AI by several decades and remains widespread because it is cheap and predictable. It is also universally hated by callers, multiple studies consistently put IVR among the worst customer-service experiences across industries, with hangup rates frequently above 50%. IVR exists for one core reason: routing inbound calls to the right human or queue. It does not book appointments, qualify leads, or capture intake, those tasks fall to whoever picks up after the IVR finishes. AI receptionists supersede IVR by replacing the menu with an actual conversation, classifying intent from natural language rather than digit selection, and resolving the request directly (booking, intake, transfer) rather than just routing. For most local businesses, an AI receptionist replaces an IVR plus a receptionist plus voicemail with one system.',
+      'IVR (Interactive Voice Response) refers to menu-based phone systems that route callers by DTMF (touch-tone) digit selection or simple speech recognition, the familiar "press 1 for sales, press 2 for support" experience. IVR predates modern voice AI by several decades and remains widespread because it is cheap and predictable. It is also universally hated by callers, multiple studies consistently put IVR among the worst customer-service experiences across industries, with 40-60% of callers hanging up in the menu. IVR exists for one core reason: routing inbound calls to the right human or queue. It does not book appointments, qualify leads, or capture intake, those tasks fall to whoever picks up after the IVR finishes. AI receptionists supersede IVR by replacing the menu with an actual conversation, classifying intent from natural language rather than digit selection, and resolving the request directly (booking, intake, transfer) rather than just routing. For most local businesses, an AI receptionist replaces an IVR plus a receptionist plus voicemail with one system.',
     keyPoints: [
       'Menu-based phone routing via DTMF digit selection',
       'Predates modern voice AI by decades',
