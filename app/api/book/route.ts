@@ -7,6 +7,12 @@ import {
   getBusyRanges,
 } from '@/lib/googleCalendar';
 import { buildCrmEvent, sendToCrm } from '@/lib/crm';
+import {
+  createZoomMeeting,
+  deleteZoomMeeting,
+  zoomConfigured,
+  type ZoomMeeting,
+} from '@/lib/zoom';
 
 export const runtime = 'nodejs';
 
@@ -22,7 +28,8 @@ const bookingSchema = z.object({
 
 // POST /api/book
 // Body: { name, email, phone?, notes?, startIso }
-// Creates the calendar event with a Google Meet link, returns
+// Creates a Zoom meeting (or Google Meet when Zoom isn't configured),
+// puts it on the calendar invite Google emails the visitor, returns
 // confirmation. Re-validates availability at booking time to prevent
 // a race where two people book the same slot.
 export async function POST(req: NextRequest) {
@@ -69,41 +76,36 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Zoom first when configured. A Zoom outage must not block the
+  // booking, so we fall back to Google Meet and log it.
+  let zoom: ZoomMeeting | null = null;
+  if (zoomConfigured()) {
+    try {
+      zoom = await createZoomMeeting({
+        topic: `Implenix consultation · ${name}`,
+        startIso: start.toISOString(),
+        durationMinutes: BOOKING_CONFIG.durationMinutes,
+        timezone: BOOKING_CONFIG.timezone,
+        agenda: notes,
+      });
+    } catch (err) {
+      console.error('[zoom] meeting creation failed, using Google Meet', err);
+    }
+  }
+
+  let event: Awaited<ReturnType<typeof createBookingEvent>>;
   try {
-    const event = await createBookingEvent({
+    event = await createBookingEvent({
       startIso: start.toISOString(),
       endIso: end.toISOString(),
       attendeeName: name,
       attendeeEmail: email,
       attendeePhone: phone,
       notes,
-    });
-    // The booking is already on the calendar; a CRM outage must not
-    // turn it into an error for the visitor. sendToCrm logs failures.
-    await sendToCrm(
-      buildCrmEvent('booking.created', {
-        source: ctaLocation ?? 'booking-widget',
-        page,
-        contact: { name, email, phone },
-        details: {
-          start: start.toISOString(),
-          end: end.toISOString(),
-          timezone: BOOKING_CONFIG.timezone,
-          notes,
-          meet_link: event.meetLink,
-          calendar_event_id: event.id,
-        },
-      }),
-    );
-    return NextResponse.json({
-      success: true,
-      eventId: event.id,
-      meetLink: event.meetLink,
-      calendarLink: event.htmlLink,
-      start: start.toISOString(),
-      end: end.toISOString(),
+      zoom: zoom ?? undefined,
     });
   } catch (err) {
+    if (zoom) await deleteZoomMeeting(zoom.id);
     return apiError(
       err instanceof Error
         ? `Booking failed: ${err.message}`
@@ -111,4 +113,32 @@ export async function POST(req: NextRequest) {
       500,
     );
   }
+
+  // The booking is already on the calendar; a CRM outage must not
+  // turn it into an error for the visitor. sendToCrm logs failures.
+  await sendToCrm(
+    buildCrmEvent('booking.created', {
+      source: ctaLocation ?? 'booking-widget',
+      page,
+      contact: { name, email, phone },
+      details: {
+        start: start.toISOString(),
+        end: end.toISOString(),
+        timezone: BOOKING_CONFIG.timezone,
+        notes,
+        meeting_provider: event.meetingProvider,
+        meeting_url: event.meetingUrl,
+        zoom_meeting_id: zoom?.id,
+        calendar_event_id: event.id,
+      },
+    }),
+  );
+  return NextResponse.json({
+    success: true,
+    eventId: event.id,
+    meetingUrl: event.meetingUrl,
+    meetingProvider: event.meetingProvider,
+    start: start.toISOString(),
+    end: end.toISOString(),
+  });
 }

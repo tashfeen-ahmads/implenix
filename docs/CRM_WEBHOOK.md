@@ -46,7 +46,9 @@ Authorization: Bearer <token>          (when CRM_WEBHOOK_TOKEN is set)
     "end": "2026-10-14T14:30:00.000Z",
     "timezone": "America/New_York",
     "notes": "3 trucks, missing after-hours calls",
-    "meet_link": "https://meet.google.com/abc-defg-hij",
+    "meeting_provider": "zoom",
+    "meeting_url": "https://us06web.zoom.us/j/84512345678?pwd=...",
+    "zoom_meeting_id": 84512345678,
     "calendar_event_id": "a1b2c3"
   }
 }

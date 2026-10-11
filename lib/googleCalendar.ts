@@ -179,13 +179,15 @@ type CreateEventInput = {
   attendeeEmail: string;
   attendeePhone?: string;
   notes?: string;
+  // When set, the invite carries this Zoom meeting instead of Google Meet.
+  zoom?: { joinUrl: string; id: number; password?: string };
 };
 
 type CreatedEvent = {
   id: string;
   htmlLink: string;
-  meetLink: string | null;
-  hangoutLink?: string;
+  meetingUrl: string | null;
+  meetingProvider: 'zoom' | 'google-meet' | null;
 };
 
 export async function createBookingEvent(
@@ -193,7 +195,12 @@ export async function createBookingEvent(
 ): Promise<CreatedEvent> {
   const token = await getAccessToken();
   const summary = `Implenix consultation · ${input.attendeeName}`;
+  const zoom = input.zoom;
   const description = [
+    zoom ? `Join Zoom meeting: ${zoom.joinUrl}` : null,
+    zoom ? `Meeting ID: ${String(zoom.id).replace(/(\d{3})(\d{4})(\d+)/, '$1 $2 $3')}` : null,
+    zoom?.password ? `Passcode: ${zoom.password}` : null,
+    zoom ? '' : null,
     `Booked via implenix.net`,
     `Attendee: ${input.attendeeName} (${input.attendeeEmail})`,
     input.attendeePhone ? `Phone: ${input.attendeePhone}` : null,
@@ -212,17 +219,23 @@ export async function createBookingEvent(
     description,
     start: { dateTime: input.startIso, timeZone: BOOKING_CONFIG.timezone },
     end: { dateTime: input.endIso, timeZone: BOOKING_CONFIG.timezone },
+    // Calendar apps turn a URL location into a one-click join button.
+    ...(zoom ? { location: zoom.joinUrl } : {}),
     attendees: [
       { email: input.attendeeEmail, displayName: input.attendeeName }, ...(BOOKING_CONFIG.hostEmail
         ? [{ email: BOOKING_CONFIG.hostEmail, organizer: true }]
         : []),
     ],
-    conferenceData: {
-      createRequest: {
-        requestId,
-        conferenceSolutionKey: { type: 'hangoutsMeet' },
-      },
-    },
+    ...(zoom
+      ? {}
+      : {
+          conferenceData: {
+            createRequest: {
+              requestId,
+              conferenceSolutionKey: { type: 'hangoutsMeet' },
+            },
+          },
+        }),
     reminders: {
       useDefault: false,
       overrides: [
@@ -262,6 +275,14 @@ export async function createBookingEvent(
       entryPoints?: { entryPointType: string; uri: string }[];
     };
   };
+  if (zoom) {
+    return {
+      id: data.id,
+      htmlLink: data.htmlLink,
+      meetingUrl: zoom.joinUrl,
+      meetingProvider: 'zoom',
+    };
+  }
   const meetLink =
     data.hangoutLink ??
     data.conferenceData?.entryPoints?.find(
@@ -271,8 +292,8 @@ export async function createBookingEvent(
   return {
     id: data.id,
     htmlLink: data.htmlLink,
-    meetLink,
-    hangoutLink: data.hangoutLink,
+    meetingUrl: meetLink,
+    meetingProvider: meetLink ? 'google-meet' : null,
   };
 }
 

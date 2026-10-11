@@ -11,8 +11,10 @@ import {
   Loader2,
   Video,
   ArrowLeft,
+  Download,
 } from 'lucide-react';
 import { trackConversion, GA4_EVENTS } from '@/lib/analytics';
+import { buildIcs, googleCalendarUrl } from '@/lib/calendarLinks';
 
 type Slot = { startIso: string; endIso: string; label: string };
 
@@ -26,8 +28,8 @@ type Availability = {
 type BookedResponse = {
   success: true;
   eventId: string;
-  meetLink: string | null;
-  calendarLink: string;
+  meetingUrl: string | null;
+  meetingProvider: 'zoom' | 'google-meet' | null;
   start: string;
   end: string;
 };
@@ -499,6 +501,26 @@ function ConfirmedStep({
     hour: 'numeric',
     minute: '2-digit',
   });
+  const calendarEvent = {
+    title: 'Implenix consultation',
+    startIso: booked.start,
+    endIso: booked.end,
+    details: booked.meetingUrl
+      ? `Join: ${booked.meetingUrl}\n\nBooked via implenix.net`
+      : 'Booked via implenix.net',
+    location: booked.meetingUrl,
+  };
+  const downloadIcs = () => {
+    const blob = new Blob([buildIcs({ ...calendarEvent, uid: booked.eventId })], {
+      type: 'text/calendar;charset=utf-8',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'implenix-consultation.ics';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
   return (
     <div className="flex flex-col gap-5 py-4">
       <div className="flex items-center gap-3">
@@ -518,32 +540,46 @@ function ConfirmedStep({
         </span>
         <p className="font-body text-white">{slotLabel}</p>
       </div>
-      {booked.meetLink ? (
+      {booked.meetingUrl ? (
         <div className="border border-brand-purple/30 bg-black p-4 flex flex-col gap-3">
           <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
-            ▸ Google Meet
+            ▸ {booked.meetingProvider === 'zoom' ? 'Zoom meeting' : 'Google Meet'}
           </span>
           <a
-            href={booked.meetLink}
+            href={booked.meetingUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-4 py-2.5 rounded-sm hover:opacity-90 self-start"
           >
-            <Video size={14} /> Join meeting link
+            <Video size={14} aria-hidden /> Join meeting
           </a>
           <p className="font-body text-xs text-white/55 break-all">
-            {booked.meetLink}
+            {booked.meetingUrl}
           </p>
         </div>
       ) : null}
-      <a
-        href={booked.calendarLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 text-brand-cyan text-sm font-mono uppercase tracking-widest hover:opacity-80"
-      >
-        Open in Google Calendar <ArrowRight size={12} />
-      </a>
+      <div className="flex flex-col gap-2">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-white/55">
+          ▸ Add to your calendar
+        </span>
+        <div className="flex flex-wrap gap-3">
+          <a
+            href={googleCalendarUrl(calendarEvent)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border border-brand-cyan/70 text-brand-cyan text-sm font-medium px-4 py-2.5 rounded-sm transition-colors hover:bg-brand-cyan/10"
+          >
+            <CalendarCheck size={14} aria-hidden /> Google Calendar
+          </a>
+          <button
+            type="button"
+            onClick={downloadIcs}
+            className="inline-flex items-center gap-2 border border-brand-cyan/70 text-brand-cyan text-sm font-medium px-4 py-2.5 rounded-sm transition-colors hover:bg-brand-cyan/10"
+          >
+            <Download size={14} aria-hidden /> Outlook / Apple (.ics)
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

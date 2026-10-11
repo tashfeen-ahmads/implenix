@@ -17,6 +17,7 @@ noted).
 | `NEXT_PUBLIC_RON_AGENT_ID` | ElevenLabs agent ID | Powers every "Test Ron now" button (in-browser voice). The agent must allow public access. Without it the Ron panel offers booking instead. |
 | `CRM_WEBHOOK_URL` | Your CRM / automation endpoint | Receives every lead and booking. See `docs/CRM_WEBHOOK.md`. |
 | `CRM_WEBHOOK_SECRET` | Long random string | Signs each delivery (HMAC-SHA256) so the CRM can verify it. |
+| `ZOOM_ACCOUNT_ID`, `ZOOM_CLIENT_ID`, `ZOOM_CLIENT_SECRET` | Zoom Server-to-Server OAuth app | Bookings get a Zoom meeting on the calendar invite. Unset = Google Meet. |
 
 ### Required for SEO indexing
 
