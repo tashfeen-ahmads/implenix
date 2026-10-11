@@ -198,24 +198,20 @@ outright.
 
 ## What the deployment actually looks like
 
-Call center automation deployments are longer than single-line
-voice agent deployments. Expect 4 to 8 weeks depending on scale
-and integration surface.
+The first agent goes live in 72 hours, covering your highest-volume
+automatable intents. A call center has more queues than a single
+front desk, so the rest of the queue is brought over in stages after
+that, with silent monitoring at every step.
 
-- **Weeks 1-2:** Call classification. Pull 30 days of call
-  recordings and classify them by intent. This is where you
-  learn what percentage of your volume is genuinely automatable.
-- **Weeks 3-4:** Script and knowledge base build for the top 5
-  to 10 automatable intents.
-- **Weeks 5-6:** Integration wiring, escalation rule tuning, QA
-  layer integration.
-- **Week 7:** Shadow mode. AI runs alongside humans on a slice of
-  the queue, humans review AI-suggested responses without
-  handoff.
-- **Week 8:** Partial cutover with silent monitoring.
-
-Enterprise deployments typically stretch this to 12 to 16 weeks
-because the integration surface is larger.
+- **Hours 0-24:** Call classification. Review recent call
+  recordings and classify them by intent. This is where you learn
+  what percentage of your volume is genuinely automatable.
+- **Hours 24-48:** Script and knowledge base build for the top
+  automatable intents, plus integration wiring and escalation rules.
+- **Hours 48-72:** Test calls, sign-off, and go-live on the first
+  slice of the queue.
+- **After go-live:** Shadow mode on the next intents, QA review,
+  then staged cutover queue by queue with silent monitoring.
 
 ## Costs, honestly
 

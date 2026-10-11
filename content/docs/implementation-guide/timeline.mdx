@@ -1,110 +1,58 @@
 ---
 title: "Implementation Timeline"
-description: "Day-by-day breakdown of what happens during a standard Implenix deployment."
+description: "Hour-by-hour breakdown of what happens during a standard Implenix deployment, from kickoff to live in 72 hours."
 section: "Implementation Guide"
 order: 2
 ---
 
 # Implementation Timeline
 
-Standard deployment: 7 to 14 business days. This page walks through what happens each day.
+Standard deployment: live in 72 hours from kickoff. This page walks through what happens in each block of hours.
 
-## Day 1, Kickoff and discovery call
+## Hours 0 to 24, Kickoff, discovery and script draft
 
-**Duration:** 60 minutes.
+**Kickoff call (60 minutes).** Kickoff call with your deployment owner and any relevant team members. We confirm scope, walk through the timeline, and start discovery. You share access to recent call recordings.
 
-Kickoff call with your deployment owner and any relevant team members. We confirm scope, walk through the timeline, and start discovery. You share access to recent call recordings.
+**Recording review and vocabulary catalog (internal).** We listen to 20 to 40 of your recent inbound recordings. We catalog your callers' vocabulary, common intents, hidden intake patterns, and any red flags. We build the "hard-stop" list of things the agent should never do.
 
-**Output:** Signed scope document, initial call log delivered to us.
+**Discovery review and draft script.** We walk through discovery findings with you. You correct any misreadings, add context, and approve the hard-stop list. We then write the 7-section script covering all identified intent branches.
 
-## Day 2, Recording review and vocabulary catalog
+**Output:** Signed scope document, approved discovery findings and hard-stop list, draft script for your review.
 
-**Duration:** internal, on our side.
+## Hours 24 to 48, Script iteration and integration wiring
 
-We listen to 20 to 40 of your recent inbound recordings. We catalog your callers' vocabulary, common intents, hidden intake patterns, and any red flags. We build the "hard-stop" list of things the agent should never do.
+**Script iteration (async collaborative).** You mark up the script. We revise. Usually 1 to 2 quick rounds before the script is approved.
 
-**Output:** Discovery findings document delivered to you for review.
+**Integration wiring (internal).** CRM connection (OAuth or API key setup). Calendar integration. SMS provisioning through Twilio. Transfer bridge configuration. Every integration tested with a live end-to-end write appearing in your source system.
 
-## Day 3, Discovery review call
+**Output:** Approved script. All integrations verified working. Shadow number provisioned.
 
-**Duration:** 45 minutes.
+## Hours 48 to 72, Test calls, your sign-off and go-live
 
-We walk through discovery findings with you. You correct any misreadings, add context, and approve the hard-stop list. This is the last chance to add or change scope before script build starts.
+**Internal test battery.** Our QA team runs 30 to 50 mock calls against the shadow number. All standard intents, edge cases, escalations, adversarial scenarios. Issues identified are fixed in-line.
 
-**Output:** Approved discovery findings, ready-to-build script requirements.
+**Client test window (you drive).** The shadow number is available for your team to test freely. Book test appointments, try edge cases, verify the CRM writes correctly. Report any issues to your deployment lead for pre-cutover fixes.
 
-## Days 4 to 5, Draft script
+**Sign-off and cutover (30 minutes).** You sign off, and cutover happens by call forwarding: your existing number forwards to the agent. Instant, and reversible in under an hour if needed.
 
-**Duration:** internal.
-
-We write the 7-section script covering all identified intent branches. First draft is delivered to you at end of day 5.
-
-**Output:** Draft script for your review.
-
-## Days 6 to 7, Script iteration
-
-**Duration:** async collaborative.
-
-You mark up the script. We revise. Usually 1 to 2 rounds before script is approved. Some deployments finish in one round; some need 3 or 4.
-
-**Output:** Approved script ready for integration wiring.
-
-## Days 8 to 9, Integration wiring
-
-**Duration:** internal.
-
-CRM connection (OAuth or API key setup). Calendar integration. SMS provisioning through Twilio. Transfer bridge configuration. Every integration tested with a live end-to-end write appearing in your source system.
-
-**Output:** All integrations verified working. Shadow number provisioned.
-
-## Days 10 to 11, Internal test battery
-
-**Duration:** internal.
-
-Our QA team runs 30 to 50 mock calls against the shadow number. All standard intents, edge cases, escalations, adversarial scenarios. Issues identified are fixed in-line.
-
-**Output:** Test-battery report shared with you.
-
-## Day 12, Client test window
-
-**Duration:** you drive.
-
-Shadow number is available for your team to test freely. Book test appointments, try edge cases, verify the CRM writes correctly. Report any issues to your deployment lead.
-
-**Output:** Your issues logged for pre-cutover fixes.
-
-## Day 13, Cutover
-
-**Duration:** 30 minutes to 2 hours depending on porting.
-
-Cutover happens. Options:
-
-- **Forwarding.** Instant. Your existing number forwards to the agent. Reversible in under an hour if needed.
-- **Full port.** Takes 5 to 10 business days from LOA signing to complete. Better for long-term but requires planning.
+If you want the agent to own your number long term, a full port to Twilio takes 5 to 10 business days from LOA signing (a carrier process). It runs in parallel while you are already live on forwarding, so it never delays go-live.
 
 **Output:** Agent is live on your inbound.
 
-## Day 14, Silent-monitor day 1
+## After go-live, Silent monitoring
 
-**Duration:** monitoring.
+**First 24 hours.** Our team silent-monitors 100 percent of calls. Any issue triggers immediate intervention. You get real-time updates on call volumes and outcomes, plus a first 24-hour production report.
 
-Our team silent-monitors 100 percent of calls. Any issue triggers immediate intervention. You get real-time updates on call volumes and outcomes.
+**Following days.** Continued monitoring at reduced intensity. Any escalations get same-hour response. Standard production monitoring and tuning cadence continues through the first weeks.
 
-**Output:** First 24-hour production report.
+## Regulated industries
 
-## Days 15 to 16, Silent-monitor days 2 to 3
+HIPAA, legal, and financial services deployments also go live in 72 hours. Your own compliance sign-off is scheduled before kickoff so it does not hold up the build. Compliance touchpoints inside the 72 hours:
 
-Continued monitoring at reduced intensity. Any escalations get same-hour response. Standard production monitoring cadence starts on day 4.
+- Hours 0 to 24: compliance officer or CCO joins discovery and reviews the script hard-stops.
+- Hours 24 to 48: integration compliance review (BAA verification, licensing gate check).
+- Hours 48 to 72: pre-cutover final compliance sign-off.
 
-## Regulated industry extension
+## Multi-location or complex integrations
 
-For HIPAA, legal, or financial services deployments, add 7 to 14 days for compliance review cycles. Compliance touchpoints:
-
-- Day 2 to 3: compliance officer or CCO joins discovery.
-- Day 5: draft compliance review of script hard-stops.
-- Day 9: integration compliance review (BAA verification, licensing gate check).
-- Day 12: pre-cutover final compliance sign-off.
-
-## Multi-location or complex integration extension
-
-Add 3 to 7 days per additional location. Add 5 to 10 days for ServiceTitan, Epic, or other complex integrations.
+Additional locations and complex integrations such as ServiceTitan or Epic are scoped on the kickoff call and wired within the same 72-hour window. Having API credentials and admin access ready before kickoff is what keeps it there.

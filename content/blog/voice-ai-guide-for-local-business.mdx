@@ -159,24 +159,24 @@ Every one of those calls would have been either missed entirely,
 answered late, or handled with less consistency by a busy front
 desk. The voice AI runs it quietly in the background.
 
-## The two-week deployment timeline
+## The 72-hour deployment timeline
 
-Real local-business deployments run 7 to 14 business days.
+A well-run local-business deployment goes live in 72 hours from
+kickoff. Here is how we run it.
 
-- **Days 1-2:** Discovery. Listen to your recent inbound calls,
-  understand your vocabulary, capture the "hard stop" list of
-  things the agent should never do.
-- **Days 3-5:** Script build. Per-intent branches, transfer
-  rules, escalation logic.
-- **Days 6-9:** Integration wiring. Calendar, CRM, SMS,
+- **Hours 0-24:** Discovery and script draft. Listen to your
+  recent inbound calls, understand your vocabulary, capture the
+  "hard stop" list of things the agent should never do, then
+  draft per-intent branches, transfer rules, escalation logic.
+- **Hours 24-48:** Integration wiring. Calendar, CRM, SMS,
   transfer bridge, payment if needed.
-- **Days 10-12:** Test calls. Full mock-caller battery
-  including edge cases, hostile callers, unusual accents.
-- **Days 13-14:** Cutover. Silent monitor for 48 hours minimum.
+- **Hours 48-72:** Test calls. Full mock-caller battery
+  including edge cases, hostile callers, unusual accents. Your
+  sign-off, then go-live.
+- **After go-live:** Silent monitor for 48 hours minimum.
 
-The discovery week is the one operators want to skip. Do not.
-It is what determines whether the agent feels right on the
-first call.
+Discovery is the step operators want to skip. Do not. It is what
+determines whether the agent feels right on the first call.
 
 ## The tier-and-cost lay of the land
 
@@ -206,7 +206,7 @@ layers apply. See the industry-specific guides.
 
 ## The failure modes I see most
 
-- **Skipped discovery week.** Agent does not speak the callers'
+- **Skipped discovery.** Agent does not speak the callers'
   vocabulary. Callers hang up more than expected.
 - **Wrong tier.** Templated tier 1 bot on an operation that
   needed tier 2 depth.

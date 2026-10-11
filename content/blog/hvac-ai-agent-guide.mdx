@@ -167,30 +167,30 @@ are opt-in and the agent announces the recording at call open per
 state law, a two-party consent state like California, Florida, or
 Massachusetts requires this and I set it as default everywhere.
 
-## What a real HVAC deployment looks like week by week
+## What a real HVAC deployment looks like hour by hour
 
-Standard timeline is 7 to 14 business days. Here is what those
-days actually contain.
+Standard timeline is live in 72 hours from kickoff. Here is what
+those hours actually contain.
 
-- **Days 1-2:** Discovery. We listen to 20 to 40 of your recent
-  inbound calls and write the intake logic against your actual
-  vocabulary, "no heat" versus "furnace not working" versus "cold
-  house." Your language is what the agent uses.
-- **Days 3-5:** Script build. Emergency branches, dispatch rules,
+- **Hours 0-24:** Discovery and script draft. We listen to 20 to
+  40 of your recent inbound calls and write the intake logic
+  against your actual vocabulary, "no heat" versus "furnace not
+  working" versus "cold house." Your language is what the agent
+  uses. Then the script: emergency branches, dispatch rules,
   transfer conditions, quote-follow-up cadence. This is the phase
   where the operator's judgment matters most.
-- **Days 6-8:** Integration wiring. Calendar reads, job creation,
-  CRM writeback, SMS to on-call, warm-transfer bridge.
-- **Days 9-10:** Test calls. We run 30 to 50 scripted and freeform
-  calls against a shadow number. Owner listens to every one.
-- **Days 11-14:** Cutover. Port forwards, or full port of the main
-  number. We run in "silent monitor" mode for 48 hours so a human
-  is always available to catch a bad transfer.
+- **Hours 24-48:** Integration wiring. Calendar reads, job
+  creation, CRM writeback, SMS to on-call, warm-transfer bridge.
+- **Hours 48-72:** Test calls. We run 30 to 50 scripted and
+  freeform calls against a shadow number. Owner listens to every
+  one and signs off. Then cutover: we forward your main number to
+  the agent (a full port, if you want one, runs in parallel).
+- **After go-live:** We run in "silent monitor" mode for 48 hours
+  so a human is always available to catch a bad transfer.
 
 The failure modes I have seen come almost entirely from skipping
-the discovery week. If the agent does not speak your callers'
-vocabulary, it feels wrong on the first call. Do not skip that
-step.
+discovery. If the agent does not speak your callers' vocabulary,
+it feels wrong on the first call. Do not skip that step.
 
 ## The ROI math no one publishes
 
@@ -215,33 +215,30 @@ Not every missed call becomes a booked job with an AI agent, of
 course. Realistic capture is 65 to 80 percent of previously-missed
 calls booked or triaged, the rest are wrong numbers, spam, and
 callers who hung up before intent was clear. Applying a 70 percent
-capture rate: **$31,416 per month in newly-booked revenue** on a
-$1,400 to $2,200 per month agent bill.
+capture rate: **$31,416 per month in newly-booked revenue**, many
+times what the agent costs.
 
 This is why HVAC has the fastest payback of any vertical we ship.
 Median payback in HVAC deployments we track internally sits
-between 8 and 14 days. If yours takes longer, the discovery week
-was skipped or the emergency branch is not tuned correctly.
+between 8 and 14 days. If yours takes longer, discovery was
+skipped or the emergency branch is not tuned correctly.
 
 ## Costs, honestly
 
-There are three cost layers to plan for.
+There are three cost layers to plan for with any vendor: a
+one-time build, monthly platform and telephony (voice minutes,
+SMS, hosting, carrier fees), and ongoing tuning. How big each
+layer is depends on how many locations you run, which CRMs are in
+play, whether ServiceTitan is involved, and your call volume.
 
-1. **Build fee.** One-time. Ranges $2,500 to $8,000 depending on
-   how many locations, how many CRMs, and whether ServiceTitan is
-   involved (it usually adds a few days).
-2. **Monthly platform + telephony.** Voice minutes, SMS, hosting,
-   telephony carrier fees. For a shop under 2,000 inbound minutes
-   per month, budget $700 to $1,400. Above 5,000 minutes, negotiate
-   volume rates.
-3. **Tuning retainer.** Optional. Some operators want us to review
-   flagged calls monthly and adjust scripts. Budget $400 to $900
-   per month for this.
+That is why our pricing is custom. On a short call, a lead
+specialist reviews your call flow and recommends the best
+solution and price for your shop. You can
+[book that call here](/contact).
 
-There is no version of a real deployment that comes in under $600
-per month all-in, and I am suspicious of any vendor quoting that
-number. What that price actually buys is a template voice bot that
-did not go through the discovery week.
+Be suspicious of any vendor quoting a rock-bottom all-in number
+without asking about your calls first. What that price actually
+buys is a template voice bot that did not go through discovery.
 
 ## Compliance notes I would not skip
 

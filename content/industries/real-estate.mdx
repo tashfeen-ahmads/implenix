@@ -30,14 +30,14 @@ stats:
     label: "callback on new IDX/Zillow form-fills"
   - number: "4-7%"
     label: "cold-lead reactivation recovery rate"
-  - number: "5-10 days"
+  - number: "72 hours"
     label: "typical deployment timeline"
 caseStudySlug: "columbus-property"
 testimonialQuote: "New Zillow leads used to sit in an inbox until whoever noticed them first got there. Now they're on the phone in under a minute, every one. First month our lead-to-conversation rate roughly doubled."
 testimonialAuthor: "Team lead, mid-Atlantic buyer-focused team"
 faq:
   - question: "Does it work with Follow Up Boss, kvCORE, Sierra Interactive, BoomTown?"
-    answer: "All four, in production. Follow Up Boss is the fastest integration path (cleanest API surface in real estate today). kvCORE has richer IDX data but slower webhook cadence, we add retry logic. Sierra and BoomTown ship in the standard 5-10 day window."
+    answer: "All four, in production. Follow Up Boss is the fastest integration path (cleanest API surface in real estate today). kvCORE has richer IDX data but slower webhook cadence, we add retry logic. Sierra and BoomTown ship within the standard 72-hour setup."
   - question: "Can it qualify by buyer vs. seller?"
     answer: "Yes. First qualifying question is buy-or-sell. From there, buyer branch captures price range, ZIP, timeline, financing/pre-approval. Seller branch captures property address, timing, motivation, whether they've spoken with another agent."
   - question: "How does it handle showings?"
@@ -47,7 +47,7 @@ faq:
   - question: "Is it compliant with TCPA and Fair Housing?"
     answer: "Yes. TCPA: reactivation outbound only runs against opt-in / existing-relationship contacts with STOP-honor. Fair Housing: scripts get a fair-housing language review before go-live to ensure no steering language. License disclosure: the agent identifies as a virtual assistant, never as a licensed agent."
   - question: "How long does setup take?"
-    answer: "5-10 business days for a typical team, faster than most verticals because the intake patterns are highly repeatable. Discovery reviews your recent call recordings, buyer script, seller script, and the 'hard stop' list around pricing opinions."
+    answer: "Live in 72 hours from kickoff. Real estate intake patterns are highly repeatable, which makes it a clean build. Discovery reviews your recent call recordings, buyer script, seller script, and the 'hard stop' list around pricing opinions."
 ---
 
 An AI receptionist for a real estate team hits the first-call
