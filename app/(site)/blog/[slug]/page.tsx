@@ -7,7 +7,7 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { allBlogPosts } from 'contentlayer/generated';
 import { mdxComponents } from '@/components/docs/MdxComponents';
 import { Badge } from '@/components/common/Badge';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 import { RelatedContent } from '@/components/common/RelatedContent';
 import { TopicalLinks } from '@/components/common/TopicalLinks';
 import { SchemaOrg } from '@/components/seo/SchemaOrg';
@@ -197,14 +197,13 @@ export default function BlogPostPage({ params }: { params: Params }) {
           <div>
             <Badge label="Skip the form" variant="cyan" />
             <p className="font-heading text-2xl text-white mt-3 leading-snug">
-              Hear the agent take a real call, or pick a slot.
+              Talk to Ron, our AI receptionist, or pick a slot.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
-            <PhoneCTA
-              ctaLocation={`blog-${doc.slug}-phone`}
+            <TestRonCTA
+              ctaLocation={`blog-${doc.slug}-ron`}
               variant="primary"
-              label="Call agent"
             />
             <Link
               href="/contact"

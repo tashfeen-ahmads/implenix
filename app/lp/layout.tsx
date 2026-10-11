@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { LogoLockup } from '@/components/common/LogoLockup';
+import { RonLauncher } from '@/components/ron/RonLauncher';
 
 export default function LandingLayout({
   children,
@@ -22,6 +23,7 @@ export default function LandingLayout({
           </Link>
         </div>
       </footer>
+      <RonLauncher />
     </div>
   );
 }

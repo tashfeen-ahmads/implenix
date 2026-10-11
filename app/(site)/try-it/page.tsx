@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Phone, ArrowRight, Headphones, Clock, ShieldCheck } from 'lucide-react';
+import { AudioLines, ArrowRight, Mic, Clock, ShieldCheck } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { CodeWindow } from '@/components/common/CodeWindow';
 import { SchemaOrg } from '@/components/seo/SchemaOrg';
@@ -10,22 +10,18 @@ import {
   speakableSchema,
 } from '@/lib/schema';
 import { buildMetadata } from '@/lib/seo';
-import {
-  AGENT_PHONE_DISPLAY,
-  AGENT_PHONE_TEL,
-  HAS_REAL_PHONE,
-} from '@/lib/leadCapture';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Hear Implenix Live, Call Our Demo Receptionist | Implenix',
+  title: 'Test Ron Live, Talk to Our AI Receptionist | Implenix',
   description:
-    'Skip the video demo. Pick up your phone, dial our demo number, and have a real conversation with the Implenix AI configured as a sample HVAC receptionist.',
+    'Skip the video demo. Talk to Ron, the Implenix AI receptionist, right in your browser. He is set up as a sample HVAC front desk. No phone, no signup.',
   path: '/try-it',
 });
 
 const SAMPLE_TRANSCRIPT = [
-  { ts: '00:00', speaker: 'system' as const, text: 'Inbound · demo · Northwind HVAC' },
-  { ts: '00:02', speaker: 'agent' as const, text: 'Northwind HVAC, this is Ava. How can I help?' },
+  { ts: '00:00', speaker: 'system' as const, text: 'Browser demo · Northwind HVAC' },
+  { ts: '00:02', speaker: 'agent' as const, text: 'Northwind HVAC, this is Ron. How can I help?' },
   { ts: '00:05', speaker: 'caller' as const, text: 'Hi, I want to test how you handle a real call.' },
   { ts: '00:09', speaker: 'agent' as const, text: 'Happy to demo. Try giving me a real-world request, like an emergency, a quote, or a reschedule.' },
   { ts: '00:14', speaker: 'caller' as const, text: 'My AC is out, can you book someone today?' },
@@ -34,14 +30,14 @@ const SAMPLE_TRANSCRIPT = [
 
 const STEPS = [
   {
-    Icon: Phone,
-    title: '1 · Dial the number',
-    body: 'No app, no signup. Just call from any phone.',
+    Icon: AudioLines,
+    title: '1 · Tap Test Ron now',
+    body: 'No app, no phone, no signup. It runs in your browser.',
   },
   {
-    Icon: Headphones,
-    title: '2 · Talk to Ava',
-    body: 'Ava is configured as Northwind HVAC. Try emergencies, quotes, reschedules.',
+    Icon: Mic,
+    title: '2 · Talk to Ron',
+    body: 'Ron is set up as Northwind HVAC. Try emergencies, quotes, reschedules.',
   },
   {
     Icon: Clock,
@@ -58,13 +54,13 @@ export default function TryItPage() {
           serviceSchema({
             name: 'Implenix AI Receptionist, Live Demo',
             description:
-              'Live phone demo of the Implenix AI voice agent configured as a sample HVAC receptionist. No signup, just call and try it.',
+              'Live in-browser demo of Ron, the Implenix AI receptionist, set up as a sample HVAC front desk. No signup, just talk.',
             serviceType: 'AI Receptionist',
             url: '/try-it',
           }),
           breadcrumbListSchema([
             { label: 'Home', href: '/' },
-            { label: 'Hear it live', href: '/try-it' },
+            { label: 'Test Ron now', href: '/try-it' },
           ]),
           speakableSchema(),
         ]}
@@ -76,43 +72,24 @@ export default function TryItPage() {
               <Badge label="Live demo · no signup" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 Skip the video.{' '}
-                <span className="text-brand-purple">Call the AI</span>{' '}
+                <span className="text-brand-purple">Talk to Ron</span>{' '}
                 yourself.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
-                Pick up your phone, dial the number, and have a real
-                conversation with the Implenix agent, configured as a
-                sample HVAC receptionist named Ava. No form. No signup.
-                Just talk.
+                Ron is the Implenix AI receptionist. Talk to him right here
+                in your browser, set up as the front desk of a sample HVAC
+                company. No form. No signup. Just talk.
               </p>
 
-              {HAS_REAL_PHONE ? (
-                <a
-                  href={`tel:${AGENT_PHONE_TEL}`}
-                  data-cta-location="try-it-hero"
-                  data-cta-type="primary"
-                  className="mt-2 group inline-flex items-center gap-3 bg-brand-purple text-white font-heading text-2xl md:text-3xl px-6 py-4 rounded-sm hover:opacity-90 self-start"
-                >
-                  <Phone size={22} />
-                  <span className="font-mono">{AGENT_PHONE_DISPLAY}</span>
-                  <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
-                </a>
-              ) : (
-                <div
-                  data-cta-location="try-it-hero-pending"
-                  data-cta-type="phone-pending"
-                  className="mt-2 inline-flex items-center gap-3 bg-brand-purple/40 text-white/85 font-heading text-2xl md:text-3xl px-6 py-4 rounded-sm self-start cursor-not-allowed"
-                  aria-disabled="true"
-                >
-                  <Phone size={22} />
-                  <span className="font-mono">Live line coming soon</span>
-                </div>
-              )}
-              <p className="text-[11px] font-mono uppercase tracking-widest text-white/45">
-                ▸ {HAS_REAL_PHONE
-                  ? 'Tap on mobile to dial · standard carrier rates apply'
-                  : 'The live demo line goes live this week, book a slot in the meantime'}
-              </p>
+              <div className="mt-2 flex flex-col gap-3 self-start">
+                <TestRonCTA
+                  ctaLocation="try-it-hero"
+                  size="lg"
+                />
+                <p className="text-[11px] font-mono uppercase tracking-widest text-white/45">
+                  ▸ Uses your microphone · works on desktop and mobile
+                </p>
+              </div>
 
               <div className="grid sm:grid-cols-3 gap-3 pt-6 border-t border-brand-purple/15">
                 {STEPS.map(({ Icon, title, body }) => (
@@ -136,11 +113,11 @@ export default function TryItPage() {
               <CodeWindow
                 title="northwind-hvac.demo"
                 lines={SAMPLE_TRANSCRIPT}
-                caption="Sample of a recent demo call · 18 seconds in"
+                caption="Sample of a recent demo conversation · 18 seconds in"
               />
               <div className="border border-brand-cyan/30 bg-black p-5 flex flex-col gap-3">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-                  <ShieldCheck size={11} /> Ava knows
+                  <ShieldCheck size={11} /> Ron knows
                 </span>
                 <ul className="text-sm font-body text-white/85 grid grid-cols-2 gap-y-2 gap-x-4">
                   <li>· HVAC pricing</li>

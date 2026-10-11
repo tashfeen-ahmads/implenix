@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { LogoLockup } from '@/components/common/LogoLockup';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
 const COLUMNS = [
   {
@@ -61,7 +61,7 @@ const COLUMNS = [
     heading: 'Learn',
     links: [
       { href: '/audit', label: 'Free missed-call audit' },
-      { href: '/try-it', label: 'Hear it live' },
+      { href: '/try-it', label: 'Test Ron now' },
       { href: '/blog', label: 'Blog' },
       { href: '/resources', label: 'Guides & Playbooks' },
       { href: '/glossary', label: 'Voice AI glossary' },
@@ -106,7 +106,7 @@ export function Footer() {
               data-cta-type="secondary"
               className="inline-flex items-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
             >
-              Hear it live
+              Test Ron now
             </Link>
           </div>
         </div>
@@ -121,16 +121,15 @@ export function Footer() {
             </p>
             <div className="border border-brand-cyan/30 bg-brand-dark p-4 flex flex-col gap-3">
               <p className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
-                ▸ Skip the form, call the agent
+                ▸ Skip the form, talk to Ron
               </p>
               <p className="font-body text-xs text-white/65 leading-relaxed">
-                Hear the same AI agent that runs on customer phone lines.
+                Ron is the same AI receptionist that answers our customers’ phones.
                 Live conversation, real qualification, in 60 seconds.
               </p>
-              <PhoneCTA
-                ctaLocation="footer-phone"
+              <TestRonCTA
+                ctaLocation="footer-ron"
                 variant="primary"
-                label="Call our agent"
               />
             </div>
             <p className="text-xs text-white/45 font-mono uppercase tracking-widest">

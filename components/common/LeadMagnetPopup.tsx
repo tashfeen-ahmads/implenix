@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, CalendarCheck } from 'lucide-react';
 import { Badge } from './Badge';
-import { PhoneCTA } from './PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 import { trackConversion, GA4_EVENTS } from '@/lib/analytics';
 
 const SHOW_AFTER_MS = 25_000;
@@ -35,7 +35,7 @@ function shouldShow(): boolean {
 }
 
 // Lead-capture popup. No form, no email, direct conversion CTAs only:
-// (1) call the AI agent now, (2) book on the calendar. Both are
+// (1) talk to Ron now, (2) book on the calendar. Both are
 // one-tap actions so the popup converts without any data entry.
 export function LeadMagnetPopup() {
   const pathname = usePathname();
@@ -186,16 +186,16 @@ export function LeadMagnetPopup() {
                 Stop losing deals to missed calls.
               </h2>
               <p className="font-body text-sm text-white/75 leading-relaxed">
-                Call our AI agent live and hear it run a real qualification
-                conversation, or book a 15-minute call with the team on the
+                Talk to Ron live and hear him run a real qualification
+                conversation, or book a 30-minute call with the team on the
                 calendar. No form, no email, just one tap.
               </p>
 
               <div className="flex flex-col gap-3 mt-1">
-                <PhoneCTA
-                  ctaLocation="lead-popup-phone"
+                <TestRonCTA
+                  ctaLocation="lead-popup-ron"
                   variant="primary"
-                  label="Call our AI agent now"
+                  label="Test Ron now"
                 />
                 <a
                   href="/contact"

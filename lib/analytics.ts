@@ -24,12 +24,12 @@ export const GA4_EVENTS = {
   leadNewsletter: 'lead_newsletter', // newsletter form submit
   leadGhl: 'lead_ghl', // any GHL iframe submit
   // Engagement signals
-  tryItCallClicked: 'try_demo_call_clicked', // /try-it phone number click
   pricingViewed: 'pricing_viewed', // /pricing page view
   industryViewed: 'industry_page_viewed', // /ai-receptionist-for-* view
   comparisonViewed: 'comparison_page_viewed', // vs / alternative pages
-  // Calendly + phone CTAs (no-form lead capture)
-  agentPhoneClicked: 'agent_phone_clicked', // PhoneCTA tap
+  // Ron (in-browser voice agent) + calendar CTAs (no-form lead capture)
+  ronOpened: 'ron_opened', // any "Test Ron now" tap
+  ronConversationStarted: 'ron_conversation_started', // mic granted, session live
   auditRun: 'audit_run', // /audit input step completed
   auditBookClicked: 'audit_book_clicked', // /audit calendar CTA tap
   leadPopupBookClicked: 'lead_popup_book_clicked', // popup calendar tap
@@ -97,7 +97,9 @@ export async function submitWebhook(
   source: string,
 ): Promise<void> {
   if (typeof window === 'undefined') return;
-  trackEvent('form_submit', { source, ...data });
+  // Only the source goes to the dataLayer: GA4 terms forbid sending
+  // personal data (email, phone, names) to analytics.
+  trackEvent('form_submit', { source });
   try {
     await fetch('/api/leads', {
       method: 'POST',
@@ -106,7 +108,6 @@ export async function submitWebhook(
         source,
         data,
         page: window.location.pathname,
-        ts: new Date().toISOString(),
       }),
       keepalive: true,
     });

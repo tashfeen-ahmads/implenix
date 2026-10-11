@@ -19,7 +19,7 @@ type Props = {
 export function CalendlyEmbed({
   ctaLocation,
   height = 720,
-  title = 'Book a 15-minute call with Implenix',
+  title = 'Book a 30-minute call with Implenix',
 }: Props) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [loaded, setLoaded] = useState(false);

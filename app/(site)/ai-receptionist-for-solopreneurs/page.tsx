@@ -299,7 +299,7 @@ more than the average solo operator's monthly software
               data-cta-type="secondary"
               className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
             >
-              Hear it live
+              Test Ron now
             </Link>
           </div>
         </div>

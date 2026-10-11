@@ -39,7 +39,7 @@ import {
   PhoneForwarded,
 } from 'lucide-react';
 import { LogoLockup } from '@/components/common/LogoLockup';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 import { INDUSTRIES, industryUrl } from '@/lib/industries';
 import { COMPARISON_PROFILES } from '@/lib/seo/comparisons';
 import { COMPETITOR_PROFILES } from '@/lib/seo/competitors';
@@ -64,7 +64,7 @@ const NAV_GROUPS: NavGroup[] = [
   },
   { label: 'Pricing', href: '/pricing', type: 'link' },
   { label: 'Case Studies', href: '/case-studies', type: 'link' },
-  { label: 'Try Live', href: '/try-it', type: 'link' },
+  { label: 'Live demo', href: '/try-it', type: 'link' },
 ];
 
 const SOLUTIONS = [
@@ -195,7 +195,7 @@ export function NavBar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
-          <PhoneCTA ctaLocation="nav" variant="nav" />
+          <TestRonCTA ctaLocation="nav" variant="nav" />
           <Link
             href="/contact"
             data-cta-location="nav-calendar"

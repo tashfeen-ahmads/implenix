@@ -8,7 +8,7 @@ import { Badge } from '@/components/common/Badge';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { DividedStats } from '@/components/common/DividedStats';
 import { AudioPlayer } from '@/components/common/AudioPlayer';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 import { RelatedContent } from '@/components/common/RelatedContent';
 import { mdxComponents } from '@/components/docs/MdxComponents';
 import { SchemaOrg } from '@/components/seo/SchemaOrg';
@@ -268,10 +268,9 @@ export default function CaseStudyPage({ params }: { params: Params }) {
             We will scope a deployment for your team in 30 minutes.
           </p>
           <div className="flex flex-col gap-3">
-            <PhoneCTA
-              ctaLocation={`case-study-${doc.slug}-phone`}
+            <TestRonCTA
+              ctaLocation={`case-study-${doc.slug}-ron`}
               variant="primary"
-              label="Call our agent now"
             />
             <Link
               href="/contact"

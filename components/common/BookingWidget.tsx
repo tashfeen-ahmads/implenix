@@ -121,6 +121,8 @@ export function BookingWidget({ ctaLocation, height }: Props) {
           phone: form.phone,
           notes: form.notes,
           startIso: selectedSlot.startIso,
+          ctaLocation,
+          page: window.location.pathname,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as

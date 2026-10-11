@@ -6,6 +6,7 @@ import {
   createBookingEvent,
   getBusyRanges,
 } from '@/lib/googleCalendar';
+import { buildCrmEvent, sendToCrm } from '@/lib/crm';
 
 export const runtime = 'nodejs';
 
@@ -15,6 +16,8 @@ const bookingSchema = z.object({
   phone: z.string().optional(),
   notes: z.string().max(2000).optional(),
   startIso: z.string(),
+  ctaLocation: z.string().max(120).optional(),
+  page: z.string().max(500).optional(),
 });
 
 // POST /api/book
@@ -33,7 +36,7 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) {
     return apiError(parsed.error.issues[0]?.message ?? 'Invalid input', 400);
   }
-  const { name, email, phone, notes, startIso } = parsed.data;
+  const { name, email, phone, notes, startIso, ctaLocation, page } = parsed.data;
 
   const start = new Date(startIso);
   if (Number.isNaN(start.getTime())) {
@@ -75,6 +78,23 @@ export async function POST(req: NextRequest) {
       attendeePhone: phone,
       notes,
     });
+    // The booking is already on the calendar; a CRM outage must not
+    // turn it into an error for the visitor. sendToCrm logs failures.
+    await sendToCrm(
+      buildCrmEvent('booking.created', {
+        source: ctaLocation ?? 'booking-widget',
+        page,
+        contact: { name, email, phone },
+        details: {
+          start: start.toISOString(),
+          end: end.toISOString(),
+          timezone: BOOKING_CONFIG.timezone,
+          notes,
+          meet_link: event.meetLink,
+          calendar_event_id: event.id,
+        },
+      }),
+    );
     return NextResponse.json({
       success: true,
       eventId: event.id,

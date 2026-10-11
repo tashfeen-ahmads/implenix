@@ -1,6 +1,6 @@
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { BookingWidget } from '@/components/common/BookingWidget';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
 export function DemoCTASection() {
   return (
@@ -14,10 +14,10 @@ export function DemoCTASection() {
             eyebrow="See it live"
             title="See the Implenix agent work in real time"
             compact
-            description="Pick a 30-minute slot on the calendar, or call our agent right now and hear it run a live conversation."
+            description="Pick a 30-minute slot on the calendar, or talk to Ron right now, in your browser."
           />
           <div className="mt-10 flex flex-col gap-4">
-            <PhoneCTA ctaLocation="homepage-demo-phone" variant="primary" />
+            <TestRonCTA ctaLocation="homepage-demo-ron" variant="primary" />
             <p className="text-xs uppercase tracking-widest text-brand-cyan font-mono">
               ▸ Or pick a slot on the calendar →
             </p>

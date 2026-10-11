@@ -4,7 +4,6 @@ import { Badge } from '@/components/common/Badge';
 import { SchemaOrg } from '@/components/seo/SchemaOrg';
 import { webPageSchema, breadcrumbListSchema } from '@/lib/schema';
 import { buildMetadata } from '@/lib/seo';
-import { AGENT_PHONE_DISPLAY, HAS_REAL_PHONE } from '@/lib/leadCapture';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Privacy Policy | Implenix',
@@ -14,7 +13,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const EFFECTIVE_DATE = 'January 8, 2026';
-const LAST_UPDATED = 'January 8, 2026';
+const LAST_UPDATED = 'October 11, 2026';
 
 export default function PrivacyPolicyPage() {
   return (
@@ -100,24 +99,21 @@ export default function PrivacyPolicyPage() {
           </ul>
 
           <p>
-            When you call our AI voice agent at{' '}
-            {HAS_REAL_PHONE ? AGENT_PHONE_DISPLAY : '(the number will be posted here once live)'},
-            we collect:
+            When you talk to Ron, our AI voice agent, in your browser
+            (the “Test Ron now” buttons on this site), we collect:
           </p>
 
           <ul>
             <li>
-              <strong>Your voice input</strong> (converted to text by our
-              speech-to-text provider and processed by our AI voice model).
+              <strong>Your voice input</strong>, captured through your
+              browser microphone only after you grant permission and press
+              “Start talking”, then converted to text and processed by our
+              AI voice provider.
             </li>
             <li>
-              <strong>The full call recording</strong> and{' '}
+              <strong>The full conversation recording</strong> and{' '}
               <strong>text transcript</strong> for quality assurance and
               product improvement.
-            </li>
-            <li>
-              <strong>Caller ID / phone number</strong> as delivered by the
-              telephone network.
             </li>
             <li>
               Any <strong>business information</strong> you share during the
@@ -144,7 +140,7 @@ export default function PrivacyPolicyPage() {
             </li>
             <li>
               Interactions with specific elements, for example, clicking
-              the phone-agent CTA, submitting a booking, or opening the
+              the “Test Ron now” button, submitting a booking, or opening the
               audit tool
             </li>
           </ul>
@@ -213,7 +209,7 @@ export default function PrivacyPolicyPage() {
           <ul>
             <li>
               <strong>Consent</strong>, when you actively book a call,
-              call our agent, or interact with cookie-enabled tracking.
+              talk to Ron, or interact with cookie-enabled tracking.
             </li>
             <li>
               <strong>Contract</strong>, when we need to deliver services
@@ -257,6 +253,13 @@ export default function PrivacyPolicyPage() {
                 <td>Vercel Inc.</td>
                 <td>
                   Website hosting, edge caching, deployment infrastructure
+                </td>
+              </tr>
+              <tr>
+                <td>ElevenLabs Inc.</td>
+                <td>
+                  In-browser voice conversations with Ron: speech
+                  recognition, voice synthesis, conversation recording
                 </td>
               </tr>
               <tr>
@@ -353,7 +356,7 @@ export default function PrivacyPolicyPage() {
               record-keeping.
             </li>
             <li>
-              <strong>Call recordings and transcripts</strong>: retained
+              <strong>Call and conversation recordings and transcripts</strong>: retained
               for <strong>90 days</strong> for quality assurance, then
               anonymized or deleted.
             </li>

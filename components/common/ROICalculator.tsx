@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Lock, ArrowRight, CalendarCheck } from 'lucide-react';
-import { PhoneCTA } from './PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
 export function ROICalculator() {
   const [callVolume, setCallVolume] = useState(400);
@@ -93,13 +93,12 @@ export function ROICalculator() {
                 </span>
               </div>
               <p className="text-white text-center font-body text-sm max-w-sm">
-                Hear the AI agent walk you through your specific numbers, or book a 15-minute slot on the calendar. No form.
+                Talk to Ron about your numbers, or book a 30-minute slot on the calendar. No form.
               </p>
               <div className="w-full flex flex-col sm:flex-row gap-2 max-w-sm">
-                <PhoneCTA
-                  ctaLocation="roi-calculator-phone"
+                <TestRonCTA
+                  ctaLocation="roi-calculator-ron"
                   variant="primary"
-                  label="Call our agent"
                   className="flex-1"
                 />
                 <Link

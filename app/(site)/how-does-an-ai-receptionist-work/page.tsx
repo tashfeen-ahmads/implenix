@@ -381,10 +381,10 @@ compact
           <div className="lg:col-span-7">
             <Badge label="Try it on a real call" variant="purple" />
             <h2 className="font-heading text-3xl md:text-5xl mt-5 leading-[1.05]">
-              The fastest way to understand it is to call it.
+              The fastest way to understand it is to talk to it.
             </h2>
             <p className="mt-4 font-body text-white/75 max-w-xl">
-              We run a live demo number configured as a sample HVAC
+              Ron, our demo agent, runs in your browser as a sample HVAC
               receptionist. Try emergencies, quotes, reschedules, see how
               the pipeline above handles each one in real time.
             </p>
@@ -396,7 +396,7 @@ compact
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Call the demo line <ArrowRight size={16} />
+              Test Ron now <ArrowRight size={16} />
             </Link>
             <Link
               href="/audit"

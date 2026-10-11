@@ -17,8 +17,8 @@ import {
   runAudit,
   type IndustryKey,
 } from '@/lib/audit';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
-import { trackConversion, GA4_EVENTS } from '@/lib/analytics';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
+import { trackConversion, submitWebhook, GA4_EVENTS } from '@/lib/analytics';
 
 const inputSchema = z.object({
   phone: z
@@ -62,6 +62,14 @@ export function AuditTool() {
       industry: values.industry,
       averageClientValue: Number(values.averageClientValue),
     });
+    void submitWebhook(
+      {
+        phone: values.phone,
+        industry: values.industry,
+        averageClientValue: Number(values.averageClientValue),
+      },
+      'audit',
+    );
   };
 
   const result = useMemo(() => {
@@ -228,14 +236,13 @@ export function AuditTool() {
                 ▸ Step 2 · Save these numbers, get on a call
               </span>
               <p className="font-body text-sm text-white/80 leading-relaxed">
-                Call our agent now to hear the playbook live, or book a
+                Talk to Ron to hear the playbook live, or book a
                 30-minute slot with the team, no email, no form.
               </p>
               <div className="flex flex-col sm:flex-row gap-2 mt-1">
-                <PhoneCTA
-                  ctaLocation="audit-result-phone"
+                <TestRonCTA
+                  ctaLocation="audit-result-ron"
                   variant="primary"
-                  label="Call our agent now"
                   className="flex-1"
                 />
                 <a

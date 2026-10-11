@@ -11,7 +11,7 @@ type Bubble =
 
 const CONVERSATION: Bubble[] = [
   { from: 'system', text: 'Inbound call · +1 (415) 555-0184', ts: '00:00' },
-  { from: 'agent', text: 'Northwind HVAC, this is Ava. How can I help?', ts: '00:02' },
+  { from: 'agent', text: 'Northwind HVAC, this is Ron. How can I help?', ts: '00:02' },
   { from: 'caller', text: 'My AC stopped. House is at 88°.', ts: '00:05' },
   { from: 'agent', text: 'Sorry to hear that. Sending a tech today. Address?', ts: '00:09' },
   { from: 'caller', text: '1420 Cedar Lane.', ts: '00:13' },
@@ -50,11 +50,11 @@ export function IPhoneMock() {
 
           <header className="px-4 py-3 border-b border-brand-purple/20 flex items-center gap-3">
             <span className="w-9 h-9 rounded-full bg-brand-purple flex items-center justify-center font-heading text-white text-sm">
-              AV
+              R
             </span>
             <div className="flex-1 min-w-0">
               <p className="font-heading text-white text-sm leading-none">
-                Ava · Implenix Agent
+                Ron · Implenix Agent
               </p>
               <p className="text-[10px] uppercase tracking-widest text-brand-cyan font-mono mt-1 flex items-center gap-1">
                 <span

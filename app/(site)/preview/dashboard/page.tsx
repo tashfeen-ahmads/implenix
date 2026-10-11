@@ -391,7 +391,7 @@ function UpsellRow() {
     },
     {
       title: 'Branded voice cloning',
-      body: 'Replace Ava with your own voice · premium tier.',
+      body: 'Replace Ron with your own voice · premium tier.',
       cta: 'Upgrade · contact sales',
     },
   ];

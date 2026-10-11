@@ -2,12 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { X, Phone, CalendarCheck } from 'lucide-react';
-import {
-  AGENT_PHONE_TEL,
-  HAS_REAL_PHONE,
-} from '@/lib/leadCapture';
-import { trackConversion, GA4_EVENTS } from '@/lib/analytics';
+import { X, CalendarCheck } from 'lucide-react';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
 export function StickyDemoCTA() {
   const [visible, setVisible] = useState(false);
@@ -33,10 +29,10 @@ export function StickyDemoCTA() {
       <div className="flex items-start gap-3">
         <div className="flex-1 min-w-0">
           <p className="font-heading text-white text-sm">
-            Talk to the AI agent now
+            Talk to Ron now
           </p>
           <p className="text-xs text-white/70 font-body mt-0.5 leading-relaxed">
-            Hear it run a real call, or pick a slot on the calendar.
+            Test our AI receptionist in your browser, or pick a slot.
           </p>
         </div>
         <button
@@ -48,21 +44,11 @@ export function StickyDemoCTA() {
         </button>
       </div>
       <div className="flex gap-2">
-        {HAS_REAL_PHONE ? (
-          <a
-            href={`tel:${AGENT_PHONE_TEL}`}
-            onClick={() =>
-              trackConversion(GA4_EVENTS.agentPhoneClicked, {
-                cta_location: 'sticky',
-              })
-            }
-            data-cta-location="sticky-phone"
-            data-cta-type="phone"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-brand-purple text-white text-xs font-medium px-3 py-2.5 rounded-sm hover:opacity-90"
-          >
-            <Phone size={12} /> Call agent
-          </a>
-        ) : null}
+        <TestRonCTA
+          ctaLocation="sticky"
+          size="sm"
+          className="flex-1"
+        />
         <Link
           href="/contact"
           data-cta-location="sticky-calendar"

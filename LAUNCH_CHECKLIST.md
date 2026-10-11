@@ -14,8 +14,9 @@ noted).
 | Variable | Value | Purpose |
 |---|---|---|
 | `NEXT_PUBLIC_CALENDLY_URL` | `https://calendly.com/<your-handle>/15min` | Replaces every form on the site. Without this, the Calendly embeds fall back to a placeholder URL. |
-| `NEXT_PUBLIC_AGENT_PHONE` | `+15551234567` | E.164 format. Drives the `tel:` link. Without this every PhoneCTA renders a non-clickable "coming soon" badge. |
-| `NEXT_PUBLIC_AGENT_PHONE_DISPLAY` | `(555) 123-4567` | Human-readable phone number displayed in the CTA label. |
+| `NEXT_PUBLIC_RON_AGENT_ID` | ElevenLabs agent ID | Powers every "Test Ron now" button (in-browser voice). The agent must allow public access. Without it the Ron panel offers booking instead. |
+| `CRM_WEBHOOK_URL` | Your CRM / automation endpoint | Receives every lead and booking. See `docs/CRM_WEBHOOK.md`. |
+| `CRM_WEBHOOK_SECRET` | Long random string | Signs each delivery (HMAC-SHA256) so the CRM can verify it. |
 
 ### Required for SEO indexing
 
@@ -113,7 +114,8 @@ Use Chrome DevTools → Toggle Device Toolbar → iPhone 14 (390×844) and iPad 
 ## 9. Content sign-off
 
 - [ ] Calendly URL set in env
-- [ ] Agent phone number set in env
+- [ ] Ron agent ID set in env and tested in the browser
+- [ ] CRM webhook URL + secret set, test lead received
 - [ ] Real Unsplash images load on every blog post (or swap to your own CDN URLs)
 - [ ] All 6 case studies link to correct mp3 recordings
 - [ ] About / Privacy / Terms content reviewed

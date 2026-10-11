@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Phone, CalendarCheck, Clock, MessageSquare } from 'lucide-react';
+import { AudioLines, CalendarCheck, Clock, MessageSquare } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { CodeWindow } from '@/components/common/CodeWindow';
 import { BookingWidget } from '@/components/common/BookingWidget';
-import { PhoneCTA } from '@/components/common/PhoneCTA';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 import { SchemaOrg } from '@/components/seo/SchemaOrg';
 import {
   contactPageSchema,
@@ -11,22 +11,17 @@ import {
   speakableSchema,
 } from '@/lib/schema';
 import { buildMetadata } from '@/lib/seo';
-import {
-  AGENT_PHONE_DISPLAY,
-  AGENT_PHONE_TEL,
-  HAS_REAL_PHONE,
-} from '@/lib/leadCapture';
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Book Implenix, Call the AI Agent or Pick a Slot',
+  title: 'Book Implenix, Talk to Ron or Pick a Slot',
   description:
-    'Call our live AI agent now to hear it run a qualification call, or book a 30-minute slot with the team on the calendar. No form, no email.',
+    'Talk to Ron, our AI receptionist, in your browser, or book a 30-minute slot with the team on the calendar. No form, no email.',
   path: '/contact',
 });
 
 const SAMPLE_LOG = [
-  { ts: '00:00', speaker: 'system' as const, text: 'Inbound to Implenix · agent picks up in 0 rings' },
-  { ts: '00:02', speaker: 'agent' as const, text: 'Thanks for calling Implenix, this is Maya. What kind of business are you running?' },
+  { ts: '00:00', speaker: 'system' as const, text: 'Browser session · Ron joins instantly' },
+  { ts: '00:02', speaker: 'agent' as const, text: 'Hi, I’m Ron from Implenix. What kind of business are you running?' },
   { ts: '00:06', speaker: 'caller' as const, text: 'HVAC, 5 trucks, missing too many after-hours calls.' },
   { ts: '00:10', speaker: 'agent' as const, text: 'Got it. Three quick questions and I can scope a deployment. Roughly how many inbound calls a month?' },
   { ts: '00:16', speaker: 'caller' as const, text: 'About 400.' },
@@ -41,7 +36,6 @@ export default function ContactPage() {
         schema={[
           contactPageSchema({
             url: '/contact',
-            telephone: HAS_REAL_PHONE ? AGENT_PHONE_TEL : undefined,
           }),
           breadcrumbListSchema([
             { label: 'Home', href: '/' },
@@ -60,14 +54,13 @@ export default function ContactPage() {
                 <span className="text-brand-purple">No form, no email.</span>
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
-                Call our AI agent now to hear it run a real qualification
-                conversation, same agent that lives on customer phone
-                lines, or book a 30-minute call with the team on the
-                calendar below. Either gets you on the table in under a
-                minute.
+                Talk to Ron, our AI receptionist, right here in your
+                browser and hear him run a real qualification
+                conversation, or book a 30-minute call with the team on
+                the calendar below.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <PhoneCTA ctaLocation="contact-hero" variant="primary" />
+                <TestRonCTA ctaLocation="contact-hero" variant="primary" />
                 <a
                   href="#book"
                   data-cta-location="contact-hero-scroll"
@@ -80,7 +73,7 @@ export default function ContactPage() {
               <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-mono text-brand-cyan pt-2">
                 <Clock size={14} />
                 <span>
-                  Agent answers in &lt;1 ring · Calendar slots open 14 days out
+                  Ron is live 24/7 · Calendar slots open 14 days out
                 </span>
               </div>
             </div>
@@ -88,7 +81,7 @@ export default function ContactPage() {
               <CodeWindow
                 title="implenix-inbound.log"
                 lines={SAMPLE_LOG}
-                caption="Sample call to our own agent · scope + booking in one call"
+                caption="Sample conversation with Ron · scope + booking in one call"
               />
             </div>
           </div>
@@ -114,25 +107,16 @@ export default function ContactPage() {
             <div className="border border-brand-cyan/40 bg-black p-5 flex flex-col gap-3">
               <div className="flex items-center gap-3">
                 <span className="w-9 h-9 border border-brand-cyan/40 bg-brand-dark flex items-center justify-center">
-                  <Phone size={16} className="text-brand-cyan" />
+                  <AudioLines size={16} className="text-brand-cyan" />
                 </span>
-                <h3 className="font-heading text-lg text-white">Call our agent</h3>
+                <h3 className="font-heading text-lg text-white">Talk to Ron</h3>
               </div>
               <p className="text-sm font-body text-white/70 leading-relaxed">
-                The fastest way to evaluate Implenix is to hear the agent
-                run a live conversation. Same script, same routing, same
-                booking logic that ships in production.
+                The fastest way to evaluate Implenix is to hear Ron run a
+                live conversation. Same script, same routing, same booking
+                logic that ships in production.
               </p>
-              <p className="font-mono text-brand-cyan text-base">
-                {HAS_REAL_PHONE
-                  ? AGENT_PHONE_DISPLAY
-                  : 'Live agent phone coming soon'}
-              </p>
-              <PhoneCTA
-                ctaLocation="contact-sidebar-phone"
-                variant="primary"
-                label={HAS_REAL_PHONE ? 'Call now' : 'Live phone coming soon'}
-              />
+              <TestRonCTA ctaLocation="contact-sidebar-ron" variant="primary" />
             </div>
             <div className="border border-brand-purple/30 bg-black p-5 flex flex-col gap-2">
               <div className="flex items-center gap-3">

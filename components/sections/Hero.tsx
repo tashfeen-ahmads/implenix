@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { IPhoneMock } from '@/components/common/IPhoneMock';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
 export function Hero() {
   return (
@@ -35,14 +36,11 @@ export function Hero() {
               >
                 Get my free missed-call audit <ArrowRight size={16} />
               </Link>
-              <Link
-                href="/try-it"
-                data-cta-location="hero"
-                data-cta-type="secondary"
-                className="inline-flex items-center justify-center gap-2 border border-brand-cyan/70 text-brand-cyan font-medium text-base px-7 py-4 rounded-sm transition hover:bg-brand-cyan/10 active:translate-y-px"
-              >
-                Hear it live
-              </Link>
+              <TestRonCTA
+                ctaLocation="hero"
+                variant="secondary"
+                size="lg"
+              />
             </div>
             <div className="mt-4 pt-10 border-t border-white/10">
               <dl className="grid grid-cols-3 gap-6 md:gap-10 max-w-lg">

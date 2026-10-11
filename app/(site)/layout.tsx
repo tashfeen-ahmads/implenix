@@ -1,6 +1,7 @@
 import { NavBar } from '@/components/layout/NavBar';
 import { Footer } from '@/components/layout/Footer';
 import { LeadMagnetPopup } from '@/components/common/LeadMagnetPopup';
+import { RonLauncher } from '@/components/ron/RonLauncher';
 
 export default function SiteLayout({
   children,
@@ -19,6 +20,7 @@ export default function SiteLayout({
       <main id="main">{children}</main>
       <Footer />
       <LeadMagnetPopup />
+      <RonLauncher />
     </>
   );
 }
