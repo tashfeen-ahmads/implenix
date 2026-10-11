@@ -13,11 +13,11 @@ export const mdxComponents: MDXComponents = {
   // A <div>, not a <p>: multi-line <Pull> content arrives already wrapped
   // in MDX paragraphs, and <p> inside <p> breaks hydration (React #418).
   Pull: ({ children }: { children: React.ReactNode }) => (
-    <aside className="my-8 border-l-[3px] border-brand-cyan bg-black px-6 py-5">
+    <div className="my-8 border-l-[3px] border-brand-cyan bg-black px-6 py-5">
       <div className="font-heading text-xl text-white leading-snug [&>p]:m-0 [&>p]:font-heading [&>p]:text-xl [&>p]:text-white [&>p]:leading-snug [&>p+p]:mt-3">
         {children}
       </div>
-    </aside>
+    </div>
   ),
   Stat: ({ number, label }: { number: string; label: string }) => (
     <span className="inline-flex flex-col items-start border border-brand-cyan/30 bg-black px-4 py-3 my-3">
@@ -39,7 +39,7 @@ export const mdxComponents: MDXComponents = {
     q: string;
     children: React.ReactNode;
   }) => (
-    <aside
+    <div
       data-answer
       data-speakable
       className="my-8 border-l-[3px] border-brand-cyan bg-brand-dark rounded-r-sm p-6 flex flex-col gap-3"
@@ -49,7 +49,7 @@ export const mdxComponents: MDXComponents = {
       </span>
       <p className="font-heading text-white text-xl leading-snug">{q}</p>
       <div className="font-body text-white/85 leading-relaxed">{children}</div>
-    </aside>
+    </div>
   ),
   Key: ({ children }: { children: React.ReactNode }) => (
     <span className="bg-brand-purple/25 text-white px-1.5 py-0.5 rounded-sm">
@@ -71,15 +71,17 @@ export const mdxComponents: MDXComponents = {
   a: ({ href = '#', ...props }) => (
     <Link
       href={href}
-      className="text-brand-cyan underline-offset-4 hover:underline"
+      // Underlined by default: links in body text must not rely on
+      // color alone (WCAG 1.4.1).
+      className="text-brand-cyan underline decoration-brand-cyan/50 underline-offset-4 transition-colors hover:decoration-brand-cyan"
       {...props}
     />
   ),
   ul: (props) => (
-    <ul className="list-disc list-outside pl-6 space-y-2 my-4 marker:text-brand-purple" {...props} />
+    <ul className="list-disc list-outside pl-6 space-y-2 my-4 marker:text-brand-violet" {...props} />
   ),
   ol: (props) => (
-    <ol className="list-decimal list-outside pl-6 space-y-2 my-4 marker:text-brand-purple" {...props} />
+    <ol className="list-decimal list-outside pl-6 space-y-2 my-4 marker:text-brand-violet" {...props} />
   ),
   code: (props) => (
     <code
@@ -89,7 +91,8 @@ export const mdxComponents: MDXComponents = {
   ),
   pre: (props) => (
     <pre
-      className="font-mono bg-black border border-brand-cyan/20 p-4 my-6 overflow-x-auto text-sm"
+      tabIndex={0}
+      className="font-mono bg-black border border-brand-cyan/20 p-4 my-6 overflow-x-auto text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-cyan"
       {...props}
     />
   ),

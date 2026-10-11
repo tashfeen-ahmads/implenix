@@ -156,7 +156,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
               <Badge label="Guide · How it works" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 How does an{' '}
-                <span className="text-brand-purple">AI receptionist</span>{' '}
+                <span className="text-brand-violet">AI receptionist</span>{' '}
                 work?
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -172,7 +172,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Test Ron now <ArrowRight size={16} />
+                  Test Ron now <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/"
@@ -229,7 +229,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
                 highlight
               />
             </div>
-            <aside className="lg:col-span-5 flex flex-col gap-4">
+            <div className="lg:col-span-5 flex flex-col gap-4">
               <div className="border border-brand-cyan/30 bg-black p-5 flex flex-col gap-2">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                   ▸ Typical call length
@@ -243,7 +243,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
                 </p>
               </div>
               <div className="border border-brand-purple/30 bg-black p-5 flex flex-col gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                   ▸ What lands in your CRM
                 </span>
                 <ul className="font-body text-sm text-white/85 flex flex-col gap-1.5 mt-1">
@@ -266,7 +266,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
                   conversation, not from scratch.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -396,7 +396,7 @@ compact
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Test Ron now <ArrowRight size={16} />
+              Test Ron now <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/audit"
@@ -436,7 +436,7 @@ function StackCard({
   return (
     <article className="bg-black border border-brand-purple/20 p-5 flex flex-col gap-3">
       <span className="w-9 h-9 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-        <Icon size={16} className="text-brand-cyan" />
+        <Icon size={16} className="text-brand-cyan" aria-hidden />
       </span>
       <p className="font-heading text-white text-base">{label}</p>
       <p className="text-xs font-body text-white/65 leading-relaxed">{note}</p>
@@ -470,7 +470,7 @@ function ArchLayer({
     >
       <span
         className={`font-heading text-3xl md:text-4xl leading-none shrink-0 ${
-          isCyan ? 'text-brand-cyan' : 'text-brand-purple'
+          isCyan ? 'text-brand-cyan' : 'text-brand-violet'
         }`}
       >
         {number}

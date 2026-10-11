@@ -44,7 +44,7 @@ export function Breadcrumbs({ crumbs, className = '' }: Props) {
                   <ChevronRight
                     size={11}
                     aria-hidden="true"
-                    className="text-white/30"
+                    className="text-white/55"
                   />
                 ) : null}
               </li>

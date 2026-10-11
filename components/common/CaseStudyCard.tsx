@@ -35,8 +35,7 @@ export function CaseStudyCard({
           Read full study
           <ArrowRight
             size={14}
-            className="transition-transform duration-200 group-hover:translate-x-1"
-          />
+            className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
         </span>
       </Link>
     </article>

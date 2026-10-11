@@ -65,7 +65,7 @@ export function IPhoneMock() {
                 {callEnded ? 'Call wrapped' : 'Live call'}
               </p>
             </div>
-            <Phone size={16} className="text-brand-cyan" />
+            <Phone size={16} className="text-brand-cyan" aria-hidden />
           </header>
 
           <div className="flex-1 overflow-hidden px-4 py-4 space-y-3">
@@ -85,7 +85,7 @@ export function IPhoneMock() {
                 }`}
               >
                 {bubble.from === 'system' ? (
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-white/45 border border-brand-purple/25 px-2 py-1">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-white/55 border border-brand-purple/25 px-2 py-1">
                     {bubble.text}
                   </span>
                 ) : (
@@ -100,7 +100,7 @@ export function IPhoneMock() {
                   </div>
                 )}
                 {bubble.from !== 'system' ? (
-                  <span className="mt-1 text-[9px] font-mono text-white/35">
+                  <span className="mt-1 text-[9px] font-mono text-white/55">
                     {bubble.ts}
                   </span>
                 ) : null}
@@ -114,7 +114,7 @@ export function IPhoneMock() {
               transition={{ delay: CONVERSATION.length * 0.4 + 0.2, duration: 0.35 }}
               className="border border-brand-cyan/40 bg-black p-3 flex items-start gap-2.5 mt-3"
             >
-              <Calendar size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+              <Calendar size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
               <div className="flex-1 min-w-0">
                 <p className="text-[11px] font-heading text-brand-cyan">
                   Booking confirmed
@@ -122,7 +122,7 @@ export function IPhoneMock() {
                 <p className="text-[10px] text-white/70 font-body mt-0.5 leading-snug">
                   Tomorrow · 2-4 PM · 1420 Cedar Ln
                 </p>
-                <p className="text-[9px] font-mono text-white/40 mt-1.5 uppercase tracking-widest">
+                <p className="text-[9px] font-mono text-white/55 mt-1.5 uppercase tracking-widest">
                   ▸ CRM updated · job #44129
                 </p>
               </div>
@@ -130,11 +130,11 @@ export function IPhoneMock() {
           </div>
 
           <footer className="px-4 py-3 border-t border-brand-purple/20 flex items-center gap-3">
-            <span className="flex-1 h-8 border border-brand-purple/30 rounded-sm flex items-center px-3 text-[11px] text-white/40 font-body">
+            <span className="flex-1 h-8 border border-brand-purple/30 rounded-sm flex items-center px-3 text-[11px] text-white/55 font-body">
               Listening…
             </span>
             <span className="w-8 h-8 rounded-full bg-brand-cyan flex items-center justify-center">
-              <Mic size={14} className="text-brand-dark" />
+              <Mic size={14} className="text-brand-dark" aria-hidden />
             </span>
           </footer>
         </div>

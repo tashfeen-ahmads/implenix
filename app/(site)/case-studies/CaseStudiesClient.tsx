@@ -50,6 +50,7 @@ export function CaseStudiesClient({ studies }: { studies: CaseStudyItem[] }) {
       </div>
       <div className="max-w-content mx-auto px-6 py-12">
         {/* POPULATE WITH REAL CASE STUDIES WHEN AVAILABLE */}
+        <h2 className="sr-only">Case studies</h2>
         {filtered.length === 0 ? (
           <div className="border border-brand-purple/20 p-10 text-center text-white/70 font-body">
             No case studies match this filter yet.{' '}
@@ -59,7 +60,7 @@ export function CaseStudiesClient({ studies }: { studies: CaseStudyItem[] }) {
             .
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((s) => (
               <CaseStudyCard
                 key={s.slug}

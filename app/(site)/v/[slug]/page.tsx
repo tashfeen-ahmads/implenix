@@ -107,7 +107,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
               <Badge label={`Comparison · vs ${profile.alternativeName}`} variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 AI Receptionist <span className="text-white/55">vs</span>{' '}
-                <span className="text-brand-purple">{profile.alternativeName}</span>
+                <span className="text-brand-violet">{profile.alternativeName}</span>
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 {profile.metaDescription}
@@ -119,7 +119,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my free audit <ArrowRight size={16} />
+                  Get my free audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/pricing"
@@ -131,7 +131,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                 </Link>
               </div>
             </div>
-            <aside className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
                   ▸ Punchline
@@ -143,7 +143,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                   {profile.punchlineLabel}
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -178,7 +178,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                 caption={profile.sampleCallCaption}
               />
             </div>
-            <aside className="lg:col-span-4 flex flex-col gap-4">
+            <div className="lg:col-span-4 flex flex-col gap-4">
               <div className="border border-brand-purple/25 bg-brand-dark p-6">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                   ▸ What changed
@@ -190,7 +190,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                   loses the call entirely.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
           <div className="mt-16">
             <DividedStats stats={profile.outcomes} />
@@ -229,7 +229,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
           <div className="mt-12 grid md:grid-cols-2 gap-5">
             <div className="border border-brand-cyan/30 bg-black p-6 flex flex-col gap-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-                <Check size={11} /> Where it wins
+                <Check size={11} aria-hidden /> Where it wins
               </span>
               <ul className="flex flex-col gap-2.5 mt-2">
                 {profile.alternativePros.map((pro) => (
@@ -237,15 +237,15 @@ export default function ComparisonPage({ params }: { params: Params }) {
                     key={pro}
                     className="flex items-start gap-2 font-body text-sm text-white/85"
                   >
-                    <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+                    <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                     {pro}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="border border-brand-purple/30 bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple flex items-center gap-1.5">
-                <X size={11} /> Where it falls short
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet flex items-center gap-1.5">
+                <X size={11} aria-hidden /> Where it falls short
               </span>
               <ul className="flex flex-col gap-2.5 mt-2">
                 {profile.alternativeCons.map((con) => (
@@ -253,7 +253,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                     key={con}
                     className="flex items-start gap-2 font-body text-sm text-white/85"
                   >
-                    <X size={14} className="text-brand-purple mt-0.5 shrink-0" />
+                    <X size={14} className="text-brand-violet mt-0.5 shrink-0" aria-hidden />
                     {con}
                   </li>
                 ))}
@@ -282,7 +282,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                     key={r}
                     className="flex items-start gap-2 font-body text-sm text-white/80 leading-relaxed"
                   >
-                    <ArrowRight size={14} className="text-white/45 mt-0.5 shrink-0" />
+                    <ArrowRight size={14} className="text-white/55 mt-0.5 shrink-0" aria-hidden />
                     {r}
                   </li>
                 ))}
@@ -298,7 +298,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
                     key={r}
                     className="flex items-start gap-2 font-body text-sm text-white leading-relaxed"
                   >
-                    <ArrowRight size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+                    <ArrowRight size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                     {r}
                   </li>
                 ))}
@@ -343,7 +343,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/try-it"

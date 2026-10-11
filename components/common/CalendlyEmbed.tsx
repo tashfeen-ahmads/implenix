@@ -46,9 +46,9 @@ export function CalendlyEmbed({
     <div className="relative bg-black border border-brand-purple/30">
       {!loaded ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-3">
-          <Loader2 size={20} className="text-brand-cyan animate-spin" />
+          <Loader2 size={20} className="text-brand-cyan animate-spin" aria-hidden />
           <span className="text-[10px] font-mono uppercase tracking-widest text-white/55 flex items-center gap-1.5">
-            <Calendar size={11} /> Loading calendar
+            <Calendar size={11} aria-hidden /> Loading calendar
           </span>
         </div>
       ) : null}

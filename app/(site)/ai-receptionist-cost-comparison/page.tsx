@@ -158,7 +158,7 @@ export default function AIReceptionistCostComparisonPage() {
               <Badge label="Guide · Cost comparison" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 AI receptionist{' '}
-                <span className="text-brand-purple">cost comparison</span>{' '}
+                <span className="text-brand-violet">cost comparison</span>{' '}
 every option, real numbers.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -174,7 +174,7 @@ every option, real numbers.
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Run my cost audit <ArrowRight size={16} />
+                  Run my cost audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/pricing"
@@ -198,10 +198,10 @@ every option, real numbers.
           />
           <div className="mt-12 grid md:grid-cols-3 gap-4">
             <div className="border-l-[3px] border-brand-purple bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                 ▸ Hidden cost 1
               </span>
-              <p className="font-heading text-4xl md:text-5xl text-brand-purple leading-none">
+              <p className="font-heading text-4xl md:text-5xl text-brand-violet leading-none">
                 $5-30k
               </p>
               <p className="font-body text-sm text-white/80 leading-tight">
@@ -214,10 +214,10 @@ every option, real numbers.
               </p>
             </div>
             <div className="border-l-[3px] border-brand-purple bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                 ▸ Hidden cost 2
               </span>
-              <p className="font-heading text-4xl md:text-5xl text-brand-purple leading-none">
+              <p className="font-heading text-4xl md:text-5xl text-brand-violet leading-none">
                 148 hrs
               </p>
               <p className="font-body text-sm text-white/80 leading-tight">
@@ -230,10 +230,10 @@ every option, real numbers.
               </p>
             </div>
             <div className="border-l-[3px] border-brand-purple bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                 ▸ Hidden cost 3
               </span>
-              <p className="font-heading text-4xl md:text-5xl text-brand-purple leading-none">
+              <p className="font-heading text-4xl md:text-5xl text-brand-violet leading-none">
                 +$1,500
               </p>
               <p className="font-body text-sm text-white/80 leading-tight">
@@ -273,7 +273,12 @@ every option, real numbers.
             description="Range columns reflect typical SMB volume and US-market pricing. Hidden cost is the line that does not appear on the invoice."
             badgeVariant="purple"
           />
-          <div className="mt-12 overflow-x-auto border border-brand-purple/20">
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label="Cost comparison table"
+            className="mt-12 overflow-x-auto border border-brand-purple/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-cyan"
+          >
             <table className="w-full font-body text-sm min-w-[860px]">
               <thead>
                 <tr>
@@ -320,7 +325,7 @@ every option, real numbers.
               </tbody>
             </table>
           </div>
-          <p className="mt-6 text-xs font-mono uppercase tracking-widest text-white/45">
+          <p className="mt-6 text-xs font-mono uppercase tracking-widest text-white/55">
             ▸ Hidden-cost column is what does not appear on the invoice
           </p>
         </div>
@@ -336,7 +341,7 @@ every option, real numbers.
           <div className="mt-12 grid md:grid-cols-2 gap-5">
             <div className="border border-brand-cyan/30 bg-black p-6 flex flex-col gap-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-                <Check size={11} /> Best value
+                <Check size={11} aria-hidden /> Best value
               </span>
               <ul className="flex flex-col gap-2.5 mt-2">
                 {[
@@ -357,8 +362,8 @@ every option, real numbers.
               </ul>
             </div>
             <div className="border border-brand-purple/30 bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple flex items-center gap-1.5">
-                <AlertTriangle size={11} /> Most expensive in practice
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet flex items-center gap-1.5">
+                <AlertTriangle size={11} aria-hidden /> Most expensive in practice
               </span>
               <ul className="flex flex-col gap-2.5 mt-2">
                 {[
@@ -370,7 +375,7 @@ every option, real numbers.
                     key={line}
                     className="flex items-start gap-2 font-body text-sm text-white/85"
                   >
-                    <span className="font-heading text-brand-purple w-5 shrink-0">
+                    <span className="font-heading text-brand-violet w-5 shrink-0">
                       {i + 1}.
                     </span>
                     {line}
@@ -412,19 +417,19 @@ every option, real numbers.
               href="/ai-receptionist-vs-human-receptionist"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              Deep-dive: vs Human Receptionist <ArrowRight size={14} />
+              Deep-dive: vs Human Receptionist <ArrowRight size={14} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-vs-answering-service"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs Answering Service <ArrowRight size={14} />
+              vs Answering Service <ArrowRight size={14} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-vs-voicemail"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs Voicemail <ArrowRight size={14} />
+              vs Voicemail <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
         </div>
@@ -487,7 +492,7 @@ every option, real numbers.
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"

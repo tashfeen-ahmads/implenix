@@ -25,7 +25,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
         <div className="max-w-content mx-auto px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 shrink-0">
             <LogoLockup size="sm" href="/docs" />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-white/45 border border-brand-purple/30 px-2 py-0.5">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-white/55 border border-brand-purple/30 px-2 py-0.5">
               Docs
             </span>
           </div>
@@ -33,7 +33,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
             href="/"
             className="inline-flex items-center gap-1.5 text-sm text-white/85 hover:text-brand-cyan font-body shrink-0"
           >
-            <ArrowLeft size={14} /> Back to site
+            <ArrowLeft size={14} aria-hidden /> Back to site
           </Link>
         </div>
       </header>

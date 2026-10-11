@@ -184,7 +184,7 @@ export default function IndustriesIndexPage() {
             <Badge label="Industries · 25 playbooks" variant="cyan" />
             <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
               Pick your{' '}
-              <span className="text-brand-purple">industry</span>. We have a
+              <span className="text-brand-violet">industry</span>. We have a
               tuned playbook.
             </h1>
             <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -199,7 +199,7 @@ export default function IndustriesIndexPage() {
                 data-cta-type="primary"
                 className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
               >
-                Get my missed-call audit <ArrowRight size={16} />
+                Get my missed-call audit <ArrowRight size={16} aria-hidden />
               </Link>
               <Link
                 href="/try-it"
@@ -241,7 +241,7 @@ export default function IndustriesIndexPage() {
                       className="group bg-black border border-brand-purple/20 hover:border-brand-purple p-5 flex flex-col gap-3 transition-colors min-h-[200px]"
                     >
                       <span className="w-9 h-9 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-                        <Icon size={16} className="text-brand-cyan" />
+                        <Icon size={16} className="text-brand-cyan" aria-hidden />
                       </span>
                       <h3 className="font-heading text-xl text-white">
                         {i.name}
@@ -253,8 +253,7 @@ export default function IndustriesIndexPage() {
                         See playbook
                         <ArrowRight
                           size={14}
-                          className="transition-transform duration-200 group-hover:translate-x-1"
-                        />
+                          className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
                       </span>
                     </Link>
                   );
@@ -285,7 +284,7 @@ export default function IndustriesIndexPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Talk to our team <ArrowRight size={16} />
+              Talk to our team <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/audit"

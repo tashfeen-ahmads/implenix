@@ -25,7 +25,7 @@ export function Hero() {
             <h1 className="enter font-heading text-[2.5rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.9rem] leading-[1.06] tracking-tight" style={{ ['--i' as string]: 1 }}>
               The <span className="text-brand-cyan">AI Receptionist</span>{' '}
               that stops missing{' '}
-              <span className="text-brand-purple">client calls</span>.
+              <span className="text-brand-violet">client calls</span>.
             </h1>
             <p className="enter font-body text-white/75 text-lg md:text-xl max-w-[34rem] leading-relaxed" style={{ ['--i' as string]: 2 }}>
               Implenix answers every call in one ring, 24/7. It qualifies

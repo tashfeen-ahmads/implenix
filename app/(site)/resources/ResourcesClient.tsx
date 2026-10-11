@@ -80,12 +80,13 @@ function ResourceGrid({
   return (
     <>
       {/* CONTENT TO BE ADDED VIA MDX FILES, ASSIGN TO CONTENT TEAM */}
+      <h2 className="sr-only">Guides and playbooks</h2>
       {items.length === 0 ? (
         <div className="border border-brand-purple/20 p-10 text-center text-white/70 font-body">
           New {emptyLabel} are being added by the content team.
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((r) => (
             <Link
               key={r.url}
@@ -106,8 +107,7 @@ function ResourceGrid({
                 Read{' '}
                 <ArrowRight
                   size={14}
-                  className="transition-transform group-hover:translate-x-1"
-                />
+                  className="transition-transform group-hover:translate-x-1" aria-hidden />
               </span>
             </Link>
           ))}
@@ -130,7 +130,7 @@ function Glossary() {
       {/* CONTENT TO BE ADDED VIA MDX FILES, ASSIGN TO CONTENT TEAM */}
       {letters.map((letter) => (
         <div key={letter}>
-          <h3 className="font-heading text-2xl text-brand-purple mb-3">
+          <h3 className="font-heading text-2xl text-brand-violet mb-3">
             {letter}
           </h3>
           <dl className="divide-y divide-brand-purple/15 border border-brand-purple/15">

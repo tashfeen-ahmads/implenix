@@ -20,7 +20,7 @@ export function StepOneVisual() {
           <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan motion-safe:animate-pulse" />
           Incoming
         </span>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
           00:00:01
         </span>
       </div>
@@ -46,7 +46,7 @@ export function StepOneVisual() {
             transition={{ duration: 0.4 }}
             className="relative w-24 h-24 rounded-full bg-brand-purple flex items-center justify-center"
           >
-            <PhoneIncoming size={36} className="text-white" />
+            <PhoneIncoming size={36} className="text-white" aria-hidden />
           </motion.div>
         </div>
       </div>
@@ -60,11 +60,12 @@ export function StepOneVisual() {
         </div>
         <div className="mt-2 h-1 bg-brand-purple/20 overflow-hidden">
           <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: '100%' }}
+            // scaleX, not width: transforms don't trigger layout.
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.2, ease: 'easeOut' }}
-            className="h-full bg-brand-cyan"
+            className="h-full w-full origin-left bg-brand-cyan"
           />
         </div>
       </div>
@@ -82,9 +83,9 @@ export function StepTwoVisual() {
     <div className="aspect-[5/4] bg-black border border-brand-purple/25 p-6 flex flex-col gap-4">
       <header className="flex items-center justify-between">
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-          <Calendar size={12} /> Booking · live
+          <Calendar size={12} aria-hidden /> Booking · live
         </span>
-        <span className="text-[10px] font-mono text-white/45">
+        <span className="text-[10px] font-mono text-white/55">
           Apr 28 · Tue
         </span>
       </header>
@@ -112,8 +113,8 @@ export function StepTwoVisual() {
                   isBooked
                     ? 'border-brand-cyan bg-brand-cyan/10 text-brand-cyan'
                     : isFilled
-                      ? 'border-brand-purple/40 text-white/30 bg-brand-purple/5'
-                      : 'border-brand-purple/20 text-white/40'
+                      ? 'border-brand-purple/40 text-white/55 bg-brand-purple/5'
+                      : 'border-brand-purple/20 text-white/55'
                 }`}
               >
                 {isBooked ? (
@@ -163,9 +164,9 @@ export function StepThreeVisual() {
     <div className="aspect-[5/4] bg-black border border-brand-purple/25 p-6 flex flex-col gap-3">
       <header className="flex items-center justify-between border-b border-brand-purple/20 pb-3">
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-          <Database size={12} /> CRM · contact
+          <Database size={12} aria-hidden /> CRM · contact
         </span>
-        <span className="text-[10px] font-mono text-white/45">
+        <span className="text-[10px] font-mono text-white/55">
           northwind-hvac
         </span>
       </header>
@@ -179,7 +180,7 @@ export function StepThreeVisual() {
             transition={{ delay: i * 0.18, duration: 0.3 }}
             className="grid grid-cols-[80px_1fr] items-center text-[11px] font-mono"
           >
-            <span className="text-white/40 uppercase tracking-widest">
+            <span className="text-white/55 uppercase tracking-widest">
               {f.label}
             </span>
             <span className="text-white truncate border-l border-brand-purple/20 pl-3 py-1">
@@ -196,7 +197,7 @@ export function StepThreeVisual() {
         className="border-l-[3px] border-brand-cyan bg-brand-dark p-2 flex items-center justify-between text-[10px] font-mono uppercase tracking-widest"
       >
         <span className="text-brand-cyan flex items-center gap-1.5">
-          <Phone size={11} /> Synced
+          <Phone size={11} aria-hidden /> Synced
         </span>
         <span className="text-white/55">just now</span>
       </motion.div>

@@ -44,7 +44,7 @@ export function CaseStudiesPreview() {
             data-cta-location="case-studies-preview"
             className="inline-flex items-center gap-2 text-brand-cyan font-medium text-sm hover:underline"
           >
-            See all case studies <ArrowRight size={14} />
+            See all case studies <ArrowRight size={14} aria-hidden />
           </Link>
         </div>
         <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">

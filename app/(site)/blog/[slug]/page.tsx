@@ -124,7 +124,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
               href="/blog"
               className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-brand-cyan font-mono hover:opacity-80"
             >
-              <ArrowLeft size={12} /> All posts
+              <ArrowLeft size={12} aria-hidden /> All posts
             </Link>
           </div>
           <div>
@@ -172,7 +172,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
               dateTime={new Date(doc.publishedAt).toISOString()}
               className="flex items-center gap-1.5"
             >
-              <Calendar size={12} />
+              <Calendar size={12} aria-hidden />
               {new Date(doc.publishedAt).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -189,7 +189,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
         </div>
 
         {doc.authorBio && (
-          <aside className="mt-14 border border-brand-purple/30 bg-brand-dark p-6 md:p-7 flex flex-col sm:flex-row gap-5 items-start">
+          <div className="mt-14 border border-brand-purple/30 bg-brand-dark p-6 md:p-7 flex flex-col sm:flex-row gap-5 items-start">
             <div className="w-14 h-14 bg-brand-purple text-white flex items-center justify-center font-heading rounded-sm shrink-0 text-lg">
               {initials}
             </div>
@@ -207,10 +207,10 @@ export default function BlogPostPage({ params }: { params: Params }) {
                 {doc.authorBio}
               </p>
             </div>
-          </aside>
+          </div>
         )}
 
-        <aside className="mt-16 border border-brand-cyan/35 bg-black p-6 md:p-8 grid sm:grid-cols-[1fr_auto] gap-5 items-center">
+        <div className="mt-16 border border-brand-cyan/35 bg-black p-6 md:p-8 grid sm:grid-cols-[1fr_auto] gap-5 items-center">
           <div>
             <Badge label="Skip the form" variant="cyan" />
             <p className="font-heading text-2xl text-white mt-3 leading-snug">
@@ -231,7 +231,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
               Book a 30-min call <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
-        </aside>
+        </div>
 
         <TopicalLinks postSlug={doc.slug} />
 

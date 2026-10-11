@@ -119,7 +119,7 @@ export default function VirtualAIReceptionistPage() {
             <div className="lg:col-span-8 flex flex-col gap-6">
               <Badge label="Service · Virtual" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
-                <span className="text-brand-purple">Virtual AI receptionist</span>
+                <span className="text-brand-violet">Virtual AI receptionist</span>
                 . Hosted in the cloud.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -136,7 +136,7 @@ export default function VirtualAIReceptionistPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my missed-call audit <ArrowRight size={16} />
+                  Get my missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/try-it"
@@ -163,7 +163,7 @@ export default function VirtualAIReceptionistPage() {
               <p>
                 The phrase "virtual receptionist" historically meant a
                 remote human worker with{' '}
-                <span className="text-brand-purple">limited hours,
+                <span className="text-brand-violet">limited hours,
                 single-call concurrency, training overhead, turnover
                 risk</span>. A virtual AI receptionist is the same idea
                 taken to its logical conclusion.
@@ -183,7 +183,7 @@ export default function VirtualAIReceptionistPage() {
                 traffic.
               </p>
             </div>
-            <aside className="lg:col-span-7 border border-brand-cyan/25 bg-black p-5 md:p-6 flex flex-col gap-4">
+            <div className="lg:col-span-7 border border-brand-cyan/25 bg-black p-5 md:p-6 flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                   ▸ Cloud call path
@@ -216,7 +216,7 @@ export default function VirtualAIReceptionistPage() {
                   <p className="font-mono text-[9px] uppercase tracking-widest text-white/50 mt-1.5">Deploy</p>
                 </div>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -280,7 +280,7 @@ export default function VirtualAIReceptionistPage() {
                 caption="Cloud-to-cloud, SIP, dialogue model, calendar, CRM, all hosted, all live"
               />
             </div>
-            <aside className="lg:col-span-4 flex flex-col gap-4">
+            <div className="lg:col-span-4 flex flex-col gap-4">
               <div className="border border-brand-purple/25 bg-black p-6">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                   ▸ Call path
@@ -293,7 +293,7 @@ export default function VirtualAIReceptionistPage() {
                 </p>
               </div>
               <div className="border border-brand-cyan/25 bg-black p-6">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                   ▸ On-prem hardware
                 </span>
                 <p className="mt-3 font-heading text-3xl text-white leading-tight">
@@ -303,7 +303,7 @@ export default function VirtualAIReceptionistPage() {
                   No PBX changes, no IT project, no installs. Configuration only.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -337,7 +337,7 @@ export default function VirtualAIReceptionistPage() {
               href="/ai-receptionist-vs-virtual-assistant"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              Deep-dive: AI Receptionist vs Virtual Assistant <ArrowRight size={14} />
+              Deep-dive: AI Receptionist vs Virtual Assistant <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
         </div>
@@ -381,7 +381,7 @@ export default function VirtualAIReceptionistPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"
@@ -432,7 +432,7 @@ function PathStep({
         className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-[11px] font-bold shrink-0 border ${
           isCyan
             ? 'border-brand-cyan/40 bg-brand-cyan/10 text-brand-cyan'
-            : 'border-brand-purple/40 bg-brand-purple/10 text-brand-purple'
+            : 'border-brand-purple/40 bg-brand-purple/10 text-brand-violet'
         }`}
       >
         {index}

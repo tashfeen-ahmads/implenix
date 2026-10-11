@@ -51,7 +51,7 @@ export default function ContactPage() {
               <Badge label="Skip the form" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 Two ways to start.{' '}
-                <span className="text-brand-purple">No sales form.</span>
+                <span className="text-brand-violet">No sales form.</span>
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Talk to Ron, our AI receptionist, right here in your
@@ -67,11 +67,11 @@ export default function ContactPage() {
                   data-cta-type="calendar"
                   className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  <CalendarCheck size={16} /> Book a 30-min call
+                  <CalendarCheck size={16} aria-hidden /> Book a 30-min call
                 </a>
               </div>
               <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-mono text-brand-cyan pt-2">
-                <Clock size={14} />
+                <Clock size={14} aria-hidden />
                 <span>
                   Ron is live 24/7 · Calendar slots open 14 days out
                 </span>
@@ -103,11 +103,11 @@ export default function ContactPage() {
             <BookingWidget ctaLocation="contact-calendar" height={760} />
           </div>
 
-          <aside className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <div className="border border-brand-cyan/40 bg-black p-5 flex flex-col gap-3">
               <div className="flex items-center gap-3">
                 <span className="w-9 h-9 border border-brand-cyan/40 bg-brand-dark flex items-center justify-center">
-                  <AudioLines size={16} className="text-brand-cyan" />
+                  <AudioLines size={16} className="text-brand-cyan" aria-hidden />
                 </span>
                 <h3 className="font-heading text-lg text-white">Talk to Ron</h3>
               </div>
@@ -121,7 +121,7 @@ export default function ContactPage() {
             <div className="border border-brand-purple/30 bg-black p-5 flex flex-col gap-2">
               <div className="flex items-center gap-3">
                 <span className="w-9 h-9 border border-brand-purple/30 bg-brand-dark flex items-center justify-center">
-                  <MessageSquare size={16} className="text-brand-purple" />
+                  <MessageSquare size={16} className="text-brand-violet" aria-hidden />
                 </span>
                 <h3 className="font-heading text-lg text-white">
                   What happens on the call
@@ -144,7 +144,7 @@ export default function ContactPage() {
                 so we can send the invite and prepare for the call.
               </p>
             </div>
-          </aside>
+          </div>
         </div>
       </section>
     </>

@@ -144,7 +144,7 @@ export default function AIReceptionistForStartupsPage() {
               <Badge label="Built for · Startups" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 AI receptionist for{' '}
-                <span className="text-brand-purple">startups</span>.
+                <span className="text-brand-violet">startups</span>.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Look established on day one. Qualify inbound leads,
@@ -159,7 +159,7 @@ export default function AIReceptionistForStartupsPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my missed-call audit <ArrowRight size={16} />
+                  Get my missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/pricing"
@@ -294,7 +294,7 @@ export default function AIReceptionistForStartupsPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/try-it"

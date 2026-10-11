@@ -224,7 +224,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
       <div className="flex items-center justify-between border-b border-brand-purple/25 px-4 sm:px-5 py-3 bg-brand-dark">
         <div className="flex items-center gap-2.5">
           <span className="w-8 h-8 border border-brand-cyan/40 bg-black flex items-center justify-center rounded-full">
-            <CalendarCheck size={14} className="text-brand-cyan" />
+            <CalendarCheck size={14} className="text-brand-cyan" aria-hidden />
           </span>
           <div className="flex flex-col leading-tight">
             <span className="font-body text-white text-[13px] font-medium">
@@ -337,7 +337,7 @@ function DateStep({
           className="w-9 h-9 border border-brand-purple/30 hover:border-brand-purple disabled:opacity-30 flex items-center justify-center transition-colors"
           aria-label="Previous month"
         >
-          <ChevronLeft size={14} className="text-brand-cyan" />
+          <ChevronLeft size={14} className="text-brand-cyan" aria-hidden />
         </button>
         <span className="font-heading text-white text-lg">{monthLabel}</span>
         <button
@@ -346,14 +346,14 @@ function DateStep({
           className="w-9 h-9 border border-brand-purple/30 hover:border-brand-purple flex items-center justify-center transition-colors"
           aria-label="Next month"
         >
-          <ChevronRight size={14} className="text-brand-cyan" />
+          <ChevronRight size={14} className="text-brand-cyan" aria-hidden />
         </button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center">
         {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
           <span
             key={i}
-            className="font-mono text-[10px] uppercase tracking-widest text-white/45 pb-2"
+            className="font-mono text-[10px] uppercase tracking-widest text-white/55 pb-2"
           >
             {d}
           </span>
@@ -480,7 +480,7 @@ function FormStep({
 }) {
   const slotLabel = formatSlot(slot.startIso, timezone);
   const inputClass =
-    'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/40';
+    'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/55';
 
   return (
     <form
@@ -500,6 +500,7 @@ function FormStep({
       <Field label="Your name" htmlFor="bk-name">
         <input
           id="bk-name"
+          name="name"
           type="text"
           required
           autoComplete="name"
@@ -511,7 +512,9 @@ function FormStep({
       <Field label="Email" htmlFor="bk-email">
         <input
           id="bk-email"
+          name="email"
           type="email"
+          spellCheck={false}
           required
           autoComplete="email"
           placeholder="you@company.com"
@@ -523,6 +526,7 @@ function FormStep({
       <Field label="Phone (optional)" htmlFor="bk-phone">
         <input
           id="bk-phone"
+          name="phone"
           type="tel"
           autoComplete="tel"
           placeholder="(555) 555-1234"
@@ -534,6 +538,7 @@ function FormStep({
       <Field label="What should we cover? (optional)" htmlFor="bk-notes">
         <textarea
           id="bk-notes"
+          name="notes"
           rows={3}
           className={`${inputClass} resize-none`}
           placeholder="Industry, current call volume, biggest inbound pain point…"
@@ -542,27 +547,29 @@ function FormStep({
         />
       </Field>
       {error ? (
-        <p className="border-l-[3px] border-brand-purple bg-black p-3 text-sm text-white/85">
+        <p role="alert" className="border-l-[3px] border-brand-purple bg-black p-3 text-sm text-white/85">
           {error}
         </p>
       ) : null}
       <button
         type="submit"
-        disabled={submitting || !form.name || !form.email}
+        // Enabled until submit so the browser's required / email checks
+        // can show their messages next to the field.
+        disabled={submitting}
         data-cta-type="primary"
         className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {submitting ? (
           <>
-            <Loader2 size={16} className="animate-spin" /> Booking…
+            <Loader2 size={16} className="animate-spin" aria-hidden /> Booking…
           </>
         ) : (
           <>
-            Book my slot <ArrowRight size={16} />
+            Book my slot <ArrowRight size={16} aria-hidden />
           </>
         )}
       </button>
-      <p className="font-mono text-[10px] uppercase tracking-widest text-white/45 text-center">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-white/55 text-center">
         ▸ We do not send marketing email. The invite goes to Google Calendar only.
       </p>
     </form>
@@ -603,7 +610,7 @@ function ConfirmedStep({
     <div className="flex flex-col gap-5 py-4">
       <div className="flex items-center gap-3">
         <span className="w-10 h-10 bg-brand-cyan/20 border border-brand-cyan flex items-center justify-center">
-          <Check size={18} className="text-brand-cyan" />
+          <Check size={18} className="text-brand-cyan" aria-hidden />
         </span>
         <div>
           <p className="font-heading text-white text-lg">You’re booked.</p>
@@ -620,7 +627,7 @@ function ConfirmedStep({
       </div>
       {booked.meetingUrl ? (
         <div className="border border-brand-purple/30 bg-black p-4 flex flex-col gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
             ▸ {booked.meetingProvider === 'zoom' ? 'Zoom meeting' : 'Google Meet'}
           </span>
           <a

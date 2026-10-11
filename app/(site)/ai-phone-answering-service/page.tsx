@@ -169,7 +169,7 @@ export default function AIPhoneAnsweringServicePage() {
               <Badge label="AI Phone Answering Service" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 AI phone answering service.{' '}
-                <span className="text-brand-purple">24/7. Fixed cost.</span>
+                <span className="text-brand-violet">24/7. Fixed cost.</span>
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Implenix is the AI phone answering service for local businesses
@@ -185,7 +185,7 @@ export default function AIPhoneAnsweringServicePage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my free missed-call audit <ArrowRight size={16} />
+                  Get my free missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/try-it"
@@ -202,7 +202,7 @@ export default function AIPhoneAnsweringServicePage() {
                 <Stat label="Billing" value="fixed" />
               </dl>
             </div>
-            <aside className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
                   ▸ vs traditional
@@ -215,7 +215,7 @@ export default function AIPhoneAnsweringServicePage() {
                   moderate SMB volumes.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -233,7 +233,7 @@ export default function AIPhoneAnsweringServicePage() {
                 answers your inbound business calls in real time, follows
                 your script, and writes the outcome to your business
                 systems. Traditional answering services bill{' '}
-                <span className="text-brand-purple">per call or per
+                <span className="text-brand-violet">per call or per
                 minute</span>. AI phone answering runs continuously at{' '}
                 <span className="text-brand-cyan">fixed cost</span>,
                 handles unlimited concurrent calls, and integrates
@@ -250,7 +250,7 @@ export default function AIPhoneAnsweringServicePage() {
                 flagged for human handling.
               </p>
             </div>
-            <aside className="lg:col-span-5 flex flex-col gap-3">
+            <div className="lg:col-span-5 flex flex-col gap-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                 ▸ Same volume · different math
               </span>
@@ -283,7 +283,7 @@ export default function AIPhoneAnsweringServicePage() {
                 </div>
               </div>
               <div className="border-l-[3px] border-brand-purple bg-black p-4 mt-2">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                   ▸ Coverage
                 </span>
                 <p className="font-heading text-lg text-white mt-1 leading-tight">
@@ -294,7 +294,7 @@ export default function AIPhoneAnsweringServicePage() {
                   calls route to your team via live transfer.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -393,19 +393,19 @@ export default function AIPhoneAnsweringServicePage() {
               href="/ai-receptionist-vs-answering-service"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              Deep-dive: vs Answering Service <ArrowRight size={14} />
+              Deep-dive: vs Answering Service <ArrowRight size={14} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-vs-call-center"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs Call Center <ArrowRight size={14} />
+              vs Call Center <ArrowRight size={14} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-vs-voicemail"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs Voicemail <ArrowRight size={14} />
+              vs Voicemail <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
         </div>
@@ -461,7 +461,7 @@ export default function AIPhoneAnsweringServicePage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"

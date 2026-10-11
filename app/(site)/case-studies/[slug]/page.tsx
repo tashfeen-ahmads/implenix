@@ -161,7 +161,7 @@ export default function CaseStudyPage({ params }: { params: Params }) {
             data-cta-location="case-study-back"
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-brand-cyan font-mono mb-8 hover:opacity-80"
           >
-            <ArrowLeft size={12} /> All case studies
+            <ArrowLeft size={12} aria-hidden /> All case studies
           </Link>
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-8 flex flex-col gap-6">
@@ -173,13 +173,13 @@ export default function CaseStudyPage({ params }: { params: Params }) {
                 {doc.summary}
               </p>
             </div>
-            <aside className="lg:col-span-4">
+            <div className="lg:col-span-4">
               <dl className="border border-brand-cyan/30 bg-black divide-y divide-brand-purple/15">
                 <Item label="Industry" value={overview.industry} />
                 <Item label="Size" value={overview.size} />
                 <Item label="Challenge" value={overview.challenge} />
               </dl>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -263,7 +263,7 @@ export default function CaseStudyPage({ params }: { params: Params }) {
           <RelatedContent topic="More case studies" type="case-study" />
         </div>
 
-        <aside className="lg:sticky lg:top-24 border border-brand-purple/30 bg-black p-6 flex flex-col gap-4">
+        <div className="lg:sticky lg:top-24 border border-brand-purple/30 bg-black p-6 flex flex-col gap-4">
           <Badge label="Get the same result" variant="cyan" />
           <h3 className="font-heading text-xl text-white leading-snug">
             Run this playbook for your business
@@ -282,7 +282,7 @@ export default function CaseStudyPage({ params }: { params: Params }) {
               data-cta-type="calendar"
               className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
             >
-              Book a 30-min call <ArrowRight size={14} />
+              Book a 30-min call <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
           <Link
@@ -290,9 +290,9 @@ export default function CaseStudyPage({ params }: { params: Params }) {
             data-cta-location="case-study-sidebar"
             className="inline-flex items-center gap-1.5 text-brand-cyan text-sm hover:underline mt-2"
           >
-            Browse other case studies <ArrowRight size={14} />
+            Browse other case studies <ArrowRight size={14} aria-hidden />
           </Link>
-        </aside>
+        </div>
       </div>
     </>
   );

@@ -116,7 +116,7 @@ export default function PricingPage() {
             <Badge label="Pricing · Outcome-based" variant="cyan" />
             <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
               Cheaper than a receptionist.{' '}
-              <span className="text-brand-purple">Better at the job</span>.
+              <span className="text-brand-violet">Better at the job</span>.
             </h1>
             <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
               A full-time human receptionist runs $3,500-$5,000 per month
@@ -152,7 +152,7 @@ export default function PricingPage() {
               >
                 {tier.highlight ? (
                   <span className="inline-flex items-center gap-1 self-start bg-brand-purple text-white text-[10px] uppercase tracking-widest font-mono px-2 py-1 -mt-1 -ml-1">
-                    <Sparkles size={10} /> Most picked
+                    <Sparkles size={10} aria-hidden /> Most picked
                   </span>
                 ) : null}
                 <header className="flex flex-col gap-1">
@@ -186,7 +186,7 @@ export default function PricingPage() {
                       key={line}
                       className="flex items-start gap-2 font-body text-sm text-white/80"
                     >
-                      <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+                      <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                       {line}
                     </li>
                   ))}
@@ -202,7 +202,7 @@ export default function PricingPage() {
                       : 'border border-brand-cyan text-brand-cyan hover:bg-brand-cyan/10'
                   }`}
                 >
-                  {tier.cta} <ArrowRight size={14} />
+                  {tier.cta} <ArrowRight size={14} aria-hidden />
                 </Link>
               </article>
             ))}
@@ -230,8 +230,7 @@ export default function PricingPage() {
                   >
                     <ShieldCheck
                       size={14}
-                      className="text-brand-cyan mt-0.5 shrink-0"
-                    />
+                      className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                     {line}
                   </li>
                 ))}
@@ -243,18 +242,18 @@ export default function PricingPage() {
                 className="mt-2 inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-5 py-3 rounded-sm hover:opacity-90 self-start"
               >
                 Book white-glove setup · ${WHITE_GLOVE.price}
-                <ArrowRight size={14} />
+                <ArrowRight size={14} aria-hidden />
               </Link>
             </div>
 
-            <aside className="lg:col-span-5 border border-brand-purple/20 bg-black p-8 flex flex-col gap-4">
+            <div className="lg:col-span-5 border border-brand-purple/20 bg-black p-8 flex flex-col gap-4">
               <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
                 ▸ Or · do it yourself
               </span>
               <p className="font-heading text-xl text-white leading-snug">
                 Our self-serve setup wizard takes about 15 minutes.
               </p>
-              <ol className="flex flex-col gap-2 text-sm font-body text-white/80 list-decimal pl-5 marker:text-brand-purple">
+              <ol className="flex flex-col gap-2 text-sm font-body text-white/80 list-decimal pl-5 marker:text-brand-violet">
                 <li>Paste your website URL, we auto-build the knowledge base</li>
                 <li>Upload existing FAQs (optional)</li>
                 <li>Answer 5 voice prompts to capture tone</li>
@@ -267,9 +266,9 @@ export default function PricingPage() {
                 data-cta-type="secondary"
                 className="mt-3 inline-flex items-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10 self-start"
               >
-                Set it up myself <ArrowRight size={14} />
+                Set it up myself <ArrowRight size={14} aria-hidden />
               </Link>
-            </aside>
+            </div>
           </div>
         </div>
       </section>

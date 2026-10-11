@@ -66,7 +66,7 @@ function SidebarSection({
                   aria-current={active ? 'page' : undefined}
                   className={`block py-2.5 lg:py-1.5 text-sm font-body transition-colors ${
                     active
-                      ? 'text-brand-purple'
+                      ? 'text-brand-violet'
                       : 'text-white/80 hover:text-brand-cyan'
                   }`}
                 >

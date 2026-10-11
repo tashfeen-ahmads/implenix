@@ -179,7 +179,7 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
             </ul>
           </div>
 
-          <aside
+          <div
             id="lp-form"
             className="min-w-0 scroll-mt-20 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-6 flex flex-col gap-4"
           >
@@ -193,7 +193,7 @@ function VariantA({ cfg }: { cfg: LandingConfig }) {
               </p>
             </div>
             <BookingWidget ctaLocation={`lp-${cfg.slug}-top`} height={620} />
-          </aside>
+          </div>
 
           <div className="min-w-0 lg:col-span-7 lg:col-start-1 lg:row-start-2 flex flex-col gap-8">
             <CodeWindow

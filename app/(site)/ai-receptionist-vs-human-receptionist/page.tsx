@@ -148,7 +148,7 @@ export default function AIReceptionistVsHumanReceptionistPage() {
               <Badge label="Comparison · vs Human Receptionist" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 AI Receptionist <span className="text-white/55">vs</span>{' '}
-                <span className="text-brand-purple">Human Receptionist</span>
+                <span className="text-brand-violet">Human Receptionist</span>
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Real cost math, real coverage tradeoffs, and the hybrid
@@ -162,7 +162,7 @@ export default function AIReceptionistVsHumanReceptionistPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my free missed-call audit <ArrowRight size={16} />
+                  Get my free missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/pricing"
@@ -174,7 +174,7 @@ export default function AIReceptionistVsHumanReceptionistPage() {
                 </Link>
               </div>
             </div>
-            <aside className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
                   ▸ Annualized
@@ -187,7 +187,7 @@ export default function AIReceptionistVsHumanReceptionistPage() {
                   receptionist and deploying Implenix.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -247,7 +247,12 @@ part-time, in-house, or on a small live answering service
             description="Conservative US-market figures for a single front-desk role. Numbers vary by region and seniority but the gap is consistent."
             badgeVariant="purple"
           />
-          <div className="mt-12 overflow-x-auto border border-brand-purple/20">
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label="Cost comparison table"
+            className="mt-12 overflow-x-auto border border-brand-purple/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-cyan"
+          >
             <table className="w-full font-body text-sm min-w-[640px]">
               <thead>
                 <tr>
@@ -293,7 +298,7 @@ part-time, in-house, or on a small live answering service
               </tbody>
             </table>
           </div>
-          <p className="mt-6 text-xs font-mono uppercase tracking-widest text-white/45">
+          <p className="mt-6 text-xs font-mono uppercase tracking-widest text-white/55">
             ▸ Difference compounds further at multi-location operations
           </p>
         </div>
@@ -347,7 +352,7 @@ part-time, in-house, or on a small live answering service
           <div className="mt-12 grid md:grid-cols-2 gap-5">
             <div className="border border-brand-cyan/30 bg-black p-6 flex flex-col gap-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-                <Check size={11} /> When AI wins
+                <Check size={11} aria-hidden /> When AI wins
               </span>
               <ul className="flex flex-col gap-2.5 mt-2">
                 {[
@@ -362,15 +367,15 @@ part-time, in-house, or on a small live answering service
                     key={line}
                     className="flex items-start gap-2 font-body text-sm text-white/85"
                   >
-                    <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+                    <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                     {line}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="border border-brand-purple/30 bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple flex items-center gap-1.5">
-                <Heart size={11} /> When a human still wins
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet flex items-center gap-1.5">
+                <Heart size={11} aria-hidden /> When a human still wins
               </span>
               <ul className="flex flex-col gap-2.5 mt-2">
                 {[
@@ -385,7 +390,7 @@ part-time, in-house, or on a small live answering service
                     key={line}
                     className="flex items-start gap-2 font-body text-sm text-white/85"
                   >
-                    <Heart size={14} className="text-brand-purple mt-0.5 shrink-0" />
+                    <Heart size={14} className="text-brand-violet mt-0.5 shrink-0" aria-hidden />
                     {line}
                   </li>
                 ))}
@@ -480,7 +485,7 @@ part-time, in-house, or on a small live answering service
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"
@@ -526,7 +531,7 @@ function HybridCard({
   return (
     <article className="bg-black border border-brand-purple/20 p-6 flex flex-col gap-3">
       <span className="w-9 h-9 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-        <Icon size={16} className="text-brand-cyan" />
+        <Icon size={16} className="text-brand-cyan" aria-hidden />
       </span>
       <h3 className="font-heading text-lg text-white">{title}</h3>
       <p className="font-body text-sm text-white/75 leading-relaxed">

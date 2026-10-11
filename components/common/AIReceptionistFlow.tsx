@@ -52,7 +52,7 @@ export function AIReceptionistFlow() {
           </span>
           Live workflow
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-widest text-white/45">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-white/55">
           Every inbound call
         </span>
       </div>
@@ -77,7 +77,7 @@ export function AIReceptionistFlow() {
                   className={`w-10 h-10 md:w-11 md:h-11 flex items-center justify-center border shrink-0 ${
                     isCyan
                       ? 'border-brand-cyan/40 bg-black text-brand-cyan'
-                      : 'border-brand-purple/40 bg-black text-brand-purple'
+                      : 'border-brand-purple/40 bg-black text-brand-violet'
                   }`}
                 >
                   <step.Icon size={18} />
@@ -91,7 +91,7 @@ export function AIReceptionistFlow() {
                   </p>
                   <p
                     className={`text-[11px] font-body mt-1 leading-tight ${
-                      isCyan ? 'text-brand-cyan' : 'text-brand-purple'
+                      isCyan ? 'text-brand-cyan' : 'text-brand-violet'
                     }`}
                   >
                     {step.detail}
@@ -105,10 +105,10 @@ export function AIReceptionistFlow() {
                   viewport={{ once: true, amount: 0.4 }}
                   transition={{ delay: i * 0.15 + 0.15, duration: 0.3 }}
                   aria-hidden
-                  className="self-center flex items-center justify-center text-white/40 shrink-0"
+                  className="self-center flex items-center justify-center text-white/55 shrink-0"
                 >
                   <span className="flex rotate-90 md:rotate-0">
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} aria-hidden />
                   </span>
                 </motion.span>
               ) : null}

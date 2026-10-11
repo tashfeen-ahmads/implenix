@@ -72,7 +72,7 @@ export default function TryItPage() {
               <Badge label="Live demo · no signup" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 Skip the video.{' '}
-                <span className="text-brand-purple">Talk to Ron</span>{' '}
+                <span className="text-brand-violet">Talk to Ron</span>{' '}
                 yourself.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -86,7 +86,7 @@ export default function TryItPage() {
                   ctaLocation="try-it-hero"
                   size="lg"
                 />
-                <p className="text-[11px] font-mono uppercase tracking-widest text-white/45">
+                <p className="text-[11px] font-mono uppercase tracking-widest text-white/55">
                   ▸ Uses your microphone · works on desktop and mobile
                 </p>
               </div>
@@ -98,7 +98,7 @@ export default function TryItPage() {
                     className="bg-black border border-brand-purple/20 p-4 flex flex-col gap-2"
                   >
                     <span className="w-8 h-8 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-                      <Icon size={14} className="text-brand-cyan" />
+                      <Icon size={14} className="text-brand-cyan" aria-hidden />
                     </span>
                     <p className="font-heading text-white text-sm">{title}</p>
                     <p className="text-xs font-body text-white/65 leading-relaxed">
@@ -109,7 +109,7 @@ export default function TryItPage() {
               </div>
             </div>
 
-            <aside className="lg:col-span-5 lg:sticky lg:top-24 flex flex-col gap-5">
+            <div className="lg:col-span-5 lg:sticky lg:top-24 flex flex-col gap-5">
               <CodeWindow
                 title="northwind-hvac.demo"
                 lines={SAMPLE_TRANSCRIPT}
@@ -117,7 +117,7 @@ export default function TryItPage() {
               />
               <div className="border border-brand-cyan/30 bg-black p-5 flex flex-col gap-3">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-                  <ShieldCheck size={11} /> Ron knows
+                  <ShieldCheck size={11} aria-hidden /> Ron knows
                 </span>
                 <ul className="text-sm font-body text-white/85 grid grid-cols-2 gap-y-2 gap-x-4">
                   <li>· HVAC pricing</li>
@@ -129,7 +129,7 @@ export default function TryItPage() {
                 </ul>
               </div>
               <div className="border-l-[3px] border-brand-purple bg-black p-5 flex flex-col gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-brand-purple">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-brand-violet">
                   ▸ What to try
                 </span>
                 <ul className="text-sm font-body text-white/85 flex flex-col gap-1.5 mt-1">
@@ -139,7 +139,7 @@ export default function TryItPage() {
                   <li>· "Do you service commercial properties?"</li>
                 </ul>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -163,7 +163,7 @@ export default function TryItPage() {
               data-cta-type="primary"
               className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Book a 30-min call <ArrowRight size={16} />
+              Book a 30-min call <ArrowRight size={16} aria-hidden />
             </Link>
           </div>
         </div>

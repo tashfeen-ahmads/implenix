@@ -54,7 +54,7 @@ export function IndustrySlider() {
             onClick={() => scrollBy(-1)}
             className="w-9 h-9 border border-brand-purple/30 hover:border-brand-purple disabled:opacity-30 flex items-center justify-center transition-colors"
           >
-            <ArrowLeft size={14} className="text-brand-cyan" />
+            <ArrowLeft size={14} className="text-brand-cyan" aria-hidden />
           </button>
           <button
             type="button"
@@ -63,7 +63,7 @@ export function IndustrySlider() {
             onClick={() => scrollBy(1)}
             className="w-9 h-9 border border-brand-purple/30 hover:border-brand-purple disabled:opacity-30 flex items-center justify-center transition-colors"
           >
-            <ArrowRight size={14} className="text-brand-cyan" />
+            <ArrowRight size={14} className="text-brand-cyan" aria-hidden />
           </button>
         </div>
       </div>
@@ -97,8 +97,7 @@ export function IndustrySlider() {
                 See solution
                 <ArrowRight
                   size={14}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
+                  className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
               </span>
             </Link>
           </li>
@@ -123,8 +122,7 @@ export function IndustrySlider() {
               All industries
               <ArrowRight
                 size={14}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              />
+                className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
             </span>
           </Link>
         </li>

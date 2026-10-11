@@ -148,7 +148,7 @@ export default function AIReceptionistForAgenciesPage() {
               <Badge label="Built for · Agencies" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 AI receptionist for{' '}
-                <span className="text-brand-purple">agencies</span>.
+                <span className="text-brand-violet">agencies</span>.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Real RFPs land in your discovery calendar. Cold pitches don't.
@@ -163,7 +163,7 @@ export default function AIReceptionistForAgenciesPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my free missed-call audit <ArrowRight size={16} />
+                  Get my free missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/try-it"
@@ -175,7 +175,7 @@ export default function AIReceptionistForAgenciesPage() {
                 </Link>
               </div>
             </div>
-            <aside className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
                   ▸ Snapshot
@@ -188,7 +188,7 @@ export default function AIReceptionistForAgenciesPage() {
                   leadership down 89%.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -376,7 +376,7 @@ export default function AIReceptionistForAgenciesPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"
@@ -424,13 +424,13 @@ function AgencyTypeCard({
   const inner = (
     <div className="bg-black border border-brand-purple/20 hover:border-brand-purple p-5 flex flex-col gap-2 transition-colors">
       <div className="flex items-center gap-2">
-        <ShieldCheck size={14} className="text-brand-cyan" />
+        <ShieldCheck size={14} className="text-brand-cyan" aria-hidden />
         <p className="font-heading text-white text-base">{type}</p>
       </div>
       <p className="text-xs font-body text-white/65 leading-relaxed">{note}</p>
       {hasDeepDive ? (
         <span className="mt-auto inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
-          Deep dive <ArrowRight size={10} />
+          Deep dive <ArrowRight size={10} aria-hidden />
         </span>
       ) : null}
     </div>

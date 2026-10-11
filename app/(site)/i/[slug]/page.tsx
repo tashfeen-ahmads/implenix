@@ -228,7 +228,7 @@ export default function IndustryPage({ params }: { params: Params }) {
                 <TestRonCTA ctaLocation="industry-hero" variant="secondary" />
               </div>
             </div>
-            <aside className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
                   ▸ industry snapshot
@@ -240,7 +240,7 @@ export default function IndustryPage({ params }: { params: Params }) {
                   {data.heroStatLabel}
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -285,7 +285,7 @@ export default function IndustryPage({ params }: { params: Params }) {
                 key={pp.title}
                 className="bg-black border border-brand-purple/20 p-6 flex flex-col gap-3"
               >
-                <span className="font-mono text-xs text-brand-purple uppercase tracking-widest">
+                <span className="font-mono text-xs text-brand-violet uppercase tracking-widest">
                   Problem 0{idx + 1}
                 </span>
                 <h3 className="font-heading text-xl text-white">{pp.title}</h3>

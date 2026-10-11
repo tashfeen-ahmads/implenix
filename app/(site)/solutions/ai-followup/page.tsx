@@ -148,7 +148,7 @@ export default function AIFollowupPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Book a 30-min call <ArrowRight size={16} />
+                  Book a 30-min call <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="#faq"

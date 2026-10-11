@@ -100,7 +100,7 @@ export function Footer() {
                 variant="primary"
               />
             </div>
-            <p className="text-xs text-white/45 font-mono uppercase tracking-widest">
+            <p className="text-xs text-white/55 font-mono uppercase tracking-widest">
               ▸ implenix.net
             </p>
           </div>

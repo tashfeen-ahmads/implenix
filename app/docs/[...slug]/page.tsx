@@ -93,7 +93,7 @@ export default function DocPage({ params }: { params: Params }) {
         ) : null}
       </nav>
 
-      <aside className="mt-12 border-t border-brand-purple/20 pt-10 flex flex-col gap-4">
+      <div className="mt-12 border-t border-brand-purple/20 pt-10 flex flex-col gap-4">
         <h2 className="font-heading text-2xl text-white">
           Want to see it on your own calls?
         </h2>
@@ -111,7 +111,7 @@ export default function DocPage({ params }: { params: Params }) {
             Book a 30-min call <ArrowRight size={16} aria-hidden />
           </Link>
         </div>
-      </aside>
+      </div>
     </>
   );
 }

@@ -22,7 +22,7 @@ export function IndustriesGrid() {
             data-cta-location="industries-section"
             className="inline-flex items-center gap-2 text-brand-cyan font-medium text-sm hover:underline shrink-0"
           >
-            See all industries <ArrowRight size={14} />
+            See all industries <ArrowRight size={14} aria-hidden />
           </Link>
         </div>
         <div className="mt-16 md:mt-20">

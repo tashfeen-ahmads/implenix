@@ -219,12 +219,12 @@ export function LeadMagnetPopup() {
                   data-cta-type="calendar"
                   className="inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  <CalendarCheck size={16} /> Book on the calendar
-                  <ArrowRight size={14} />
+                  <CalendarCheck size={16} aria-hidden /> Book on the calendar
+                  <ArrowRight size={14} aria-hidden />
                 </a>
               </div>
 
-              <p className="text-[10px] font-mono uppercase tracking-widest text-white/45 mt-2">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-white/55 mt-2">
                 ▸ Zero data entry · zero spam · just a real conversation
               </p>
             </div>

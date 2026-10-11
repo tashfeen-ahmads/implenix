@@ -99,7 +99,7 @@ export default function WhatIsAnAIReceptionistPage() {
               <Badge label="Guide · Definition" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 What is an{' '}
-                <span className="text-brand-purple">AI receptionist</span>?
+                <span className="text-brand-violet">AI receptionist</span>?
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 An AI receptionist is a voice-AI agent that answers your
@@ -115,7 +115,7 @@ export default function WhatIsAnAIReceptionistPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my free missed-call audit <ArrowRight size={16} />
+                  Get my free missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/try-it"
@@ -153,7 +153,7 @@ export default function WhatIsAnAIReceptionistPage() {
               <p>
                 The category exists because most businesses lose
                 meaningful pipeline to missed calls.{' '}
-                <span className="text-brand-purple">Roughly 75% of
+                <span className="text-brand-violet">Roughly 75% of
                 callers do not leave voicemail</span> and call the next
                 business on Google. Hiring a receptionist runs
                 $3,500-$5,000/month for 40 hours. Live answering services
@@ -194,7 +194,7 @@ export default function WhatIsAnAIReceptionistPage() {
                   good
                 />
               </div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-white/45 pt-1">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-white/55 pt-1">
                 ▸ Under the hood: SIP · voice AI · NLU · CRM/calendar
                 sync · live-transfer rules
               </p>
@@ -325,7 +325,7 @@ export default function WhatIsAnAIReceptionistPage() {
                     key={line}
                     className="flex items-start gap-2 font-body text-sm text-white/85"
                   >
-                    <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+                    <Check size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                     {line}
                   </li>
                 ))}
@@ -394,7 +394,7 @@ export default function WhatIsAnAIReceptionistPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/"
@@ -472,7 +472,7 @@ function CostRow({
           good
             ? 'text-brand-cyan'
             : bad
-              ? 'text-white/45 line-through decoration-white/25'
+              ? 'text-white/55 line-through decoration-white/25'
               : 'text-white'
         }`}
       >

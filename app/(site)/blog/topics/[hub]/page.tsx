@@ -82,7 +82,7 @@ export default function TopicHubPage({ params }: { params: Params }) {
             href="/blog"
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-brand-cyan font-mono mb-8 hover:opacity-80"
           >
-            <ArrowLeft size={12} /> All posts
+            <ArrowLeft size={12} aria-hidden /> All posts
           </Link>
           <div className="max-w-3xl flex flex-col gap-5">
             <Badge label={`Topic hub · ${topic.name}`} variant="purple" />
@@ -150,8 +150,7 @@ export default function TopicHubPage({ params }: { params: Params }) {
                       Read{' '}
                       <ArrowRight
                         size={14}
-                        className="transition-transform group-hover:translate-x-1"
-                      />
+                        className="transition-transform group-hover:translate-x-1" aria-hidden />
                     </span>
                   </div>
                 </div>
@@ -186,7 +185,7 @@ export default function TopicHubPage({ params }: { params: Params }) {
                   {h.postSlugs.length} posts
                 </p>
                 <span className="inline-flex items-center gap-1 text-brand-cyan text-xs font-mono uppercase tracking-widest mt-2">
-                  Explore <ArrowRight size={11} />
+                  Explore <ArrowRight size={11} aria-hidden />
                 </span>
               </Link>
             ))}

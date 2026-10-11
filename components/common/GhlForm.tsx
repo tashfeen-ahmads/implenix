@@ -86,7 +86,7 @@ export function GhlForm({
           in <code className="font-mono text-brand-cyan">.env.local</code> to
           embed the live GoHighLevel form here.
         </p>
-        <p className="font-mono text-[11px] text-white/45">
+        <p className="font-mono text-[11px] text-white/55">
           Slot · {ctaLocation}
         </p>
       </div>
@@ -99,7 +99,7 @@ export function GhlForm({
     <div className="relative bg-black border border-brand-purple/30">
       {!loaded ? (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <Loader2 size={20} className="text-brand-cyan animate-spin" />
+          <Loader2 size={20} className="text-brand-cyan animate-spin" aria-hidden />
         </div>
       ) : null}
       <iframe

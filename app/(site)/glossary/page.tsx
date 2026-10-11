@@ -50,7 +50,7 @@ export default function GlossaryIndexPage() {
             <Badge label="Glossary · Voice AI vocabulary" variant="cyan" />
             <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
               The voice AI{' '}
-              <span className="text-brand-purple">vocabulary</span>, defined.
+              <span className="text-brand-violet">vocabulary</span>, defined.
             </h1>
             <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
               The terms that come up when you research AI receptionists,
@@ -77,14 +77,14 @@ export default function GlossaryIndexPage() {
                   className="group h-full bg-black border border-brand-purple/20 hover:border-brand-purple p-5 flex flex-col gap-3 transition-colors"
                 >
                   <span className="w-9 h-9 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-                    <BookOpen size={14} className="text-brand-cyan" />
+                    <BookOpen size={14} className="text-brand-cyan" aria-hidden />
                   </span>
                   <p className="font-heading text-white text-lg">{entry.term}</p>
                   <p className="font-body text-sm text-white/65 leading-relaxed flex-1">
                     {entry.shortDefinition}
                   </p>
                   <span className="inline-flex items-center gap-1 text-brand-cyan text-xs font-mono uppercase tracking-widest">
-                    Read <ArrowRight size={12} />
+                    Read <ArrowRight size={12} aria-hidden />
                   </span>
                 </Link>
               </li>
@@ -112,7 +112,7 @@ export default function GlossaryIndexPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/"

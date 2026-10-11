@@ -35,7 +35,7 @@ const FALLBACKS: Record<Props['type'], LinkItem[]> = {
 export function RelatedContent({ topic, type, links }: Props) {
   const items = links?.length ? links : FALLBACKS[type];
   return (
-    <aside className="border-t border-brand-purple/20 pt-10 mt-12">
+    <div className="border-t border-brand-purple/20 pt-10 mt-12">
       <h2 className="font-heading text-xl text-white mb-4">
         {topic}
       </h2>
@@ -50,12 +50,11 @@ export function RelatedContent({ topic, type, links }: Props) {
               <span className="text-white font-body text-sm">{link.label}</span>
               <ArrowRight
                 size={16}
-                className="text-brand-cyan transition-transform group-hover:translate-x-1"
-              />
+                className="text-brand-cyan transition-transform group-hover:translate-x-1" aria-hidden />
             </Link>
           </li>
         ))}
       </ul>
-    </aside>
+    </div>
   );
 }

@@ -28,9 +28,9 @@ export function CostOfNothingSection() {
           <div className="h-full border border-white/10 bg-black p-8 md:p-12 flex flex-col gap-6">
             <header className="flex items-center justify-between">
               <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/65 border border-white/15 px-2 py-1">
-                <AlertTriangle size={11} /> Without Implenix
+                <AlertTriangle size={11} aria-hidden /> Without Implenix
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-white/35">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
                 ▸ this week
               </span>
             </header>
@@ -56,7 +56,7 @@ export function CostOfNothingSection() {
                 data-cta-type="secondary"
                 className="inline-flex items-center gap-1.5 text-brand-cyan text-xs font-mono uppercase tracking-widest hover:opacity-80"
               >
-                See what YOUR week costs <ArrowRight size={12} />
+                See what YOUR week costs <ArrowRight size={12} aria-hidden />
               </Link>
             </div>
           </div>
@@ -70,7 +70,7 @@ export function CostOfNothingSection() {
               <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-brand-cyan border border-brand-cyan/40 px-2 py-1">
                 <span className="w-1.5 h-1.5 bg-brand-cyan" /> With Implenix
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
                 ▸ this week
               </span>
             </header>
@@ -94,7 +94,7 @@ export function CostOfNothingSection() {
               data-cta-type="primary"
               className="mt-4 inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-7 py-4 rounded-sm transition hover:opacity-90 active:translate-y-px self-start"
             >
-              Run my audit <ArrowRight size={16} />
+              Run my audit <ArrowRight size={16} aria-hidden />
             </Link>
           </div>
           </Spotlight>

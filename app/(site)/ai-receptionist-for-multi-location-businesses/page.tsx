@@ -144,7 +144,7 @@ export default function AIReceptionistForMultiLocationPage() {
               <Badge label="Built for · Multi-Location" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 AI receptionist for{' '}
-                <span className="text-brand-purple">multi-location</span>{' '}
+                <span className="text-brand-violet">multi-location</span>{' '}
                 businesses.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -161,7 +161,7 @@ export default function AIReceptionistForMultiLocationPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Talk to enterprise <ArrowRight size={16} />
+                  Talk to enterprise <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/audit"
@@ -297,7 +297,7 @@ export default function AIReceptionistForMultiLocationPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Talk to enterprise <ArrowRight size={16} />
+              Talk to enterprise <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"

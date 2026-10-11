@@ -123,10 +123,38 @@ export function NavBar() {
   const [activeMega, setActiveMega] = useState<NavGroup['type'] | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) return;
+    // Mobile menu is modal: Tab cycles inside it plus the toggle button,
+    // and focus returns to the toggle when it closes.
+    const button = menuButtonRef.current;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !mobileMenuRef.current) return;
+      const items = [
+        button,
+        ...Array.from(
+          mobileMenuRef.current.querySelectorAll<HTMLElement>('a[href], button'),
+        ),
+      ].filter(Boolean) as HTMLElement[];
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+      button?.focus();
     };
   }, [open]);
 
@@ -193,8 +221,7 @@ export function NavBar() {
                         size={12}
                         className={`transition-transform ${
                           activeMega === group.type ? 'rotate-180 text-brand-cyan' : ''
-                        }`}
-                      />
+                        }`} aria-hidden />
                     ) : null}
                   </Link>
                 </div>
@@ -211,7 +238,7 @@ export function NavBar() {
             data-cta-type="primary"
             className="inline-flex items-center gap-1 bg-brand-purple text-white font-medium text-[13px] px-4 py-2 rounded-sm hover:opacity-90"
           >
-            Book a call <ArrowRight size={14} />
+            Book a call <ArrowRight size={14} aria-hidden />
           </Link>
         </div>
 
@@ -220,6 +247,7 @@ export function NavBar() {
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           aria-controls="mobile-menu"
+          ref={menuButtonRef}
           onClick={() => setOpen((v) => !v)}
           className="lg:hidden -mr-2 w-11 h-11 flex items-center justify-center text-white hover:text-brand-cyan transition-colors"
         >
@@ -249,7 +277,7 @@ export function NavBar() {
                   className="group flex items-start gap-4 border border-brand-purple/20 hover:border-brand-purple p-5 transition-colors"
                 >
                   <span className="w-10 h-10 border border-brand-cyan/30 bg-black flex items-center justify-center shrink-0">
-                    <Icon size={18} className="text-brand-cyan" />
+                    <Icon size={18} className="text-brand-cyan" aria-hidden />
                   </span>
                   <span className="flex-1">
                     <span className="block font-heading text-white text-base">
@@ -261,8 +289,7 @@ export function NavBar() {
                   </span>
                   <ArrowRight
                     size={16}
-                    className="text-brand-cyan mt-1 transition-transform group-hover:translate-x-1"
-                  />
+                    className="text-brand-cyan mt-1 transition-transform group-hover:translate-x-1" aria-hidden />
                 </Link>
               ))}
             </div>
@@ -280,7 +307,7 @@ export function NavBar() {
                       className="group flex items-start gap-3 border border-brand-purple/20 hover:border-brand-purple p-4 transition-colors"
                     >
                       <span className="w-8 h-8 border border-brand-cyan/30 bg-black flex items-center justify-center shrink-0">
-                        <Icon size={14} className="text-brand-cyan" />
+                        <Icon size={14} className="text-brand-cyan" aria-hidden />
                       </span>
                       <span className="flex-1">
                         <span className="block font-heading text-white text-sm">
@@ -303,8 +330,7 @@ export function NavBar() {
                 </span>
                 <ArrowRight
                   size={14}
-                  className="text-brand-cyan transition-transform group-hover:translate-x-1"
-                />
+                  className="text-brand-cyan transition-transform group-hover:translate-x-1" aria-hidden />
               </Link>
             </div>
           ) : null}
@@ -325,7 +351,7 @@ export function NavBar() {
                         className="group flex items-start gap-3 border border-brand-purple/20 hover:border-brand-purple p-4 transition-colors"
                       >
                         <span className="w-9 h-9 border border-brand-cyan/30 bg-black flex items-center justify-center shrink-0">
-                          <Icon size={16} className="text-brand-cyan" />
+                          <Icon size={16} className="text-brand-cyan" aria-hidden />
                         </span>
                         <span className="flex-1">
                           <span className="block font-heading text-white text-sm">
@@ -341,7 +367,7 @@ export function NavBar() {
                 </div>
               </div>
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-brand-purple mb-3">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-brand-violet mb-3">
                   ▸ Brand alternatives
                 </p>
                 <div className="flex flex-col gap-3">
@@ -361,8 +387,7 @@ export function NavBar() {
                       </span>
                       <ArrowRight
                         size={14}
-                        className="text-brand-cyan mt-1 transition-transform group-hover:translate-x-1"
-                      />
+                        className="text-brand-cyan mt-1 transition-transform group-hover:translate-x-1" aria-hidden />
                     </Link>
                   ))}
                 </div>
@@ -373,7 +398,7 @@ export function NavBar() {
       </div>
 
       {open && (
-        <div id="mobile-menu" className="lg:hidden fixed inset-0 top-14 bg-brand-dark z-40 flex flex-col px-6 py-8 gap-5 overflow-y-auto overscroll-contain">
+        <div id="mobile-menu" ref={mobileMenuRef} className="lg:hidden fixed inset-0 top-14 bg-brand-dark z-40 flex flex-col px-6 py-8 gap-5 overflow-y-auto overscroll-contain">
           {NAV_GROUPS.map((link) => (
             <Link
               key={link.href}

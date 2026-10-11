@@ -84,7 +84,7 @@ export default function BlogIndexPage() {
             <Badge label="Implenix · Blog" variant="cyan" />
             <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
               Field notes from teams that{' '}
-              <span className="text-brand-purple">run on calls</span>.
+              <span className="text-brand-violet">run on calls</span>.
             </h1>
             <p className="font-body text-white/75 text-lg max-w-2xl leading-relaxed">
               Operator playbooks, agent tuning notes, and deployment
@@ -95,7 +95,7 @@ export default function BlogIndexPage() {
               href="/blog/rss.xml"
               className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-brand-cyan hover:opacity-80 self-start"
             >
-              <Rss size={12} /> Subscribe via RSS
+              <Rss size={12} aria-hidden /> Subscribe via RSS
             </Link>
           </div>
         </div>

@@ -89,7 +89,7 @@ export function DocsSearch({ entries }: Props) {
         className="w-full flex items-center justify-between gap-3 border border-brand-purple/20 hover:border-brand-purple bg-black px-3 py-2 text-sm font-body text-white/65 transition-colors"
       >
         <span className="flex items-center gap-2">
-          <Search size={14} className="text-brand-cyan" />
+          <Search size={14} className="text-brand-cyan" aria-hidden />
           Search docs
         </span>
         <kbd className="hidden sm:inline font-mono text-[10px] uppercase tracking-widest border border-brand-purple/30 px-1.5 py-0.5">
@@ -114,7 +114,7 @@ export function DocsSearch({ entries }: Props) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 border-b border-brand-purple/20 px-4 py-3">
-              <Search size={16} className="text-brand-cyan shrink-0" />
+              <Search size={16} className="text-brand-cyan shrink-0" aria-hidden />
               <input
                 ref={inputRef}
                 type="search"
@@ -122,7 +122,7 @@ export function DocsSearch({ entries }: Props) {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder="Search documentation…"
-                className="flex-1 bg-transparent text-white placeholder:text-white/40 focus:outline-none font-body text-sm"
+                className="flex-1 bg-transparent text-white placeholder:text-white/55 focus:outline-none font-body text-sm"
               />
               <button
                 type="button"
@@ -130,7 +130,7 @@ export function DocsSearch({ entries }: Props) {
                 aria-label="Close search"
                 className="text-white/55 hover:text-white"
               >
-                <X size={16} />
+                <X size={16} aria-hidden />
               </button>
             </div>
             <div className="max-h-96 overflow-y-auto">
@@ -156,8 +156,7 @@ export function DocsSearch({ entries }: Props) {
                         >
                           <FileText
                             size={14}
-                            className="text-brand-cyan mt-0.5 shrink-0"
-                          />
+                            className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
                           <span className="flex-1 min-w-0">
                             <span className="block font-heading text-sm text-white truncate">
                               {entry.title}
@@ -168,8 +167,7 @@ export function DocsSearch({ entries }: Props) {
                           </span>
                           <ChevronRight
                             size={14}
-                            className="text-white/40 mt-1"
-                          />
+                            className="text-white/55 mt-1" aria-hidden />
                         </Link>
                       </li>
                     );
@@ -177,7 +175,7 @@ export function DocsSearch({ entries }: Props) {
                 </ul>
               )}
             </div>
-            <div className="border-t border-brand-purple/20 px-4 py-2 flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-white/45">
+            <div className="border-t border-brand-purple/20 px-4 py-2 flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-white/55">
               <span>↑↓ navigate · ↵ open</span>
               <span>esc close</span>
             </div>

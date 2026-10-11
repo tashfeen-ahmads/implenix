@@ -53,7 +53,7 @@ export function StickyDemoCTA() {
           data-cta-type="calendar"
           className="flex-1 inline-flex items-center justify-center gap-1.5 border border-brand-cyan text-brand-cyan text-xs font-medium px-3 py-2.5 rounded-sm hover:bg-brand-cyan/10"
         >
-          <CalendarCheck size={12} /> Book slot
+          <CalendarCheck size={12} aria-hidden /> Book slot
         </Link>
       </div>
     </div>

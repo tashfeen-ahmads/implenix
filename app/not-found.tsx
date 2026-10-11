@@ -33,7 +33,7 @@ export default function NotFound() {
       <div className="max-w-content mx-auto grid lg:grid-cols-12 gap-10 items-start">
         <div className="lg:col-span-7 border border-brand-purple/20 bg-black p-8 md:p-10 flex flex-col gap-6">
           <Badge label="404 · Not found" variant="purple" />
-          <h1 className="font-heading text-6xl md:text-7xl text-brand-purple leading-none">
+          <h1 className="font-heading text-6xl md:text-7xl text-brand-violet leading-none">
             404
           </h1>
           <p className="text-white/80 font-body text-lg leading-relaxed">
@@ -46,7 +46,7 @@ export default function NotFound() {
               href="/"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Back to Implenix <ArrowRight size={16} />
+              Back to Implenix <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/contact"
@@ -57,10 +57,10 @@ export default function NotFound() {
           </div>
         </div>
 
-        <aside className="lg:col-span-5 flex flex-col gap-6">
+        <div className="lg:col-span-5 flex flex-col gap-6">
           <div className="border border-brand-purple/20 bg-black p-6 flex flex-col gap-3">
             <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
-              <Search size={11} /> Popular pages
+              <Search size={11} aria-hidden /> Popular pages
             </span>
             <ul className="flex flex-col gap-2 mt-1">
               {POPULAR_PAGES.map((p) => (
@@ -71,8 +71,7 @@ export default function NotFound() {
                   >
                     <ArrowRight
                       size={12}
-                      className="text-brand-cyan transition-transform group-hover:translate-x-0.5"
-                    />
+                      className="text-brand-cyan transition-transform group-hover:translate-x-0.5" aria-hidden />
                     {p.label}
                   </Link>
                 </li>
@@ -99,10 +98,10 @@ export default function NotFound() {
               href="/industries"
               className="mt-2 inline-flex items-center gap-1 text-brand-cyan text-xs font-mono uppercase tracking-widest hover:opacity-80"
             >
-              See all 25 industries <ArrowRight size={11} />
+              See all 25 industries <ArrowRight size={11} aria-hidden />
             </Link>
           </div>
-        </aside>
+        </div>
       </div>
     </div>
   );

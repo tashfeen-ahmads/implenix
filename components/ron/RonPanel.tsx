@@ -208,7 +208,7 @@ function RonDialog({ ctaLocation, onClose }: Props) {
           </div>
 
           {HAS_RON ? (
-            <p className="mt-6 text-xs font-body text-white/45 leading-relaxed">
+            <p className="mt-6 text-xs font-body text-white/55 leading-relaxed">
               Uses your microphone. Conversations are recorded to improve
               Ron. See our{' '}
               <Link href="/privacy-policy" className="underline hover:text-white/70">

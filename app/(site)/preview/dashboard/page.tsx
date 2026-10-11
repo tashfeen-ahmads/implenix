@@ -178,7 +178,7 @@ export default function DashboardPreviewPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"
@@ -215,7 +215,7 @@ function RevenueHeroCard() {
           ▸ Trend
         </span>
         <span className="font-heading text-2xl text-brand-cyan">+22.4%</span>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
           vs last month
         </span>
       </div>
@@ -237,7 +237,7 @@ function SecondaryStat({
   return (
     <div className="bg-black border border-brand-purple/20 p-4 flex flex-col gap-2">
       <span className="w-8 h-8 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-        <Icon size={14} className="text-brand-cyan" />
+        <Icon size={14} className="text-brand-cyan" aria-hidden />
       </span>
       <p className="font-mono text-[10px] uppercase tracking-widest text-white/55">
         {label}
@@ -253,7 +253,7 @@ function CostOfNothingCard() {
     <div className="border border-white/10 bg-black p-6 grid md:grid-cols-2 gap-6">
       <div>
         <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-white/65 border border-white/15 px-2 py-1">
-          <AlertTriangle size={11} /> Without Implenix · estimated
+          <AlertTriangle size={11} aria-hidden /> Without Implenix · estimated
         </span>
         <p className="mt-4 font-heading text-3xl md:text-4xl text-white/85 leading-tight">
           You would have missed 184 calls this month
@@ -264,7 +264,7 @@ function CostOfNothingCard() {
         <p className="font-heading text-4xl md:text-5xl text-white mt-2 leading-none">
           $58,420
         </p>
-        <p className="text-xs font-body text-white/45 mt-2">
+        <p className="text-xs font-body text-white/55 mt-2">
           Going to whoever answered first.
         </p>
       </div>
@@ -291,7 +291,7 @@ function ConversationsCard() {
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
           ▸ Conversations · today
         </span>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
           5 of 412 · click to replay
         </span>
       </header>
@@ -307,14 +307,14 @@ function ConversationsCard() {
                 <p className="font-body text-sm text-white truncate">
                   {c.caller}
                 </p>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-white/45 shrink-0">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-white/55 shrink-0">
                   {c.when}
                 </span>
               </div>
               <p className="text-xs font-body text-white/65 truncate mt-0.5">
                 {c.summary}
               </p>
-              <div className="flex items-center gap-3 mt-1.5 text-[10px] font-mono uppercase tracking-widest text-white/45">
+              <div className="flex items-center gap-3 mt-1.5 text-[10px] font-mono uppercase tracking-widest text-white/55">
                 <span>{c.duration}</span>
                 {c.value > 0 ? (
                   <span className="text-brand-cyan">
@@ -332,12 +332,12 @@ function ConversationsCard() {
 
 function TagIcon({ tag }: { tag: 'booked' | 'qualified' | 'spam' | 'transferred' }) {
   if (tag === 'booked')
-    return <CheckCircle2 size={16} className="text-brand-cyan mt-0.5 shrink-0" />;
+    return <CheckCircle2 size={16} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />;
   if (tag === 'qualified')
-    return <CircleDot size={16} className="text-brand-purple mt-0.5 shrink-0" />;
+    return <CircleDot size={16} className="text-brand-violet mt-0.5 shrink-0" aria-hidden />;
   if (tag === 'transferred')
-    return <PhoneForwarded size={16} className="text-brand-cyan mt-0.5 shrink-0" />;
-  return <XCircle size={16} className="text-white/30 mt-0.5 shrink-0" />;
+    return <PhoneForwarded size={16} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />;
+  return <XCircle size={16} className="text-white/55 mt-0.5 shrink-0" aria-hidden />;
 }
 
 function HandoffCard() {
@@ -345,9 +345,9 @@ function HandoffCard() {
     <div className="bg-black border border-brand-purple/25">
       <header className="flex items-center justify-between px-5 py-3 border-b border-brand-purple/20">
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-          <ShieldCheck size={11} /> Handoff to human
+          <ShieldCheck size={11} aria-hidden /> Handoff to human
         </span>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
           rules · {HANDOFF_RULES.filter((r) => r.enabled).length}/
           {HANDOFF_RULES.length}
         </span>
@@ -358,14 +358,14 @@ function HandoffCard() {
             key={r.label}
             className="flex items-center justify-between gap-3 text-sm font-body"
           >
-            <span className={r.enabled ? 'text-white' : 'text-white/45'}>
+            <span className={r.enabled ? 'text-white' : 'text-white/55'}>
               {r.label}
             </span>
             <span
               className={`text-[10px] font-mono uppercase tracking-widest border px-2 py-0.5 ${
                 r.enabled
                   ? 'border-brand-cyan/40 text-brand-cyan'
-                  : 'border-white/15 text-white/45'
+                  : 'border-white/15 text-white/55'
               }`}
             >
               {r.enabled ? 'On' : 'Off'}
@@ -401,7 +401,7 @@ function UpsellRow() {
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
           ▸ Add to your plan
         </span>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
           surfaced based on usage
         </span>
       </header>

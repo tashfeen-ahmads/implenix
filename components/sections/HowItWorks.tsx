@@ -98,9 +98,9 @@ function StepRow({ step, reversed }: { step: Step; reversed: boolean }) {
       >
         <div className="flex items-center gap-3">
           <span className="w-12 h-12 border border-brand-cyan/30 bg-black flex items-center justify-center">
-            <Icon size={18} className="text-brand-cyan" />
+            <Icon size={18} className="text-brand-cyan" aria-hidden />
           </span>
-          <span className="font-heading text-5xl md:text-6xl text-brand-purple leading-none">
+          <span className="font-heading text-5xl md:text-6xl text-brand-violet leading-none">
             {step.index}
           </span>
         </div>
@@ -116,7 +116,7 @@ function StepRow({ step, reversed }: { step: Step; reversed: boolean }) {
               key={b}
               className="flex items-start gap-2 font-body text-white/85 text-sm"
             >
-              <ArrowRight size={14} className="text-brand-cyan mt-0.5 shrink-0" />
+              <ArrowRight size={14} className="text-brand-cyan mt-0.5 shrink-0" aria-hidden />
               {b}
             </li>
           ))}

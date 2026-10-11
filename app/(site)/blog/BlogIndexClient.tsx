@@ -52,12 +52,13 @@ export function BlogIndexClient({ posts }: { posts: Post[] }) {
 
       <div className="max-w-content mx-auto px-6 py-12">
         {/* CONTENT VIA MDX FILES IN /content/blog/, ASSIGN TO CONTENT TEAM */}
+        <h2 className="sr-only">Posts</h2>
         {filtered.length === 0 ? (
           <div className="border border-brand-purple/20 p-10 text-center text-white/70 font-body">
             No posts in this category yet.
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((p) => (
               <Link
                 key={p.url}
@@ -95,8 +96,7 @@ export function BlogIndexClient({ posts }: { posts: Post[] }) {
                       Read{' '}
                       <ArrowRight
                         size={14}
-                        className="transition-transform group-hover:translate-x-1"
-                      />
+                        className="transition-transform group-hover:translate-x-1" aria-hidden />
                     </span>
                   </div>
                 </div>

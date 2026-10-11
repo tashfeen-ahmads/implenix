@@ -189,7 +189,7 @@ export default function BenefitsOfAIReceptionistPage() {
               <Badge label="Guide · Benefits" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 12 benefits of an{' '}
-                <span className="text-brand-purple">AI receptionist</span>, with real numbers.
+                <span className="text-brand-violet">AI receptionist</span>, with real numbers.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Generic "save time" copy is not useful. This is the
@@ -204,7 +204,7 @@ export default function BenefitsOfAIReceptionistPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my numbers <ArrowRight size={16} />
+                  Get my numbers <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/pricing"
@@ -242,10 +242,10 @@ export default function BenefitsOfAIReceptionistPage() {
               </p>
             </div>
             <div className="border-l-[3px] border-brand-purple bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                 ▸ Bucket 2 · Labor recovered
               </span>
-              <p className="font-heading text-4xl md:text-5xl text-brand-purple leading-none">
+              <p className="font-heading text-4xl md:text-5xl text-brand-violet leading-none">
                 15-22 hrs
               </p>
               <p className="font-body text-sm text-white/80 leading-relaxed">
@@ -268,10 +268,10 @@ export default function BenefitsOfAIReceptionistPage() {
               </p>
             </div>
             <div className="border-l-[3px] border-brand-purple bg-black p-6 flex flex-col gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                 ▸ Bucket 4 · Consistency + compliance
               </span>
-              <p className="font-heading text-4xl md:text-5xl text-brand-purple leading-none">
+              <p className="font-heading text-4xl md:text-5xl text-brand-violet leading-none">
                 100%
               </p>
               <p className="font-body text-sm text-white/80 leading-relaxed">
@@ -316,7 +316,7 @@ export default function BenefitsOfAIReceptionistPage() {
                 caption="One call, three benefits firing at once: recovered pipeline + 24/7 capture + live calendar booking"
               />
             </div>
-            <aside className="lg:col-span-4 flex flex-col gap-4">
+            <div className="lg:col-span-4 flex flex-col gap-4">
               <div className="border border-brand-purple/25 bg-brand-dark p-6">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                   ▸ What this call delivered
@@ -329,7 +329,7 @@ export default function BenefitsOfAIReceptionistPage() {
                 </ul>
               </div>
               <div className="border border-brand-cyan/25 bg-black p-6">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                   ▸ Net effect
                 </span>
                 <p className="mt-3 font-heading text-3xl text-white leading-tight">
@@ -339,7 +339,7 @@ export default function BenefitsOfAIReceptionistPage() {
                   That otherwise would not have existed. Multiply across 200+ inbound calls/month.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -358,7 +358,7 @@ export default function BenefitsOfAIReceptionistPage() {
                 key={b.title}
                 className="bg-black border border-brand-purple/20 hover:border-brand-purple p-6 flex gap-5 transition-colors"
               >
-                <span className="font-heading text-3xl text-brand-purple leading-none shrink-0 w-12">
+                <span className="font-heading text-3xl text-brand-violet leading-none shrink-0 w-12">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div className="flex-1 flex flex-col gap-2">
@@ -440,7 +440,7 @@ export default function BenefitsOfAIReceptionistPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-cost-comparison"

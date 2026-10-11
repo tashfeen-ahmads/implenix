@@ -59,7 +59,7 @@ export default function AuditPage() {
             <Badge label="Free · Missed-call audit" variant="cyan" />
             <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
               See exactly what missed calls{' '}
-              <span className="text-brand-purple">cost you</span> last month.
+              <span className="text-brand-violet">cost you</span> last month.
             </h1>
             <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
               Drop in your number, pick your industry, and we will run an
@@ -77,15 +77,21 @@ export default function AuditPage() {
         </div>
       </section>
 
-      <section className="bg-brand-dark border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-20 grid md:grid-cols-3 gap-5">
+      <section
+        aria-labelledby="audit-steps"
+        className="bg-brand-dark border-t border-brand-purple/15"
+      >
+        <h2 id="audit-steps" className="sr-only">
+          How the audit works
+        </h2>
+        <div className="max-w-content mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-3 gap-5">
           {STEPS.map(({ Icon, title, body }) => (
             <div
               key={title}
               className="border border-brand-purple/20 bg-black p-6 flex flex-col gap-3"
             >
               <span className="w-9 h-9 border border-brand-cyan/30 bg-brand-dark flex items-center justify-center">
-                <Icon size={16} className="text-brand-cyan" />
+                <Icon size={16} className="text-brand-cyan" aria-hidden />
               </span>
               <h3 className="font-heading text-lg text-white">{title}</h3>
               <p className="font-body text-sm text-white/70 leading-relaxed">

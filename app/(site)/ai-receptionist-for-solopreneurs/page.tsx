@@ -144,7 +144,7 @@ export default function AIReceptionistForSolopreneursPage() {
               <Badge label="Built for · Solopreneurs" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
                 AI receptionist for{' '}
-                <span className="text-brand-purple">solopreneurs</span>.
+                <span className="text-brand-violet">solopreneurs</span>.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 You're the technician, the salesperson, and the front desk
@@ -160,7 +160,7 @@ usually all at once. Implenix is the AI receptionist
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my missed-call audit <ArrowRight size={16} />
+                  Get my missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/pricing"
@@ -291,7 +291,7 @@ more than the average solo operator's monthly software
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/try-it"

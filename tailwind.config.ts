@@ -12,6 +12,9 @@ const config: Config = {
         brand: {
           dark: '#070538',
           purple: '#bb00ff',
+          // Text-safe tint of the brand purple: #bb00ff is 4.2:1 on the
+          // navy background, this is 5.0:1+ (WCAG AA for small text).
+          violet: '#c63dff',
           cyan: '#3dfaff',
         },
       },

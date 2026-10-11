@@ -136,7 +136,7 @@ export default function AboutPage() {
                 data-cta-type="primary"
                 className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
               >
-                Book a 30-min call <ArrowRight size={16} />
+                Book a 30-min call <ArrowRight size={16} aria-hidden />
               </Link>
               <Link
                 href="/case-studies"
@@ -217,7 +217,7 @@ compact
                 </p>
               </div>
               <div className="border-l-[3px] border-brand-purple bg-black p-4 flex flex-col gap-2">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-purple">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-violet">
                   ▸ What we do
                 </span>
                 <p className="font-heading text-2xl text-white leading-none">
@@ -260,7 +260,7 @@ compact
       <section className="bg-black border-t border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 py-24">
           <div className="grid lg:grid-cols-12 gap-8 items-start">
-            <aside
+            <div
               data-answer
               data-speakable
               className="lg:col-span-7 border-l-[3px] border-brand-cyan bg-brand-dark rounded-r-sm p-6 md:p-8 flex flex-col gap-3"
@@ -287,7 +287,7 @@ compact
                 and integration depth</span> that keeps every call in
                 your CRM and every booking on your real calendar.
               </p>
-            </aside>
+            </div>
             <ol className="lg:col-span-5 flex flex-col gap-3">
               <TimelineItem
                 year="2019-2023"
@@ -468,7 +468,7 @@ compact
               data-cta-type="primary"
               className="inline-flex items-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Book a 30-min call <ArrowRight size={16} />
+              Book a 30-min call <ArrowRight size={16} aria-hidden />
             </Link>
           </div>
         </div>
@@ -503,7 +503,7 @@ function TimelineItem({
     >
       <span
         className={`font-mono text-[10px] uppercase tracking-widest ${
-          isCyan ? 'text-brand-cyan' : 'text-brand-purple'
+          isCyan ? 'text-brand-cyan' : 'text-brand-violet'
         }`}
       >
         ▸ {year}

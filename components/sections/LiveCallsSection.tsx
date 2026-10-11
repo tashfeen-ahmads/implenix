@@ -37,6 +37,7 @@ export function LiveCallsSection() {
               <button
                 key={tab.id}
                 type="button"
+                aria-pressed={isActive}
                 onClick={() => setActive(tab.id)}
                 className={`px-5 py-4 text-left font-body text-sm transition-colors border ${
                   isActive
@@ -47,7 +48,7 @@ export function LiveCallsSection() {
                 <span className="block font-medium">{tab.label}</span>
                 <span
                   className={`block text-[11px] font-mono uppercase tracking-widest mt-1 ${
-                    isActive ? 'text-white/80' : 'text-white/45'
+                    isActive ? 'text-white' : 'text-white/60'
                   }`}
                 >
                   {tab.sub}
@@ -65,7 +66,7 @@ export function LiveCallsSection() {
               lines={transcript.lines}
             />
           </div>
-          <aside className="lg:col-span-4 flex flex-col gap-6">
+          <div className="lg:col-span-4 flex flex-col gap-6">
             <div className="border border-brand-purple/25 bg-brand-dark p-8">
               <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                 ▸ Every call is real
@@ -78,7 +79,7 @@ export function LiveCallsSection() {
               </p>
             </div>
             <div className="border border-brand-cyan/25 bg-black p-8">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                 ▸ Languages live today
               </span>
               <p className="mt-3 font-heading text-3xl text-white leading-tight">
@@ -89,7 +90,7 @@ export function LiveCallsSection() {
                 menu-driven.
               </p>
             </div>
-          </aside>
+          </div>
         </div>
       </div>
     </section>

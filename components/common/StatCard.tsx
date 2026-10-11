@@ -5,7 +5,7 @@ type Props = {
 };
 
 export function StatCard({ number, label, accent = 'cyan' }: Props) {
-  const accentText = accent === 'purple' ? 'text-brand-purple' : 'text-brand-cyan';
+  const accentText = accent === 'purple' ? 'text-brand-violet' : 'text-brand-cyan';
   const accentBorder =
     accent === 'purple' ? 'border-l-brand-purple' : 'border-l-brand-cyan';
   return (

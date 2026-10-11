@@ -24,11 +24,11 @@ export function TopicalLinks({ postSlug }: Props) {
   if (topics.length === 0 && relatedPosts.length === 0) return null;
 
   return (
-    <aside className="mt-16 border border-brand-purple/25 bg-black p-6 md:p-8 flex flex-col gap-6">
+    <div className="mt-16 border border-brand-purple/25 bg-black p-6 md:p-8 flex flex-col gap-6">
       {topics.length > 0 ? (
         <div className="flex flex-col gap-3">
           <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-            <Layers size={11} /> Part of this topic hub
+            <Layers size={11} aria-hidden /> Part of this topic hub
           </span>
           <div className="flex flex-wrap gap-2">
             {topics.map((t) => (
@@ -39,7 +39,7 @@ export function TopicalLinks({ postSlug }: Props) {
                 className="inline-flex items-center gap-1.5 border border-brand-purple text-white bg-brand-purple/10 hover:bg-brand-purple/20 px-3 py-1.5 text-xs font-mono uppercase tracking-widest transition-colors"
               >
                 {t.name}
-                <ArrowRight size={11} className="text-brand-cyan" />
+                <ArrowRight size={11} className="text-brand-cyan" aria-hidden />
               </Link>
             ))}
           </div>
@@ -61,8 +61,7 @@ export function TopicalLinks({ postSlug }: Props) {
                 >
                   <ArrowRight
                     size={14}
-                    className="text-brand-cyan mt-0.5 shrink-0 transition-transform group-hover:translate-x-0.5"
-                  />
+                    className="text-brand-cyan mt-0.5 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden />
                   <span>{p.title}</span>
                 </Link>
               </li>
@@ -70,6 +69,6 @@ export function TopicalLinks({ postSlug }: Props) {
           </ul>
         </div>
       ) : null}
-    </aside>
+    </div>
   );
 }

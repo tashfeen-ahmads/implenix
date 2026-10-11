@@ -24,7 +24,7 @@ export function CodeWindow({ title, lines, caption }: Props) {
       <div className="flex items-center justify-between gap-3 border-b border-brand-cyan/20 px-5 py-3 bg-brand-dark">
         <div className="flex items-center gap-2.5">
           <span className="w-8 h-8 border border-brand-cyan/40 bg-black flex items-center justify-center rounded-full shrink-0">
-            <Phone size={13} className="text-brand-cyan" />
+            <Phone size={13} className="text-brand-cyan" aria-hidden />
           </span>
           <div className="flex flex-col leading-tight">
             <span className="font-body text-white text-[13px] font-medium">
@@ -45,7 +45,7 @@ export function CodeWindow({ title, lines, caption }: Props) {
             return (
               <div key={i} className="flex items-center gap-2 my-1">
                 <span className="flex-1 h-px bg-white/10" />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-white/45 text-center">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-white/55 text-center">
                   {line.text}
                 </span>
                 <span className="flex-1 h-px bg-white/10" />
@@ -64,12 +64,12 @@ export function CodeWindow({ title, lines, caption }: Props) {
               <div className="flex items-center gap-2 px-1">
                 <span
                   className={`font-mono text-[10px] uppercase tracking-widest ${
-                    isAgent ? 'text-brand-cyan' : 'text-brand-purple'
+                    isAgent ? 'text-brand-cyan' : 'text-brand-violet'
                   }`}
                 >
                   {isAgent ? 'Ron' : 'Caller'}
                 </span>
-                <span className="font-mono text-[10px] text-white/40">
+                <span className="font-mono text-[10px] text-white/55">
                   {ts}
                 </span>
               </div>

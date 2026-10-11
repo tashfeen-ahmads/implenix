@@ -25,11 +25,11 @@ type Props = {
 };
 
 const inputClass =
-  'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-4 py-3 rounded-sm font-body text-sm placeholder:text-white/40 transition-colors';
+  'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-4 py-3 rounded-sm font-body text-sm placeholder:text-white/55 transition-colors';
 
 const labelClass = 'text-xs uppercase tracking-widest text-white/70 font-body';
 
-const errorClass = 'text-brand-purple text-xs mt-1';
+const errorClass = 'text-brand-violet text-xs mt-1';
 
 export function LeadForm({ variant, ctaLocation, onSuccess }: Props) {
   const [submitted, setSubmitted] = useState(false);

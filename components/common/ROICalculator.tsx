@@ -87,7 +87,7 @@ export function ROICalculator() {
           {!unlocked && (
             <div className="absolute inset-0 bg-black/85 flex flex-col items-center justify-center gap-4 p-6 border border-brand-purple/40">
               <div className="flex items-center gap-2 text-brand-cyan">
-                <Lock size={16} />
+                <Lock size={16} aria-hidden />
                 <span className="text-xs uppercase tracking-widest">
                   Get on a call
                 </span>
@@ -107,8 +107,8 @@ export function ROICalculator() {
                   data-cta-type="calendar"
                   className="flex-1 inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  <CalendarCheck size={14} /> Book slot
-                  <ArrowRight size={14} />
+                  <CalendarCheck size={14} aria-hidden /> Book slot
+                  <ArrowRight size={14} aria-hidden />
                 </Link>
               </div>
             </div>

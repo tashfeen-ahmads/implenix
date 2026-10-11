@@ -25,7 +25,7 @@ export function BentoCard({
       : span === 'tall'
         ? 'lg:row-span-2'
         : '';
-  const iconColor = accent === 'cyan' ? 'text-brand-cyan' : 'text-brand-purple';
+  const iconColor = accent === 'cyan' ? 'text-brand-cyan' : 'text-brand-violet';
   return (
     <article
       className={`group relative bg-black border border-brand-purple/20 hover:border-brand-purple/60 transition-colors duration-200 p-6 lg:p-8 flex flex-col gap-4 ${spanClass}`}

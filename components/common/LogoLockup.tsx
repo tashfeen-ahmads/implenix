@@ -28,7 +28,7 @@ export function LogoLockup({
   className = '',
 }: Props) {
   const { mark, text } = SIZE_MAP[size];
-  const wordColor = tone === 'purple' ? 'text-brand-purple' : 'text-white';
+  const wordColor = tone === 'purple' ? 'text-brand-violet' : 'text-white';
 
   const wordmark =
     variant === 'wordmark' ? (

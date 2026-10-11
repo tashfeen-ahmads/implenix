@@ -96,7 +96,7 @@ export default function GlossaryEntryPage({ params }: { params: Params }) {
             href="/glossary"
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-brand-cyan font-mono mb-8 hover:opacity-80"
           >
-            <ArrowLeft size={12} /> All terms
+            <ArrowLeft size={12} aria-hidden /> All terms
           </Link>
           <div className="max-w-3xl flex flex-col gap-6">
             <Badge label="Glossary entry" variant="cyan" />
@@ -162,15 +162,14 @@ export default function GlossaryEntryPage({ params }: { params: Params }) {
                     className="group flex items-center justify-between gap-3 border border-brand-purple/20 hover:border-brand-purple bg-black p-4 transition-colors"
                   >
                     <span className="flex items-center gap-2">
-                      <BookOpen size={14} className="text-brand-cyan" />
+                      <BookOpen size={14} className="text-brand-cyan" aria-hidden />
                       <span className="font-body text-sm text-white">
                         {link.label}
                       </span>
                     </span>
                     <ArrowRight
                       size={14}
-                      className="text-brand-cyan transition-transform group-hover:translate-x-1"
-                    />
+                      className="text-brand-cyan transition-transform group-hover:translate-x-1" aria-hidden />
                   </Link>
                 </li>
               ))}

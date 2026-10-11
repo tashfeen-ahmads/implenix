@@ -25,8 +25,7 @@ export function QuoteBlock({
     >
       <Quote
         size={24}
-        className={isLight ? 'text-brand-purple' : 'text-brand-cyan'}
-      />
+        className={isLight ? 'text-brand-violet' : 'text-brand-cyan'} aria-hidden />
       <blockquote
         className={`mt-8 font-heading text-2xl md:text-3xl leading-snug ${
           isLight ? 'text-black' : 'text-white'

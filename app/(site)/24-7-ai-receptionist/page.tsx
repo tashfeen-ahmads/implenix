@@ -120,7 +120,7 @@ export default function TwentyFourSevenAIReceptionistPage() {
             <div className="lg:col-span-8 flex flex-col gap-6">
               <Badge label="24/7 · Round the clock" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl leading-[1.04]">
-                <span className="text-brand-purple">24/7 AI receptionist</span>{' '}
+                <span className="text-brand-violet">24/7 AI receptionist</span>{' '}
 every call, every hour.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -136,7 +136,7 @@ every call, every hour.
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my missed-call audit <ArrowRight size={16} />
+                  Get my missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/try-it"
@@ -167,7 +167,7 @@ every call, every hour.
                 A typical local business covers{' '}
                 <span className="text-brand-cyan">40-50 hours</span> of
                 phone time a week with staff or owner. The other{' '}
-                <span className="text-brand-purple">118-128 hours</span>{' '}
+                <span className="text-brand-violet">118-128 hours</span>{' '}
                 go to voicemail or get screened by an answering service
                 that charges premium rates for after-hours work.
               </p>
@@ -216,7 +216,7 @@ every call, every hour.
                 caption="2:14am dispatch · On voicemail this caller would have called the next HVAC company on Google"
               />
             </div>
-            <aside className="lg:col-span-4 flex flex-col gap-4">
+            <div className="lg:col-span-4 flex flex-col gap-4">
               <div className="border border-brand-purple/25 bg-brand-dark p-6">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
                   ▸ The hours your business does not cover
@@ -229,7 +229,7 @@ every call, every hour.
                 </p>
               </div>
               <div className="border border-brand-cyan/25 bg-black p-6">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-violet">
                   ▸ After-hours premium
                 </span>
                 <p className="mt-3 font-heading text-3xl text-white leading-tight">
@@ -239,7 +239,7 @@ every call, every hour.
                   No 2x or 3x upcharge for nights, weekends, or holidays.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -327,7 +327,7 @@ every call, every hour.
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"
@@ -425,7 +425,7 @@ function CoverageDial() {
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 bg-brand-purple opacity-75" />
-          <span className="text-brand-purple">123 hrs AI</span>
+          <span className="text-brand-violet">123 hrs AI</span>
         </div>
       </div>
     </div>

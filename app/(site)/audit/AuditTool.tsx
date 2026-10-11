@@ -39,7 +39,7 @@ const inputSchema = z.object({
 type InputValues = z.infer<typeof inputSchema>;
 
 const inputClass =
-  'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/40';
+  'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/55';
 
 type Stage = 'input' | 'result';
 
@@ -176,32 +176,32 @@ export function AuditTool() {
           data-cta-type="primary"
           className="mt-2 inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
         >
-          Run my audit <ArrowRight size={16} />
+          Run my audit <ArrowRight size={16} aria-hidden />
         </button>
-        <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/45">
-          <ShieldCheck size={12} className="text-brand-cyan" />
+        <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/55">
+          <ShieldCheck size={12} className="text-brand-cyan" aria-hidden />
           We only use this number to follow up on your audit. No spam, no sharing.
         </div>
       </form>
 
       <AnimatePresence mode="wait">
         {stage === 'input' || !result ? (
-          <motion.aside
+          <motion.div
             key="placeholder"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="border border-brand-purple/15 bg-black p-6 md:p-8 flex flex-col items-center justify-center text-center gap-4 min-h-[420px]"
           >
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
               ▸ Your report appears here
             </span>
             <p className="font-heading text-2xl text-white/60 max-w-sm">
               Run the audit to see what you’re losing.
             </p>
-          </motion.aside>
+          </motion.div>
         ) : (
-          <motion.aside
+          <motion.div
             key="result"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -210,9 +210,9 @@ export function AuditTool() {
           >
             <header className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-brand-cyan border border-brand-cyan/40 px-2 py-1">
-                <AlertTriangle size={11} /> Your audit · {result.industryLabel}
+                <AlertTriangle size={11} aria-hidden /> Your audit · {result.industryLabel}
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
                 {snapshot?.phone}
               </span>
             </header>
@@ -283,11 +283,11 @@ export function AuditTool() {
                   }
                   className="flex-1 inline-flex items-center justify-center gap-2 border border-brand-cyan text-brand-cyan font-medium px-5 py-3 rounded-sm hover:bg-brand-cyan/10"
                 >
-                  <CalendarCheck size={16} /> Book a 30-min call
+                  <CalendarCheck size={16} aria-hidden /> Book a 30-min call
                 </a>
               </div>
             </div>
-          </motion.aside>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -314,7 +314,7 @@ function Field({
         {label}
       </label>
       <div className="mt-1">{children}</div>
-      {error ? <p className="text-brand-purple text-xs mt-1">{error}</p> : null}
+      {error ? <p className="text-brand-violet text-xs mt-1">{error}</p> : null}
     </div>
   );
 }

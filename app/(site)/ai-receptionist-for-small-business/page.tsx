@@ -152,7 +152,7 @@ export default function AIReceptionistForSmallBusinessPage() {
               <Badge label="Built for · Small Business" variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
                 AI receptionist for{' '}
-                <span className="text-brand-purple">small business</span>{' '}
+                <span className="text-brand-violet">small business</span>{' '}
                 owners.
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
@@ -168,7 +168,7 @@ export default function AIReceptionistForSmallBusinessPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get my free missed-call audit <ArrowRight size={16} />
+                  Get my free missed-call audit <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/try-it"
@@ -185,7 +185,7 @@ export default function AIReceptionistForSmallBusinessPage() {
                 <Stat label="vs hire" value="$3,500+" />
               </dl>
             </div>
-            <aside className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
                   ▸ The math
@@ -198,7 +198,7 @@ export default function AIReceptionistForSmallBusinessPage() {
                   unanswered calls, recoverable in 14 days.
                 </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>
@@ -342,19 +342,19 @@ export default function AIReceptionistForSmallBusinessPage() {
               href="/ai-receptionist-vs-voicemail"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs Voicemail <ArrowRight size={14} />
+              vs Voicemail <ArrowRight size={14} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-vs-answering-service"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs Answering Service <ArrowRight size={14} />
+              vs Answering Service <ArrowRight size={14} aria-hidden />
             </Link>
             <Link
               href="/ai-receptionist-vs-ivr-system"
               className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:underline"
             >
-              vs IVR <ArrowRight size={14} />
+              vs IVR <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
         </div>
@@ -420,7 +420,7 @@ export default function AIReceptionistForSmallBusinessPage() {
               data-cta-type="primary"
               className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
             >
-              Get my free audit <ArrowRight size={16} />
+              Get my free audit <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/pricing"
@@ -471,7 +471,7 @@ function BizTypeCard({
   return (
     <div className="bg-black border border-brand-purple/20 p-5 flex flex-col gap-2">
       <div className="flex items-center gap-2">
-        <Icon size={14} className="text-brand-cyan" />
+        <Icon size={14} className="text-brand-cyan" aria-hidden />
         <p className="font-heading text-white text-base">{label}</p>
       </div>
       <p className="text-xs font-body text-white/65 leading-relaxed">

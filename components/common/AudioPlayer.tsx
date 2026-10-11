@@ -1,7 +1,7 @@
 'use client';
 
 import { Play, Pause } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useAudioToggle } from '@/lib/useAudioToggle';
 
 type Props = {
   src?: string;
@@ -14,35 +14,29 @@ const BAR_HEIGHTS = [
 ];
 
 export function AudioPlayer({ src, label }: Props) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playing, setPlaying] = useState(false);
-
-  const toggle = () => {
-    const el = audioRef.current;
-    if (!el) {
-      // No real audio attached yet, placeholder behavior.
-      setPlaying((p) => !p);
-      return;
-    }
-    if (playing) {
-      el.pause();
-    } else {
-      void el.play();
-    }
-    setPlaying((p) => !p);
-  };
+  const { audioRef, playing, failed, toggle } = useAudioToggle();
+  // Without a recording the control is shown disabled instead of faking
+  // playback.
+  const unavailable = !src || failed;
 
   return (
     <div className="bg-black border border-brand-cyan/30 p-5 flex items-center gap-4">
       <button
+        type="button"
         onClick={toggle}
+        disabled={unavailable}
         aria-label={playing ? 'Pause demo audio' : 'Play demo audio'}
-        className="w-12 h-12 flex items-center justify-center bg-brand-purple text-white rounded-sm hover:opacity-90 shrink-0"
+        className="w-12 h-12 flex items-center justify-center bg-brand-purple text-white rounded-sm hover:opacity-90 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        {playing ? <Pause size={20} /> : <Play size={20} />}
+        {playing ? <Pause size={20} aria-hidden /> : <Play size={20} aria-hidden />}
       </button>
       <div className="flex-1">
         <span className="block text-white font-body text-sm mb-2">{label}</span>
+        {unavailable ? (
+          <span className="block text-white/60 font-body text-xs mb-2">
+            Recording coming soon
+          </span>
+        ) : null}
         <svg
           width="100%"
           height="32"
@@ -64,7 +58,6 @@ export function AudioPlayer({ src, label }: Props) {
       {src ? (
         <audio ref={audioRef} src={src} preload="none" className="hidden" />
       ) : null}
-      {/* EMBED REAL DEMO AUDIO FILE HERE */}
     </div>
   );
 }

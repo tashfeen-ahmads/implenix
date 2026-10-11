@@ -19,7 +19,13 @@ type Props = {
 export function ComparisonTable({ columns, rows, highlightColumn = 0 }: Props) {
   return (
     <div>
-    <div className="relative overflow-x-auto overscroll-x-contain border border-brand-purple/20 -mx-1 sm:mx-0">
+    {/* Focusable so keyboard users can scroll it (WCAG 2.1.1). */}
+    <div
+      tabIndex={0}
+      role="region"
+      aria-label={`Comparison: ${columns.join(', ')}`}
+      className="relative overflow-x-auto overscroll-x-contain border border-brand-purple/20 -mx-1 sm:mx-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-cyan"
+    >
       <table className="w-full font-body text-xs sm:text-sm min-w-[560px] sm:min-w-[640px]">
         <thead>
           <tr>
@@ -65,7 +71,7 @@ export function ComparisonTable({ columns, rows, highlightColumn = 0 }: Props) {
         </tbody>
       </table>
     </div>
-    <p className="sm:hidden mt-2 text-right font-mono text-[10px] uppercase tracking-widest text-white/45">
+    <p className="sm:hidden mt-2 text-right font-mono text-[10px] uppercase tracking-widest text-white/55">
       Swipe to compare →
     </p>
     </div>
@@ -84,7 +90,7 @@ function renderCell(cell: Cell) {
   if (cell === false) {
     return (
       <>
-        <X size={18} className="text-white/30" aria-hidden />
+        <X size={18} className="text-white/55" aria-hidden />
         <span className="sr-only">No</span>
       </>
     );
@@ -92,7 +98,7 @@ function renderCell(cell: Cell) {
   if (cell === 'partial') {
     return (
       <>
-        <Minus size={18} className="text-brand-purple" aria-hidden />
+        <Minus size={18} className="text-brand-violet" aria-hidden />
         <span className="sr-only">Partly</span>
       </>
     );
