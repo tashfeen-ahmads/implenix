@@ -41,6 +41,7 @@ export function LeadMagnetPopup() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const triggeredRef = useRef(false);
+  const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const isExcluded = EXCLUDED_PREFIXES.some((p) => pathname?.startsWith(p));
@@ -108,8 +109,24 @@ export function LeadMagnetPopup() {
 
   useEffect(() => {
     if (!open) return;
+    const opener = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleDismiss();
+      if (e.key !== 'Tab' || !panelRef.current) return;
+      // Keep Tab cycling inside the dialog.
+      const items = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, iframe',
+      );
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -118,6 +135,7 @@ export function LeadMagnetPopup() {
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', onKey);
+      opener?.focus?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -153,6 +171,7 @@ export function LeadMagnetPopup() {
             type="button"
             aria-label="Close"
             onClick={handleDismiss}
+            tabIndex={-1}
             className="absolute inset-0 bg-black/70"
           />
           <motion.div
@@ -160,16 +179,17 @@ export function LeadMagnetPopup() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="relative w-full max-w-md bg-brand-dark border border-brand-purple/40 grid-bg"
+            ref={panelRef}
+            className="relative w-full max-w-md bg-brand-dark border border-brand-purple/40 grid-bg overscroll-contain"
           >
             <button
               ref={closeButtonRef}
               type="button"
               aria-label="Dismiss"
               onClick={handleDismiss}
-              className="absolute top-3 right-3 text-white/55 hover:text-white"
+              className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center text-white/55 hover:text-white transition-colors"
             >
-              <X size={18} />
+              <X size={18} aria-hidden />
             </button>
 
             <div className="p-5 sm:p-7 flex flex-col gap-5">

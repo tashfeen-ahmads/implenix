@@ -202,7 +202,7 @@ function RevenueHeroCard() {
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan">
           ▸ Revenue captured · this month
         </span>
-        <p className="font-heading text-6xl md:text-7xl text-white mt-3 leading-none">
+        <p className="font-heading text-5xl sm:text-6xl md:text-7xl text-white mt-3 leading-none tabular-nums">
           $147,250
         </p>
         <p className="text-sm font-body text-white/65 mt-3 max-w-md">

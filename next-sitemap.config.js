@@ -90,6 +90,27 @@ module.exports = {
     ],
   },
 
+  // Industry (/i/*) and comparison (/v/*) pages are served at rewritten
+  // public URLs, so next-sitemap never discovers them on its own. Add the
+  // public URLs from the prerendered build output.
+  additionalPaths: async (config) => {
+    const fromBuild = (dir, prefix) => {
+      try {
+        return fs
+          .readdirSync(path.join(process.cwd(), '.next/server/app', dir))
+          .filter((f) => f.endsWith('.html'))
+          .map((f) => `${prefix}${f.replace(/\.html$/, '')}`);
+      } catch {
+        return [];
+      }
+    };
+    const paths = [
+      ...fromBuild('i', '/ai-receptionist-for-'),
+      ...fromBuild('v', '/ai-receptionist-vs-'),
+    ];
+    return Promise.all(paths.map((p) => config.transform(config, p)));
+  },
+
   // Priority signals what we want crawled most. Money pages (industry,
   // comparison, pricing, audit) get top priority. Educational and
   // long-tail content ranks lower.

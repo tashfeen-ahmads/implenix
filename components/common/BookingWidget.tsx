@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   CalendarCheck,
@@ -56,6 +56,17 @@ export function BookingWidget({ ctaLocation, height }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [bookError, setBookError] = useState<string | null>(null);
   const [booked, setBooked] = useState<BookedResponse | null>(null);
+  // Moving between steps unmounts the focused control; send keyboard and
+  // screen-reader focus to the new step instead of dropping it to <body>.
+  const stepRef = useRef<HTMLDivElement>(null);
+  const firstStep = useRef(true);
+  useEffect(() => {
+    if (firstStep.current) {
+      firstStep.current = false;
+      return;
+    }
+    stepRef.current?.focus();
+  }, [step]);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -181,7 +192,12 @@ export function BookingWidget({ ctaLocation, height }: Props) {
         ) : null}
       </div>
 
-      <div className="p-4 sm:p-6 flex-1 flex flex-col gap-5">
+      <div
+        ref={stepRef}
+        tabIndex={-1}
+        aria-label="Booking step"
+        className="p-4 sm:p-6 flex-1 flex flex-col gap-5 focus:outline-none"
+      >
         {step === 'date' ? (
           <DateStep
             monthLabel={monthLabel}
