@@ -158,7 +158,7 @@ export default function RootLayout({
           </>
         ) : null}
       </head>
-      <body className="min-h-screen bg-brand-dark text-white antialiased">
+      <body className="grain min-h-screen bg-brand-dark text-white antialiased">
         {process.env.NEXT_PUBLIC_GTM_ID ? (
           <noscript>
             <iframe

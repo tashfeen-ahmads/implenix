@@ -34,12 +34,12 @@ const FAQS = [
   {
     question: 'Is an AI receptionist worth it for a small business?',
     answer:
-      'For any small business where missed calls cost real revenue, yes. A typical local-services SMB loses $5,000–$30,000 a month in unanswered calls. Implenix recovers most of that at a fixed monthly cost lower than a part-time hire.',
+      'For any small business where missed calls cost real revenue, yes. A typical local-services SMB loses $5,000-$30,000 a month in unanswered calls. Implenix recovers most of that at a fixed monthly cost lower than a part-time hire.',
   },
   {
     question: 'How is this cheaper than hiring a receptionist?',
     answer:
-      'A part-time receptionist runs $1,800–$2,400/month for 20 hours of coverage. A full-time hire runs $3,500–$5,000/month for 40 hours. Implenix starts at $297/month and covers all 168 hours in a week with no sick days, vacation, or turnover.',
+      'A part-time receptionist runs $1,800-$2,400/month for 20 hours of coverage. A full-time hire runs $3,500-$5,000/month for 40 hours. Implenix starts at $297/month and covers all 168 hours in a week with no sick days, vacation, or turnover.',
   },
   {
     question: 'Will it work for my industry?',
@@ -64,7 +64,7 @@ const FAQS = [
   {
     question: 'Can it handle after-hours calls?',
     answer:
-      'Yes. After-hours coverage is included at the same fixed monthly cost. Most of our deployments see 30–50% of bookings come in outside business hours after the agent goes live.',
+      'Yes. After-hours coverage is included at the same fixed monthly cost. Most of our deployments see 30-50% of bookings come in outside business hours after the agent goes live.',
   },
 ];
 
@@ -117,7 +117,7 @@ const SAMPLE_TRANSCRIPT = [
   { ts: '00:06', speaker: 'caller' as const, text: 'My water heater stopped working. Can someone come tomorrow?' },
   { ts: '00:10', speaker: 'agent' as const, text: 'Yes, what is the address, and what time window works?' },
   { ts: '00:14', speaker: 'caller' as const, text: '882 Pine St, anytime morning works.' },
-  { ts: '00:18', speaker: 'agent' as const, text: 'Booked you for 9–11 AM tomorrow. Confirmation by text now.' },
+  { ts: '00:18', speaker: 'agent' as const, text: 'Booked you for 9-11 AM tomorrow. Confirmation by text now.' },
   { ts: '00:22', speaker: 'system' as const, text: 'Job created · CRM updated · owner notified' },
 ];
 
@@ -300,7 +300,7 @@ export default function AIReceptionistForSmallBusinessPage() {
           <div className="mt-12">
             <DividedStats
               stats={[
-                { number: '40–60%', label: 'of inbound calls go unanswered during business hours' },
+                { number: '40-60%', label: 'of inbound calls go unanswered during business hours' },
                 { number: '~$30K', label: 'typical monthly lost pipeline for an SMB' },
                 { number: '<14 d', label: 'to recover most of it after Implenix go-live' },
               ]}
@@ -332,7 +332,7 @@ export default function AIReceptionistForSmallBusinessPage() {
                 { label: 'No HR overhead', cells: [true, false, true, true] },
                 {
                   label: 'Monthly cost',
-                  cells: ['from $297', '$1,800–$2,400', '$0', '$30–$200'],
+                  cells: ['from $297', '$1,800-$2,400', '$0', '$30-$200'],
                 },
               ]}
             />

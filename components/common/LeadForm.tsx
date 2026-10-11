@@ -127,7 +127,7 @@ function DemoForm({ ctaLocation, submitted, setSubmitted, onSuccess }: SubProps)
         <select id="callVolume" className={inputClass} defaultValue="" {...form.register('callVolume')}>
           <option value="" disabled>Select...</option>
           <option value="under-100">Under 100</option>
-          <option value="100-500">100–500</option>
+          <option value="100-500">100-500</option>
           <option value="500-plus">500+</option>
         </select>
       </Field>

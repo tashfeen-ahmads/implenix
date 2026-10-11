@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, scroll } from 'framer-motion';
 import { X, ArrowRight, CalendarCheck } from 'lucide-react';
 import { Badge } from './Badge';
 import { TestRonCTA } from '@/components/ron/TestRonCTA';
@@ -86,14 +86,9 @@ export function LeadMagnetPopup() {
 
     const timer = window.setTimeout(() => fire('time'), SHOW_AFTER_MS);
 
-    const onScroll = () => {
-      const max =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (max <= 0) return;
-      const ratio = window.scrollY / max;
-      if (ratio >= SHOW_AFTER_SCROLL) fire('scroll');
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
+    const stopScroll = scroll((progress: number) => {
+      if (progress >= SHOW_AFTER_SCROLL) fire('scroll');
+    });
 
     const supportsHover = window.matchMedia('(hover: hover)').matches;
     let onMouseLeave: ((e: MouseEvent) => void) | null = null;
@@ -106,7 +101,7 @@ export function LeadMagnetPopup() {
 
     return () => {
       window.clearTimeout(timer);
-      window.removeEventListener('scroll', onScroll);
+      stopScroll();
       if (onMouseLeave) document.removeEventListener('mouseleave', onMouseLeave);
     };
   }, [isExcluded]);

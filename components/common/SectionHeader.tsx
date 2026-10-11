@@ -1,4 +1,5 @@
 import { Badge } from './Badge';
+import { Reveal } from '@/components/motion/Reveal';
 
 type Props = {
   eyebrow?: string;
@@ -22,6 +23,7 @@ export function SectionHeader({
 }: Props) {
   const wrap = align === 'center' ? 'text-center mx-auto' : '';
   return (
+    <Reveal>
     <header className={`max-w-3xl ${wrap}`}>
       {eyebrow ? (
         <div className="mb-6">
@@ -41,5 +43,6 @@ export function SectionHeader({
         </p>
       ) : null}
     </header>
+    </Reveal>
   );
 }

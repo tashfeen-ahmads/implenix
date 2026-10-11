@@ -72,13 +72,13 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Call recordings + transcripts', cells: [true, 'partial'] },
       { label: 'Per-minute / per-call billing', cells: [false, true] },
       { label: 'Live transfer to human', cells: [true, true] },
-      { label: 'Pickup time', cells: ['<1 ring', '3–8 rings typical'] },
-      { label: 'Monthly cost (small business)', cells: ['from $297', '$300–$1,500'] },
+      { label: 'Pickup time', cells: ['<1 ring', '3-8 rings typical'] },
+      { label: 'Monthly cost (small business)', cells: ['from $297', '$300-$1,500'] },
     ],
     alternativePros: [
       'Real human operators handle nuanced, emotionally loaded calls well',
       'Useful for industries that need overflow capacity for complex sales conversations',
-      'No technical setup, can be live in 24–48 hours',
+      'No technical setup, can be live in 24-48 hours',
       'Operators can take messages and exercise judgment on novel situations',
     ],
     alternativeCons: [
@@ -116,12 +116,12 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How does pricing compare for a small business?',
         answer:
-          'A typical small-business plan with an AI receptionist is $297–$597/month flat. A live answering service for the same call volume runs $300–$1,500/month and rises with usage. The fixed-cost difference compounds at higher volumes.',
+          'A typical small-business plan with an AI receptionist is $297-$597/month flat. A live answering service for the same call volume runs $300-$1,500/month and rises with usage. The fixed-cost difference compounds at higher volumes.',
       },
       {
         question: 'Can I use both, an AI for routine and a live service for overflow?',
         answer:
-          'Yes. Many businesses configure live transfer to a backup human team for calls the AI flags as out-of-scope or sensitive. The AI handles 80–90% of volume at fixed cost; the live service handles the remainder.',
+          'Yes. Many businesses configure live transfer to a backup human team for calls the AI flags as out-of-scope or sensitive. The AI handles 80-90% of volume at fixed cost; the live service handles the remainder.',
       },
       {
         question: 'What about emergencies, can the AI handle them?',
@@ -131,7 +131,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'Which is faster to deploy?',
         answer:
-          'A live answering service can take messages within 24–48 hours. An AI receptionist takes 7–14 days because we tune the script, voice, and integrations to your business. The trade-off is that day-one quality is much higher.',
+          'A live answering service can take messages within 24-48 hours. An AI receptionist takes 7-14 days because we tune the script, voice, and integrations to your business. The trade-off is that day-one quality is much higher.',
       },
     ],
     sampleCall: [
@@ -146,7 +146,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
     ],
     sampleCallCaption: 'Real call · 11:14pm · Same flow runs at 3am, 6am, or noon at the same fixed cost',
     outcomes: [
-      { number: '<1 ring', label: '24/7 pickup vs 3–8 rings on a typical answering service' },
+      { number: '<1 ring', label: '24/7 pickup vs 3-8 rings on a typical answering service' },
       { number: '$0.00', label: 'Per-minute charge, fixed monthly pricing regardless of volume' },
       { number: '100%', label: 'Of after-hours emergencies dispatched live, not next-morning email' },
     ],
@@ -171,10 +171,10 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Direct calendar booking', cells: [true, true] },
       { label: 'Two-way CRM sync', cells: [true, 'partial'] },
       { label: 'Email and admin work', cells: [false, true] },
-      { label: 'Training overhead', cells: ['none', '20–60 hours'] },
+      { label: 'Training overhead', cells: ['none', '20-60 hours'] },
       { label: 'Turnover risk', cells: ['none', 'high'] },
-      { label: 'Monthly cost', cells: ['from $297', '$1,500–$4,000'] },
-      { label: 'Time to live', cells: ['7–14 days', '2–4 weeks'] },
+      { label: 'Monthly cost', cells: ['from $297', '$1,500-$4,000'] },
+      { label: 'Time to live', cells: ['7-14 days', '2-4 weeks'] },
     ],
     alternativePros: [
       'Can do non-phone work (email, calendar, research, document handling)',
@@ -183,7 +183,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       'Familiar working model, they are a person on your team',
     ],
     alternativeCons: [
-      'Only covers their working hours, typically 20–40 per week',
+      'Only covers their working hours, typically 20-40 per week',
       'Cannot handle two phone calls at once',
       'Sick days, vacation, and turnover create coverage gaps',
       'Training is your responsibility and takes weeks',
@@ -201,7 +201,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       headline: 'When an AI receptionist wins',
       reasons: [
         'Phone is your primary inbound channel and you cannot afford to miss a call',
-        'You need 24/7 coverage and your VA only works 20–40 hours a week',
+        'You need 24/7 coverage and your VA only works 20-40 hours a week',
         'Concurrent calls happen, your VA cannot handle two calls at once',
         'You want real two-way CRM and calendar integration without training someone on your tools',
         'You expect call volume to grow and do not want to manage hiring',
@@ -221,7 +221,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'What is the cost difference?',
         answer:
-          'A US-based VA runs $1,500–$4,000/month for 20–40 hours/week. An AI receptionist plan covering unlimited concurrent calls 24/7 starts at $297/month. For phone-only work, the AI is dramatically cheaper.',
+          'A US-based VA runs $1,500-$4,000/month for 20-40 hours/week. An AI receptionist plan covering unlimited concurrent calls 24/7 starts at $297/month. For phone-only work, the AI is dramatically cheaper.',
       },
       {
         question: 'Will I lose the human touch?',
@@ -231,7 +231,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How long does each take to onboard?',
         answer:
-          'A VA needs 2–4 weeks of training to know your business. An AI receptionist deploys in 7–14 days with the same depth of business knowledge, and never forgets it.',
+          'A VA needs 2-4 weeks of training to know your business. An AI receptionist deploys in 7-14 days with the same depth of business knowledge, and never forgets it.',
       },
     ],
     sampleCall: [
@@ -250,8 +250,8 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
     sampleCallCaption: 'Real call · Three callers at once · A VA can answer one at a time',
     outcomes: [
       { number: 'unlimited', label: 'Concurrent calls vs 1-at-a-time for a VA' },
-      { number: '24/7', label: 'Coverage included vs 20–40 working hours per VA' },
-      { number: '0 hrs', label: 'Training overhead vs 20–60 hours to onboard a new VA' },
+      { number: '24/7', label: 'Coverage included vs 20-40 working hours per VA' },
+      { number: '0 hrs', label: 'Training overhead vs 20-60 hours to onboard a new VA' },
     ],
   },
 
@@ -274,19 +274,19 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Captures intake data', cells: [true, false] },
       { label: 'Routes to humans when needed', cells: [true, true] },
       { label: 'Customer satisfaction', cells: ['high', 'low'] },
-      { label: 'Hangup rate', cells: ['<5%', '40–60%'] },
-      { label: 'Monthly cost', cells: ['from $297', '$30–$200'] },
-      { label: 'Setup time', cells: ['7–14 days', '1–2 hours'] },
+      { label: 'Hangup rate', cells: ['<5%', '40-60%'] },
+      { label: 'Monthly cost', cells: ['from $297', '$30-$200'] },
+      { label: 'Setup time', cells: ['7-14 days', '1-2 hours'] },
       { label: 'Updates require IT', cells: [false, true] },
     ],
     alternativePros: [
-      'Cheap, basic IVR runs $30–$200/month',
+      'Cheap, basic IVR runs $30-$200/month',
       'Predictable behavior, no surprises',
       'Works with any phone system',
       'Useful for very simple call-routing needs',
     ],
     alternativeCons: [
-      'High hangup rate, 40–60% of callers abandon menus',
+      'High hangup rate, 40-60% of callers abandon menus',
       'Cannot book appointments, qualify leads, or capture intake',
       'Customers consistently rate IVR as a worst-in-class experience',
       'Updating menus requires IT or a phone vendor',
@@ -319,12 +319,12 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'Is the AI receptionist faster for callers than IVR?',
         answer:
-          'Yes. IVR adds 30–90 seconds of menu navigation before the caller can do anything. The AI gets to "how can I help you" in 2 seconds and resolves most routine requests in 30–60 seconds total.',
+          'Yes. IVR adds 30-90 seconds of menu navigation before the caller can do anything. The AI gets to "how can I help you" in 2 seconds and resolves most routine requests in 30-60 seconds total.',
       },
       {
         question: 'How much do I save replacing IVR with an AI receptionist?',
         answer:
-          'Net cost goes up by $200–$400/month, but you replace receptionist labor at the same time. Most businesses come out net-positive once you account for the receptionist hours saved.',
+          'Net cost goes up by $200-$400/month, but you replace receptionist labor at the same time. Most businesses come out net-positive once you account for the receptionist hours saved.',
       },
       {
         question: 'Can I keep my existing extensions?',
@@ -334,7 +334,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How long does it take to migrate from IVR?',
         answer:
-          'Most migrations complete in 7–14 days, including script tuning and a parallel-run period where both systems are live before cutover.',
+          'Most migrations complete in 7-14 days, including script tuning and a parallel-run period where both systems are live before cutover.',
       },
     ],
     sampleCall: [
@@ -354,7 +354,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
     ],
     sampleCallCaption: 'Same caller, same intent, IVR loses them, conversational AI books them',
     outcomes: [
-      { number: '<5%', label: 'Hangup rate vs 40–60% on typical IVR menus' },
+      { number: '<5%', label: 'Hangup rate vs 40-60% on typical IVR menus' },
       { number: '47s', label: 'Average booking time end-to-end vs 90+ seconds in menus' },
       { number: '0 menus', label: 'Caller never hears "press 1", straight to conversation' },
     ],
@@ -419,7 +419,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How much does voicemail actually cost a small business?',
         answer:
-          'For most local businesses with $200–$2,000 average client value, voicemail costs $5,000–$50,000 a month in lost pipeline. The exact figure depends on call volume, miss rate, and close rate, run our free audit to get yours.',
+          'For most local businesses with $200-$2,000 average client value, voicemail costs $5,000-$50,000 a month in lost pipeline. The exact figure depends on call volume, miss rate, and close rate, run our free audit to get yours.',
       },
       {
         question: 'Why do so many callers not leave a message?',
@@ -439,7 +439,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'How fast can I replace voicemail with an AI receptionist?',
         answer:
-          '7–14 business days for most businesses. The AI runs on top of your existing phone routing, so the transition is invisible to your callers.',
+          '7-14 business days for most businesses. The AI runs on top of your existing phone routing, so the transition is invisible to your callers.',
       },
     ],
     sampleCall: [
@@ -484,8 +484,8 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       { label: 'Complex sales conversations', cells: ['partial', true] },
       { label: 'Compliance recording', cells: [true, true] },
       { label: 'Operator turnover', cells: ['none', 'high'] },
-      { label: 'Monthly cost (SMB)', cells: ['from $297', '$1,500–$5,000'] },
-      { label: 'Time to live', cells: ['7–14 days', '4–8 weeks'] },
+      { label: 'Monthly cost (SMB)', cells: ['from $297', '$1,500-$5,000'] },
+      { label: 'Time to live', cells: ['7-14 days', '4-8 weeks'] },
     ],
     alternativePros: [
       'Real human operators handle complex multi-turn conversations',
@@ -494,7 +494,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       'Can handle complex troubleshooting and judgment calls',
     ],
     alternativeCons: [
-      'Expensive, $1,500–$5,000/month minimum for dedicated SMB coverage',
+      'Expensive, $1,500-$5,000/month minimum for dedicated SMB coverage',
       'Operator turnover degrades quality month over month',
       'Training overhead is significant, script changes can take weeks to roll',
       '24/7 coverage is premium-priced or absent',
@@ -524,7 +524,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'What is the typical cost difference for a small business?',
         answer:
-          'A dedicated call-center seat for SMB coverage runs $1,500–$5,000/month. An AI receptionist plan handling the same volume starts at $297/month. The fixed-cost difference is dramatic and grows with volume.',
+          'A dedicated call-center seat for SMB coverage runs $1,500-$5,000/month. An AI receptionist plan handling the same volume starts at $297/month. The fixed-cost difference is dramatic and grows with volume.',
       },
       {
         question: 'Can the AI handle complex sales conversations?',
@@ -544,7 +544,7 @@ export const COMPARISON_PROFILES: ComparisonProfile[] = [
       {
         question: 'Should I run both, AI for routine and call center for complex?',
         answer:
-          'Yes, this is a common architecture. The AI handles 80–90% of inbound routine work, and a smaller, focused human team takes the remainder via live transfer. Net cost drops, quality goes up.',
+          'Yes, this is a common architecture. The AI handles 80-90% of inbound routine work, and a smaller, focused human team takes the remainder via live transfer. Net cost drops, quality goes up.',
       },
     ],
     sampleCall: [

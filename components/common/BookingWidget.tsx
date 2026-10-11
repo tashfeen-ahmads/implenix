@@ -320,7 +320,11 @@ function TimeStep({
   availability: Availability | null;
   onSelect: (slot: Slot) => void;
 }) {
-  const readable = new Date(date).toLocaleDateString('en-US', {
+  // `date` is a calendar day (YYYY-MM-DD). new Date('YYYY-MM-DD') parses
+  // as UTC midnight, which is the previous evening in US time zones, so
+  // build it as a local date instead.
+  const [y, m, d] = date.split('-').map(Number);
+  const readable = new Date(y, m - 1, d).toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -332,14 +336,14 @@ function TimeStep({
         <span className="font-heading text-white text-base">{readable}</span>
       </div>
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-10 gap-2 text-white/60">
-          <Loader2 className="animate-spin text-brand-cyan" size={18} />
+        <div role="status" className="flex flex-col items-center justify-center py-10 gap-2 text-white/60">
+          <Loader2 className="animate-spin text-brand-cyan" size={18} aria-hidden />
           <span className="font-mono text-[10px] uppercase tracking-widest">
-            Loading times
+            Loading times…
           </span>
         </div>
       ) : error ? (
-        <p className="border-l-[3px] border-brand-purple bg-black p-4 text-sm text-white/80">
+        <p role="alert" className="border-l-[3px] border-brand-purple bg-black p-4 text-sm text-white/80">
           {error}
         </p>
       ) : availability && availability.slots.length === 0 ? (
@@ -502,7 +506,7 @@ function ConfirmedStep({
           <Check size={18} className="text-brand-cyan" />
         </span>
         <div>
-          <p className="font-heading text-white text-lg">You're booked.</p>
+          <p className="font-heading text-white text-lg">You’re booked.</p>
           <p className="font-body text-sm text-white/65">
             Calendar invite on the way to {form.email}
           </p>

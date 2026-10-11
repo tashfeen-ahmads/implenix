@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { LogoLockup } from '@/components/common/LogoLockup';
 import { RonLauncher } from '@/components/ron/RonLauncher';
+import { MotionProvider } from '@/components/motion/MotionProvider';
 
 export default function LandingLayout({
   children,
@@ -8,6 +9,7 @@ export default function LandingLayout({
   children: React.ReactNode;
 }) {
   return (
+    <MotionProvider>
     <div className="min-h-screen flex flex-col bg-brand-dark">
       <header className="border-b border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 h-14 flex items-center">
@@ -25,5 +27,6 @@ export default function LandingLayout({
       </footer>
       <RonLauncher />
     </div>
+    </MotionProvider>
   );
 }

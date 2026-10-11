@@ -235,7 +235,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
                   ▸ Typical call length
                 </span>
                 <p className="font-heading text-3xl md:text-4xl text-brand-cyan leading-none">
-                  30s – 2 min
+                  30s - 2 min
                 </p>
                 <p className="font-body text-sm text-white/70 leading-relaxed">
                   For routine booking, qualification, and intake. Longer

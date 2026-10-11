@@ -50,11 +50,11 @@ export function ROICalculator() {
           <span className="text-xs uppercase tracking-widest text-white/60">
             Estimated monthly loss
           </span>
-          <p className="font-heading text-4xl md:text-5xl text-brand-cyan mt-2">
-            ${lostRevenue.toLocaleString()}
+          <p className="font-heading text-4xl md:text-5xl text-brand-cyan mt-2 tabular-nums" aria-live="polite">
+            ${lostRevenue.toLocaleString('en-US')}
           </p>
           <p className="mt-2 text-white/80 font-body text-sm">
-            You are losing approximately ${lostRevenue.toLocaleString()} per
+            You are losing approximately ${lostRevenue.toLocaleString('en-US')} per
             month in unanswered calls.
           </p>
         </div>
@@ -68,19 +68,19 @@ export function ROICalculator() {
           >
             <Breakdown
               label="Missed calls per month"
-              value={`${missedPerMonth.toLocaleString()}`}
+              value={`${missedPerMonth.toLocaleString('en-US')}`}
             />
             <Breakdown
               label="Annual lost revenue"
-              value={`$${annualLost.toLocaleString()}`}
+              value={`$${annualLost.toLocaleString('en-US')}`}
             />
             <Breakdown
               label="Recoverable with Implenix (60%)"
-              value={`$${recoverable.toLocaleString()} / mo`}
+              value={`$${recoverable.toLocaleString('en-US')} / mo`}
             />
             <Breakdown
               label="Annualized recovery"
-              value={`$${(recoverable * 12).toLocaleString()}`}
+              value={`$${(recoverable * 12).toLocaleString('en-US')}`}
             />
           </div>
 
@@ -137,7 +137,7 @@ function NumberInput({
       <span className="text-xs uppercase tracking-widest text-white/70">
         {label}
       </span>
-      <div className="mt-2 flex items-center gap-2 bg-black border border-brand-purple/30 px-3">
+      <div className="mt-2 flex items-center gap-2 bg-black border border-brand-purple/30 px-3 transition-colors focus-within:border-brand-cyan focus-within:ring-2 focus-within:ring-brand-cyan/40">
         {prefix ? <span className="text-white/60">{prefix}</span> : null}
         <input
           type="number"

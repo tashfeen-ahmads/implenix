@@ -29,7 +29,7 @@ const variantA: LandingConfig[] = INDUSTRIES.map((i) => ({
   industryName: i.name,
   headline: `AI Receptionist for ${i.name} Businesses`,
   subhead:
-    'Answer every inbound call. Qualify the lead. Book the appointment. Built for your industry, deployed in 7–14 days.',
+    'Answer every inbound call. Qualify the lead. Book the appointment. Built for your industry, deployed in 7-14 days.',
   benefits: [
     '24/7 inbound coverage with custom call scripts',
     'Live calendar booking and CRM sync',
@@ -208,7 +208,7 @@ function VariantB({ cfg }: { cfg: LandingConfig }) {
           </div>
           <div className="flex justify-center gap-3 flex-wrap font-mono text-xs uppercase tracking-widest text-white/60 mt-2">
             <span className="border border-brand-cyan/40 px-3 py-1">10 specialists</span>
-            <span className="border border-brand-cyan/40 px-3 py-1">7–14 day deploy</span>
+            <span className="border border-brand-cyan/40 px-3 py-1">7-14 day deploy</span>
             <span className="border border-brand-cyan/40 px-3 py-1">24/7 coverage</span>
           </div>
         </div>

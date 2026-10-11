@@ -17,7 +17,7 @@ export function StepOneVisual() {
     <div className="relative aspect-[5/4] bg-black border border-brand-purple/25 p-6 overflow-hidden">
       <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
         <span className="text-[10px] font-mono uppercase tracking-widest text-brand-cyan flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan motion-safe:animate-pulse" />
           Incoming
         </span>
         <span className="text-[10px] font-mono uppercase tracking-widest text-white/45">
@@ -156,7 +156,7 @@ export function StepThreeVisual() {
     { key: 'phone', label: 'Phone', value: '+1 (415) 555-0184' },
     { key: 'service', label: 'Service', value: 'AC outage · emergency' },
     { key: 'address', label: 'Address', value: '1420 Cedar Lane' },
-    { key: 'window', label: 'Window', value: 'Wed · 2–4 PM' },
+    { key: 'window', label: 'Window', value: 'Wed · 2-4 PM' },
     { key: 'job', label: 'Job ID', value: '#44129' },
   ];
   return (

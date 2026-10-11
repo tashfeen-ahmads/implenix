@@ -1,4 +1,6 @@
 import { SectionHeader } from '@/components/common/SectionHeader';
+import { Reveal } from '@/components/motion/Reveal';
+import { Spotlight } from '@/components/motion/Spotlight';
 import { TestimonialCard } from '@/components/common/TestimonialCard';
 
 const RECORDING_HVAC =
@@ -16,7 +18,7 @@ const TESTIMONIALS = [
     quote:
       'The best AI employee I have ever hired. It talks to every incoming call, nurtures my leads, books appointments, and sends follow-ups to me and the customer. Thank you Implenix.',
     recordingSrc: RECORDING_HVAC,
-    caseStudyHref: '/case-studies/placeholder-hvac',
+    caseStudyHref: '/case-studies/pa-hvac-experts',
   },
   {
     businessName: 'Columbus Property',
@@ -25,7 +27,7 @@ const TESTIMONIALS = [
     quote:
       'We juggle deals, appointments, and follow-ups all day. Implenix books and follows up, we just close. That is the operation now.',
     recordingSrc: RECORDING_REAL_ESTATE,
-    caseStudyHref: '/case-studies/placeholder-real-estate',
+    caseStudyHref: '/case-studies/columbus-property',
   },
   {
     businessName: 'GTR Improvements',
@@ -41,8 +43,8 @@ const TESTIMONIALS = [
     ownerName: 'Hyder',
     industry: 'Dental',
     quote:
-      'The team was spending 2–3 hours a day answering the phone and our in-house attention was slipping. Implenix handles the phone amazingly and the team is back focused on patients.',
-    caseStudyHref: '/case-studies/placeholder-dental',
+      'The team was spending 2-3 hours a day answering the phone and our in-house attention was slipping. Implenix handles the phone amazingly and the team is back focused on patients.',
+    caseStudyHref: '/case-studies/ohio-dental',
   },
   {
     businessName: 'Parnell Motors',
@@ -71,8 +73,12 @@ export function TestimonialsSection() {
           description="Six clients, six different industries, all still deployed. The first three include the real call recording, tap play to hear the agent live."
         />
         <div className="mt-16 md:mt-20 grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {TESTIMONIALS.map((t) => (
-            <TestimonialCard key={t.businessName} {...t} />
+          {TESTIMONIALS.map((t, i) => (
+            <Reveal key={t.businessName} index={i % 3} className="h-full">
+              <Spotlight className="h-full">
+                <TestimonialCard {...t} />
+              </Spotlight>
+            </Reveal>
           ))}
         </div>
       </div>

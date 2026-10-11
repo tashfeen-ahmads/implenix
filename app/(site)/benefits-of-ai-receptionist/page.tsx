@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: 'What is the biggest benefit of an AI receptionist?',
     answer:
-      'For most local businesses, it is recovered missed-call pipeline. The typical SMB loses $5,000–$30,000/month to unanswered calls; the AI captures most of that at fixed cost. The cost reduction vs hiring is also substantial but secondary to the lost-revenue recovery.',
+      'For most local businesses, it is recovered missed-call pipeline. The typical SMB loses $5,000-$30,000/month to unanswered calls; the AI captures most of that at fixed cost. The cost reduction vs hiring is also substantial but secondary to the lost-revenue recovery.',
   },
   {
     question: 'Is the ROI actually measurable?',
@@ -51,7 +51,7 @@ const FAQS = [
   {
     question: 'What about the human element, does that get lost?',
     answer:
-      'Live transfer rules route the calls that genuinely need human warmth to a real person in real time. The AI handles the 80–90% of routine inbound where speed and consistency matter more than empathy.',
+      'Live transfer rules route the calls that genuinely need human warmth to a real person in real time. The AI handles the 80-90% of routine inbound where speed and consistency matter more than empathy.',
   },
   {
     question: 'How do these benefits compare across industries?',
@@ -322,7 +322,7 @@ export default function BenefitsOfAIReceptionistPage() {
                   ▸ What this call delivered
                 </span>
                 <ul className="mt-3 flex flex-col gap-2 font-body text-white/85 text-sm leading-relaxed">
-                  <li>· $12k–$25k pipeline lead, captured in 58s</li>
+                  <li>· $12k-$25k pipeline lead, captured in 58s</li>
                   <li>· 8:33pm answer time vs voicemail before</li>
                   <li>· Inspection booked live, not "we'll call back"</li>
                   <li>· Carrier logged, doc prep auto-routed</li>

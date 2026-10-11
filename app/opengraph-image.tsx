@@ -119,19 +119,24 @@ export default function OpengraphImage() {
           >
             <div
               style={{
+                display: 'flex',
+                flexDirection: 'column',
                 fontSize: 76,
                 fontWeight: 900,
                 lineHeight: 1.05,
                 letterSpacing: '-0.02em',
               }}
             >
-              <span>The AI that </span>
-              <span style={{ color: '#bb00ff' }}>answers</span>
-              <span>, qualifies,</span>
-              <br />
-              <span>and </span>
-              <span style={{ color: '#3dfaff' }}>books</span>
-              <span>. Every call.</span>
+              <div style={{ display: 'flex', gap: 22 }}>
+                <span>The AI that</span>
+                <span style={{ color: '#bb00ff' }}>answers,</span>
+                <span>qualifies,</span>
+              </div>
+              <div style={{ display: 'flex', gap: 22 }}>
+                <span>and</span>
+                <span style={{ color: '#3dfaff' }}>books.</span>
+                <span>Every call.</span>
+              </div>
             </div>
             <div
               style={{

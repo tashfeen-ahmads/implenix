@@ -44,7 +44,7 @@ const FAQS = [
   {
     question: 'How much does an AI phone answering service cost?',
     answer:
-      'Implenix starts at $297/month for solo operators and $597/month for growing teams, billed at a fixed rate. A traditional human answering service runs $300–$1,500/month at typical SMB volumes and rises with usage.',
+      'Implenix starts at $297/month for solo operators and $597/month for growing teams, billed at a fixed rate. A traditional human answering service runs $300-$1,500/month at typical SMB volumes and rises with usage.',
   },
   {
     question: 'Can the AI book appointments live?',
@@ -54,7 +54,7 @@ const FAQS = [
   {
     question: 'What about after-hours and weekend calls?',
     answer:
-      '24/7 coverage is included at the same fixed monthly cost. There is no premium upcharge for evenings, weekends, or holidays. Most deployments see 30–50% of bookings happen outside business hours.',
+      '24/7 coverage is included at the same fixed monthly cost. There is no premium upcharge for evenings, weekends, or holidays. Most deployments see 30-50% of bookings happen outside business hours.',
   },
   {
     question: 'Will my callers know they are talking to AI?',

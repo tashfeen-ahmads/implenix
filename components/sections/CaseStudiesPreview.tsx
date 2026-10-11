@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { SectionHeader } from '@/components/common/SectionHeader';
+import { Reveal } from '@/components/motion/Reveal';
+import { Spotlight } from '@/components/motion/Spotlight';
 import { CaseStudyCard } from '@/components/common/CaseStudyCard';
 
 const FEATURED = [
@@ -9,21 +11,21 @@ const FEATURED = [
     resultHeadline: '+31% booked jobs and every call answered live',
     summary:
       'PA HVAC Experts replaced voicemail with a 24/7 AI dispatcher. Capture rate moved 58% → 97% and pipeline grew 31% in 90 days.',
-    href: '/case-studies/placeholder-hvac',
+    href: '/case-studies/pa-hvac-experts',
   },
   {
     industry: 'Real Estate',
     resultHeadline: '+28% deals closed with AI-run booking + follow-up',
     summary:
       'Columbus Property handed inbound qualification and follow-up to Implenix. Closers stay on closing, the AI runs everything before it.',
-    href: '/case-studies/placeholder-real-estate',
+    href: '/case-studies/columbus-property',
   },
   {
     industry: 'Dental',
     resultHeadline: '+26% new patients and 12 hrs/week per FTE reclaimed',
     summary:
       'Ohio Dental was burning 2-3 hours per team member per day on phones. Front desk is back to in-chair patient attention.',
-    href: '/case-studies/placeholder-dental',
+    href: '/case-studies/ohio-dental',
   },
 ];
 
@@ -46,8 +48,12 @@ export function CaseStudiesPreview() {
           </Link>
         </div>
         <div className="mt-16 md:mt-20 grid md:grid-cols-3 gap-6 md:gap-8">
-          {FEATURED.map((cs) => (
-            <CaseStudyCard key={cs.href} {...cs} />
+          {FEATURED.map((cs, i) => (
+            <Reveal key={cs.href} index={i} className="h-full">
+              <Spotlight className="h-full">
+                <CaseStudyCard {...cs} />
+              </Spotlight>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -21,6 +21,19 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: '180x180',
         type: 'image/png',
       },
+      {
+        src: '/logo.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        // The mark sits well inside the safe zone, so it doubles as maskable.
+        src: '/logo.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
     ],
   };
 }

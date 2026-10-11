@@ -10,6 +10,10 @@ export function organizationSchema() {
     url: SITE_URL,
     description:
       'AI receptionist and automated calling systems for local businesses',
+    logo: `${SITE_URL}/logo.png`,
+    image: `${SITE_URL}/og-default.png`,
+    // Add the LinkedIn / X / YouTube / Google Business profile URLs here
+    // once they exist; Google uses them to build the knowledge panel.
     sameAs: [],
   };
 }

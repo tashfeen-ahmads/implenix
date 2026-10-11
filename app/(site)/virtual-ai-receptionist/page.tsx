@@ -326,9 +326,9 @@ export default function VirtualAIReceptionistPage() {
                 { label: 'Direct calendar booking', cells: [true, true] },
                 { label: 'Two-way CRM sync', cells: [true, 'partial'] },
                 { label: 'Email and admin work', cells: [false, true] },
-                { label: 'Training overhead', cells: ['none', '20–60 hours'] },
+                { label: 'Training overhead', cells: ['none', '20-60 hours'] },
                 { label: 'Turnover risk', cells: ['none', 'high'] },
-                { label: 'Monthly cost', cells: ['from $297', '$1,500–$4,000'] },
+                { label: 'Monthly cost', cells: ['from $297', '$1,500-$4,000'] },
               ]}
             />
           </div>

@@ -28,22 +28,22 @@ const REVIEWS: Record<
   string,
   { reviewer: string; reviewBody: string; itemName: string }
 > = {
-  'placeholder-hvac': {
+  'pa-hvac-experts': {
     reviewer: 'Alex',
     reviewBody:
       'The best AI employee I have ever hired. It talks to every incoming call, nurtures my leads, books appointments, and sends follow-ups to me and the customer.',
     itemName: 'Implenix AI Receptionist for HVAC',
   },
-  'placeholder-real-estate': {
+  'columbus-property': {
     reviewer: 'Yessy',
     reviewBody:
       'We juggle deals, appointments, and follow-ups all day. Implenix books and follows up, we just close. That is the operation now.',
     itemName: 'Implenix AI Receptionist for Real Estate',
   },
-  'placeholder-dental': {
+  'ohio-dental': {
     reviewer: 'Hyder',
     reviewBody:
-      'The team was spending 2–3 hours a day answering the phone and our in-house attention was slipping. Implenix handles the phone amazingly and the team is back focused on patients.',
+      'The team was spending 2-3 hours a day answering the phone and our in-house attention was slipping. Implenix handles the phone amazingly and the team is back focused on patients.',
     itemName: 'Implenix AI Receptionist for Dental',
   },
   'gtr-improvements-lexi': {
@@ -67,11 +67,11 @@ const REVIEWS: Record<
 };
 
 const RECORDINGS: Record<string, { src: string; label: string }> = {
-  'placeholder-hvac': {
+  'pa-hvac-experts': {
     src: 'https://storage.vapi.ai/019dd11a-08f4-7001-be5e-9138391c69f7-1777329860916-1f64e293-9d0f-4aa7-b388-359b12052bbd-mono.mp3',
     label: 'Real call from this deployment, home-improvement intake (names redacted)',
   },
-  'placeholder-real-estate': {
+  'columbus-property': {
     src: 'https://storage.vapi.ai/019d5386-d076-7995-9f11-00e17cc6c065-1775222981308-169a281a-d8cf-4a47-83bb-3a398c88d1a7-mono.mp3',
     label: 'Real call from this deployment, seller acquisitions intake (names redacted)',
   },

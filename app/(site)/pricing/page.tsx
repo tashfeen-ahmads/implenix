@@ -40,7 +40,7 @@ const TIERS = [
   },
   {
     name: 'Growing Agency',
-    target: 'For teams of 2–10 with real call volume',
+    target: 'For teams of 2-10 with real call volume',
     price: 597,
     highlight: true,
     capture: '$60,000+',
@@ -119,7 +119,7 @@ export default function PricingPage() {
               <span className="text-brand-purple">Better at the job</span>.
             </h1>
             <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
-              A full-time human receptionist runs $3,500–$5,000 per month
+              A full-time human receptionist runs $3,500-$5,000 per month
               and works 40 hours a week. Implenix runs 24/7, never misses a
               call, never takes lunch, and starts at $297/month.
             </p>
@@ -135,7 +135,7 @@ export default function PricingPage() {
             </span>
             <span className="font-mono text-white text-sm">
               <span className="text-white/55">Mid-market US salary</span>{' '}
-              <span className="text-white/85">$3,500–$5,000</span>{' '}
+              <span className="text-white/85">$3,500-$5,000</span>{' '}
               <span className="text-white/55">/ month · 40 hrs / week · no nights</span>
             </span>
           </div>
@@ -295,7 +295,7 @@ export default function PricingPage() {
                 { label: 'Recordings + transcripts', cells: [true, false, 'partial', 'partial'] },
                 {
                   label: 'Monthly cost',
-                  cells: ['from $297', '$3,500–$5,000', '$0', '$80–$200'],
+                  cells: ['from $297', '$3,500-$5,000', '$0', '$80-$200'],
                 },
               ]}
             />

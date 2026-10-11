@@ -251,7 +251,7 @@ export default function AIReceptionistForMultiLocationPage() {
               stats={[
                 { number: '90%+', label: 'consistent capture rate across all locations' },
                 { number: 'Per-loc', label: 'reporting + roll-up to ownership' },
-                { number: '14–28 d', label: 'deployment timeline (location count dependent)' },
+                { number: '14-28 d', label: 'deployment timeline (location count dependent)' },
               ]}
             />
           </div>

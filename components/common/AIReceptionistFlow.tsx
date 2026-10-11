@@ -47,7 +47,7 @@ export function AIReceptionistFlow() {
       <div className="flex items-center justify-between mb-6">
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-cyan opacity-60" />
+            <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-cyan opacity-60" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-cyan" />
           </span>
           Live workflow
@@ -105,9 +105,11 @@ export function AIReceptionistFlow() {
                   viewport={{ once: true, amount: 0.4 }}
                   transition={{ delay: i * 0.15 + 0.15, duration: 0.3 }}
                   aria-hidden
-                  className="self-center flex items-center justify-center text-white/40 rotate-90 md:rotate-0 shrink-0"
+                  className="self-center flex items-center justify-center text-white/40 shrink-0"
                 >
-                  <ArrowRight size={16} />
+                  <span className="flex rotate-90 md:rotate-0">
+                    <ArrowRight size={16} />
+                  </span>
                 </motion.span>
               ) : null}
             </li>

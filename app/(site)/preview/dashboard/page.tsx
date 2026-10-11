@@ -28,7 +28,7 @@ const CONVERSATIONS = [
   {
     id: 'c1',
     caller: 'Maria L.',
-    summary: 'AC outage · booked for Wed 2–4 PM',
+    summary: 'AC outage · booked for Wed 2-4 PM',
     duration: '0:42',
     when: '12 min ago',
     tag: 'booked' as const,
@@ -164,7 +164,7 @@ export default function DashboardPreviewPage() {
           <div className="lg:col-span-7">
             <Badge label="See yours next" variant="purple" />
             <h2 className="font-heading text-3xl md:text-5xl mt-5 leading-[1.05]">
-              The numbers above are mock. Yours can be live in 7–14 days.
+              The numbers above are mock. Yours can be live in 7-14 days.
             </h2>
             <p className="mt-4 font-body text-white/75 max-w-xl">
               Run the audit to see what missed calls cost you, then ship a

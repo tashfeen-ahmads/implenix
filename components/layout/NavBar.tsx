@@ -156,7 +156,15 @@ export function NavBar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-brand-dark border-b border-brand-purple/20">
+    <header
+      className="sticky top-0 z-50 bg-brand-dark border-b border-brand-purple/20"
+      onBlur={(e) => {
+        // Close the mega menu once keyboard focus leaves the header.
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          setActiveMega(null);
+        }
+      }}
+    >
       <div className="max-w-content mx-auto flex items-center justify-between px-6 h-14">
         <div className="flex items-center gap-10">
           <LogoLockup size="sm" />
@@ -169,6 +177,7 @@ export function NavBar() {
                 <div
                   key={group.label}
                   onMouseEnter={() => onEnter(group.type)}
+                  onFocus={() => onEnter(group.type)}
                   className="relative"
                 >
                   <Link
@@ -207,11 +216,14 @@ export function NavBar() {
         </div>
 
         <button
+          type="button"
           aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
-          className="lg:hidden text-white"
+          className="lg:hidden -mr-2 w-11 h-11 flex items-center justify-center text-white hover:text-brand-cyan transition-colors"
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {open ? <X size={22} aria-hidden /> : <Menu size={22} aria-hidden />}
         </button>
       </div>
 
@@ -361,7 +373,7 @@ export function NavBar() {
       </div>
 
       {open && (
-        <div className="lg:hidden fixed inset-0 top-14 bg-brand-dark z-40 flex flex-col px-6 py-8 gap-5 overflow-y-auto">
+        <div id="mobile-menu" className="lg:hidden fixed inset-0 top-14 bg-brand-dark z-40 flex flex-col px-6 py-8 gap-5 overflow-y-auto overscroll-contain">
           {NAV_GROUPS.map((link) => (
             <Link
               key={link.href}
@@ -380,7 +392,7 @@ export function NavBar() {
             data-cta-type="primary"
             className="bg-brand-purple text-white text-center font-medium px-5 py-3 rounded-sm"
           >
-            Book a Demo
+            Book a call
           </Link>
         </div>
       )}

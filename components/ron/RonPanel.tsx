@@ -26,12 +26,22 @@ function RonDialog({ ctaLocation, onClose }: Props) {
   const [micBlocked, setMicBlocked] = useState(false);
   const [failed, setFailed] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const live = status === 'connected';
   const connecting = status === 'connecting';
 
+  // Modal behaviour: focus moves in, the page behind stops scrolling, and
+  // focus returns to the button that opened Ron on close.
   useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     closeRef.current?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      opener?.focus?.();
+    };
   }, []);
 
   useEffect(() => {
@@ -50,6 +60,21 @@ function RonDialog({ ctaLocation, onClose }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeLatest.current();
+      if (e.key !== 'Tab' || !dialogRef.current) return;
+      // Keep Tab cycling inside the dialog.
+      const items = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href]',
+      );
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -88,6 +113,7 @@ function RonDialog({ ctaLocation, onClose }: Props) {
       }}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="ron-title"

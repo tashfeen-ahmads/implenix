@@ -83,8 +83,8 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       { label: 'Outbound campaign capability', cells: [true, true] },
       { label: 'Human operators on every call', cells: [false, true] },
       { label: 'Live transfer to human', cells: [true, true] },
-      { label: 'Typical SMB monthly cost', cells: ['$297–$597', '$300–$1,500'] },
-      { label: 'Time to live', cells: ['7–14 days', '24–72 hours'] },
+      { label: 'Typical SMB monthly cost', cells: ['$297-$597', '$300-$1,500'] },
+      { label: 'Time to live', cells: ['7-14 days', '24-72 hours'] },
     ],
     whenChooseThem: {
       headline: 'When Smith.ai is the right call',
@@ -145,7 +145,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     ],
     sampleCallCaption: 'Same call on Smith.ai = 4 minutes billable @ ~$1.65/min · On Implenix = $0 marginal cost',
     outcomes: [
-      { number: '$0', label: 'Per-call marginal cost vs $4–$8 per call on per-minute pricing' },
+      { number: '$0', label: 'Per-call marginal cost vs $4-$8 per call on per-minute pricing' },
       { number: 'unlimited', label: 'Concurrent calls vs staff-bound capacity on human-anchored services' },
       { number: '24/7', label: 'After-hours coverage included, no premium upcharge' },
     ],
@@ -177,14 +177,14 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     ],
     comparisonRows: [
       { label: 'Free tier', cells: [false, true] },
-      { label: 'Time to live', cells: ['7–14 days', 'same day'] },
+      { label: 'Time to live', cells: ['7-14 days', 'same day'] },
       { label: 'Industry-specific scripts', cells: [true, 'partial'] },
       { label: 'Two-way CRM sync depth', cells: ['deep', 'basic'] },
       { label: 'Custom transfer rules', cells: [true, 'partial'] },
       { label: 'Multi-location routing', cells: [true, false] },
       { label: 'Branded voice (custom voice cloning)', cells: ['available', false] },
       { label: 'Implementation engineer included', cells: [true, false] },
-      { label: 'Typical SMB monthly cost', cells: ['$297–$597', '$0–$59'] },
+      { label: 'Typical SMB monthly cost', cells: ['$297-$597', '$0-$59'] },
       { label: 'Best fit', cells: ['established business', 'solo operator'] },
     ],
     whenChooseThem: {
@@ -287,8 +287,8 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
       { label: 'Domestic-US human operators', cells: [false, true] },
       { label: 'Live transfer to human', cells: [true, true] },
       { label: 'Recordings + transcripts', cells: [true, 'partial'] },
-      { label: 'Typical SMB monthly cost', cells: ['$297–$597', '$350–$1,200+'] },
-      { label: 'Time to live', cells: ['7–14 days', '5–10 days'] },
+      { label: 'Typical SMB monthly cost', cells: ['$297-$597', '$350-$1,200+'] },
+      { label: 'Time to live', cells: ['7-14 days', '5-10 days'] },
     ],
     whenChooseThem: {
       headline: 'When Ruby Receptionists is the right call',

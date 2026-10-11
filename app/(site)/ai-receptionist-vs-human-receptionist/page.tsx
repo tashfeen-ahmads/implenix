@@ -34,12 +34,12 @@ const FAQS = [
   {
     question: 'Is an AI receptionist actually cheaper than hiring?',
     answer:
-      'Yes, on cash cost and substantially. A full-time receptionist runs $3,500–$5,000/month for 40 hours of coverage plus benefits and HR overhead. Implenix is $297–$997/month for 24/7 unlimited concurrency. The annualized difference is typically $40,000–$60,000.',
+      'Yes, on cash cost and substantially. A full-time receptionist runs $3,500-$5,000/month for 40 hours of coverage plus benefits and HR overhead. Implenix is $297-$997/month for 24/7 unlimited concurrency. The annualized difference is typically $40,000-$60,000.',
   },
   {
     question: 'Can an AI replace a real human at the front desk?',
     answer:
-      'For routine calls, booking, qualification, intake, recurring requests, yes. For nuanced emotional calls or premium-brand human-warmth requirements, a human still has an edge. Most businesses run a hybrid: AI handles 80–90% of inbound, a smaller in-house role handles the rest.',
+      'For routine calls, booking, qualification, intake, recurring requests, yes. For nuanced emotional calls or premium-brand human-warmth requirements, a human still has an edge. Most businesses run a hybrid: AI handles 80-90% of inbound, a smaller in-house role handles the rest.',
   },
   {
     question: 'What about the human element, does it matter?',
@@ -77,31 +77,31 @@ const ANNUAL_COSTS = [
   {
     label: 'Salary',
     ai: ', ',
-    human: '$36,000 – $54,000',
+    human: '$36,000 - $54,000',
   },
   {
     label: 'Payroll taxes + benefits',
     ai: ', ',
-    human: '$8,000 – $14,000',
+    human: '$8,000 - $14,000',
   },
   {
     label: 'Recruiting & training',
     ai: ', ',
-    human: '$3,000 – $6,000',
+    human: '$3,000 - $6,000',
   },
   {
     label: 'Phone system + tools',
     ai: 'included',
-    human: '$1,200 – $3,000',
+    human: '$1,200 - $3,000',
   },
   {
     label: 'Sick days / turnover risk',
     ai: 'none',
-    human: '$2,000 – $5,000',
+    human: '$2,000 - $5,000',
   },
   {
     label: 'Implenix subscription',
-    ai: '$3,564 – $11,964',
+    ai: '$3,564 - $11,964',
     human: ', ',
   },
 ];
@@ -152,7 +152,7 @@ export default function AIReceptionistVsHumanReceptionistPage() {
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 Real cost math, real coverage tradeoffs, and the hybrid
-                pattern most businesses end up running. The AI replaces 80–90%
+                pattern most businesses end up running. The AI replaces 80-90%
                 of routine front-desk work for under 10% of the cost.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -284,10 +284,10 @@ part-time, in-house, or on a small live answering service
                 <tr className="bg-black">
                   <td className="p-4 font-heading text-white">Annual total</td>
                   <td className="p-4 font-heading text-2xl text-brand-cyan border-x border-x-brand-cyan/40 border-b border-b-brand-cyan/40">
-                    $3,564 – $11,964
+                    $3,564 - $11,964
                   </td>
                   <td className="p-4 font-heading text-2xl text-white/85">
-                    $50,200 – $82,000
+                    $50,200 - $82,000
                   </td>
                 </tr>
               </tbody>
@@ -318,10 +318,10 @@ part-time, in-house, or on a small live answering service
                 { label: 'Live calendar booking', cells: [true, true] },
                 { label: 'Two-way CRM sync', cells: [true, 'partial'] },
                 { label: 'Industry-specific script', cells: [true, 'partial'] },
-                { label: 'Time to live', cells: ['7–14 days', '6–14 weeks'] },
+                { label: 'Time to live', cells: ['7-14 days', '6-14 weeks'] },
                 {
                   label: 'Monthly cost',
-                  cells: ['$297 – $997', '$3,500 – $5,000'],
+                  cells: ['$297 - $997', '$3,500 - $5,000'],
                 },
                 {
                   label: 'Best for',
@@ -415,7 +415,7 @@ part-time, in-house, or on a small live answering service
             />
             <HybridCard
               Icon={Clock}
-              title="60–80% net cost reduction"
+              title="60-80% net cost reduction"
               description="vs a full-time receptionist, with quality up because the human now spends time on the calls that actually need them."
             />
           </div>
@@ -433,7 +433,7 @@ part-time, in-house, or on a small live answering service
             <DividedStats
               stats={[
                 { number: '4.2x', label: 'coverage hours / week vs a full-time hire' },
-                { number: '60–80%', label: 'cost reduction in hybrid deployments' },
+                { number: '60-80%', label: 'cost reduction in hybrid deployments' },
                 { number: '0', label: 'sick days, vacation requests, or turnover' },
               ]}
             />

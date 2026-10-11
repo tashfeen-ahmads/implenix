@@ -106,8 +106,106 @@ a:focus-visible {
   animation-play-state: paused;
 }
 
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .marquee-track {
     animation: none;
+  }
+}
+
+/* Remove the 300ms double-tap delay on controls. */
+a,
+button,
+input,
+select,
+textarea,
+summary,
+label {
+  touch-action: manipulation;
+}
+
+/* ---------------------------------------------------------------------
+   Motion + surface layer
+   Every animation below is disabled under prefers-reduced-motion.
+--------------------------------------------------------------------- */
+
+/* Spotlight cards: a soft light follows the cursor across border + surface. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(187, 0, 255, 0.35),
+    rgba(61, 250, 255, 0.12) 40%,
+    transparent 70%
+  );
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* Atmospheric orbs: slow drift behind hero content. */
+@keyframes orb-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-6%, 4%, 0) scale(1.08); }
+}
+@keyframes orb-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(5%, -5%, 0) scale(0.94); }
+}
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+.orb-a { animation: orb-drift-a 22s ease-in-out infinite; }
+.orb-b { animation: orb-drift-b 28s ease-in-out infinite; }
+
+/* Film grain: one fixed, non-interactive layer for the whole page. */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hero entrance: copy lands in reading order. */
+@keyframes enter-up {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.enter {
+  animation: enter-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-a,
+  .orb-b,
+  .enter {
+    animation: none;
+  }
+  .spotlight::before {
+    transition: none;
   }
 }

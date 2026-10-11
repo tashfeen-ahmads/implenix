@@ -126,7 +126,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           'We disclose where required by jurisdiction. The voice is natural and warm. Most patients do not realize, and the ones who do find the booking experience faster than a busy front desk.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['dentists', 'chiropractors', 'veterinarians'],
   },
 
@@ -219,7 +219,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 14 business days for most shops. We can compress for storm-season prep.',
       },
     ],
-    caseStudySlug: 'placeholder-hvac',
+    caseStudySlug: 'pa-hvac-experts',
     related: ['plumbers', 'hvac-companies', 'contractors'],
   },
 
@@ -312,7 +312,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '10 to 14 business days for a typical shop. Faster if you already have a CRM with API access.',
       },
     ],
-    caseStudySlug: 'placeholder-real-estate',
+    caseStudySlug: 'columbus-property',
     related: ['electricians', 'plumbers', 'roofers'],
   },
 
@@ -405,7 +405,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 10 business days for most salons. Faster if you are already on a supported booking platform.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['med-spas', 'spas', 'chiropractors'],
   },
 
@@ -498,7 +498,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           'We follow IRS Publication 4557 guidance on safeguarding client data: encrypted in transit and at rest, role-based access, audit logs.',
       },
     ],
-    caseStudySlug: 'placeholder-real-estate',
+    caseStudySlug: 'columbus-property',
     related: ['law-firms', 'mortgage-brokers', 'marketing-agencies'],
   },
 
@@ -591,7 +591,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 10 business days. Most agencies are live in two weeks with their qualification logic tuned.',
       },
     ],
-    caseStudySlug: 'placeholder-real-estate',
+    caseStudySlug: 'columbus-property',
     related: ['accountants', 'law-firms', 'real-estate'],
   },
 
@@ -684,7 +684,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 10 business days for most cleaning operators.',
       },
     ],
-    caseStudySlug: 'placeholder-hvac',
+    caseStudySlug: 'pa-hvac-experts',
     related: ['contractors', 'electricians', 'plumbers'],
   },
 
@@ -777,7 +777,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           'The agent texts a secure portal link mid-call. Borrowers upload pay stubs, bank statements, W-2s during the call. Files attach to the loan file automatically.',
       },
     ],
-    caseStudySlug: 'placeholder-real-estate',
+    caseStudySlug: 'columbus-property',
     related: ['real-estate', 'insurance-agents', 'accountants'],
   },
 
@@ -870,7 +870,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '10 to 14 business days for most agencies. Faster if you are on a supported AMS.',
       },
     ],
-    caseStudySlug: 'placeholder-real-estate',
+    caseStudySlug: 'columbus-property',
     related: ['mortgage-brokers', 'accountants', 'law-firms'],
   },
 
@@ -963,7 +963,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '10 to 14 business days for most practices.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['medical-practices', 'chiropractors', 'dentists'],
   },
 
@@ -1056,7 +1056,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '10 to 14 business days for most chiropractic practices.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['medical-practices', 'dentists', 'therapists'],
   },
 
@@ -1149,7 +1149,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           'Yes, within the stated policy you provide. The agent does not freelance fee discussions; it follows your script.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['chiropractors', 'medical-practices', 'dentists'],
   },
 
@@ -1242,7 +1242,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 10 business days for most spas.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['med-spas', 'salons', 'chiropractors'],
   },
 
@@ -1335,7 +1335,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 14 business days. We can compress for spring-season prep.',
       },
     ],
-    caseStudySlug: 'placeholder-hvac',
+    caseStudySlug: 'pa-hvac-experts',
     related: ['contractors', 'cleaning-services', 'pest-control'],
   },
 
@@ -1428,7 +1428,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 10 business days for most pest-control operators.',
       },
     ],
-    caseStudySlug: 'placeholder-hvac',
+    caseStudySlug: 'pa-hvac-experts',
     related: ['cleaning-services', 'landscapers', 'plumbers'],
   },
 
@@ -1521,7 +1521,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 14 business days. Faster if you want to be ready before peak season.',
       },
     ],
-    caseStudySlug: 'placeholder-hvac',
+    caseStudySlug: 'pa-hvac-experts',
     related: ['cleaning-services', 'contractors', 'landscapers'],
   },
 
@@ -1614,7 +1614,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
           '7 to 10 business days for most training studios.',
       },
     ],
-    caseStudySlug: 'placeholder-dental',
+    caseStudySlug: 'ohio-dental',
     related: ['chiropractors', 'salons', 'med-spas'],
   },
 ];

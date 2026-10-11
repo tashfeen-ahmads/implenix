@@ -30,7 +30,7 @@ const FAQS = [
   {
     question: 'Is an AI receptionist worth it for a solo business?',
     answer:
-      'Especially for solo operators. The bottleneck for any solo business is your own phone time. A typical solo operator loses 8–15 inbound calls a week to "I was on the job and couldn\'t pick up", and at average client values of $400-$3,000, that math justifies the AI inside the first few weeks.',
+      'Especially for solo operators. The bottleneck for any solo business is your own phone time. A typical solo operator loses 8-15 inbound calls a week to "I was on the job and couldn\'t pick up", and at average client values of $400-$3,000, that math justifies the AI inside the first few weeks.',
   },
   {
     question: 'How does this work when I\'m the only person in the business?',
@@ -245,7 +245,7 @@ more than the average solo operator's monthly software
             <DividedStats
               stats={[
                 { number: '$297', label: 'monthly cost, less than 1 missed booking' },
-                { number: '8–15', label: 'calls per week typical solo operator misses' },
+                { number: '8-15', label: 'calls per week typical solo operator misses' },
                 { number: '24/7', label: 'coverage at no premium upcharge' },
               ]}
             />

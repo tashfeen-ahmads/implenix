@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import { ArrowRight, AlertTriangle } from 'lucide-react';
+import { CountUp } from '@/components/motion/CountUp';
+import { Reveal } from '@/components/motion/Reveal';
+import { Spotlight } from '@/components/motion/Spotlight';
 
 // "Cost of doing nothing" anchor block. Side-by-side: left column shows
 // what the prospect is losing right now without Implenix; right column
@@ -11,7 +14,7 @@ export function CostOfNothingSection() {
       <div className="max-w-content mx-auto px-6 py-28 md:px-10 md:py-36 lg:py-40">
         <header className="max-w-3xl">
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl leading-[1.04] tracking-tight text-white">
-            What you're losing every week, right now.
+            What you’re losing every week, right now.
           </h2>
           <p className="mt-6 font-body text-white/70 text-lg md:text-xl leading-relaxed max-w-[60ch]">
             A typical week for a busy local business, based on industry
@@ -20,7 +23,9 @@ export function CostOfNothingSection() {
         </header>
 
         <div className="mt-16 md:mt-20 grid md:grid-cols-2 gap-6 md:gap-8">
-          <div className="border border-white/10 bg-black p-8 md:p-12 flex flex-col gap-6">
+          <Reveal className="h-full">
+          <Spotlight className="h-full">
+          <div className="h-full border border-white/10 bg-black p-8 md:p-12 flex flex-col gap-6">
             <header className="flex items-center justify-between">
               <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/65 border border-white/15 px-2 py-1">
                 <AlertTriangle size={11} /> Without Implenix
@@ -31,13 +36,14 @@ export function CostOfNothingSection() {
             </header>
             <Row label="Inbound calls" value="186" muted />
             <Row label="Missed (ring → voicemail)" value="115" muted />
+            <Row label="Missed callers who would have booked" value="44" muted />
             <Row label="Avg client value" value="$1,250" muted />
             <div className="border-t border-white/10 pt-8 mt-2">
               <span className="text-[10px] font-mono uppercase tracking-widest text-white/55">
                 ▸ Estimated lost pipeline
               </span>
               <p className="font-heading text-5xl md:text-6xl text-white/90 mt-3 leading-none">
-                $42,800
+                <CountUp value={55000} prefix="$" />
               </p>
               <p className="text-sm font-body text-white/55 mt-2">
                 Going to whoever answered first.
@@ -54,8 +60,12 @@ export function CostOfNothingSection() {
               </Link>
             </div>
           </div>
+          </Spotlight>
+          </Reveal>
 
-          <div className="border-l-[3px] border-brand-cyan bg-black p-8 md:p-12 flex flex-col gap-6 shadow-[0_0_80px_-20px_rgba(61,250,255,0.25)]">
+          <Reveal index={1} className="h-full">
+          <Spotlight className="h-full">
+          <div className="h-full border-l-[3px] border-brand-cyan bg-black p-8 md:p-12 flex flex-col gap-6 shadow-[0_0_80px_-20px_rgba(61,250,255,0.25)]">
             <header className="flex items-center justify-between">
               <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-brand-cyan border border-brand-cyan/40 px-2 py-1">
                 <span className="w-1.5 h-1.5 bg-brand-cyan" /> With Implenix
@@ -72,7 +82,7 @@ export function CostOfNothingSection() {
                 ▸ Pipeline captured
               </span>
               <p className="font-heading text-5xl md:text-6xl text-brand-cyan mt-3 leading-none">
-                $88,750
+                <CountUp value={88750} prefix="$" />
               </p>
               <p className="text-sm font-body text-white/70 mt-2">
                 Booked, qualified, written to your CRM.
@@ -87,6 +97,8 @@ export function CostOfNothingSection() {
               Run my audit <ArrowRight size={16} />
             </Link>
           </div>
+          </Spotlight>
+          </Reveal>
         </div>
       </div>
     </section>

@@ -182,7 +182,7 @@ export default function AboutPage() {
                 },
                 {
                   Icon: Briefcase,
-                  number: '7–14d',
+                  number: '7-14d',
                   label: 'deploy cycle',
                   description: 'From kickoff to live traffic in two weeks.',
                 },
@@ -515,7 +515,7 @@ function TimelineItem({
       <p className="font-body text-sm text-white/70 leading-relaxed">{body}</p>
       {highlight ? (
         <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest text-brand-cyan">
-          <span className="w-1.5 h-1.5 bg-brand-cyan rounded-full animate-pulse" />
+          <span className="w-1.5 h-1.5 bg-brand-cyan rounded-full motion-safe:animate-pulse" />
           Live
         </span>
       ) : null}

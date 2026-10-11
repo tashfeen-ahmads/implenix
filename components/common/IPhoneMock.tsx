@@ -15,7 +15,7 @@ const CONVERSATION: Bubble[] = [
   { from: 'caller', text: 'My AC stopped. House is at 88°.', ts: '00:05' },
   { from: 'agent', text: 'Sorry to hear that. Sending a tech today. Address?', ts: '00:09' },
   { from: 'caller', text: '1420 Cedar Lane.', ts: '00:13' },
-  { from: 'agent', text: 'Booked. Tech arrives 2–4pm. Confirmation sent.', ts: '00:17' },
+  { from: 'agent', text: 'Booked. Tech arrives 2-4pm. Confirmation sent.', ts: '00:17' },
 ];
 
 // Stylized iPhone-shaped mock with a live AI conversation animating in.
@@ -59,7 +59,7 @@ export function IPhoneMock() {
               <p className="text-[10px] uppercase tracking-widest text-brand-cyan font-mono mt-1 flex items-center gap-1">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    callEnded ? 'bg-white/40' : 'bg-brand-cyan animate-pulse'
+                    callEnded ? 'bg-white/40' : 'bg-brand-cyan motion-safe:animate-pulse'
                   }`}
                 />
                 {callEnded ? 'Call wrapped' : 'Live call'}
@@ -120,7 +120,7 @@ export function IPhoneMock() {
                   Booking confirmed
                 </p>
                 <p className="text-[10px] text-white/70 font-body mt-0.5 leading-snug">
-                  Tomorrow · 2–4 PM · 1420 Cedar Ln
+                  Tomorrow · 2-4 PM · 1420 Cedar Ln
                 </p>
                 <p className="text-[9px] font-mono text-white/40 mt-1.5 uppercase tracking-widest">
                   ▸ CRM updated · job #44129

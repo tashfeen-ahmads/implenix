@@ -84,7 +84,7 @@ export function AnimatedCallTranscript({
         </div>
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-brand-cyan">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-cyan opacity-70" />
+            <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-cyan opacity-70" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-cyan" />
           </span>
           Live
@@ -94,7 +94,6 @@ export function AnimatedCallTranscript({
       <div
         ref={scrollRef}
         className="flex flex-col gap-3 p-4 sm:p-6 overflow-y-auto h-[320px] sm:h-[380px] md:h-[440px]"
-        aria-live="polite"
       >
         {lines.map((line, i) => {
           if (i > turnIndex) return null;
@@ -126,7 +125,7 @@ export function AnimatedCallTranscript({
               >
                 {text}
                 {isTyping ? (
-                  <span className="inline-block w-2 h-4 bg-brand-cyan align-middle ml-0.5 animate-pulse" />
+                  <span className="inline-block w-2 h-4 bg-brand-cyan align-middle ml-0.5 motion-safe:animate-pulse" />
                 ) : null}
               </div>
             </div>
