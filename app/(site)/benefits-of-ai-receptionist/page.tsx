@@ -302,7 +302,7 @@ export default function BenefitsOfAIReceptionistPage() {
                 title="benefits.log"
                 lines={[
                   { ts: '20:33', speaker: 'system', text: 'Inbound · Wednesday 8:33pm · After-hours window · Answered in 0 rings' },
-                  { ts: '20:33', speaker: 'agent', text: 'Thanks for calling Cedar Park Roofing, this is Riley. What can I help with?' },
+                  { ts: '20:33', speaker: 'agent', text: 'Thanks for calling Cedar Park Roofing, this is Ron. What can I help with?' },
                   { ts: '20:33', speaker: 'caller', text: 'Need a quote on a roof replacement, asphalt shingle, single-story.' },
                   { ts: '20:33', speaker: 'agent', text: "Great. Three quick questions: city, ballpark square footage, and is this insurance-driven or out of pocket?" },
                   { ts: '20:34', speaker: 'caller', text: 'Cedar Park, around 2,200 square feet, insurance.' },

@@ -269,7 +269,7 @@ export default function VirtualAIReceptionistPage() {
                 title="virtual-receptionist.log"
                 lines={[
                   { ts: '10:08', speaker: 'system', text: 'Inbound · SIP trunk → cloud agent · Caller ID resolved · CRM lookup complete' },
-                  { ts: '10:08', speaker: 'agent', text: 'Thanks for calling Brookside Dental, this is Skyler. Are you a current patient or new with us?' },
+                  { ts: '10:08', speaker: 'agent', text: 'Thanks for calling Brookside Dental, this is Ron. Are you a current patient or new with us?' },
                   { ts: '10:08', speaker: 'caller', text: "I'm a current patient, just need to reschedule my Thursday cleaning." },
                   { ts: '10:08', speaker: 'agent', text: "I see you on Dr. Patel's calendar Thursday at 2pm. What day works better?" },
                   { ts: '10:08', speaker: 'caller', text: 'Friday afternoon if possible.' },
@@ -398,7 +398,7 @@ export default function VirtualAIReceptionistPage() {
             topic="Keep reading"
             type="resource"
             links={[
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               {
                 href: '/ai-receptionist-vs-virtual-assistant',
                 label: 'AI Receptionist vs Virtual Assistant',

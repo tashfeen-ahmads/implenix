@@ -172,7 +172,7 @@ export default function HowDoesAnAIReceptionistWorkPage() {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Hear it on a real number <ArrowRight size={16} />
+                  Test Ron now <ArrowRight size={16} />
                 </Link>
                 <Link
                   href="/"
@@ -414,7 +414,7 @@ compact
             type="resource"
             links={[
               { href: '/what-is-an-ai-receptionist', label: 'What is an AI receptionist?' },
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               { href: '/preview/dashboard', label: 'Inside the Implenix dashboard' },
             ]}
           />

@@ -249,7 +249,7 @@ export default function AIReceptionistForStartupsPage() {
               stats={[
                 { number: '7-14d', label: 'time to live with full integrations' },
                 { number: '$297', label: 'flat monthly cost vs $50K+ for a hire' },
-                { number: '<89%', label: 'cold-pitch noise to founders cut typical' },
+                { number: '-89%', label: 'cold-pitch calls kept off founders' },
               ]}
             />
           </div>

@@ -3,9 +3,12 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
-import { allIndustries } from 'contentlayer/generated';
+import { allIndustries, allCaseStudies } from 'contentlayer/generated';
 import { publishedBlogPosts } from '@/lib/blog';
 import { CaseStudyCard } from '@/components/common/CaseStudyCard';
+import { TestimonialCard } from '@/components/common/TestimonialCard';
+import { TESTIMONIALS } from '@/components/sections/TestimonialsSection';
+import { TestRonCTA } from '@/components/ron/TestRonCTA';
 import { BookingWidget } from '@/components/common/BookingWidget';
 import { RelatedContent } from '@/components/common/RelatedContent';
 import { Badge } from '@/components/common/Badge';
@@ -19,7 +22,6 @@ import {
   faqSchema,
   serviceSchema,
   speakableSchema,
-  aggregateRatingSchema,
 } from '@/lib/schema';
 import { buildMetadata } from '@/lib/seo';
 import { industryUrl } from '@/lib/industries';
@@ -66,6 +68,28 @@ export function generateStaticParams() {
   return ALL_VALID_SLUGS.map((slug) => ({ slug }));
 }
 
+// Only industries with a real, named client show a case study and
+// testimonial. Everything else gets no card rather than a borrowed one.
+const REAL_CASE_STUDY: Record<string, string> = {
+  'hvac-companies': 'pa-hvac-experts',
+  dentists: 'ohio-dental',
+  'real-estate': 'columbus-property',
+  'auto-repair': 'parnell-motors',
+  'marketing-agencies': 'franklin-agency',
+  contractors: 'gtr-improvements-lexi',
+  roofers: 'gtr-improvements-lexi',
+};
+
+// Break long intros roughly every three sentences.
+function splitParagraphs(text: string): string[] {
+  const sentences = text.match(/[^.!?]+[.!?]+(\s|$)/g) ?? [text];
+  const out: string[] = [];
+  for (let i = 0; i < sentences.length; i += 3) {
+    out.push(sentences.slice(i, i + 3).join('').trim());
+  }
+  return out;
+}
+
 function loadIndustry(slug: string): UnifiedIndustry | null {
   // Prefer rich MDX content when present.
   const mdxDoc = allIndustries.find((d) => d.slug === slug);
@@ -86,7 +110,8 @@ function loadIndustry(slug: string): UnifiedIndustry | null {
       faqs: mdxDoc.faq as { question: string; answer: string }[],
       caseStudySlug: mdxDoc.caseStudySlug,
       url: mdxDoc.url,
-      related: [],
+      // MDX docs carry no related list; link the other MDX industries.
+      related: MDX_SLUGS.filter((x) => x !== mdxDoc.slug).slice(0, 3),
       mdxCode: mdxDoc.body.code,
     };
   }
@@ -130,6 +155,13 @@ export default function IndustryPage({ params }: { params: Params }) {
   if (!data) notFound();
 
   const MDX = data.mdxCode ? useMDXComponent(data.mdxCode) : null;
+  const studySlug = REAL_CASE_STUDY[data.slug];
+  const study = studySlug
+    ? allCaseStudies.find((c) => c.slug === studySlug)
+    : undefined;
+  const testimonial = study
+    ? TESTIMONIALS.find((t) => t.caseStudyHref === study.url)
+    : undefined;
   const relatedLinks = data.related
     .map((slug) => {
       const profile = INDUSTRY_PROFILES.find((p) => p.slug === slug);
@@ -160,12 +192,6 @@ export default function IndustryPage({ params }: { params: Params }) {
             serviceType: 'AI Receptionist',
             url: data.url,
           }),
-          aggregateRatingSchema({
-            ratingValue: 5,
-            reviewCount: 6,
-            itemName: `Implenix AI Receptionist for ${data.industryName}`,
-            itemUrl: data.url,
-          }),
           speakableSchema(['h1', '[data-speakable]', '.faq-question', '.faq-answer']),
         ]}
       />
@@ -175,7 +201,7 @@ export default function IndustryPage({ params }: { params: Params }) {
           <Breadcrumbs
             crumbs={[
               { label: 'Home', href: '/' },
-              { label: 'Industries', href: industryUrl('hvac-companies') },
+              { label: 'Industries', href: '/industries' },
               { label: data.industryName, href: data.url },
             ]}
             className="mb-8"
@@ -184,7 +210,8 @@ export default function IndustryPage({ params }: { params: Params }) {
             <div className="lg:col-span-7 flex flex-col gap-6">
               <Badge label={`Industry · ${data.industryName}`} variant="cyan" />
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl leading-[1.04]">
-                {data.title}
+                {/* Keep "for" with the industry name instead of alone on a line. */}
+                {data.title.replace(' for ', ' for\u00a0')}
               </h1>
               <p className="font-body text-white/80 text-lg max-w-2xl leading-relaxed">
                 {data.metaDescription}
@@ -196,22 +223,15 @@ export default function IndustryPage({ params }: { params: Params }) {
                   data-cta-type="primary"
                   className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90"
                 >
-                  Get a Demo <ArrowRight size={16} />
+                  Book a 30-min call <ArrowRight size={16} aria-hidden />
                 </Link>
-                <Link
-                  href={`/case-studies/${data.caseStudySlug}`}
-                  data-cta-location="industry-hero"
-                  data-cta-type="secondary"
-                  className="inline-flex items-center justify-center border border-brand-cyan text-brand-cyan font-medium px-6 py-3 rounded-sm hover:bg-brand-cyan/10"
-                >
-                  Read the case study
-                </Link>
+                <TestRonCTA ctaLocation="industry-hero" variant="secondary" />
               </div>
             </div>
             <aside className="lg:col-span-5">
               <div className="border border-brand-cyan/30 bg-black p-8">
                 <span className="text-xs uppercase tracking-widest text-white/55 font-mono">
-                  ▸ result snapshot
+                  ▸ industry snapshot
                 </span>
                 <p className="font-heading text-6xl md:text-7xl text-brand-cyan mt-3 leading-none">
                   {data.heroStat}
@@ -225,17 +245,28 @@ export default function IndustryPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      {data.intro ? (
+      {data.intro || MDX ? (
         <section className="bg-brand-dark border-t border-brand-purple/15">
-          <div className="max-w-content mx-auto px-6 py-20">
+          <div className="max-w-content mx-auto px-6 md:px-10 py-24 md:py-32">
             <div className="max-w-3xl">
               <SectionHeader
-                eyebrow="The state of the line"
-                title={`How ${data.industryName.toLowerCase()} actually answer their phones today`}
+                title={
+                  data.intro
+                    ? `How ${data.industryName.toLowerCase()} actually answer their phones today`
+                    : `What an AI receptionist does for ${data.industryName} teams`
+                }
               />
-              <p className="mt-6 font-body text-white/80 text-base lg:text-lg leading-relaxed">
-                {data.intro}
-              </p>
+              {data.intro ? (
+                <div className="mt-8 flex flex-col gap-5 font-body text-white/80 text-base lg:text-lg leading-relaxed max-w-[65ch]">
+                  {splitParagraphs(data.intro).map((para) => (
+                    <p key={para.slice(0, 32)}>{para}</p>
+                  ))}
+                </div>
+              ) : MDX ? (
+                <div className="prose-implenix mt-8 max-w-[65ch]">
+                  <MDX components={mdxComponents} />
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
@@ -302,24 +333,19 @@ export default function IndustryPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="bg-brand-dark border-t border-brand-purple/15">
-        <div className="max-w-content mx-auto px-6 py-24 grid lg:grid-cols-2 gap-6 items-stretch">
-          <CaseStudyCard
-            industry={data.industryName}
-            resultHeadline={`${data.industryName}: ${data.heroStat} ${data.heroStatLabel}`}
-            summary="Read the full case study to see the deployment timeline, integrations, and verified results."
-            href={`/case-studies/${data.caseStudySlug}`}
-          />
-          <blockquote className="bg-black border border-brand-purple/25 p-6 flex flex-col gap-4">
-            <p className="font-body italic text-white/85 leading-relaxed">
-              “{data.testimonialQuote}”
-            </p>
-            <footer className="mt-auto text-sm font-body text-white/55">
-{data.testimonialAuthor}
-            </footer>
-          </blockquote>
-        </div>
-      </section>
+      {study ? (
+        <section className="bg-brand-dark border-t border-brand-purple/15">
+          <div className="max-w-content mx-auto px-6 md:px-10 py-24 md:py-32 grid lg:grid-cols-2 gap-6 md:gap-8 items-stretch">
+            <CaseStudyCard
+              industry={study.industry}
+              resultHeadline={study.resultHeadline}
+              summary={study.summary}
+              href={study.url}
+            />
+            {testimonial ? <TestimonialCard {...testimonial} /> : null}
+          </div>
+        </section>
+      ) : null}
 
       <section className="bg-black border-t border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 py-24">
@@ -353,13 +379,7 @@ export default function IndustryPage({ params }: { params: Params }) {
             height={620}
           />
         </div>
-        {MDX ? (
-          <div className="max-w-content mx-auto px-6 pb-16">
-            <div className="prose-implenix max-w-3xl">
-              <MDX components={mdxComponents} />
-            </div>
-          </div>
-        ) : null}
+
         {(() => {
           const blogLinks = getBlogLinksForIndustry(params.slug)
             .map((bl) => {

@@ -437,7 +437,7 @@ export default function AIReceptionistForSmallBusinessPage() {
             topic="Keep reading"
             type="resource"
             links={[
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               { href: '/ai-receptionist-vs-voicemail', label: 'AI Receptionist vs Voicemail' },
               { href: '/pricing', label: 'AI Receptionist pricing' },
             ]}

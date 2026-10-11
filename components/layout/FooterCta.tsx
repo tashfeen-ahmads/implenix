@@ -6,13 +6,39 @@ import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { TestRonCTA } from '@/components/ron/TestRonCTA';
 
-// Pages that are themselves the audit / booking / Ron destination would
-// otherwise end with a band pointing back at themselves.
-const HIDDEN_ON = new Set(['/audit', '/contact', '/try-it']);
+// Hidden where it would repeat the page: the audit / booking / Ron
+// destinations themselves, and pages that already close with their own
+// audit band (same headline, same two buttons).
+const HIDDEN_ON = new Set([
+  '/audit',
+  '/contact',
+  '/try-it',
+  '/24-7-ai-receptionist',
+  '/ai-phone-answering-service',
+  '/ai-receptionist-cost-comparison',
+  '/ai-receptionist-for-agencies',
+  '/ai-receptionist-for-multi-location-businesses',
+  '/ai-receptionist-for-small-business',
+  '/ai-receptionist-for-solopreneurs',
+  '/ai-receptionist-for-startups',
+  '/ai-receptionist-vs-human-receptionist',
+  '/benefits-of-ai-receptionist',
+  '/glossary',
+  '/how-does-an-ai-receptionist-work',
+  '/industries',
+  '/preview/dashboard',
+  '/virtual-ai-receptionist',
+  '/what-is-an-ai-receptionist',
+]);
+
+const hasOwnClosingCta = (path: string) =>
+  HIDDEN_ON.has(path) ||
+  path.startsWith('/ai-receptionist-vs-') ||
+  path.endsWith('-alternative');
 
 export function FooterCta() {
   const pathname = usePathname();
-  if (pathname && HIDDEN_ON.has(pathname)) return null;
+  if (pathname && hasOwnClosingCta(pathname)) return null;
   return (
       <section className="bg-brand-dark border-t border-brand-purple/20">
         <div className="max-w-content mx-auto px-6 md:px-10 py-24 md:py-28 grid lg:grid-cols-12 gap-8 items-center">

@@ -478,7 +478,7 @@ export default function AIPhoneAnsweringServicePage() {
             topic="Keep reading"
             type="resource"
             links={[
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               {
                 href: '/ai-receptionist-vs-answering-service',
                 label: 'AI Receptionist vs Answering Service',

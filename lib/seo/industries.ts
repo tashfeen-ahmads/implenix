@@ -146,7 +146,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     ],
     intro:
       "Electricians lose money to two things they cannot control with their hands full: power-out calls at 2 AM and estimate calls during the workday. Both share the same problem, the phone rings while everyone capable of answering is on a roof, in a panel, or driving between sites. Voicemail is an instant lost job for a panel replacement, a generator install, or an emergency outage. Implenix is the AI receptionist for electricians: it picks up inside one ring, triages residential vs commercial, sorts emergencies from estimate requests, and books the right tech to the right window, all written back to your dispatch software before the next call comes in. The agent runs the intake script your team would run if they had time: address, age of panel, scope of work, urgency, accepted payment. For storm-driven outage spikes, it scales without overtime. For routine bid calls, it captures specs in detail your tech can actually act on. And for the calls that should reach a human, a long-time commercial client, a complex bid over a threshold, or a frustrated caller, it transfers live within seconds. Electricians who deploy Implenix typically see emergency-call capture climb from the low 40s to above 90 percent within the first month, and crews report fewer on-site surprises because intake quality is consistent across every call.",
-    heroStat: '+92%',
+    heroStat: '92%',
     heroStatLabel: 'after-hours emergency capture rate',
     avgWeeklyCalls: 165,
     avgClientValue: 850,
@@ -185,7 +185,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
       },
     ],
     stats: [
-      { number: '+92%', label: 'after-hours capture rate' },
+      { number: '92%', label: 'after-hours capture rate' },
       { number: '<45s', label: 'average pickup time' },
       { number: '+27%', label: 'estimate close rate' },
     ],

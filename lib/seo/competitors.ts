@@ -134,7 +134,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     ],
     sampleCall: [
       { ts: '11:02', speaker: 'system', text: 'Peak hour · 800 calls/month account · 6 concurrent inbound right now' },
-      { ts: '11:02', speaker: 'agent', text: 'Thanks for calling Riverstone Law, this is Morgan. How can I help today?' },
+      { ts: '11:02', speaker: 'agent', text: 'Thanks for calling Riverstone Law, this is Ron. How can I help today?' },
       { ts: '11:02', speaker: 'caller', text: 'I want to schedule a consultation about an estate planning matter.' },
       { ts: '11:02', speaker: 'agent', text: "Of course. Quick three questions to route you correctly: are you the executor or the estate owner, is there a deadline driving this, and which county?" },
       { ts: '11:02', speaker: 'caller', text: 'Estate owner, no deadline, Travis County.' },
@@ -235,7 +235,7 @@ export const COMPETITOR_PROFILES: CompetitorProfile[] = [
     ],
     sampleCall: [
       { ts: '13:21', speaker: 'system', text: 'Inbound · Multi-location dental practice · Insurance pre-screen tuned in onboarding' },
-      { ts: '13:21', speaker: 'agent', text: 'Thanks for calling Brookside Dental, this is Skyler. Are you a current patient or new?' },
+      { ts: '13:21', speaker: 'agent', text: 'Thanks for calling Brookside Dental, this is Ron. Are you a current patient or new?' },
       { ts: '13:21', speaker: 'caller', text: 'New, I just moved here.' },
       { ts: '13:21', speaker: 'agent', text: "Welcome. Two quick questions: do you have dental insurance, and if so which carrier? And is there a specific concern or is this a routine cleaning?" },
       { ts: '13:21', speaker: 'caller', text: 'Delta Dental PPO, just routine cleaning and exam.' },

@@ -44,6 +44,26 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   });
 }
 
+// Lowercase for mid-sentence use, but keep acronyms ("IVR system").
+function lowerName(name: string): string {
+  return name
+    .split(' ')
+    .map((w) => (/^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase()))
+    .join(' ');
+}
+
+// "an IVR", "a voicemail box"; acronyms read by letter name.
+function withArticle(noun: string): string {
+  const first = noun.trim();
+  // Mass nouns read better bare: "the honest case for voicemail".
+  if (/^voicemail$/i.test(first)) return first;
+  const acronym = /^[A-Z]{2,}/.test(first);
+  const vowelSound = acronym
+    ? /^[AEFHILMNORSX]/.test(first)
+    : /^[aeiou]/i.test(first);
+  return `${vowelSound ? 'an' : 'a'} ${first}`;
+}
+
 export default function ComparisonPage({ params }: { params: Params }) {
   const profile = getComparisonProfile(params.slug);
   if (!profile) notFound();
@@ -147,7 +167,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
         <div className="max-w-content mx-auto px-6 py-24">
           <SectionHeader
             eyebrow="Hear it"
-            title={`Same call, AI vs ${profile.alternativeName.toLowerCase()}`}
+            title={`Same call, AI vs ${lowerName(profile.alternativeName)}`}
             description={`A real example of where the difference shows up. The transcript below is illustrative, the underlying flow ships in every Implenix deployment.`}
             badgeVariant="purple"
           />
@@ -167,19 +187,8 @@ export default function ComparisonPage({ params }: { params: Params }) {
                 <p className="mt-3 font-body text-white/85 text-sm leading-relaxed">
                   The AI takes the call live, books the appointment, and writes
                   it back to your CRM in under two minutes. The{' '}
-                  {profile.alternativeShort} flow takes longer, costs more, or
+                  {profile.alternativeShort} flow is slower, needs a person, or
                   loses the call entirely.
-                </p>
-              </div>
-              <div className="border border-brand-cyan/25 bg-black p-6">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple">
-                  ▸ Punchline
-                </span>
-                <p className="mt-3 font-heading text-3xl text-white leading-tight">
-                  {profile.punchlineStat}
-                </p>
-                <p className="mt-2 font-body text-white/70 text-sm">
-                  {profile.punchlineLabel}
                 </p>
               </div>
             </aside>
@@ -214,8 +223,8 @@ export default function ComparisonPage({ params }: { params: Params }) {
       <section className="bg-brand-dark border-t border-brand-purple/15">
         <div className="max-w-content mx-auto px-6 py-24">
           <SectionHeader
-            eyebrow={`What ${profile.alternativeName.toLowerCase()} does well`}
-            title={`The honest case for a ${profile.alternativeShort}`}
+            eyebrow={`What ${lowerName(profile.alternativeName)} does well`}
+            title={`The honest case for ${withArticle(profile.alternativeShort)}`}
             description={`Not every business needs an AI receptionist. Here is where a ${profile.alternativeShort} is the right answer, and where it falls short.`}
           />
           <div className="mt-12 grid md:grid-cols-2 gap-5">
@@ -325,7 +334,7 @@ export default function ComparisonPage({ params }: { params: Params }) {
             </h2>
             <p className="mt-4 font-body text-white/75 max-w-xl">
               Run the free audit. Then decide between AI receptionist and{' '}
-              {profile.alternativeName.toLowerCase()} with real numbers.
+              {lowerName(profile.alternativeName)} with real numbers.
             </p>
           </div>
           <div className="lg:col-span-5 flex flex-col sm:flex-row lg:justify-end gap-3">

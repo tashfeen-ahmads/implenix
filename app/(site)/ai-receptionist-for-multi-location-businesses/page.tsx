@@ -314,7 +314,7 @@ export default function AIReceptionistForMultiLocationPage() {
             topic="Keep reading"
             type="resource"
             links={[
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               {
                 href: '/ai-receptionist-for-small-business',
                 label: 'AI Receptionist for Small Business',

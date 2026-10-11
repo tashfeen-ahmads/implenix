@@ -302,7 +302,7 @@ export default function IndustriesIndexPage() {
             topic="Keep reading"
             type="resource"
             links={[
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               { href: '/pricing', label: 'AI Receptionist pricing' },
               {
                 href: '/ai-receptionist-vs-human-receptionist',

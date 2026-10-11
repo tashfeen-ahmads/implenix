@@ -205,7 +205,7 @@ every call, every hour.
                 title="overnight-call.log"
                 lines={[
                   { ts: '02:14', speaker: 'system', text: 'Inbound · Tuesday 2:14am · After-hours · Answered in 0 rings' },
-                  { ts: '02:14', speaker: 'agent', text: "Northside HVAC, this is Avery. Are you having a heating or cooling problem right now?" },
+                  { ts: '02:14', speaker: 'agent', text: "Northside HVAC, this is Ron. Are you having a heating or cooling problem right now?" },
                   { ts: '02:14', speaker: 'caller', text: "Furnace stopped, kids' bedroom is freezing." },
                   { ts: '02:14', speaker: 'agent', text: "I'm sorry, that's exactly what we cover for after-hours emergency. I'll dispatch our on-call tech. Address?" },
                   { ts: '02:14', speaker: 'caller', text: '4412 Maple, Northside.' },
@@ -281,7 +281,7 @@ every call, every hour.
             <DividedStats
               stats={[
                 { number: '30-50%', label: 'of bookings happen outside business hours' },
-                { number: '+92%', label: 'after-hours emergency capture rate (HVAC / plumbing)' },
+                { number: '92%', label: 'after-hours emergency capture rate (HVAC / plumbing)' },
                 { number: '$0', label: 'after-hours premium with Implenix' },
               ]}
             />
@@ -344,7 +344,7 @@ every call, every hour.
             topic="Keep reading"
             type="resource"
             links={[
-              { href: '/', label: 'AI Receptionist, main pillar' },
+              { href: '/', label: 'How Implenix answers your calls' },
               {
                 href: '/ai-receptionist-vs-answering-service',
                 label: 'AI Receptionist vs Answering Service',
