@@ -9,7 +9,9 @@ import {
   type Booking,
   type Client,
   type Contact,
+  type WebLead,
 } from '@/lib/db/types';
+import { WebLeadsCard } from '@/components/admin/WebLeadsCard';
 import { COLUMNS, PHASES } from '@/lib/pipeline/stages';
 import { countContactsByStage } from '@/components/admin/pipeline/data';
 import { Card, EmptyState, PageHeader, Pill, Stat, formatDateTime, activityLabel } from '@/components/admin/ui';
@@ -26,7 +28,7 @@ export default async function OverviewPage() {
   const weekAgo = new Date(now.getTime() - 7 * 86_400_000).toISOString();
   const weekAhead = new Date(now.getTime() + 7 * 86_400_000).toISOString();
 
-  const [clients, upcoming, activity, sent7, replies7, drafts, contactCounts, revisits, waiting] = await Promise.all([
+  const [clients, upcoming, activity, sent7, replies7, drafts, contactCounts, revisits, waiting, webLeads] = await Promise.all([
     db.from('clients').select('id, first_name, last_name, company, stage, created_at, next_step, next_step_at'),
     db
       .from('bookings')
@@ -64,6 +66,7 @@ export default async function OverviewPage() {
           .limit(6),
       ),
     ).then((rs) => ({ data: rs.flatMap((r) => r.data ?? []) })),
+    db.from('web_leads').select('*').in('status', ['new', 'contacted']).order('created_at', { ascending: false }).limit(10),
   ]);
 
   type ClientRow = Pick<Client, 'id' | 'first_name' | 'last_name' | 'company' | 'stage' | 'created_at' | 'next_step' | 'next_step_at'>;
@@ -210,7 +213,11 @@ export default async function OverviewPage() {
           )}
         </Card>
 
-        <Card title="Recent activity" className="xl:col-span-2">
+        <div className="xl:col-span-2">
+          <WebLeadsCard leads={(webLeads.data ?? []) as WebLead[]} />
+        </div>
+
+        <Card title="Recent activity" className="xl:col-span-3">
           {(activity.data ?? []).length === 0 ? (
             <EmptyState title="Nothing yet" body="Bookings, stage changes and notes appear here." />
           ) : (

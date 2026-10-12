@@ -215,3 +215,38 @@ ${d.summary ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#3
     .join('\n');
   return { subject, html, text };
 }
+
+// Team alert for a lead from a website form (e.g. the missed-call audit).
+export function webLeadEmail(d: {
+  source: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  details: [string, string][];
+  dashboardUrl: string;
+}) {
+  const who = d.name || d.company || d.phone || d.email || 'Someone';
+  const subject = `New website lead (${d.source}): ${who}`.replace(/[\r\n\t]+/g, ' ').slice(0, 200);
+  const rows = [
+    ['Name', d.name],
+    ['Company', d.company],
+    ['Phone', d.phone],
+    ['Email', d.email],
+    ...d.details,
+  ].filter((r): r is [string, string] => Boolean(r[1]));
+  const html = shell(
+    subject,
+    `<h1 style="margin:0 0 8px;font-size:20px;line-height:1.3">New lead from the website</h1>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#3d3a4f">Source: <strong>${esc(d.source)}</strong>. They left contact details, so call or email them while it's fresh.</p>
+<table style="border-collapse:collapse;margin:0 0 20px;font-size:14px">${rows
+      .map(
+        ([k, v]) =>
+          `<tr><td style="padding:4px 16px 4px 0;color:#6b6880;vertical-align:top">${esc(k)}</td><td style="padding:4px 0;color:#14121f">${esc(v)}</td></tr>`,
+      )
+      .join('')}</table>
+<p style="margin:0">${button(d.dashboardUrl, 'Open in the dashboard')}</p>`,
+  );
+  const text = [`New lead from the website (${d.source}).`, '', ...rows.map(([k, v]) => `${k}: ${v}`), '', d.dashboardUrl].join('\n');
+  return { subject, html, text };
+}

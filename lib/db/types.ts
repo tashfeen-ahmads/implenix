@@ -262,3 +262,19 @@ export type ServiceValue = (typeof SERVICES)[number]['value'];
 export function serviceLabel(value: string): string {
   return SERVICES.find((s) => s.value === value)?.label ?? value;
 }
+
+export type WebLead = {
+  id: string;
+  source: string;
+  page: string | null;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  company: string | null;
+  details: Record<string, string | number | boolean>;
+  status: 'new' | 'contacted' | 'converted' | 'dismissed';
+  client_id: string | null;
+  handled_by: string | null;
+  created_at: string;
+  updated_at: string;
+};

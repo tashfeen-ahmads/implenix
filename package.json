@@ -9,7 +9,8 @@
     "lint": "next lint",
     "postbuild": "next-sitemap && node scripts/indexnow-ping.mjs",
     "audit:meta": "node scripts/audit-meta.mjs",
-    "crm:test-receiver": "node scripts/crm-test-receiver.mjs"
+    "crm:test-receiver": "node scripts/crm-test-receiver.mjs",
+    "test:outreach": "bash scripts/e2e/run.sh"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "3.1149.0",
@@ -45,6 +46,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }

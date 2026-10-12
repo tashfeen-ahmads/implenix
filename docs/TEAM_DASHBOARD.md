@@ -24,6 +24,14 @@ What it does:
     Phases and columns collapse, and there's a list view. Outreach
     columns move on their own. Deal value, a weighted forecast,
     next steps and lost reasons are tracked. See `docs/PIPELINE.md`.
+  - **Website leads** (on the overview): people who leave their phone
+    number in the missed-call audit tool on the site.
+    - Each lead is saved here and emailed to the team
+      (`OUTREACH_ALERT_EMAILS`, falling back to `BOOKING_TEAM_EMAILS`), even
+      when no CRM webhook is set.
+    - Leads are still forwarded to `CRM_WEBHOOK_URL` when it is set.
+    - Actions: mark as called, dismiss, or "Add to pipeline", which creates
+      a New lead client.
   - **Funnel:** where leads drop off, by campaign, step, A/B variant,
     list, industry and week.
   - **Client page:** the onboarding form as submitted, contact details,
@@ -42,7 +50,8 @@ What it does:
 2. Run the migrations in order: open SQL Editor and paste in each
    file in `supabase/migrations/` (`20261012000000_team_dashboard.sql`,
    `20261013000000_lead_finder.sql`, `20261014000000_call_reminders.sql`,
-   then `20261015000000_pipeline_funnel.sql`), or run `supabase db push`
+   `20261015000000_pipeline_funnel.sql`, then `20261016000000_web_leads.sql`),
+   or run `supabase db push`
    if you use the Supabase CLI.
 3. Authentication > Providers: keep Email on. Turn off "Allow new users
    to sign up", so only people you invite can get in.

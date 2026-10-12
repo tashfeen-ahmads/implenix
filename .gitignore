@@ -39,3 +39,8 @@ next-env.d.ts
 /public/sitemap.xml
 /public/sitemap-*.xml
 /public/robots.txt.generated
+
+# e2e test scratch output
+scripts/e2e/*.log
+scripts/e2e/calls.json
+scripts/e2e/agent_reply.json
