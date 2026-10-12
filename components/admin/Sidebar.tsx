@@ -11,6 +11,7 @@ import {
   LogOut,
   Menu,
   Megaphone,
+  MapPinned,
   Users,
   X,
 } from 'lucide-react';
@@ -21,6 +22,7 @@ const NAV = [
   { href: '/admin/pipeline', label: 'Pipeline', Icon: KanbanSquare },
   { href: '/admin/calendar', label: 'Calendar', Icon: CalendarDays },
   { heading: 'Outreach' },
+  { href: '/admin/leads', label: 'Lead finder', Icon: MapPinned },
   { href: '/admin/outreach/contacts', label: 'Contacts', Icon: Users },
   { href: '/admin/outreach/campaigns', label: 'Campaigns', Icon: Megaphone },
   { href: '/admin/outreach/inbox', label: 'Inbox', Icon: Inbox },

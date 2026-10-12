@@ -28,15 +28,18 @@ What it does:
     and a full activity timeline.
   - **Calendar:** a month view plus an agenda of upcoming calls with
     join links.
+  - **Lead finder:** Google Maps business search with website emails.
+    See `docs/LEAD_FINDER.md`.
   - **Outreach:** contacts, campaigns and inbox. See
     `docs/OUTREACH.md`.
 
 ## 1. Supabase (database + team logins)
 
 1. Create a project at supabase.com. The free tier is fine to start.
-2. Run the migration: open SQL Editor and paste in
-   `supabase/migrations/20261012000000_team_dashboard.sql`, or run
-   `supabase db push` if you use the Supabase CLI.
+2. Run the migrations in order: open SQL Editor and paste in each
+   file in `supabase/migrations/` (`20261012000000_team_dashboard.sql`,
+   then `20261013000000_lead_finder.sql`), or run `supabase db push`
+   if you use the Supabase CLI.
 3. Authentication > Providers: keep Email on. Turn off "Allow new users
    to sign up", so only people you invite can get in.
 4. Authentication > URL Configuration:
