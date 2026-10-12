@@ -44,3 +44,6 @@ next-env.d.ts
 scripts/e2e/*.log
 scripts/e2e/calls.json
 scripts/e2e/agent_reply.json
+
+# Local screenshots from dashboard checks
+shots/
