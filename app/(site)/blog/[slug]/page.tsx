@@ -15,6 +15,7 @@ import { SchemaOrg } from '@/components/seo/SchemaOrg';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import {
   blogPostingSchema,
+  faqSchema,
   howToSchema,
   speakableSchema,
 } from '@/lib/schema';
@@ -71,6 +72,7 @@ export default function BlogPostPage({ params }: { params: Params }) {
     .slice(0, 2)
     .toUpperCase();
 
+  const faqs = (doc.faqs ?? []) as { question: string; answer: string }[];
   const howToSteps = doc.howToSteps as
     | { name: string; text: string }[]
     | undefined;
@@ -84,10 +86,14 @@ export default function BlogPostPage({ params }: { params: Params }) {
             description: doc.metaDescription,
             url: doc.url,
             datePublished: doc.publishedAt,
+            dateModified: doc.updatedAt,
             author: doc.author,
             authorRole: doc.authorRole,
             image: doc.heroImage,
           }),
+          // FAQ rich results are limited to gov and health sites, but the
+          // markup still helps AI answer engines read the Q&A.
+          ...(faqs.length > 0 ? [faqSchema(faqs)] : []),
           ...(howToSteps && howToSteps.length > 0
             ? [
                 howToSchema({
@@ -179,6 +185,20 @@ export default function BlogPostPage({ params }: { params: Params }) {
                 year: 'numeric',
               })}
             </time>
+            {doc.updatedAt ? (
+              <>
+                <span>·</span>
+                <time dateTime={new Date(doc.updatedAt).toISOString()}>
+                  Updated{' '}
+                  {new Date(doc.updatedAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                  })}
+                </time>
+              </>
+            ) : null}
             <span>·</span>
             <span>{doc.readTime}</span>
           </div>

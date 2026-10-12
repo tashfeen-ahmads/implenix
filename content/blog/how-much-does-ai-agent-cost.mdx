@@ -3,6 +3,7 @@ title: "How much does an AI agent cost? Real pricing from live deployments"
 description: "Real pricing for AI voice agents by tier, use case, and industry, the hidden costs, the price floor, and what each tier actually delivers."
 category: "Decision Frameworks"
 publishedAt: "2026-05-20"
+updatedAt: "2026-10-12"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
@@ -12,8 +13,8 @@ heroImage: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=1600&
 heroImageAlt: "Pricing tags and financial planning representing AI agent cost analysis"
 ---
 
-<Answer q="How much does an AI voice agent cost?">
-An AI voice agent costs between $50 per month for a DIY templated bot and $2,500+ per month for a fully-custom deployment. The three practical tiers are: DIY/templated ($50 to $200/mo, no setup), platform + agency ($500 to $1,500/mo plus $2,000 to $8,000 setup), and fully custom ($1,000 to $2,500/mo plus $10,000 to $50,000 setup). Anyone quoting an "unlimited" bundle below $400/mo is selling a template, real deployments have a floor around $700 to $900 all-in.
+<Answer q="How much does an AI agent cost?">
+Across the market, an AI voice agent runs from about $50 per month for a DIY templated bot to $2,500+ per month for a fully custom deployment, plus a one-time build fee at the higher tiers. The real drivers are integrations, call volume, compliance needs, and who does the tuning. All-in voice minutes cost roughly $0.10-0.19.
 </Answer>
 
 The question I get on every discovery call is some version of
@@ -27,6 +28,32 @@ Implenix price list. Implenix pricing is custom: on a short call,
 a lead specialist reviews your call flow and recommends the best
 solution and price for your needs. You can
 [book that call here](/contact).
+
+## AI agent cost at a glance
+
+This post is about voice agents, the ones that answer and make
+phone calls, because that is what I price every week. The summary:
+
+<ComparisonTable
+  columns={["Tier 1: DIY templated", "Tier 2: Platform + agency", "Tier 3: Fully custom"]}
+  rows={[
+    { label: "One-time build fee", cells: ["$0-500", "$2,000-8,000", "$10,000-50,000+"] },
+    { label: "Monthly platform + minutes", cells: ["$50-200", "$500-1,500", "$1,000-2,500+"] },
+    { label: "Ongoing tuning", cells: ["You do it", "$400-900/mo, optional", "$800-2,000/mo, included"] },
+    { label: "Typical call volume", cells: ["Under 200/mo", "200-1,000/mo", "1,000+/mo"] },
+    { label: "Integrations", cells: ["A short list", "Your CRM and calendar", "Anything, including custom"] }
+  ]}
+  highlightColumn={1}
+/>
+
+If you searched this question about a different kind of AI agent,
+the cost logic is similar but the numbers are not. Chat and
+workflow agents on hosted tools are usually a subscription. Custom
+agents built by a development shop for internal operations are
+priced as software projects, and the build plus the ongoing
+monitoring usually dwarfs the model usage bill. Voice adds
+telephony and a real-time latency requirement on top, which is
+why the per-minute section below exists.
 
 ## The three cost layers in any voice AI deployment
 
@@ -174,8 +201,8 @@ loss.
 
 For an HVAC shop doing 800 inbound calls at 30 percent missed,
 average booked-job value $340, 55 percent close rate on answered:
-current loss is $44,880 per month. A $1,400 per month tier 2
-deployment that captures 70 percent of previously-missed calls
+current loss is $44,880 per month. A tier 2 deployment at, say,
+$1,400 per month (a market example, not a quote) that captures 70 percent of previously-missed calls
 returns $31,416 per month. Payback in under two weeks.
 
 For a solo dog groomer doing 80 calls at 20 percent missed,
@@ -230,9 +257,25 @@ $1,500, they are cutting corners on discovery or integration.
 
 **How fast does pricing drop over time?**
 Per-minute costs have dropped roughly 60 percent in the last
-24 months. Expect another 40 to 50 percent drop over the next
-24 months as voice models continue to compress. Platform and
-build fees will not drop as fast.
+24 months in the deployments I price, and I expect them to keep
+falling as voice models get cheaper to run. Platform and build
+fees will not drop as fast, because they pay for people doing
+discovery, integration, and QA.
+
+**Is an AI agent cheaper than a human receptionist?**
+For call coverage, almost always, because the agent covers nights,
+weekends, and call spikes without overtime. The fair comparison
+includes what each option books, not just what it costs. I break
+that down on the
+[AI receptionist vs human receptionist](/ai-receptionist-vs-human-receptionist)
+page and in the
+[AI receptionist cost comparison](/ai-receptionist-cost-comparison).
+
+**What does Implenix cost?**
+Implenix pricing is custom, set around your call flow, volume, and
+integrations. There is no sticker price. A lead specialist reviews
+your setup on a short call and recommends the right solution and
+price. Every deployment goes live in 72 hours from kickoff.
 
 **Should I buy annually to save on price?**
 Only if you have done a 30-day pilot first. Do not commit to a
@@ -249,6 +292,14 @@ Get an itemized quote from two vendors at the tier that matches
 your operation, do the payback math using your actual missed-call
 volume, and pick the one whose reference calls actually sound
 like your business. That is the whole selection process.
+
+To get your own numbers, start with the
+[missed-call cost formula](/blog/how-to-calculate-your-missed-call-cost)
+and the [real ROI numbers](/blog/ai-receptionist-roi-real-numbers)
+I see after go-live. To pick the right tier, use the
+[best AI voice agent framework](/blog/best-ai-voice-agent-small-business).
+When you want a quote for your own call flow,
+[book a call with a lead specialist](/contact).
 
 <Pull>
 The right question is not "how cheap can I get this." The right

@@ -3,11 +3,12 @@ title: "AI agents for lawyers: intake, qualification, and the ethics line"
 description: "Field notes on AI voice agents in law firm intake, what they handle for PI, family, immigration, and small business practices, and what belongs only with an attorney."
 category: "Industry Guides"
 publishedAt: "2026-06-10"
+updatedAt: "2026-10-12"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
 metaTitle: "AI Agents for Lawyers: Intake + Ethics Guide | Implenix"
-metaDescription: "How AI voice agents handle law firm intake, qualification, conflict flags, consultation booking, plus the ethics rules I never let them cross."
+metaDescription: "What AI agents do for lawyers: intake, conflict flags, and consultation booking, how they differ from research and drafting agents, and the ethics lines."
 heroImage: "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Law books and gavel representing legal practice intake"
 ---
@@ -26,6 +27,30 @@ this gap cleanly over the last two years. It has also created a
 new set of ethics considerations that I will not skip over. If
 you are a managing attorney evaluating this, read the ethics
 section before anything else.
+
+## The kinds of AI agents lawyers actually use
+
+"AI agents for lawyers" covers a few very different tools. Most of
+what ranks for the term is about legal work itself. This post is
+about the front door. It helps to see them side by side.
+
+<ComparisonTable
+  columns={["What it does", "Where the risk sits"]}
+  rows={[
+    { label: "Research agents", cells: ["Find and summarize case law and statutes", "Hallucinated citations; lawyer must verify"] },
+    { label: "Drafting and contract review", cells: ["Draft, redline, and flag clauses", "Accuracy and confidentiality of uploaded documents"] },
+    { label: "E-discovery agents", cells: ["Sort and tag large document sets", "Defensibility of the review process"] },
+    { label: "Billing and time capture", cells: ["Draft time entries and invoices", "Reasonable fees under Model Rule 1.5"] },
+    { label: "Intake and phone agents", cells: ["Answer new-matter calls, qualify, flag conflicts, book consults", "Prospective-client confidentiality and no legal advice"] }
+  ]}
+/>
+
+The American Bar Association frames agentic AI as something that
+augments lawyers under human oversight, not something that replaces
+them; its Law Practice Magazine piece
+[introducing agentic AI for lawyers](https://www.americanbar.org/groups/law_practice/resources/law-practice-magazine/2026/march-april-2026/introduction-to-agentic-ai-for-lawyers)
+is a good primer on the research and drafting side. Implenix builds
+only the last row: the intake agent that picks up the phone.
 
 ## The intake problem most firms describe
 
@@ -201,15 +226,22 @@ discovery call.
 
 ## Compliance considerations I would not skip
 
-1. **State bar disclosures.** Some state bars have issued opinions
-   on AI-assisted client intake. Read your jurisdiction's opinion
-   before deploying and mirror its language in the greeting.
+1. **State bar disclosures.** The ABA's
+   [Formal Opinion 512](https://www.americanbar.org/news/abanews/aba-news-archives/2024/07/aba-issues-first-ethics-guidance-ai-tools/)
+   (July 2024) applies existing duties of competence,
+   confidentiality, communication, supervision, and reasonable fees
+   to generative AI. Several state bars have published their own
+   guidance. None that I know of is a rulebook for automated voice
+   intake, so read your jurisdiction's opinions before deploying and
+   mirror their language in the greeting.
 2. **Recording consent.** Audible notification in the opening
    greeting. Two-party consent states require it; I default to on
    everywhere else.
 3. **Confidentiality.** Call recordings and transcripts must be
    treated as prospective-client confidential from the moment of
-   the call. Access-controlled storage is not optional.
+   the call, because duties to prospective clients under Model Rule
+   1.18 attach before any engagement. Access-controlled storage is
+   not optional.
 4. **Conflict of interest.** The conflict-check layer is not
    optional. Deploying without it in a firm with any real client
    base is a preventable ethics risk.
@@ -242,8 +274,10 @@ starts.
 **Is this a violation of the unauthorized practice of law?**
 Not when scoped correctly. The agent takes intake data and books
 consultations. It does not advise, does not opine on merits, and
-does not quote retainer amounts. Every state bar that has weighed
-in has accepted this scope with proper disclosure.
+does not quote retainer amounts. That is the same scope a trained
+human intake specialist works within. Bar guidance on AI is still
+evolving, so check your state's opinions and keep the disclosure in
+the greeting.
 
 **What about attorney-client privilege on the call recording?**
 The recording is treated as prospective-client confidential from
@@ -261,6 +295,21 @@ The agent has an escalation branch. If the caller starts crying,
 becomes hostile, or asks to speak to a human, the agent bridges
 to your intake supervisor or leaves a priority callback flag
 depending on time of day.
+
+**Are AI agents going to replace lawyers?**
+No. Research and drafting agents speed up parts of legal work, but
+the ABA and every bar opinion I have read put responsibility for
+the output on the lawyer. Intake agents replace the voicemail box
+and the after-hours gap, not the attorney.
+
+**How is an AI intake agent different from a legal answering service?**
+An answering service takes a message and someone calls back. An
+intake agent runs your practice-area questions, checks
+jurisdiction, flags conflicts, and books the consult on the
+attorney's calendar during the call. The broader trade-off is laid
+out on the
+[AI receptionist vs answering service](/ai-receptionist-vs-answering-service)
+page.
 
 **What if the caller wants to speak Spanish?**
 Voice models handle Spanish-English switching cleanly. If your
@@ -280,11 +329,20 @@ preferred language.
 
 ## Where to go from here
 
-Call the number in the header of this site and pose a
-hypothetical intake, a car accident, a divorce filing, an
-immigration question. Watch how the agent triages without
-crossing into advice territory. That interaction is the fastest
-sanity check for whether the scope fits your firm.
+[Talk to Ron](/try-it) and pose a hypothetical intake: a car
+accident, a divorce filing, an immigration question. Watch how the
+agent triages without crossing into advice territory. That
+interaction is the fastest sanity check for whether the scope fits
+your firm.
+
+If you want the ethics reasoning in more depth, read
+[ethical considerations for AI agents](/blog/ethical-considerations-ai-agents)
+and how I handle
+[sensitive and emotional callers](/blog/can-ai-handle-sensitive-conversations).
+The full product scope is on the
+[AI receptionist for law firms](/ai-receptionist-for-law-firms) page.
+When you want your intake flow scoped,
+[book a call with a lead specialist](/contact).
 
 <Pull>
 An AI intake agent for lawyers is not a lawyer. It is a very

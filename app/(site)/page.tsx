@@ -60,6 +60,21 @@ const HOME_FAQS = [
       'For routine inbound, booking, rescheduling, qualification, intake, recurring service, yes, at production quality that most callers cannot distinguish from a well-trained receptionist. For calls requiring real human judgment (crisis intake, angry customer resolution, complex negotiation, bereavement, medical emergencies) the AI detects the sensitivity and transfers to a human on your team within 30 seconds. The pattern that works: AI handles the 70-90% that is repeatable, humans handle the 10-30% that needs judgment.',
   },
   {
+    question: 'Is an AI receptionist worth it for a small business?',
+    answer:
+      'It is worth it when missed calls are costing you booked work: calls that ring out during jobs, after hours, or on weekends, where the caller dials the next business instead of leaving a voicemail. Multiply your missed calls by your average job value and close rate to see the monthly loss (the formula is in our missed-call cost guide on the blog). If you take very few calls and personally answer and close every one of them, an AI receptionist adds little and we will tell you so on the call.',
+  },
+  {
+    question: 'Can an AI receptionist transfer calls to my team?',
+    answer:
+      'Yes. Implenix transfers live calls to the right person based on rules you set: by caller type, urgency, time of day, or a direct request to speak with a human. Emergencies can go to an on-call phone, VIP or existing clients to a named staff member, and anything outside the script to your front desk. When nobody is free, the caller gets a booked callback instead of voicemail, and the transcript and intake notes are already in your CRM.',
+  },
+  {
+    question: 'What are the limitations of an AI receptionist?',
+    answer:
+      'An AI receptionist is built for the repeatable part of your phone line: answering, intake, booking, rescheduling, and routing. It should not give legal, medical, or financial advice, negotiate prices, or handle a genuinely upset customer on its own, so those calls are routed to a person. It also needs the right setup: if it does not learn your services, vocabulary, and transfer rules during discovery, it will sound generic. That is why every Implenix deployment starts by reviewing your recent calls.',
+  },
+  {
     question: 'Will my customers know it is AI?',
     answer:
       'Some will, some will not. In deployments we measure, roughly 20-30% of callers realize they are speaking to an AI at some point in the call. Rather than hiding it, Implenix identifies itself clearly on the greeting ("virtual assistant for [your business]"), hidden AI erodes trust when discovered, and clear disclosure improves caller acceptance. Voice quality in 2026 is natural enough that identification is inconsistent even with disclosure.',
@@ -83,7 +98,7 @@ export default function HomePage() {
         schema={[
           organizationSchema(),
           websiteSchema(),
-          softwareApplicationSchema({ ratingValue: 5, ratingCount: 6 }),
+          softwareApplicationSchema(),
           serviceSchema({
             name: 'AI Receptionist',
             description:

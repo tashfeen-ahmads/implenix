@@ -1,209 +1,268 @@
 ---
-title: "Does Google have an AI agent? A practical rundown"
-description: "What AI agents Google actually offers in 2026, Gemini, Gemini for Workspace, Vertex AI Agent Builder, Duplex, and where each fits for real business use."
+title: "Does Google have an AI agent? Yes, several. Here is the 2026 lineup"
+description: "What AI agents Google actually offers in 2026: the Gemini app and Gemini Agent, the new Gemini agent for work, Workspace, the Gemini Enterprise Agent Platform, contact-center AI, and the AI that calls local businesses."
 category: "AI Voice Agents"
 publishedAt: "2026-11-11"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
-metaTitle: "Does Google Have an AI Agent? Full Rundown | Implenix"
-metaDescription: "What Google's AI agent products actually do in 2026, Gemini, Workspace, Vertex AI Agent Builder, Duplex, and where each fits for real business use."
+metaTitle: "Does Google Have an AI Agent? 2026 Lineup | Implenix"
+metaDescription: "Yes. Google's AI agents in 2026: Gemini Agent, the Gemini agent for work, Workspace, its enterprise agent platform, and the Search AI that calls businesses."
 heroImage: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Google product ecosystem representing AI agent offerings"
 ---
 
 <Answer q="Does Google have an AI agent?">
-Yes, Google has multiple AI agent products in 2026: Gemini (their consumer-facing AI assistant that reasons across text, image, video, and audio), Gemini for Google Workspace (embedded in Gmail, Docs, Meet, Sheets), Vertex AI Agent Builder (their platform for developers to build custom agents), and Duplex (voice agent technology that has been rolled into other products). Each serves a different use case. For business phone deployments specifically, the AI receptionist / voice-agent-on-inbound category, Google does not offer a turnkey product; that space is served by specialized vendors on Google Cloud infrastructure or on other clouds.
+Yes, several. Consumers get Gemini Agent inside the Gemini app. Businesses get the Gemini agent for work announced in October 2026, Gemini in Workspace, and the Gemini Enterprise Agent Platform for building custom agents. Google Search also has an AI that phones local businesses for pricing. What Google does not sell is a turnkey AI receptionist for a small business phone line.
 </Answer>
 
 "Does Google have an AI agent" is a question I hear from
 operators trying to figure out whether they should look at
-Google's offerings before working with specialized vendors.
-The honest answer is that Google has several agent products, none of them are exactly the AI receptionist category that
-most small businesses are shopping for, but understanding
-what Google does offer helps orient the decision.
+Google before working with a specialized vendor. Google has more
+agent products than most people realize, and it renames them
+often enough that last year's answer is already out of date. This
+is the current lineup, what each one is for, and where each one
+fits a real business.
 
-## The current Google AI agent lineup
+## Google's AI agent lineup at a glance
 
-### Gemini (consumer)
+<ComparisonTable
+  columns={["Who it is for", "Answers your business phone?"]}
+  rows={[
+    { label: "Gemini app and Gemini Agent", cells: ["Individuals", false] },
+    { label: "Gemini agent for work", cells: ["Enterprise teams", false] },
+    { label: "Gemini in Workspace", cells: ["Teams on Gmail, Docs, Meet", false] },
+    { label: "Gemini Enterprise Agent Platform", cells: ["Developers building custom agents", "Only if you build it"] },
+    { label: "Customer Engagement Suite", cells: ["Large contact centers", "partial"] },
+    { label: "AI calling in Google Search", cells: ["Searchers, calling businesses", "It calls you"] }
+  ]}
+/>
 
-Google's primary consumer AI assistant, competing with ChatGPT
-and Claude. Available as a mobile app, web interface, and
-integrated into Google Search results.
+## Gemini app and Gemini Agent (consumer)
 
-Capabilities: multi-modal reasoning (text, images, video,
-audio), web browsing, integration with Google services
-(Calendar, Maps, YouTube). Can accomplish multi-step tasks
-within the conversation.
+Gemini is Google's consumer AI assistant, competing with ChatGPT
+and Claude. It reasons across text, images, audio, and video, and
+connects to Google services like Calendar, Maps, and Gmail.
 
-Use case: general-purpose AI assistant for individuals. Not
-built for business phone deployments.
+Gemini Agent is the mode that takes actions for you: browsing
+sites, filling in forms, and working through multi-step tasks.
+It absorbed Google's earlier browser-agent experiment, Project
+Mariner, which Google shut down in May 2026 and folded into
+Gemini Agent and AI Mode in Search. Deep Research, which reads
+and summarizes dozens of sources into a report, is another
+agent-style feature in the same app.
 
-### Gemini for Google Workspace
+Use case: personal and individual productivity. Not built to
+answer a business phone line.
 
-Gemini embedded across Google Workspace products.
+## The Gemini agent for work (announced October 2026)
 
-- **Gmail:** draft responses, summarize threads, extract
-  action items.
-- **Docs:** draft documents, summarize content, translate,
-  rewrite.
-- **Meet:** real-time transcription, meeting summaries, action
-  item extraction.
-- **Sheets:** natural language queries, formula generation,
-  data cleanup.
-- **Slides:** generate presentations from prompts, image
-  generation.
+At its Gemini at Work event on October 8, 2026, Google Cloud
+[announced the Gemini agent](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-at-work/),
+a single agent for enterprise work that answers questions, runs
+tasks, creates content, and writes code. Reported details include:
 
-Use case: workplace productivity for organizations already on
-Google Workspace. Substantial value for teams that use Google's
-suite heavily. Not a phone-answering solution.
+- Running long jobs persistently in the cloud, so work continues
+  after you close your laptop.
+- Connecting to business systems such as Salesforce, ServiceNow,
+  and Jira, plus any MCP server.
+- Routing each job to the model that fits it, including
+  non-Google models.
+- Governance controls such as agent identity, audit trails, and
+  spending caps.
 
-### Vertex AI Agent Builder
+At announcement, Google had not published general availability
+dates or pricing, and said industry-specific agents for areas
+like healthcare, legal, and retail would follow. It is an
+enterprise knowledge-work agent, not a phone agent.
 
-Google Cloud's platform for developers to build custom AI
-agents.
+If "connects to any MCP server" sounds like jargon, I explain MCP
+in plain English in
+[RAG vs LLM vs MCP AI agents](/blog/rag-llm-mcp-ai-agent-architecture).
 
-- Model access to Gemini and other models via API.
-- Agent frameworks and tooling (Agent Development Kit).
-- Tool integration through function calling.
-- Deployment infrastructure on Google Cloud.
-- Enterprise features (VPC, IAM, audit logging).
+## Gemini in Google Workspace
 
-Use case: enterprises and development teams building custom
-agent applications. Not a turnkey product for end operators.
+Gemini is built into Workspace apps:
 
-### Duplex and voice AI
+- **Gmail:** draft replies, summarize threads, pull out action
+  items.
+- **Docs:** draft, summarize, translate, rewrite.
+- **Meet:** notes, summaries, and action items from meetings.
+- **Sheets:** natural-language questions, formulas, cleanup.
+- **Slides:** generate drafts and images from prompts.
 
-Google Duplex was the original 2018 voice agent that made
-appointment-booking phone calls on behalf of users. Duplex's
-underlying technology has been integrated into other Google
-products (call screening on Pixel phones, Google Assistant
-features).
+Use case: productivity for organizations already on Workspace.
+Real value for teams that live in Google's suite. Not a
+phone-answering solution.
 
-Google does not sell Duplex as a business-facing AI
-receptionist product. The technology exists inside Google;
-the productized version for business phone use does not.
+## Gemini Enterprise Agent Platform (formerly Vertex AI)
 
-### Google Business Profile "Call History"
+This is Google Cloud's platform for developers who want to build
+their own agents. Google announced it at Cloud Next in April 2026
+as the successor to Vertex AI, pulling Vertex AI Agent Builder,
+the Agent Development Kit (ADK), Agent Engine (the managed
+runtime), and model access into one product. You will still see
+"Vertex AI Agent Builder" in older articles and docs.
 
-Google Business Profile offers call tracking and some AI-assisted call features (screening, message capture) for small
-businesses. Useful for basic call awareness, not for full
-call-handling automation.
+What you get:
+- Access to Gemini and many third-party models.
+- Code-first (ADK) and low-code ways to build agents.
+- Managed deployment, memory, and scaling.
+- Enterprise controls: identity, access management, audit logs.
 
-## Where Google fits in the AI agent landscape
+Use case: engineering teams building custom agent applications.
+It is a set of building blocks, not a finished product for an
+operator.
 
-For business operators evaluating AI agents, here is the
-practical breakdown of where Google's offerings fit:
+## Customer Engagement Suite (contact-center AI)
 
-### Fits Google well
+This is the closest Google gets to a phone agent. Google Cloud's
+Customer Engagement Suite bundles Conversational Agents (virtual
+agents for self-service on voice and chat), Agent Assist (real-time
+help for human reps), conversation analytics, and a cloud contact
+center. It integrates with contact-center platforms such as
+Genesys, NICE, Five9, Cisco, and Twilio.
 
-- **Workspace productivity augmentation.** If your team lives
-  in Google Workspace, Gemini for Workspace is a natural
-  addition and delivers measurable time savings.
-- **Custom agent development on Google Cloud infrastructure.**
-  Vertex AI Agent Builder is a serious enterprise platform
-  for building custom agent applications.
-- **General-purpose consumer AI assistance.** Gemini competes
-  with ChatGPT and Claude in this space.
+It is built for large contact centers with an IT team or a
+systems integrator. A local plumber or a two-location dental
+practice is not who this is designed for, and it will not show
+up configured for your intake questions, your scheduling software,
+and your transfer rules.
 
-### Does NOT fit Google
+## Google's AI already calls businesses: Duplex to AI calling in Search
 
-- **AI receptionist for a small business phone line.** Google
-  does not offer a turnkey product for this. Businesses in
-  this category use specialized vendors (Implenix, Retell-based platforms, Vapi-based platforms, or similar).
-- **Vertical-specific voice AI** (HVAC dispatch, dental
-  intake, legal intake). Google's platforms are horizontal;
-  vertical solutions require additional building.
-- **Turnkey compliance-scoped deployments.** HIPAA, TCPA, or
-  legal-industry compliant voice agents require specialized
-  scoping that Google's platforms do not deliver out of the
-  box.
+Google demoed Duplex at I/O in 2018: an assistant that phoned a
+hair salon and a restaurant to book on a user's behalf. It
+launched narrowly on Pixel phones and later faded into other
+features.
 
-## The technical relationship: Google's models power many
-non-Google agents
+The idea is back. Google Search now has AI that phones local
+businesses for you: search for something like a pet groomer, ask
+Google to check pricing, and its AI
+[calls nearby businesses](https://www.searchenginejournal.com/google-search-can-now-call-local-businesses-using-ai/551294/)
+to ask about prices and availability, then sends you a summary.
+Google has said businesses are chosen using its normal local
+rankings and that businesses can opt out.
 
-Even though Google does not sell an AI receptionist directly,
-Google's Gemini models are used under the hood by many voice
-AI vendors. Vendors compose Gemini (or other models, OpenAI's
-GPT, Anthropic's Claude, open-source models) with telephony,
-speech-to-text, text-to-speech, and orchestration layers to
-build the actual voice agent products.
+This is the part most operators miss. The most important Google
+AI agent for a local business may be the one calling your front
+desk, not one you buy. If that call rings out or hits a voicemail
+box, you are simply left out of the summary the customer reads.
+Answering every call, including the ones from a machine, is now
+part of local search. That is exactly the job of an
+[AI receptionist](/), and it is one reason
+[callers who hang up before reaching anyone](/blog/why-callers-hang-up-before-reaching-anyone)
+are getting more expensive.
 
-So the question "does Google have an AI agent" is not the same
-as "am I using Google technology in my AI agent." You may
-absolutely be using Google's models even when working with a
-non-Google vendor.
+## Where Google fits, and where it does not
 
-## What Google is likely to build next
+### Google fits well
 
-I do not have inside information, but the visible trajectory
-suggests:
+- **Workspace productivity.** If your team lives in Workspace,
+  Gemini there is a natural addition.
+- **Custom agents on Google Cloud.** The Gemini Enterprise Agent
+  Platform is a serious place to build if you have engineers.
+- **Enterprise contact centers.** The Customer Engagement Suite is
+  a real option at that scale.
+- **Personal assistance.** Gemini and Gemini Agent compete
+  directly with ChatGPT and Claude.
 
-- **Deeper agent capabilities in Workspace**, Gmail and
-  Calendar becoming more agent-like in their handling of
-  routine coordination.
-- **Continued expansion of Vertex AI Agent Builder** with
-  more pre-built agent components.
-- **Voice AI integration** into Google Workspace Meet and
-  Voice for internal call handling.
-- **Possible business-facing voice agent product** at some
-  point, though not yet.
+### Google does not fit
+
+- **An AI receptionist for a small business phone line.** There
+  is no turnkey Google product for this. Businesses here use
+  specialized vendors, Implenix among them.
+- **Vertical-specific voice AI** (HVAC dispatch, dental intake,
+  legal intake). Google's platforms are horizontal; the vertical
+  scripts, integrations, and transfer rules have to be built on
+  top. That is the work we do for
+  [HVAC companies](/ai-receptionist-for-hvac-companies),
+  [dental practices](/ai-receptionist-for-dentists), and
+  [law firms](/ai-receptionist-for-law-firms).
+- **Done-for-you compliance scoping.** HIPAA, call-recording
+  consent, and TCPA rules for outbound calls all need deployment
+  decisions that a horizontal platform will not make for you.
+
+## Google's models power many non-Google agents
+
+Even though Google does not sell an AI receptionist, Gemini models
+run under the hood of many voice AI products. Vendors combine a
+model (Gemini, GPT, Claude, or open-source) with telephony,
+speech-to-text, text-to-speech, and orchestration to build the
+actual phone agent. So "does Google have an AI agent" is a
+different question from "am I using Google technology." You may be
+using Google's models through a non-Google vendor.
+
+Google also launched the open Agent2Agent (A2A) protocol in 2025
+so agents from different vendors can work together, which I cover
+in [can AI agents talk to each other](/blog/multi-agent-systems-crypto-agi).
 
 ## How to evaluate Google's offerings for your business
 
-- **Are you already on Google Workspace?** If yes, Gemini for
-  Workspace is easy to adopt and delivers measurable value.
-- **Are you building a custom agent application?** Vertex AI
-  Agent Builder is a serious platform. So are AWS Bedrock
-  Agents and Azure AI. Evaluate all three.
-- **Do you need a phone-answering AI for your business?**
-  Google is not the answer here. Look at specialized voice AI
-  vendors.
+- **Already on Workspace?** Try Gemini in Workspace first; it is
+  the easiest win.
+- **Building a custom agent?** Compare the Gemini Enterprise Agent
+  Platform with AWS and Microsoft's equivalents before committing.
+- **Need your phone answered?** Google is not the answer today.
+  Look at specialized voice AI vendors, and use
+  [how to choose the best AI voice agent for a small business](/blog/best-ai-voice-agent-small-business)
+  as a checklist.
 
 ## Frequently asked questions
 
 **Is Gemini an AI agent?**
-Gemini is a large language model with some agent-like
-capabilities. When used as a chatbot, it is not an agent by
-strict definition. When integrated with tools that let it take
-actions, it becomes one.
+Gemini is a family of models and an assistant app. In plain chat
+it is an assistant. In Gemini Agent mode, or when developers give
+it tools, it acts as an agent: it plans steps and takes actions.
 
-**Can I use Gemini API to build my own voice agent?**
+**What is the name of Google's AI agent?**
+There is no single one. For consumers it is Gemini Agent in the
+Gemini app. For businesses it is the Gemini agent announced in
+October 2026, plus agents built on the Gemini Enterprise Agent
+Platform.
+
+**Does Google have a free AI agent?**
+The Gemini app has a free tier, and Google's AI calling in Search
+has been free to searchers with higher limits for paid
+subscribers. The more capable agent features sit in paid Google
+AI and Workspace plans.
+
+**Can I use Gemini to build my own voice agent?**
 Yes, technically. You would combine Gemini with a telephony
-provider (Twilio, Vonage), a speech-to-text service, a text-to-speech service, and orchestration logic. That is what many
-voice AI platforms do under the hood.
+provider, speech-to-text, text-to-speech, and orchestration logic.
+That is what many voice AI platforms do under the hood. The hard
+part is not the model; it is the call flow, integrations, and
+edge cases.
 
-**Does Google have a HIPAA-compliant AI agent?**
-Google Workspace can be configured for HIPAA compliance with a
-signed BAA. Vertex AI has HIPAA-eligible services. For a
-custom-built healthcare voice agent, HIPAA compliance is
-possible but requires careful architecture.
+**What happened to Vertex AI Agent Builder?**
+Google folded it into the Gemini Enterprise Agent Platform,
+announced in April 2026. The building blocks (ADK, Agent Engine)
+carried over.
+
+**Can I stop Google's AI from calling my business?**
+Google has said businesses can opt out of its AI calls. Before you
+do, consider that those calls come from people actively comparing
+prices. Answering them well is usually worth more than blocking
+them.
 
 **What is the difference between Gemini and Google Assistant?**
-Google Assistant was Google's earlier consumer voice assistant.
-Gemini has been positioned as its more capable successor,
-though Google Assistant continues to exist in certain contexts.
-
-**Is Google's AI better than OpenAI's or Anthropic's?**
-Benchmark comparisons vary by task and evolve monthly. For
-production deployments, the practical difference between
-top-tier models is usually smaller than the deployment
-architecture around them.
+Google Assistant was the earlier voice assistant. Gemini is its
+more capable successor, and Google has been replacing Assistant
+with Gemini across its devices.
 
 ## Where to go from here
 
-If you are evaluating AI for productivity work within your
-company (email, docs, meetings), start with Gemini for
-Workspace if you use Google. If you are looking to build
-custom agents on cloud infrastructure, evaluate Vertex AI
-Agent Builder alongside AWS Bedrock and Azure AI. If you are
-looking for an AI receptionist for a small business phone
-line, Google does not have a direct answer, look at
-specialized voice AI vendors.
+If you want AI for internal productivity, start with Gemini in
+Workspace. If you are building custom agents, evaluate the Gemini
+Enterprise Agent Platform alongside AWS and Microsoft. If you need
+every call to your business answered, including the ones Google's
+own AI places, that is what Implenix does: a done-for-you AI
+receptionist, live in 72 hours. [Talk to Ron](/try-it) to hear one,
+or [book a call with a lead specialist](/contact).
 
 <Pull>
-Google has serious AI agent capabilities across several
-products, but not a turnkey business phone receptionist.
-Match Google's offerings to their intended use cases and use
-other vendors where Google does not have a fit.
+Google has serious AI agents for individuals, office work, and
+developers, but not a turnkey phone receptionist. The Google agent
+that matters most to a local business may be the one calling your
+front desk.
 </Pull>

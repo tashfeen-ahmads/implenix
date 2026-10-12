@@ -1,19 +1,20 @@
 ---
-title: "Multi-agent systems, AI in crypto, AGI: three plain answers"
-description: "Three frontier AI-agent questions answered without hype, can agents talk to each other, what are crypto AI agents, and how agentic AI connects to AGI."
+title: "Can AI agents talk to each other? Plus crypto AI agents and AGI"
+description: "Three frontier AI-agent questions answered without hype: can AI agents talk to each other, what are AI agents in crypto, and how agentic AI and AGI are connected."
 category: "AI Voice Agents"
 publishedAt: "2026-09-16"
+updatedAt: "2026-10-12"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
-metaTitle: "Multi-Agent Systems, Crypto AI Agents, AGI | Implenix"
-metaDescription: "Can AI agents talk to each other? What are AI agents in crypto? How does agentic AI connect to AGI? Plain, hype-free answers."
+metaTitle: "Can AI Agents Talk to Each Other? Crypto, AGI | Implenix"
+metaDescription: "Can AI agents talk to each other? What are AI agents in crypto? How are agentic AI and AGI connected? Plain answers with protocols, examples, and risks."
 heroImage: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Network of interconnected nodes representing multi-agent systems"
 ---
 
-<Answer q="Can AI agents talk to each other, and what does that have to do with AGI?">
-Yes, AI agents can talk to each other, this is called multi-agent architecture and is used in production today for complex customer service routing, software engineering workflows, and research tasks. AI agents in crypto refer to on-chain agents that hold crypto wallets and execute transactions autonomously, an emerging category with real experimentation but limited proven use cases. Agentic AI is related to but not the same as AGI (artificial general intelligence), AGI would be a system with human-level general reasoning across all domains, while agentic AI today is narrow systems that pursue defined goals within specific scopes. Agentic AI is a stepping stone in the research landscape, not the same thing as AGI.
+<Answer q="Can AI agents talk to each other, what are crypto AI agents, and how do agentic AI and AGI connect?">
+Yes, AI agents can talk to each other, through plain language, APIs, or open protocols like Google's A2A. Crypto AI agents are agents that hold a wallet and transact on a blockchain, which is different from "AI agent tokens." Agentic AI is not AGI: it is narrow AI that acts, and autonomy is one of the dimensions researchers use to measure progress toward AGI.
 </Answer>
 
 Three questions from the AI agent conversation that operators
@@ -25,8 +26,15 @@ literature but does not have a stake in the hype cycles.
 
 ## Can AI agents talk to each other?
 
-Yes. This is called a multi-agent architecture, and it is in
-production today.
+<Answer q="Can AI agents talk to each other?">
+Yes. Agents exchange messages in plain language, through APIs and message queues, or through open protocols such as Google's Agent2Agent (A2A). Inside one company this is called a multi-agent system and runs in production today. Between companies it is newer: the hard parts are identity, sharing only the right context, and keeping a human in the loop for consequential actions.
+</Answer>
+
+There are two different situations hiding in this question:
+agents built by one team cooperating inside one system, and
+agents from different companies meeting each other. The first is
+routine. The second is where the industry is still building the
+plumbing.
 
 ### What multi-agent means in practice
 
@@ -64,19 +72,82 @@ agent is enough. Multi-agent architectures are worth the
 coordination overhead only when the task genuinely decomposes
 into specialized subtasks that benefit from separate context.
 
-### The interoperability question
+### How agents actually communicate
 
-Can agents from different vendors talk to each other? Some
-can, through open standards like the Agent2Agent (A2A)
-protocol and Model Context Protocol (MCP). The industry is
-moving toward interoperability but it is early.
+- **Plain language.** One agent sends another a message in
+  English, the same way it would talk to a person. Flexible, but
+  easy to misread.
+- **Structured messages.** Agents pass JSON over APIs, queues, or
+  events. Less flexible, much more reliable. Most production
+  systems use this.
+- **An orchestrator.** A coordinating program or agent decides
+  who works on what and passes results along.
+- **Open protocols.** Shared standards so agents built by
+  different vendors can find each other and hand off work.
+
+### A2A and MCP: the two protocols to know
+
+Google launched the Agent2Agent (A2A) protocol in April 2025 so
+agents from different vendors could discover each other, delegate
+tasks, and return results. In June 2025 it
+[moved to the Linux Foundation](https://sdtimes.com/ai/googles-agent2agent-protocol-finds-new-home-at-the-linux-foundation/)
+with backers including AWS, Cisco, Microsoft, Salesforce, SAP, and
+ServiceNow. In A2A, each agent publishes a description of what it
+can do, and other agents send it tasks.
+
+The Model Context Protocol (MCP) solves a neighboring problem: it
+connects an agent to tools and data, not to other agents. A2A is
+agent-to-agent; MCP is agent-to-tool. Many systems use both. I
+explain MCP in
+[RAG vs LLM vs MCP AI agents](/blog/rag-llm-mcp-ai-agent-architecture).
+
+### What goes wrong when agents talk
+
+Generating the message is the easy part. The hard parts:
+- **Identity.** Is the agent on the other end who it says it is?
+- **Context leakage.** Agents should share only what the other
+  side needs, not the whole customer record.
+- **Loops and drift.** Two agents can bounce a task back and
+  forth, or each assume the other checked something.
+- **Accountability.** Someone needs a log of who decided what.
+
+### When an AI agent calls your AI receptionist
+
+This is not hypothetical for local businesses. Google Search now
+has AI that phones businesses to ask about pricing and
+availability on a shopper's behalf. When that call reaches an AI
+receptionist, two agents are talking to each other in plain
+spoken English. A well-built receptionist treats it like any
+other caller: answers the question, offers to book, and does not
+share anything it would not tell a person. If it goes to
+voicemail, you are left out of the comparison. See
+[how an AI receptionist works](/how-does-an-ai-receptionist-work)
+for the call flow.
 
 ## What are AI agents in crypto?
 
-An emerging category of AI agents that hold cryptocurrency
-wallets and execute on-chain transactions autonomously. Real
-examples exist. Whether they represent a durable use case is
-an open question.
+<Answer q="What are AI agents in crypto?">
+Crypto AI agents are AI programs that control a crypto wallet and can read blockchain data, make decisions, and send transactions on their own, such as trading, paying for services, or voting in a DAO. They are different from "AI agent tokens," which are coins that trade on the hype around agents. Real experiments exist; proven, durable use cases are still few.
+</Answer>
+
+The phrase "AI agents crypto" gets used for two different things,
+and mixing them up is how people lose money.
+
+- **AI agents that use crypto.** Software that holds a wallet and
+  transacts. This is the technical category.
+- **AI agent tokens.** Coins issued by or around agent projects,
+  which trade on speculation. Owning the token does not give you
+  an agent, and the token price says little about whether the
+  agent does anything useful.
+
+Names you will run into: Truth Terminal, an AI persona on X whose
+posts sparked a memecoin craze in 2024; ElizaOS (formerly ai16z),
+an open-source framework for building crypto agents; and Virtuals
+Protocol, a platform for launching tokenized agents. On the
+infrastructure side, Coinbase launched
+[x402](https://www.theblock.co/learn/391983/what-is-coinbases-x402-protocol)
+in May 2025, an open standard that lets agents pay for APIs and
+web content with stablecoins over ordinary web requests.
 
 ### The general pattern
 
@@ -120,7 +191,13 @@ a lot of noise. Distinguish carefully.
 
 ## How does agentic AI connect to AGI?
 
-Agentic AI is a stepping stone. It is not the same thing.
+<Answer q="How are agentic AI and AGI connected?">
+Agentic AI is AI that pursues goals by planning and taking actions within a narrow scope. AGI is a hypothetical system with human-level ability across almost any task. They connect through autonomy: researchers treat how independently a system acts as one axis of progress toward AGI. Agentic AI is a step on that path, not the destination.
+</Answer>
+
+Agentic AI is a stepping stone. It is not the same thing. If you
+want the basics first, read
+[what agentic AI is in simple terms](/blog/what-is-agentic-ai).
 
 ### What AGI means (approximately)
 
@@ -128,8 +205,20 @@ AGI (Artificial General Intelligence) is hypothetically a
 system with human-level general reasoning across all domains.
 Not a chatbot that is good at some tasks, a system that can
 learn and reason about arbitrary new problems the way humans
-can. No such system exists today, and the timeline to it is
-contested even among leading researchers.
+can. No such system exists today, there is no single agreed
+definition, and the timeline to it is contested even among
+leading researchers.
+
+The most useful framework I have found is Google DeepMind's
+["Levels of AGI"](https://arxiv.org/abs/2311.02462) paper
+(Morris et al., 2023). It rates systems on how well they perform
+and how general they are, and treats **autonomy** as a separate
+scale, from a tool a human drives to a fully autonomous agent.
+That separation is the clearest way to see the connection: you
+can have a highly autonomous system that is narrow (today's
+agents) or a broadly capable system that only acts when asked
+(today's chat assistants). AGI would need high capability,
+breadth, and the judgment to use autonomy safely.
 
 ### What agentic AI is
 
@@ -231,6 +320,24 @@ Only if you are building complex multi-vendor agent
 architectures. For most business deployments, direct API
 integration works fine.
 
+**Can two AI voice agents have a phone conversation?**
+Yes. It already happens when an AI assistant calls a business
+answered by an AI receptionist. Both sides speak normal language,
+so the call works like any other, as long as each side sticks to
+its own scope.
+
+**Are AI agent crypto tokens a good investment?**
+I do not give investment advice, and this article is not
+financial advice. The honest observation is that agent tokens are
+priced on attention, not on what the agent earns, and that is a
+risky foundation.
+
+**Is ChatGPT AGI?**
+No. ChatGPT and similar assistants are capable and general in
+some ways, and they now have agent modes, but they still fail at
+many tasks humans do easily and do not meet any widely accepted
+definition of AGI.
+
 ## Where to go from here
 
 If you are running a business and evaluating AI, focus on the
@@ -239,6 +346,14 @@ today. The frontier stuff is interesting but rarely the
 right first investment. Multi-agent architectures, crypto
 agents, and AGI-adjacent capabilities are worth watching but
 not worth betting operational infrastructure on.
+
+For the wider taxonomy, see
+[types of AI agents](/blog/types-of-ai-agents-explained), and for
+the responsibility side of all of this,
+[the ethical considerations of AI agents](/blog/ethical-considerations-ai-agents).
+If the narrow deployment you need is a phone line that never goes
+unanswered, [talk to Ron](/try-it), our demo agent, or
+[book a call with a lead specialist](/contact).
 
 <Pull>
 The AI agent frontier is fascinating and largely not relevant

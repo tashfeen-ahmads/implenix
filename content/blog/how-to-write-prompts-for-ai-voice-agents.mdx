@@ -1,13 +1,14 @@
 ---
-title: "How to write prompts for AI voice agents (7-section playbook)"
-description: "The 7-section prompt structure I use for every production voice AI deployment, system role, tone, intake script, transfer rules, escalation, edge cases, hard stops."
+title: "How to write prompts for AI agents: the 7-section voice agent playbook"
+description: "How to write prompts for AI agents that behave the same way on call 1 and call 1,000: the 7-section structure I use for production voice agents, plus how to keep voice and style consistent."
 category: "Operator Playbooks"
 publishedAt: "2026-08-12"
+updatedAt: "2026-10-12"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
-metaTitle: "How to Write Prompts for AI Voice Agents | Implenix"
-metaDescription: "The 7-section prompt structure I use for every voice AI deployment, system role, tone, intake, transfer rules, escalation, edge cases, hard stops."
+metaTitle: "How to Write Prompts for AI Agents (Voice Playbook)"
+metaDescription: "How to write prompts for AI agents: role, goal, tools, stop rules, and the 7-section voice agent structure, plus how to keep an agent's voice consistent."
 heroImage: "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Operator writing prompt structure on a notebook next to a laptop"
 howToTotalTime: "PT2H"
@@ -15,11 +16,11 @@ howToSteps:
   - name: "Define the system role"
     text: "Write a single paragraph establishing who the agent is, what business it represents, and the primary objective of every call. This is the agent's identity layer."
   - name: "Set the tone and voice"
-    text: "Specify speaking style, pace, formality level, and language. HVAC dispatcher sounds different from dental front desk."
+    text: "Specify speaking style, pace, formality level, and language, plus a short must-say and never-say word list. HVAC dispatcher sounds different from dental front desk."
   - name: "Write the intake script"
     text: "List every data field the agent captures, in the order it asks, with exact phrasing for each question. The script is the agent's conversation structure."
   - name: "Define transfer rules"
-    text: "Explicit conditions that trigger live transfer, VIP allow-list, urgent keywords, sentiment triggers, off-script questions, escalation paths."
+    text: "Explicit conditions that trigger live transfer: VIP allow-list, urgent keywords, sentiment triggers, off-script questions, escalation paths."
   - name: "Write the escalation flows"
     text: "For each transfer rule, specify what happens next. Who picks up, in what order, with what context briefing. Edge cases when no human is available."
   - name: "Specify edge case responses"
@@ -28,27 +29,79 @@ howToSteps:
     text: "Rules the agent must never break: no legal advice, no medical advice, no rate quotes, no political opinions, no impersonation of a human."
 ---
 
-<Answer q="How do I write a prompt for an AI voice agent?">
-A production voice AI prompt is a 7-section document: (1) system role and business identity, (2) tone and voice specification, (3) structured intake script with field-by-field questions, (4) transfer rules that trigger human handoff, (5) escalation flows detailing what happens on each transfer, (6) edge-case response templates for objections/anger/confusion, (7) a hard-stop list of things the agent must never do. This structure is what separates a deployment that captures 80% of previously-missed calls from one that captures 30%. The content varies by industry; the structure does not.
+<Answer q="How do you write prompts for AI agents?">
+Write an AI agent prompt as an operating document, not a one-line request. Give it a role, the business it serves, the end state that counts as done, the tools it may use, the exact steps to follow, when to hand off or stop, and a hard-stop list. Then test it against real scenarios and version every change. Voice agents need all of that plus tone, pacing, and spoken read-backs.
 </Answer>
 
-Prompt writing for voice AI is the single highest-leverage
-piece of the deployment. I have watched identical technology,
-identical integrations, and identical vendor stacks produce
-completely different outcomes based on prompt quality. The
-prompt is not decoration on the deployment. It is the
-operating system of the agent. This is the 7-section structure
-I use for every production deployment, refined across six
-years of shipping into HVAC, dental, legal, real estate,
+Prompt writing is the single highest-leverage piece of an AI
+agent deployment. I have watched identical technology, identical
+integrations, and identical vendor stacks produce completely
+different outcomes based on prompt quality. The prompt is not
+decoration on the deployment. It is the operating system of the
+agent.
+
+Most of my work is voice agents that answer business phones, so
+the worked examples below are phone calls. The first section
+covers what applies to any AI agent, voice or text. The rest is
+the 7-section structure I use for every production voice
+deployment, refined across HVAC, dental, legal, real estate,
 medspa, and financial services.
 
 ## Who this is for
 
-Operations leads, founders, product managers, and anyone
-writing or reviewing the prompts that power a production AI
-voice deployment. If you have already shipped and your agent
-feels generic or produces inconsistent results, the 7-section
-framework is what fixes it.
+Operations leads, founders, product managers, and anyone writing
+or reviewing the prompts that power a production AI agent. If
+your agent feels generic, sounds different from one conversation
+to the next, or produces inconsistent results, this structure is
+what fixes it.
+
+## Prompting any AI agent: the five things every prompt needs
+
+A chatbot prompt asks for one answer. An agent prompt has to
+carry the agent through a whole task, including the parts where
+it calls tools, waits on systems, hits an error, or needs a
+human. OpenAI's
+[practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/)
+makes the same point: clear instructions reduce ambiguity, and
+the best source material is the operating procedures, support
+scripts, and policy documents you already have, broken into
+small steps that each map to one action.
+
+Every agent prompt I write, voice or not, covers five things:
+
+1. **Role and end state.** Who the agent is and what "done"
+   looks like. "Book the caller into the next open slot and
+   confirm it back" is testable. "Help the caller" is not.
+2. **Context.** The business facts the agent needs: hours,
+   service area, policies, who handles what.
+3. **Tools.** Each system the agent can read or write, when to
+   use it, and what to do when the call fails.
+4. **Steps.** The routine, in order, one action per step. Ask
+   for the order number. Look it up. Read back the result.
+5. **Stop and hand-off rules.** When the agent ends, transfers,
+   or refuses. This is the part most first drafts leave out.
+
+Anthropic's engineering team gives a useful warning in
+[Building effective agents](https://www.anthropic.com/research/building-effective-agents):
+start with the simplest setup that works and add complexity only
+when it measurably helps. A short, specific prompt with good
+tools beats a long, clever one.
+
+### What changes for voice agents
+
+<ComparisonTable
+  columns={["Voice agent prompt", "Text or back-office agent prompt"]}
+  rows={[
+    { label: "Response length", cells: ["One or two short spoken sentences", "Can be long, formatted, or structured"] },
+    { label: "Formatting", cells: ["None. No lists, links, or symbols read aloud", "Markdown, tables, JSON as needed"] },
+    { label: "Confirming data", cells: ["Read back names, numbers, and addresses", "Validate against a schema"] },
+    { label: "Latency budget", cells: ["Tight. Long prompts and slow tools are heard as dead air", "Looser"] },
+    { label: "Tone and pacing", cells: ["Must be specified explicitly", "Style guide is usually enough"] },
+    { label: "Human hand-off", cells: ["Live warm transfer with a spoken bridge line", "Ticket, queue, or approval step"] }
+  ]}
+/>
+
+The rest of this post is the voice version, section by section.
 
 ## Section 1: system role
 
@@ -68,7 +121,9 @@ The identity layer. One paragraph establishing:
 > assistant on the greeting. Never claim to be a human.
 
 Short, specific, testable. The system role sets the frame for
-every downstream decision the agent makes.
+every downstream decision the agent makes. For the full
+picture of what an HVAC agent handles, see the
+[HVAC AI receptionist page](/ai-receptionist-for-hvac-companies).
 
 ## Section 2: tone and voice
 
@@ -95,6 +150,42 @@ brand voice. Not clinical.
 The tone specification matters more than most operators
 realize. The wrong tone makes the agent feel off even when
 every functional detail is correct.
+
+## How to keep an AI agent's voice and style consistent
+
+Consistency is the complaint I hear most after launch: the agent
+sounded right in the demo and drifted by week three. Drift
+usually comes from three places. The style rules were vague. The
+conversation got long and the agent started copying its own
+earlier phrasing instead of the spec. Or someone changed the
+model or the prompt without re-testing.
+
+What keeps voice and style stable:
+
+- **Write the voice as rules, not adjectives.** "Friendly" means
+  nothing to a model. "Greet with the business name, use the
+  caller's first name once, keep each turn under two sentences,
+  never say 'no problem'" is checkable.
+- **Keep a must-say and never-say list.** Approved phrases for
+  the greeting, the disclosure, the transfer bridge line, and
+  the close. Banned words and claims beside them.
+- **Show two or three example exchanges.** One normal call, one
+  upset caller, one off-topic question. Examples anchor style
+  more reliably than descriptions.
+- **Pin the non-negotiables.** Disclosure and hard stops go in
+  the system prompt, not in a knowledge base document the agent
+  may or may not retrieve.
+- **Use one prompt per role.** If the same agent serves three
+  locations, the location facts change, the voice spec does
+  not. Keep it in one shared block.
+- **Regression-test every change.** Keep a fixed set of recorded
+  test calls and re-run it after any prompt, voice, or model
+  change. Compare tone as well as outcomes.
+- **Review real calls monthly.** Drift shows up in transcripts
+  long before anyone complains.
+
+If you want to hear what a consistent voice spec sounds like in
+practice, you can [talk to Ron, our demo agent](/try-it).
 
 ## Section 3: intake script
 
@@ -126,7 +217,8 @@ Each question has:
 
 Skipping this specificity is the most common cause of
 deployment inconsistency. Vague scripts produce vague
-conversations.
+conversations and messy records. Field-level structure is also
+what keeps the CRM data clean.
 
 ## Section 4: transfer rules
 
@@ -157,6 +249,9 @@ Every rule has:
    the agent must not provide (legal advice, medical opinion,
    rate quote). Action: polite decline plus offer to schedule
    human callback.
+
+More on the sensitive-call rules in
+[can AI agents handle sensitive customer conversations](/blog/can-ai-handle-sensitive-conversations).
 
 ## Section 5: escalation flows
 
@@ -192,8 +287,8 @@ Templates for how the agent responds to non-standard callers.
 Not every conversation goes to plan. Edge cases include:
 
 - **Silence.** Caller does not respond. Agent: "Are you still
-  there? Take your time." Second silence → repeat greeting.
-  Third → offer to call back.
+  there? Take your time." Second silence: repeat greeting.
+  Third: offer to call back.
 - **Confused caller.** Agent: "Let me back up. What are you
   hoping to accomplish today?" Rephrase in simpler terms.
 - **Angry caller.** Agent: brief acknowledgment ("I hear that
@@ -259,6 +354,22 @@ edge cases (unusual scenarios). Hard-stops last (or first, in
 some deployments) so they are seen every time the prompt is
 reviewed.
 
+## Common prompt mistakes
+
+- **Describing personality instead of behavior.** Adjectives
+  instead of rules.
+- **No end state.** The agent does not know when it is done,
+  so it keeps talking or ends too early.
+- **Tools without failure instructions.** The booking call
+  fails and the agent confirms anyway.
+- **Everything in one giant paragraph.** Split into sections
+  with headings the model and your reviewers can both find.
+- **Facts that change in the prompt.** Hours, prices, staff
+  names belong in a knowledge source or tool lookup, not
+  hard-coded where nobody remembers to update them.
+- **No test set.** If you cannot replay the same calls after a
+  change, you cannot tell whether you made it better.
+
 ## Testing the prompt before deployment
 
 Every prompt gets tested against 30-60 mock calls before
@@ -290,10 +401,17 @@ I run has a monthly review cadence:
 - Deploy canary (10% traffic) for 24-48 hours.
 - Full rollout after canary validates.
 
-Well-managed prompts improve steadily over the first 6-12
-months of deployment. Untended prompts drift.
+Well-managed prompts improve steadily over the first months of a
+deployment. Untended prompts drift.
 
 ## Frequently asked questions
+
+**What is the difference between a prompt and a system prompt?**
+The system prompt is the standing instruction set the agent
+carries into every conversation: role, rules, tools, hard stops.
+A user prompt is the individual request or, on a phone line,
+what the caller says. When people talk about writing prompts for
+AI agents, they almost always mean the system prompt.
 
 **Can I use a template prompt from the vendor?**
 As a starting point, sure. As the final prompt, never.
@@ -301,9 +419,15 @@ Templates capture the structure but not the specific vocabulary,
 compliance layer, or transfer logic your business needs.
 
 **How long should the prompt be?**
-As long as it needs to be, usually 1,500-4,000 words. Too
-short means missing edge cases. Too long can slow the model.
-Test the actual latency impact if length gets extreme.
+As long as it needs to be, usually 1,500-4,000 words for a
+voice agent. Too short means missing edge cases. Too long can
+slow the model. Test the actual latency impact if length gets
+extreme.
+
+**How do I stop the agent's tone from drifting?**
+Write the voice as concrete rules with a must-say and never-say
+list, include a few example exchanges, and re-run a fixed set
+of test calls after every prompt or model change.
 
 **Does the model actually follow the prompt?**
 Well-designed prompts with clear structure produce highly
@@ -323,15 +447,21 @@ compliance.
 
 ## Where to go from here
 
-If you are writing your first production voice AI prompt, work
-through the 7 sections in order. Start with system role and
+If you are writing your first production AI agent prompt, work
+through the sections in order. Start with system role and
 hard-stops. Get those two right before touching the intake
 script. The intake script is the fun part to write; the system
 role and hard-stops are what determine whether the deployment
 is safe to ship.
 
+If you would rather not write and maintain the prompt yourself,
+that is the work we do. Implenix agents go live in 72 hours with
+the prompt, transfer rules, and test battery built for your
+business. [Book a call with a lead specialist](/contact) to walk
+through your call flow.
+
 <Pull>
-The prompt is 80% of what determines whether an AI voice
+The prompt is the biggest variable in whether an AI agent
 deployment succeeds. Spend accordingly on writing it, testing
 it, and maintaining it. The technology is commodified. The
 prompt is not.

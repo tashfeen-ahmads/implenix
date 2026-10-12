@@ -7,7 +7,7 @@ author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
 metaTitle: "Can AI Agents Identify Vulnerable Customers? | Implenix"
-metaDescription: "How AI agents detect signals of customer vulnerability, cognitive decline, financial distress, elder abuse, and the guardrails that keep it responsible."
+metaDescription: "Can AI agents identify vulnerable customers? The signals voice AI can detect, the FCA four drivers, elder abuse red flags, and the guardrails that matter."
 heroImage: "https://images.unsplash.com/photo-1573497019418-b400bb3ab074?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Careful conversation representing responsible customer interaction"
 ---
@@ -29,18 +29,44 @@ the deployment, and the guardrails I insist on.
 
 The term has specific meaning in several regulated industries.
 
-- **UK Financial Conduct Authority** requires firms to identify
-  and treat vulnerable customers appropriately. Vulnerability
-  categories: health, life events, resilience, capability.
-- **US financial services**, no single federal framework, but
-  state and industry guidance is developing. Elder financial
-  abuse detection is emerging as a specific compliance area.
+- **UK Financial Conduct Authority** defines a vulnerable customer
+  as someone who, due to their personal circumstances, is especially
+  susceptible to harm, particularly when a firm is not acting with
+  appropriate levels of care. Its guidance (FG21/1) and the Consumer
+  Duty expect firms to understand and respond to those needs
+  ([FCA guidance](https://www.fca.org.uk/publications/finalised-guidance/guidance-firms-fair-treatment-vulnerable-customers)).
+- **US financial services**, no single federal "vulnerable customer"
+  framework, but elder financial exploitation is an active area.
+  FinCEN's 2022 advisory lists red flags such as a caregiver who will
+  not let the older customer speak for themselves, and asks
+  institutions to report suspected exploitation
+  ([FinCEN advisory FIN-2022-A002](https://www.fincen.gov/news/news-releases/fincen-issues-advisory-elder-financial-exploitation)).
 - **Healthcare**, clinical duty of care to identify at-risk
   patients (suicidal ideation, elder abuse, domestic violence).
 - **Utilities**, regulatory expectations around vulnerable
   customers (fuel poverty, disability, cognitive impairment).
 - **Telecommunications**, increasing regulatory attention to
   vulnerable customer handling.
+
+### The four drivers of vulnerability
+
+The FCA's model is the most useful working framework I have found,
+even outside the UK, because it maps to things a phone agent can
+actually hear:
+
+<ComparisonTable
+  columns={["What it covers", "What it can sound like on a call"]}
+  rows={[
+    { label: "Health", cells: ["Physical or mental conditions that affect day-to-day tasks", "Mentions of illness, medication, struggling to hear or follow"] },
+    { label: "Life events", cells: ["Bereavement, job loss, relationship breakdown", "'My husband passed' or 'I just lost my job'"] },
+    { label: "Resilience", cells: ["Low ability to absorb financial or emotional shocks", "Missed payments, panic about a small bill"] },
+    { label: "Capability", cells: ["Low financial or digital confidence, literacy, language", "Repeated confusion, asking someone else in the room"] }
+  ]}
+/>
+
+Vulnerability is a spectrum, not a label. Anyone can move into it
+after one bad week, which is why detection has to run on every call,
+not just on a list of "known vulnerable" customers.
 
 The AI agent's job in any of these industries is not to make
 final decisions about vulnerability. It is to detect signals,
@@ -233,6 +259,16 @@ customer's consent.
 
 ## Frequently asked questions
 
+**What are examples of vulnerable customers?**
+A recently bereaved caller sorting out a loved one's account, an
+older customer being pressured by a "helper," someone with a
+cognitive impairment, a caller who just lost their job, or someone
+who struggles with the language or with digital self-service.
+
+**What are the four drivers of customer vulnerability?**
+In the FCA's framework: health, life events, resilience and
+capability. They often overlap, and they can be temporary.
+
 **Is this feature standard on AI voice agents?**
 Not standard, it requires explicit design and deployment
 work. Ask your vendor whether they support vulnerable-customer
@@ -266,6 +302,17 @@ industry, the vulnerable-customer detection layer is not
 optional. It is a core requirement of responsible deployment
 and, in some jurisdictions, of regulatory compliance. Design
 it in from day one rather than retrofitting after an incident.
+
+For the escalation rules this sits inside, see
+[can AI handle sensitive conversations](/blog/can-ai-handle-sensitive-conversations),
+and for what voice signals can and cannot tell you, see
+[how AI agents recognize human emotions](/blog/how-ai-agents-recognize-human-emotions).
+Financial teams should also read
+[AI agents for finance](/blog/ai-agents-for-finance), and the wider
+principles are in
+[ethical considerations when using AI agents](/blog/ethical-considerations-ai-agents).
+To scope detection and escalation for your own calls,
+[book a call with a lead specialist](/contact).
 
 <Pull>
 AI agents can help you catch vulnerability signals that a

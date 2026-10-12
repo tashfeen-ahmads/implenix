@@ -1,241 +1,248 @@
 ---
 title: "How AI agents will change cancer research and oncology (near-term view)"
-description: "What agentic AI is actually doing in cancer research and oncology care in 2026, literature synthesis, trial matching, imaging, treatment planning support, and what still requires a human."
+description: "What AI agents are doing in cancer research and oncology care, literature synthesis, trial matching, imaging support, tumor board prep, admin work, what the research says, and what still needs a human."
 category: "AI Voice Agents"
 publishedAt: "2026-12-02"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
-metaTitle: "AI Agents in Cancer Research + Oncology 2026 | Implenix"
-metaDescription: "What agentic AI is doing in cancer research and oncology today, trial matching, literature synthesis, imaging support, and what still needs humans."
+metaTitle: "How AI Agents Will Change Cancer Research and Oncology"
+metaDescription: "How AI agents are changing cancer research and oncology: trial matching, literature synthesis, imaging support, tumor board prep, and the evidence and limits."
 heroImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Oncology researcher analyzing medical imaging on screen"
 ---
 
-<Answer q="How are AI agents changing cancer research and oncology?">
-Agentic AI is contributing to cancer research and oncology in five specific ways in 2026: literature synthesis across the millions of oncology papers published annually, clinical trial matching for patients (matching patient profiles to eligible trials at scale), imaging analysis assistance (radiology and pathology support that flags suspicious findings for physician review), treatment planning decision support (surfacing relevant guidelines and evidence), and administrative burden reduction in oncology practice (documentation, coordination). It does not replace oncologists, does not make diagnostic or treatment decisions autonomously, and is not "curing cancer" in the way headlines suggest.
+<Answer q="How will AI agents change cancer research and oncology?">
+AI agents are language-model systems that plan multi-step work and call tools such as literature search, genomic databases, and imaging models. In oncology they are starting to help with literature synthesis, clinical trial matching, imaging support, tumor board preparation, and paperwork. Early studies are promising but small. Oncologists still diagnose and decide treatment.
 </Answer>
 
-Oncology is one of the medical specialties where agentic AI is
-producing the clearest early results, and also one where the
-hype outruns the reality most aggressively. I do not deploy
-into cancer research or oncology care directly, that is a
-specialized field with its own vendors and its own regulatory
-framework, but I follow the space closely because operators in
-adjacent medical fields want to understand what is happening.
-This is the honest read on where agentic AI is actually moving
-the needle in oncology.
+Oncology is one of the specialties where AI agents show the
+clearest early promise, and also one where the hype outruns the
+evidence most aggressively. I do not deploy into cancer research or
+oncology care directly. That is a specialized field with its own
+vendors and regulatory framework. I follow it closely because
+operators in adjacent medical fields ask me what is real. This is
+the honest read.
 
-## The five areas where AI is producing real value
+## What the researchers actually argued
+
+The phrase in this post's title comes from a 2024 comment in
+Nature Cancer,
+[How AI agents will change cancer research and oncology](https://www.nature.com/articles/s43018-024-00861-7)
+(Lee, Ferber, Rood, Regev, and Kather). Their core argument: the
+deep learning tools already used in cancer research need a human to
+guide every step of a complex workflow, while agents built on large
+language models can plan, execute, and refine multi-step reasoning
+themselves by calling the right tools. They also flag that
+scientists must think through the ethical and safety consequences.
+
+A later review in Nature Reviews Cancer,
+[Artificial intelligence agents in cancer research and oncology](https://www.nature.com/articles/s41568-025-00900-0)
+(Truhn and colleagues, including Kather), goes deeper. It describes
+agents as systems that use outside tools and software to carry out
+sequences of tasks with little human input, cites early uses such as
+drug design and proposing treatment strategies for clinical cases,
+and notes that many clinicians are still unclear on agents' limits
+and on the rules that apply to them.
+
+The difference from older medical AI, in one line: a classic model
+does one task (find the nodule). An agent strings tasks together
+(read the chart, check the mutation database, search the guidelines,
+draft the summary) and decides what to do next. I explain that
+general idea in
+[what agentic AI is](/blog/what-is-agentic-ai) and
+[how RAG, LLMs, and tools fit together](/blog/rag-llm-mcp-ai-agent-architecture).
+
+## What the early evidence looks like
+
+The best-known test so far is from the same research group: an
+autonomous agent built on GPT-4 and given oncology tools (imaging
+models, mutation tools, guideline and literature search), evaluated
+on 20 simulated multimodal patient cases and published in
+[Nature Cancer](https://www.nature.com/articles/s43018-025-00991-6).
+The tool-using agent reached correct conclusions far more often than
+GPT-4 on its own, and usually picked the right tools. But its
+guideline citations were not always accurate, and 20 simulated cases
+is a small, controlled test. It shows promise, not clinical
+readiness.
+
+That is the honest state of the field: strong proof of concept,
+little real-world outcome data.
+
+## The five areas where AI agents are adding value
 
 ### 1. Literature synthesis
 
-The oncology literature is impossibly large. Roughly 200,000
-papers are published in cancer research annually. No human
-researcher or clinician can keep up. Agentic AI systems can
-synthesize across this literature at scale, surfacing relevant
-work for specific research questions or clinical cases.
-
-Real production examples: OpenEvidence, Consensus, and various
-research-focused tools. Also proprietary systems at major cancer
-centers.
-
-The value: researchers and clinicians can ask a question and
-get a synthesis of relevant recent literature in minutes rather
-than days. This does not replace deep reading, but it filters
-what is worth reading.
+The oncology literature is far larger than any clinician can read.
+Agent-style tools can search across it for a specific question and
+return a summary with citations, which helps researchers and
+clinicians decide what is worth reading in full. It filters. It
+does not replace deep reading, and every citation should be checked.
 
 ### 2. Clinical trial matching
 
-Matching patients to eligible clinical trials is one of the most
-tractable and impactful AI applications in oncology. The
-problem: there are thousands of active oncology trials, each
-with dozens of inclusion and exclusion criteria. Matching a
-specific patient's clinical profile to eligible trials manually
-is time-intensive and error-prone.
+Matching a patient to eligible trials means checking cancer type,
+stage, biomarkers, and prior treatments against long lists of
+inclusion and exclusion criteria. Agents can read the chart, extract
+those features, and propose candidate trials for the care team to
+review, including trials the oncologist may not have known about.
+Programs are still measuring how much this changes enrollment; ask
+any vendor for their published results.
 
-Agentic AI systems read patient charts, extract relevant
-clinical features (cancer type, stage, biomarkers, prior
-treatments), and match against active trial databases. Some
-systems can flag trials the oncologist may not have known
-about.
+### 3. Imaging and pathology support
 
-Impact: increases trial enrollment (typically 5-10% in
-programs with AI matching, versus 3-5% without), reduces the
-"no trial available" false negatives, and connects patients
-to potentially better options.
+Imaging AI is the most mature area of medical AI. On the
+[FDA's list of AI-enabled medical devices](https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-enabled-medical-devices),
+radiology accounts for the large majority of authorizations, and
+many of those tools are used in cancer screening and follow-up,
+for example flagging suspicious findings on mammograms or measuring
+lesions across serial scans. Pathology AI is growing too.
 
-### 3. Imaging analysis assistance
+These are decision-support tools. The radiologist or pathologist
+reviews the findings and makes the call. What agents add is the
+glue: pulling the imaging result, the pathology report, and the
+genomics into one summary.
 
-AI in oncology imaging (radiology, pathology, dermatology) is
-one of the most mature medical AI application areas. Multiple
-FDA-cleared tools exist for:
+### 4. Tumor board and treatment planning support
 
-- Detecting suspicious findings on mammograms, chest CTs,
-  colonoscopies.
-- Quantifying tumor burden on serial imaging.
-- Grading pathology specimens for prognostic markers.
-- Detecting melanoma from dermatologic photos.
+Molecular tumor boards review complex cases with genomic profiles.
+Agents can prepare the case: summarize the history, surface the
+relevant guidelines and trials, and list evidence for the options.
+The board's oncologists still decide what to recommend.
 
-These are decision-support tools. The radiologist, pathologist,
-or dermatologist reviews the AI's findings and makes the final
-call. AI catches things humans miss (fatigue, workload, subtle
-findings) and humans catch things AI gets wrong.
+### 5. Administrative burden
 
-### 4. Treatment planning decision support
+Oncology carries heavy paperwork: documentation, prior
+authorizations, care coordination, survivorship follow-up. This is
+where voice and agentic AI are most deployable today:
 
-Molecular tumor boards, where oncologists review the genomic
-profiles of complex cases, increasingly use agentic AI to
-surface relevant literature, similar cases, and treatment
-guidelines. The AI helps the physician team consider options
-they might have missed given the complexity of modern
-oncology.
+- Ambient documentation during visits, reviewed and signed by the
+  clinician.
+- Prior authorization intake.
+- Scheduling and coordination across medical, surgical, and
+  radiation oncology.
+- Scripted patient check-ins that route any reported symptom to the
+  care team.
 
-This is decision support, not decision replacement. The tumor
-board's oncologists still decide what to recommend.
+This is the part closest to my own work. I describe the operational
+side, and the line it must not cross, in
+[how generative AI voice agents will transform medicine](/blog/ai-voice-agents-healthcare-medicine).
 
-### 5. Administrative burden reduction
+## What AI agents do NOT do in oncology
 
-Oncology practice has particularly heavy administrative burden
-documentation, prior authorizations, care coordination,
-survivorship follow-up. Voice AI and agentic AI systems are
-being deployed for:
-
-- Ambient documentation during oncology visits (Nuance DAX,
-  Abridge, similar).
-- Prior authorization intake and submission workflows.
-- Post-visit patient outreach for symptom monitoring.
-- Coordination between oncologist, surgeon, radiation
-  oncologist, and primary care.
-
-These operational improvements do not "cure cancer" but they
-reduce physician burnout and free clinical attention for the
-work that requires it.
-
-## What agentic AI does NOT do in oncology
-
-- **Diagnose cancer autonomously.** All FDA-cleared imaging
-  AI is decision-support with a physician in the loop.
-- **Make treatment decisions.** Oncologists decide treatment,
-  informed by AI-surfaced evidence.
-- **Deliver bad news to patients.** Human conversation.
+- **Diagnose cancer autonomously.** Imaging AI on the market is
+  decision support with a physician in the loop.
+- **Make treatment decisions.** Oncologists decide, informed by
+  evidence the AI surfaces.
+- **Deliver bad news.** That is a human conversation.
 - **Handle end-of-life conversations.** Human, entirely.
-- **Replace oncology nurses, patient navigators, or care
-  coordinators.** These roles are being augmented, not
-  replaced.
-- **"Cure" cancer.** AI is a tool that helps humans do the
-  research and care faster and better. It is not the cure.
+- **Replace oncology nurses, navigators, or coordinators.** These
+  roles are being supported, not replaced.
+- **"Cure" cancer.** AI is a tool that can make research and care
+  faster. It is not the cure.
 
-## Real drug discovery contributions
+If you are a patient: AI-assisted tools mostly reach you through
+your care team, not as a product you use directly. Questions about
+your diagnosis or treatment belong with your oncologist.
 
-Beyond clinical practice, agentic AI is contributing to cancer
-drug discovery.
+## Drug discovery
 
-- **Target identification**, analyzing genomic and proteomic
-  data to identify potential therapeutic targets.
-- **Molecule design**, generative models suggesting candidate
-  molecules for specific targets (some FDA IND clearances have
-  come from AI-designed molecules).
-- **Trial design**, using historical trial data to design
-  more efficient studies.
-- **Toxicity prediction**, flagging compounds likely to have
-  problematic side effect profiles before they enter clinical
-  testing.
+Beyond the clinic, AI is used across early drug discovery:
 
-These contributions are compressing timelines and reducing
-costs in ways that will eventually flow through to patient
-outcomes, but the timelines are still measured in years.
+- **Target identification** from genomic and proteomic data.
+- **Molecule design**, with generative models proposing candidate
+  compounds.
+- **Trial design** using historical trial data.
+- **Toxicity prediction** before compounds reach human testing.
+
+The reviews above describe agents starting to chain these steps.
+Whether that shortens the path to approved cancer drugs is still
+being tested, and the timelines are measured in years.
 
 ## The regulatory picture
 
-FDA regulates most oncology AI as medical devices (Software as
-a Medical Device, SaMD). Requirements include:
-- Validation studies demonstrating safety and efficacy.
-- Post-market surveillance.
-- Clear labeling of intended use.
-- Physician-in-the-loop for diagnostic decisions.
-
-The FDA has cleared over 100 AI-based devices for oncology
-applications by 2026. The regulatory framework is mature and
-active.
+In the US, the FDA regulates much oncology AI as software as a
+medical device, particularly anything that analyzes images. Expect
+validation studies, labeling of intended use, and post-market
+monitoring. Software that only supports a clinician's decision, and
+lets them see the basis for a recommendation, may fall under the
+FDA's clinical decision support policy instead. I summarize those
+criteria in
+[agentic reasoning and the AI doctor](/blog/agentic-reasoning-ai-doctor).
 
 ## The equity question
 
-AI in oncology can either widen or narrow disparities in care.
+AI in oncology can narrow or widen disparities in care.
 
-- **Narrow disparities** by making expert-level decision
-  support available at community cancer centers that cannot
-  staff specialty oncologists.
-- **Widen disparities** if AI is only available at
-  well-resourced academic medical centers.
-- **Widen disparities** if training data does not represent
-  diverse patient populations, leading to worse performance
-  on underrepresented groups.
+- **Narrow them** by bringing expert-level decision support to
+  community cancer centers.
+- **Widen them** if the tools only reach well-funded academic
+  centers.
+- **Widen them** if training data under-represents some patient
+  groups, leading to worse performance for those patients.
 
-Responsible deployment addresses these actively. Reputable
-oncology AI vendors publish equity metrics and work on
-population-representative training data.
+Ask vendors how their tools perform across patient populations and
+what data they were trained on.
 
-## What the near-term outlook looks like
+## The near-term outlook
 
-Realistic 3-5 year trajectory:
-- **Broader deployment** of proven decision support at more
-  cancer centers.
-- **Better trial matching** with automated re-matching as
-  patient status changes.
-- **Improved imaging** with more subtypes of cancer covered
-  and better pathology AI.
-- **More administrative automation** freeing clinical time.
-- **Better patient-facing tools** for symptom monitoring and
-  care coordination.
+Realistic next few years:
+
+- **Broader use** of proven imaging and documentation tools.
+- **Better trial matching**, with automatic re-matching as a
+  patient's status changes.
+- **More agentic tumor board prep**, if validation studies hold up
+  in real settings.
+- **More administrative automation**, freeing clinical time.
+- **Better patient-facing coordination**, with clinicians handling
+  every clinical question.
 
 Not on the trajectory:
-- Autonomous diagnostic AI making decisions without physician
-  review.
-- "AI oncologist" replacing human oncologists.
+
+- Autonomous diagnosis without physician review.
+- An "AI oncologist" replacing human oncologists.
 - Overnight cures.
 
 ## Frequently asked questions
 
+**What is an AI agent in oncology?**
+A language-model system that plans multi-step tasks and calls tools,
+such as literature search, mutation databases, or imaging models,
+to prepare information for clinicians or researchers. A person
+reviews and decides.
+
 **Can AI predict who will get cancer?**
-For specific cancers (breast, lung, some others), AI-based
-risk models exist and are used clinically. They inform
-screening intensity, not diagnostic decisions.
+Risk models exist for some cancers and can inform screening
+decisions made by clinicians. They are not a diagnosis. Talk to your
+doctor about your own risk.
 
 **Can AI read my scan and tell me if I have cancer?**
-No, not directly. AI-assisted imaging is used by radiologists
-to help them read scans. The radiologist gives you (or your
-doctor) the interpretation.
+No. AI-assisted imaging helps radiologists read scans. A radiologist
+gives the interpretation to you or your doctor.
 
 **Are oncologists being replaced by AI?**
-No. Oncology is one of the specialties with the greatest
-projected shortage over the next decade. AI is being deployed
-to help oncologists handle more patients better, not to
-replace them.
+No. AI is being used to take load off oncologists and help them
+handle complexity, not to replace them.
 
-**What is the difference between AI in oncology and general
-medical AI?**
-Oncology has particularly heavy documentation, complex
-treatment decisions, extensive literature, and high stakes, making it a target-rich area for AI applications. The
-regulatory framework is the same as general medical AI.
-
-**How is patient data used?**
-For clinical AI, data use is heavily regulated (HIPAA plus
-research-specific frameworks). Reputable oncology AI vendors
-have clear data governance policies.
+**How is patient data protected?**
+Clinical AI in the US operates under HIPAA, and research use has its
+own rules and ethics review. Ask any vendor for their data
+governance policy.
 
 ## Where to go from here
 
-For anyone in the oncology space evaluating AI, the practical
-first step is not building custom, it is evaluating the
-mature FDA-cleared decision support tools relevant to your
-specialty. For patients, the practical value of oncology AI
-today usually reaches them through their oncologist's tools
-rather than as a direct patient product.
+For cancer centers and practices evaluating AI, the practical first
+step is not building a custom agent. It is evaluating validated,
+appropriately regulated tools for your specialty, and starting with
+the lowest-risk work: documentation and administration.
+
+If your oncology or specialty practice is losing calls at the front
+desk, that is the part I build. See
+[AI receptionists for medical practices](/ai-receptionist-for-medical-practices)
+or [book a call](/contact).
 
 <Pull>
-AI in oncology is doing real work today, trial matching,
-imaging support, literature synthesis, administrative
-automation. It is not curing cancer. It is helping the humans
-who might.
+AI in oncology is doing real work: trial matching, imaging support,
+literature synthesis, administrative automation. It is not curing
+cancer. It is helping the humans who might.
 </Pull>

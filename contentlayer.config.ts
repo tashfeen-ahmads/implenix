@@ -81,6 +81,42 @@ export const Doc = defineDocumentType(() => ({
   },
 }));
 
+function plain(md: string): string {
+  return md
+    .replace(/<[^>]+>/g, '')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractFaqs(raw: string): { question: string; answer: string }[] {
+  const start = raw.search(/^## (FAQ|Frequently asked questions)/im);
+  if (start < 0) return [];
+  const rest = raw.slice(start).split('\n').slice(1);
+  const out: { question: string; answer: string }[] = [];
+  let q: string | null = null;
+  let a: string[] = [];
+  const flush = () => {
+    if (q && a.join(' ').trim()) out.push({ question: plain(q), answer: plain(a.join(' ')) });
+    q = null;
+    a = [];
+  };
+  for (const line of rest) {
+    if (/^## /.test(line)) break;
+    const h3 = /^### (.+)$/.exec(line);
+    const bold = /^\*\*(.+\?)\*\*\s*$/.exec(line.trim());
+    if (h3 || bold) {
+      flush();
+      q = (h3 ?? bold)![1];
+    } else if (q) {
+      a.push(line);
+    }
+  }
+  flush();
+  return out;
+}
+
 export const BlogPost = defineDocumentType(() => ({
   name: 'BlogPost',
   filePathPattern: `blog/**/*.mdx`,
@@ -90,6 +126,8 @@ export const BlogPost = defineDocumentType(() => ({
     description: { type: 'string', required: true },
     category: { type: 'string', required: true },
     publishedAt: { type: 'date', required: true },
+    // Set when a post is materially revised; emitted as dateModified.
+    updatedAt: { type: 'date', required: false },
     author: { type: 'string', required: true },
     authorRole: { type: 'string', required: true },
     authorBio: { type: 'string', required: false },
@@ -108,6 +146,12 @@ export const BlogPost = defineDocumentType(() => ({
     url: {
       type: 'string',
       resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '')}`,
+    },
+    // Question/answer pairs from the post's "## Frequently asked
+    // questions" section (### or **bold?** questions), for FAQPage JSON-LD.
+    faqs: {
+      type: 'json',
+      resolve: (doc) => extractFaqs(doc.body.raw),
     },
     readTime: {
       type: 'string',

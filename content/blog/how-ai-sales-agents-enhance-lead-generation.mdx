@@ -7,19 +7,19 @@ author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
 metaTitle: "How AI Sales Agents Enhance Lead Generation | Implenix"
-metaDescription: "Where AI sales agents actually improve lead generation, speed-to-lead, qualification depth, cold-list reactivation, and where they fail."
+metaDescription: "How AI sales agents enhance lead generation: 90-second speed-to-lead, consistent qualification, compliant reactivation and 24/7 coverage, plus where they fail."
 heroImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Sales team analyzing lead generation dashboard"
 ---
 
 <Answer q="How do AI sales agents enhance lead generation?">
-AI sales agents improve lead generation in four measurable ways: sub-60-second callback on new inbound leads (versus the typical 71-minute human median, which is where most lead conversion is lost), consistent qualification depth on every lead (no variance across staff or shifts), automated reactivation of cold leads that human teams do not have capacity to work, and 24/7 coverage that captures leads outside business hours. They do not replace closing conversations, do not build long-term account relationships, and do not handle complex negotiation.
+AI sales agents improve lead generation in four measurable ways: sub-60-second callback on new inbound leads (versus the hours or days many teams take, which is where most lead conversion is lost), consistent qualification depth on every lead (no variance across staff or shifts), automated reactivation of cold leads that human teams do not have capacity to work, and 24/7 coverage that captures leads outside business hours. They do not replace closing conversations, do not build long-term account relationships, and do not handle complex negotiation.
 </Answer>
 
 Lead generation is where AI sales agents deliver their most
 easily-measurable ROI. The pattern is not about AI being
 "better at sales" than humans. It is about eliminating the
-operational gaps that let leads leak, the 71-minute callback
+operational gaps that let leads leak, the slow callback
 window, the inconsistent qualification, the aged CRM list
 nobody works. This piece is written for the head of sales or
 ops lead considering deployment, from someone who has shipped
@@ -30,11 +30,18 @@ are trackable.
 
 ### 1. Sub-60-second callback on new inbound
 
-Zillow, Realtor.com, and HubSpot's own studies show conversion
-drops sharply past a five-minute callback window. Practical
-human median in most operations sits at 71 minutes, well past
-the window where the lead is actively engaged. AI agents
-callback within 90 seconds, every time.
+The best-known research here is old but still holds up. In
+*The Short Life of Online Sales Leads*, Harvard Business Review
+reported that firms which contacted a web lead within an hour were
+nearly seven times as likely to qualify it as firms that waited even
+an hour longer. In the same audit, 23 percent of companies never
+responded to the test lead at all, and the average response time
+among those that did was 42 hours
+([HBR, 2011](https://hbr.org/2011/03/the-short-life-of-online-sales-leads)).
+
+The human teams I audit are faster than that, but rarely fast
+enough. AI agents call back within 90 seconds, every time,
+including at 9 PM on a Sunday.
 
 Impact I have measured: 60-90 percent higher lead-to-qualified-conversation rate on new inbound. Not "more leads", better conversion on the same leads because you actually
 caught them while they were still shopping.
@@ -143,6 +150,12 @@ Aged leads (90+ days) run through a 5-touch sequence over 21
 days. Two voice touches, three SMS touches. Explicit opt-out
 on every message. Recovers 4-7% as active conversations.
 
+This stage only runs on leads whose consent record covers calls
+using an AI or artificial voice and is still inside your consent
+policy. Old leads without that record get an email asking them to
+opt back in first. It is slower, and it is the only version I will
+build.
+
 Each stage is scoped, measurable, and can be turned on
 independently.
 
@@ -164,9 +177,14 @@ the math often does not work.
 
 ## Compliance considerations
 
-- **TCPA on outbound.** Cold outbound to consumer mobiles is
-  prohibited without prior express written consent. Reactivation
-  sequences run against opted-in lists only.
+- **TCPA on outbound.** Since the FCC's February 2024 ruling, an
+  AI-generated voice is an "artificial" voice under the TCPA, so an
+  AI sales call needs prior express written consent, whether or not
+  the lead filled out a form months ago
+  ([FCC](https://www.fcc.gov/document/fcc-makes-ai-generated-voices-robocalls-illegal)).
+  Your lead form should say, near the submit button, that the person
+  agrees to calls and texts, including AI or artificial-voice calls.
+  Reactivation sequences run against consented lists only.
 - **DNC compliance.** Automated checks against the national and
   state DNC registries before any outbound campaign.
 - **STOP handling.** Every SMS message honors STOP immediately.
@@ -175,8 +193,10 @@ the math often does not work.
 - **Identification.** The agent identifies as a virtual
   assistant, never as a human sales rep.
 
-Full outbound compliance details in my prior piece on
-/blog/ai-outbound-calling-guide.
+Full outbound compliance details are in my
+[AI outbound calling guide](/blog/ai-outbound-calling-guide),
+including what the call has to say and how fast opt-outs must be
+honored.
 
 ## When AI sales agents are the wrong investment
 
@@ -209,10 +229,22 @@ Human SDRs still make sense for complex qualification, account-based selling, an
 Simple ones (concerns about timing, questions about services)
 yes. Complex ones no, it books the human callback.
 
-**What is the typical setup cost?**
-$3,000-$8,000 for a real sales-agent deployment with proper
-qualification framework build, CRM integration, and outbound
-compliance layer.
+**What does an AI sales agent cost?**
+It depends on lead volume, the number of sequences and the CRM
+integration, so Implenix pricing is custom.
+[Book a call with a lead specialist](/contact) and you will get a
+number for your volume. Setup is live in 72 hours.
+
+**What is an AI SDR?**
+An AI sales development rep: an AI agent that does the top of the
+SDR job, calling or texting new leads, asking qualifying questions
+and booking meetings for a human closer. It does not run discovery
+on complex deals or negotiate.
+
+**Can AI sales agents generate leads on their own?**
+Not in the sense of creating demand. They convert more of the leads
+you already get and revive ones you already have. If your marketing
+produces no leads, an AI agent has nothing to work.
 
 **Can it work with Salesforce, HubSpot, GoHighLevel?**
 Yes, all three in production. Direct API integration for lead
@@ -224,7 +256,15 @@ The right first deployment for AI sales agents is instant-callback on inbound le
 (clear before/after conversion metrics), the fastest to
 implement, and the one with the strongest ROI in most
 businesses. Cold-list reactivation and post-consultation
-follow-up come next.
+follow-up come next. Our [AI follow-up](/solutions/ai-followup)
+covers those sequences.
+
+For industry examples, see the
+[AI receptionist for mortgage brokers](/ai-receptionist-for-mortgage-brokers)
+and [AI receptionist for real estate](/ai-receptionist-for-real-estate)
+pages. Once lead flow is clean, the same data feeds
+[AI sales forecasting](/blog/how-to-automate-sales-forecasting-with-ai-agents).
+You can hear the callback experience by [talking to Ron](/try-it).
 
 <Pull>
 AI sales agents do not sell better than good salespeople. They

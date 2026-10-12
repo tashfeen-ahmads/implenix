@@ -3,6 +3,7 @@ title: "AI agents for medspas: booking density, HIPAA, and what actually works"
 description: "Field notes on AI voice agents in medspa operations, service-specific intake, after-hours booking capture, HIPAA-safe transcript handling, and package retention."
 category: "Industry Guides"
 publishedAt: "2026-06-17"
+updatedAt: "2026-10-12"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
@@ -17,7 +18,7 @@ An AI agent for a medspa answers inbound booking calls 24/7, matches the caller'
 </Answer>
 
 Medspa inbound has a specific structural problem. Your best client
-call the practice at 8pm on a Wednesday to book their next Botox
+calls the practice at 8pm on a Wednesday to book their next Botox
 appointment, and your provider is either mid-treatment or off for
 the night. That one missed call is a booked appointment lost to the
 medspa down the street with a real-time booking widget. I have
@@ -81,6 +82,41 @@ service-specific intake, not any of the flashy stuff.
 - Pricing on treatments where the practice does not publish list
   prices. The agent references a range if the practice publishes
   one, otherwise it books a consultation.
+
+## The medspa AI agent landscape, and where voice fits
+
+Search "AI agents for medspas" and you will find practice
+management platforms now bundling a whole set of agents. Zenoti,
+for example, announced a
+[suite of purpose-built AI agents for medspa workflows](https://www.zenoti.com/press/zenoti-expands-its-ai-workforce-purpose-built-ai-agents-for-every-medspa-workflow)
+covering things like missed calls, lead response, and charting.
+It helps to separate the jobs before you buy anything:
+
+<ComparisonTable
+  columns={["What it does", "Who usually provides it"]}
+  rows={[
+    { label: "Voice agent: answers and books calls", cells: ["Answers live, books into your PMS, handles packages", "Independent voice vendor or your PMS add-on"] },
+    { label: "Lead response agent", cells: ["Calls or texts new web and ad leads within minutes", "Voice vendor or marketing platform"] },
+    { label: "Missed-call text-back", cells: ["Texts callers who hung up", "Most PMS and phone platforms"] },
+    { label: "AI scribe and charting", cells: ["Drafts treatment notes", "PMS or clinical documentation tools"] },
+    { label: "Payments and disputes", cells: ["Deposits, chargeback paperwork", "PMS or payment processor"] }
+  ]}
+/>
+
+Implenix builds the first two. My honest advice: if your PMS
+already offers a native receptionist, test it against your real
+call mix before you look elsewhere. Where I usually see practices
+come to a dedicated voice agent is when the native option cannot
+handle loose service language ("the one that lasts longer than
+Botox"), multi-provider routing, or a stack that spans more than
+one system.
+
+Two questions to ask any vendor, native or not:
+
+1. **Is this specific receptionist product covered by your BAA?**
+   Not the parent platform. The product that hears the call.
+2. **Is the booking integration native or a third-party connector?**
+   Connectors add a failure point between the call and the slot.
 
 ## A real after-hours booking call, roughly transcribed
 
@@ -219,7 +255,8 @@ does not publish, the agent books a complimentary consultation
 and defers pricing to the provider.
 
 **Can the agent take payment for the deposit?**
-Yes, over SMS via a Stripe or Square terminal link. Not by voice, card-not-present PCI compliance for voice is a headache I decline
+Yes, over SMS via a Stripe or Square terminal link. Not by voice.
+Card-not-present PCI compliance for voice is a headache I decline
 to inherit.
 
 **What about existing clients calling for medication questions or
@@ -232,6 +269,21 @@ Captures the service of interest, prior treatment history at a
 high level, and any specific provider preference, then books the
 consultation on the appropriate provider's calendar.
 
+**Can it follow up on Instagram and Google ad leads?**
+Yes. A new form fill or ad lead can trigger a call within minutes,
+with SMS if unanswered. For consultation-driven services like
+filler and laser packages, that first-touch speed matters more
+than anything in the script.
+
+**Will clients know they are talking to AI?**
+The agent identifies itself as the practice's virtual assistant in
+the greeting. I do not build agents that pretend to be human, and
+in aesthetics the trust cost of getting caught is too high.
+
+**How long does setup take?**
+Live in 72 hours from kickoff, including service catalog mapping,
+PMS integration, and your sign-off on test calls.
+
 ## Where a medspa agent is the wrong fit
 
 - Solo aesthetician doing under 100 bookings per month.
@@ -242,10 +294,20 @@ consultation on the appropriate provider's calendar.
 
 ## Where to go from here
 
-Call the number in the site header and ask the agent to book
-a hypothetical Botox appointment for you. It is the same agent
-running on customer practices, the flow will tell you more about
-fit than any vendor demo can.
+[Talk to Ron](/try-it) and ask him to book a hypothetical Botox
+appointment for you. It is the same technology running on customer
+practices, and the flow will tell you more about fit than any
+vendor demo can.
+
+For the compliance side, read my notes on
+[AI voice agents in healthcare](/blog/ai-voice-agents-healthcare-medicine)
+and on [handling sensitive conversations](/blog/can-ai-handle-sensitive-conversations).
+To put a dollar figure on your missed calls, use the
+[missed-call cost formula](/blog/how-to-calculate-your-missed-call-cost).
+The full product scope lives on the
+[AI receptionist for med spas](/ai-receptionist-for-med-spas) page,
+and when you want it scoped for your practice,
+[book a call with a lead specialist](/contact).
 
 <Pull>
 The medspa agent that pays for itself is the one that answers a

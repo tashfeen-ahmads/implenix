@@ -1,170 +1,187 @@
 ---
 title: "How to create an AI agent for your nonprofit (9-step guide)"
-description: "A working guide to deploying an AI voice agent in a nonprofit, donor and volunteer intake, mission-appropriate scope, and the ethical guardrails that matter."
+description: "How to create an AI agent for a nonprofit: choose the right agent type, set ethical hard-stops, connect your donor CRM, pilot safely, and keep humans on the calls that need them."
 category: "Operator Playbooks"
 publishedAt: "2026-08-19"
+updatedAt: "2026-10-12"
 author: "Tashfeen Ahmad"
 authorRole: "Founder, Implenix · Voice AI deployment lead"
 authorBio: "Tashfeen Ahmad is the founder of Implenix and has spent the last six years shipping AI voice agents into HVAC, dental, legal, real estate, and medspa operations. He writes from live deployments, call recordings, and post-mortem reviews rather than product-sheet claims."
-metaTitle: "How to Create an AI Agent for Your Nonprofit | Implenix"
-metaDescription: "9-step guide to deploying AI voice for your nonprofit, donor intake, volunteer coordination, mission-scope, and the ethical rules that matter."
+metaTitle: "How to Create an AI Agent for Your Nonprofit (9 Steps)"
+metaDescription: "A 9-step guide to creating an AI agent for your nonprofit: pick the agent type, set ethical hard-stops, connect your donor CRM, pilot, keep humans in the loop."
 heroImage: "https://images.unsplash.com/photo-1607827447604-d9a8c439186e?w=1600&q=80&auto=format&fit=crop"
 heroImageAlt: "Nonprofit team coordinating volunteers and donor calls"
 howToTotalTime: "PT4H"
 howToSteps:
-  - name: "Map your inbound call categories"
-    text: "List every type of inbound call, donor inquiries, volunteer interest, program enrollment, beneficiary support, event registration, press, vendor. Estimate monthly volume of each. This becomes your routing map."
+  - name: "Map your inbound requests"
+    text: "List every type of inbound call or message, donor inquiries, volunteer interest, program enrollment, beneficiary support, event registration, press, vendor. Log one to two weeks if you do not know the volume of each. This becomes your routing map."
   - name: "Define the ethical hard-stops"
-    text: "Identify which call categories AI must NEVER handle. For most nonprofits this includes crisis calls, beneficiary distress, grief support, and bereavement. These route to humans within 30 seconds."
-  - name: "Match to the right vendor tier"
-    text: "Nonprofits under 100 calls/month use Tier 1 at $50-200/mo. 200+ calls with CRM integration use Tier 2 at $500-1,500/mo. Most reputable AI voice vendors offer nonprofit pricing, ask directly."
+    text: "Identify which requests AI must never handle. For most nonprofits this includes crisis calls, beneficiary distress, grief support, domestic violence intake, and conversations involving children. These route to humans immediately."
+  - name: "Choose build versus done-for-you"
+    text: "Decide whether staff will build the agent on a no-code platform or a vendor will build and run it. Match the choice to your staff time, call volume, and how sensitive the conversations are. Ask every vendor about nonprofit pricing."
   - name: "Pick the CRM integration target"
-    text: "Salesforce Nonprofit Cloud, Bloomerang, DonorPerfect, Neon CRM, or Kindful. Ask the vendor for native integration status. Native = call data lands on the right donor or volunteer record."
+    text: "Salesforce Nonprofit Cloud, Bloomerang, DonorPerfect, Neon CRM, or Little Green Light. Ask the vendor whether the integration is native or webhook-based. Native means call data lands on the right donor or volunteer record."
   - name: "Write donor and volunteer intake scripts"
-    text: "Donor: name, contact, interest area, gift level intent, urgency. Volunteer: name, contact, skills, availability, area of interest. Vendor builds from your inputs but you own the content."
+    text: "Donor: name, contact, interest area, gift intent, urgency. Volunteer: name, contact, skills, availability, area of interest. The vendor builds from your inputs but you own the content."
   - name: "Define escalation rules explicitly"
-    text: "Major donor calls (gift threshold you set) route to development director. Crisis calls route to program staff. Press calls route to executive director. Every rule specified before deployment."
+    text: "Major donor calls above a threshold you set route to the development director. Crisis calls route to program staff. Press calls route to the executive director. Every rule has a named backup before go-live."
   - name: "Run a parallel pilot"
     text: "Deploy on a single phone line or extension for 2-4 weeks while existing intake continues on the main line. Review every call recording to tune script and routing."
   - name: "Cut over and monitor"
-    text: "After the pilot, move the agent to the main inbound line. Silent-monitor the first 72 hours. Review 20-30 flagged calls per week for the first month to sustain quality."
+    text: "After the pilot, move the agent to the main line. Have a staff member listen live for the first 72 hours, and review flagged calls weekly for the first month."
   - name: "Calibrate quarterly"
-    text: "Every 90 days, review agent performance metrics (capture rate, escalation rate, donor satisfaction on AI-handled calls) and adjust script and routing accordingly."
+    text: "Every 90 days, review capture rate, escalation rate, incidents, and donor and volunteer feedback on AI-handled calls, then adjust script, routing, and scope."
 ---
 
 <Answer q="How do I create an AI agent for my nonprofit?">
-Create an AI agent for your nonprofit in 9 steps: map your inbound call categories, define ethical hard-stops (calls AI must never handle, crisis, bereavement, beneficiary distress), match to the right vendor tier, pick your CRM integration target, write donor and volunteer intake scripts, define escalation rules, run a parallel pilot before cutover, silent-monitor the first 72 hours after go-live, and calibrate quarterly. Most nonprofits complete this in 4-6 weeks including the pilot. Cost typically $50-500/month depending on volume and integration depth.
+Start with one narrow job, such as donor questions or volunteer sign-ups. Map your inbound requests, list the conversations AI must never handle (crisis, grief, beneficiary distress), choose a no-code builder or a done-for-you vendor, connect your donor CRM, write intake scripts and escalation rules, pilot on one line, then monitor and recalibrate quarterly.
 </Answer>
 
 Nonprofits are one of the most under-served categories in AI
-voice deployment. Small staff. Meaningful call volume across
-several categories (donors, volunteers, beneficiaries, events).
-Sensitive interactions where empathy is the whole point. AI
-voice done right removes the operational drag that consumes
-development-team time and lets humans focus on mission work. AI
-voice done wrong damages donor relationships and can cause real
-harm on beneficiary calls. This is the framework for doing it
-right, adapted from the deployments I have watched work in the
-nonprofit space.
+deployment. Small staff. Steady volume across several kinds of
+request (donors, volunteers, beneficiaries, events). Sensitive
+conversations where empathy is the whole point. An AI agent done
+right removes the operational drag that eats development and
+program time. Done wrong, it damages donor relationships and can
+cause real harm on beneficiary calls. This is the framework I use,
+written mostly for phone and voice, with notes on the other agent
+types.
 
-## Why AI voice fits nonprofits (when scoped correctly)
+## First: which kind of AI agent does your nonprofit need?
 
-The typical nonprofit call profile:
-- **40-60%** donor inquiries and gift processing questions.
-- **15-25%** volunteer inquiries and coordination.
-- **10-20%** program-enrollment and beneficiary intake.
-- **5-15%** event registration.
-- **5-10%** press, vendor, and other administrative.
+"AI agent" covers three different things. Pick the one that matches
+the job before you pick a tool.
 
-Most of that volume is repeatable intake that consumes
-development staff time better spent on relationship-building
-with major donors and program work with beneficiaries. AI
-handles the routine intake and routes the complex.
+<ComparisonTable
+  highlightColumn={-1}
+  columns={["Website or chat agent", "Internal staff assistant", "Voice agent on your phone line"]}
+  rows={[
+    { label: "Best for", cells: ["FAQs, event info, volunteer sign-up", "Grant drafts, reports, donor research", "Donor, volunteer, and program calls"] },
+    { label: "Who talks to it", cells: ["Public", "Staff only", "Public"] },
+    { label: "Typical build", cells: ["No-code chat builder", "Copilot, ChatGPT, or a no-code agent builder", "Voice platform or done-for-you vendor"] },
+    { label: "Needs CRM integration", cells: ["Helpful", "Read access", "Yes, to log calls"] },
+    { label: "Risk if it gets it wrong", cells: ["Medium", "Low, staff review it", "Higher, live conversations"] }
+  ]}
+/>
 
-The categories that must NEVER route to AI, crisis calls,
-beneficiary distress, grief support, get faster human
-attention when AI handles the routine that used to bury the
-same humans.
+If you want to build it yourself, no-code agent builders and tools
+like Microsoft Copilot Studio let staff create chat or internal
+agents that connect to email and a CRM. That works well for internal
+helpers and website FAQs. Live phone conversations with donors and
+beneficiaries are harder to get right, which is why many
+organizations use a vendor who builds and runs that part. The nine
+steps below apply either way.
 
-## The 9-step deployment framework
+## Why AI agents fit nonprofits (when scoped correctly)
 
-### Step 1: map inbound call categories
+Most nonprofit inbound falls into a few buckets: donor questions and
+gift processing, volunteer interest and scheduling, program
+enrollment, event registration, and administrative calls (press,
+vendors). Your mix will be your own, so measure it in Step 1 rather
+than trusting a generic breakdown.
 
-Before anything else, list every type of inbound call and
-estimate monthly volume. If you do not know, log a week of
-calls and categorize.
+Most of that volume is repeatable intake that takes development
+staff away from major-donor relationships and program staff away
+from beneficiaries. AI handles the routine and routes the complex.
+
+The categories that must never go to AI (crisis calls, beneficiary
+distress, grief support) get faster human attention when the routine
+no longer buries the same people.
+
+## The 9-step framework
+
+### Step 1: map your inbound requests
+
+List every type of inbound call or message and estimate monthly
+volume. If you do not know, log one to two weeks and categorize.
 
 **Typical nonprofit categories:**
-- Donor inquiry (new donor asking about mission or how to
-  give)
-- Donor gift processing (existing donor making or updating
-  gift)
-- Major donor coordination (larger gift discussions)
-- Volunteer interest (someone asking how to get involved)
-- Volunteer coordination (existing volunteer scheduling)
-- Program enrollment (beneficiary or family enrolling in
-  services)
-- Beneficiary support (existing program participant with a
-  question)
+- Donor inquiry (someone new asking about the mission or how to give)
+- Donor gift processing (an existing donor making or updating a gift)
+- Major donor coordination
+- Volunteer interest
+- Volunteer scheduling
+- Program enrollment
+- Beneficiary support (a current participant with a question)
 - Beneficiary crisis (immediate need or distress)
 - Event registration and questions
 - Press and media
-- Vendor and partner
+- Vendors and partners
 - General information
 
-Each category will get different handling.
+Each category gets different handling.
 
 ### Step 2: define ethical hard-stops
 
-Non-negotiable list of call categories AI must never handle.
-For most nonprofits:
+A non-negotiable list of conversations AI must never handle. For
+most nonprofits:
 
 - **Any beneficiary in crisis or distress.** Immediate warm
-  transfer to program staff, or after-hours protocol.
+  transfer to program staff, or the after-hours protocol.
 - **Grief support and bereavement.** Human, always.
 - **Domestic violence intake.** Trained specialists only.
-- **Mental health crisis.** Immediate transfer, 988 warm-handoff if after-hours.
-- **Any beneficiary conversation involving children.** Human
-  handling for both safety and mandated-reporter considerations.
+- **Mental health crisis.** Immediate transfer; after hours, a warm
+  handoff to the 988 Suicide and Crisis Lifeline.
+- **Any beneficiary conversation involving children.** Human, for
+  safety and mandated-reporter reasons.
 
 For faith-based nonprofits, add:
 - **Pastoral care conversations.** Human clergy, always.
 - **Prayer requests during crisis.** Human staff.
 
-Every deployment starts with this list. It is the difference
-between a deployment that helps mission and one that harms it.
+Every deployment starts with this list. It is the difference between
+an agent that helps the mission and one that harms it. I go deeper
+on detection and handoff in
+[can AI handle sensitive conversations](/blog/can-ai-handle-sensitive-conversations)
+and [can AI agents identify vulnerable customers](/blog/can-ai-agents-identify-vulnerable-customers).
 
-### Step 3: match to vendor tier
+### Step 3: choose build versus done-for-you
 
-**Under 100 calls per month:** Tier 1 (DIY templated), $50-200/
-month. Fits small nonprofits with basic donor and volunteer
-intake needs.
+**Build it yourself** if you have a staff member with time to learn
+a no-code platform, the agent is internal or website-only, and the
+conversations are low-risk. You own every update and every failure.
 
-**100-500 calls per month with CRM integration:** Tier 2
-(platform + agency), $500-1,500/month. Fits most mid-sized
-nonprofits.
+**Use a done-for-you vendor** if the agent will answer your phone
+line, talk to beneficiaries, or needs CRM integration you cannot
+wire yourself. The vendor builds, tests, and maintains it from your
+scripts and rules.
 
-**500+ calls per month or complex program-intake workflows:**
-Tier 3 or specialized nonprofit vendor. Budget accordingly.
+Either way, ask about nonprofit pricing directly. Many software
+companies offer it, but terms vary. For how vendors price AI agents
+in general, see
+[how much an AI agent costs](/blog/how-much-does-ai-agent-cost).
 
-Most reputable AI voice vendors offer nonprofit pricing (30-
-50% off standard). Ask explicitly. Many vendors also offer
-free or discounted service to registered 501(c)(3)
-organizations for the first year.
+### Step 4: pick your CRM integration target
 
-### Step 4: pick CRM integration target
+Donor-record hygiene matters. The agent should write call data to
+the right donor or volunteer record automatically.
 
-Nonprofit CRMs matter for donor-record hygiene. The AI should
-write call data to the right donor record automatically.
+**Common nonprofit CRMs:**
+- Salesforce Nonprofit Cloud
+- Bloomerang
+- DonorPerfect
+- Neon CRM
+- Little Green Light
+- Custom or legacy systems
 
-**Common nonprofit CRMs and integration status:**
-- **Salesforce Nonprofit Cloud:** most vendors have native
-  integration.
-- **Bloomerang:** widely supported.
-- **DonorPerfect:** supported by most Tier 2 vendors.
-- **Neon CRM:** supported.
-- **Kindful:** supported.
-- **Little Green Light:** limited native support, use webhook.
-- **Custom or legacy systems:** webhook integration typically
-  works.
-
-Ask the vendor for their specific integration status with your
-CRM. Native integration is worth paying more for; webhook
-integration works but requires more maintenance.
+Ask each vendor whether their integration with your CRM is native or
+webhook-based. Native integration is worth paying for. Webhooks work
+but need more maintenance. More on this in
+[integrating AI agents with CRM, ERP, and BI](/blog/ai-agent-integration-crm-erp-bi).
 
 ### Step 5: write intake scripts
 
-The vendor will build these but you own the content. Draft
-before deployment kickoff.
+The vendor or builder implements these, but you own the content.
+Draft them before kickoff.
 
 **Donor inquiry script:**
 - Name and contact
 - How they heard about the organization
-- Interest area (mission, specific program, memorial gift,
+- Interest area (mission, a specific program, a memorial gift,
   planned giving)
-- Gift level intent (approximate range, not specific amount)
-- Urgency (this-week, this-month, exploring)
-- Follow-up preference (call, email, in-person)
+- Gift intent (an approximate range, never pressure for an amount)
+- Timing (this week, this month, exploring)
+- Follow-up preference (call, email, in person)
 
 **Volunteer inquiry script:**
 - Name and contact
@@ -172,167 +189,166 @@ before deployment kickoff.
 - Availability (hours per week, days, time of day)
 - Area of interest
 - Whether they have volunteered before
-- Any physical or scheduling constraints
+- Any access or scheduling needs
 
-**Program enrollment script:** varies enormously by program
-type, health services, food assistance, education, housing
-each have different intake requirements. Work with program
-staff to define.
+**Program enrollment script:** varies enormously by program. Health
+services, food assistance, education, and housing all have different
+intake requirements. Write these with program staff.
+
+Tone matters as much as fields. See
+[how to write prompts for AI voice agents](/blog/how-to-write-prompts-for-ai-voice-agents)
+for keeping the agent in your organization's voice.
 
 ### Step 6: define escalation rules explicitly
 
-Every deployment needs the "who gets what" rules written
-before go-live.
+Write the "who gets what" rules before go-live.
 
 **Standard nonprofit escalations:**
-- Major donor inquiries above your threshold → development
-  director within 24 hours.
-- Any planned-giving conversation → planned giving specialist.
-- Volunteer with specialized skills (attorneys, medical
-  professionals) → volunteer coordinator directly.
-- Program enrollment during business hours → program intake
-  staff.
-- Beneficiary crisis or distress → immediate warm transfer
-  to program staff, or after-hours crisis protocol.
-- Press inquiries → executive director or communications lead.
-- Vendor or partner inquiries → operations manager.
+- Major donor inquiries above your threshold: development director
+  within 24 hours.
+- Planned giving conversations: planned giving lead.
+- Volunteers with specialized skills (attorneys, medical
+  professionals): volunteer coordinator directly.
+- Program enrollment during business hours: program intake staff.
+- Beneficiary crisis or distress: immediate warm transfer to program
+  staff, or the after-hours crisis protocol.
+- Press: executive director or communications lead.
+- Vendors and partners: operations manager.
 
-Write these as explicit rules with named backup escalation
-paths. "The development director" is not enough, the rule
-needs to say what happens if the development director is
-unavailable.
+Every rule needs a named backup. "The development director" is not
+enough; the rule has to say what happens when they are unavailable.
 
 ### Step 7: run a parallel pilot
 
-Do not cut over the main phone line on day one. Deploy the AI
-on a secondary line or extension for 2-4 weeks first.
+Do not cut over the main line on day one. With Implenix the agent
+itself is live in 72 hours, but run it on a secondary line or
+extension for 2-4 weeks first.
 
 During the pilot:
-- Review every single call recording.
-- Score each on: did the AI handle correctly, did the
-  escalation fire correctly, did the donor / volunteer /
-  beneficiary have a good experience.
-- Adjust script and routing based on findings.
-- Involve development staff and program staff in the review.
+- Review every call recording.
+- Score each call: handled correctly? Escalation fired correctly?
+  Good experience for the donor, volunteer, or beneficiary?
+- Adjust script and routing.
+- Involve development and program staff in the review.
 
-The pilot uncovers issues that will not appear in vendor
-testing.
+The pilot finds problems vendor testing never will.
 
 ### Step 8: cut over and monitor
 
-After successful pilot, move the agent to the main inbound
-line. Silent-monitor for at least 72 hours, have a designated
-staff member listen live to catch problems.
-
-Review 20-30 flagged calls per week for the first month.
-Every escalation failure gets investigated immediately.
+After a clean pilot, move the agent to the main line. For the first
+72 hours, have a staff member listen live. For the first month,
+review a sample of flagged calls every week. Investigate every
+escalation failure immediately.
 
 ### Step 9: calibrate quarterly
 
-Every 90 days review:
-- Total call volume handled by AI.
-- Category breakdown vs original mapping (has the mix
-  changed?)
-- Capture rate (calls with defined outcome achieved).
-- Escalation rate and escalation-outcome tracking.
-- Donor and volunteer satisfaction on AI-handled calls (survey
-  a sample).
-- Any incidents or near-incidents to review.
+Every 90 days, review:
+- Volume handled by the agent.
+- Category mix versus your Step 1 map.
+- Capture rate (calls that reached a defined outcome).
+- Escalation rate and what happened after each escalation.
+- Donor and volunteer feedback on AI-handled calls (survey a sample).
+- Any incidents or near-misses.
 
-Adjust script, routing, and scope based on findings.
+Adjust script, routing, and scope from what you find. If you want a
+governance structure for this, the
+[NIST AI Risk Management Framework](https://www.nist.gov/itl/AI-risk-management-framework)
+is free, voluntary, and organized around four functions (govern,
+map, measure, manage) that scale down to a small organization.
 
 ## Ethical considerations specific to nonprofits
 
 Beyond the hard-stop list:
 
-- **Mission-alignment disclosure.** The AI represents your
-  nonprofit. It should reflect your values in tone, language,
-  and approach. Vendor-standard AI tone is often not the
-  right fit.
-- **Beneficiary confidentiality.** Any beneficiary
-  interaction handled by AI must have the same confidentiality
-  standards as a human interaction. Vendor BAAs where PHI is
+- **Disclosure.** The agent says it is a virtual assistant. Donors
+  and beneficiaries should never wonder.
+- **Mission alignment.** The agent represents your nonprofit. Its
+  tone, language, and approach should reflect your values. A
+  vendor's default tone is often wrong for you.
+- **Beneficiary confidentiality.** AI-handled beneficiary
+  interactions need the same confidentiality as human ones, with
+  business associate agreements where health information is
   involved.
-- **Donor privacy.** Donor giving levels and personal details
-  are sensitive. Access controls on recordings and
-  transcripts.
-- **Board and volunteer trust.** Inform your board and key
-  volunteers about the deployment. Surprise "we replaced our
-  intake staff with AI" news damages trust.
-- **Cultural competency.** For nonprofits serving specific
-  communities, the AI should reflect linguistic and cultural
-  norms of that community.
+- **Donor privacy.** Giving levels and personal details are
+  sensitive. Restrict access to recordings and transcripts.
+- **Outbound calls.** AI-voice calls are covered by the TCPA, so
+  donor outreach calls need the right consent. See my
+  [AI outbound calling guide](/blog/ai-outbound-calling-guide).
+- **Board and volunteer trust.** Tell your board and key volunteers
+  before launch. Surprise news damages trust.
+- **Cultural competence.** If you serve specific communities, the
+  agent should reflect their language and norms.
 
-## What the deployment costs and how to fund it
+For the broader picture, see
+[the ethical considerations of AI agents](/blog/ethical-considerations-ai-agents).
 
-**Setup fees:** typically $1,500-6,000 for a Tier 2
-deployment. Some vendors waive for 501(c)(3).
+## How nonprofits fund it
 
-**Monthly:** $200-1,500 depending on tier and volume.
-
-**Funding sources nonprofits use:**
-- General operating budget (development-team efficiency line
-  item).
+Common funding sources:
+- General operating budget, framed as staff capacity.
 - Board-designated funds for operational improvement.
-- Technology grants (some foundations fund AI adoption in
-  nonprofits specifically).
-- Vendor pro-bono or discounted programs.
+- Technology grants from foundations that fund nonprofit
+  infrastructure.
+- Vendor nonprofit or discounted programs.
 
-The ROI framing for a nonprofit board: reclaimed staff time
-gets redirected to mission work and major-donor cultivation.
-The financial case is usually less about "cost savings" and
-more about "capacity gained for mission."
+The board framing: reclaimed staff time goes to mission work and
+major-donor relationships. The case is usually less about saving
+money and more about capacity gained for the mission.
 
 ## What NOT to deploy in a nonprofit
 
-- Any AI that pushes for donations aggressively. Feels
-  transactional; damages donor relationships.
-- Any AI that handles beneficiary crisis without immediate
-  human handoff.
-- Any AI without CRM integration (creates data hygiene
-  nightmare across development, program, and volunteer teams).
-- Any AI whose voice does not match your organization's
-  cultural presentation.
+- An agent that pushes hard for donations. It feels transactional
+  and damages relationships.
+- An agent that handles beneficiary crisis without immediate human
+  handoff.
+- An agent with no CRM integration, which creates a data mess across
+  development, program, and volunteer teams.
+- An agent whose voice does not fit your organization or community.
 
 ## Frequently asked questions
 
-**Will donors mind talking to AI?**
-Most will not for routine inquiries (giving questions, event
-info, basic program info). Some major donors specifically
-expect human contact, the escalation rules should route them
-appropriately.
+**Can a nonprofit build an AI agent without coding?**
+Yes, for chat and internal agents. No-code builders and tools like
+Microsoft Copilot Studio let staff create agents that answer FAQs or
+draft documents. Phone agents that talk to donors and beneficiaries
+need more testing and integration work, so many nonprofits use a
+vendor for that part.
 
-**Is this HIPAA-compliant for health-focused nonprofits?**
-Can be, with the right vendor stack (BAAs across the vendor
-chain, encrypted transit and storage, access controls).
-Confirm before deploying.
+**Will donors mind talking to AI?**
+For routine questions (how to give, event details, basic program
+info), most do not, if the agent is clear that it is a virtual
+assistant and quick to hand off. Some major donors expect a person,
+and your escalation rules should route them.
+
+**Can it be HIPAA-compliant for health-focused nonprofits?**
+It can, with business associate agreements across the vendor chain,
+encryption, and access controls. Confirm before deploying.
 
 **Can it handle Spanish-language callers?**
-Yes, cleanly. Also several other languages depending on model.
-For nonprofits serving multilingual populations, language
-support is non-negotiable.
+Yes. Several other languages too, depending on the model. If you
+serve multilingual communities, language support is non-negotiable,
+and every language needs the same hard-stops.
 
 **How do we explain this to our board?**
-Frame it as operational efficiency that redeploys staff to
-higher-value mission work. Show the specific hours reclaimed
-and where they will go.
+As capacity: staff hours moved from routine intake to mission work.
+Show which hours and where they will go.
 
-**What about very small nonprofits (1-3 staff)?**
-For nonprofits with under 50 calls per month, manual handling
-may still be the right answer. AI voice makes sense once volume
-is meaningful enough to justify the monthly cost.
+**What about very small nonprofits?**
+With very low call volume, a person answering may still be the right
+answer. Start with a website or internal agent, and revisit voice
+when volume grows.
 
 ## Where to go from here
 
-Do the call-category mapping (Step 1) this week. Categorize
-one week of inbound calls. That alone will tell you whether the
-volume and mix justify a deployment. If yes, request pricing
-from two Tier 2 vendors with nonprofit pricing programs and
-run a discovery call.
+Do Step 1 this week. Categorize one to two weeks of inbound calls
+and messages. That alone tells you whether the volume and mix
+justify an agent, and which type. If a phone agent makes sense,
+[book a call](/contact) with a lead specialist and bring your
+category map.
 
 <Pull>
-AI voice for nonprofits is not about replacing the humans who
-do mission work. It is about removing the routine intake that
-buries them so they can spend more time on the parts of the
-job that require a person.
+AI agents for nonprofits are not about replacing the people who do
+mission work. They are about removing the routine intake that buries
+them, so they can spend more time on the parts of the job that need
+a person.
 </Pull>

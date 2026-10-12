@@ -25,7 +25,7 @@ export const TOPICS: BlogTopic[] = [
     name: 'Agentic AI',
     heading: 'Agentic AI: what it is, how it works, where it fits',
     intro:
-      'Everything Implenix has published about agentic AI, what the category actually means in 2026, the seven types of agents, how RAG + LLM + MCP fit together, how agents learn from feedback loops, and the ethical + workplace implications.',
+      'Everything Implenix has published about agentic AI, what the category actually means in 2026, the five classic types of agents, how RAG + LLM + MCP fit together, how agents learn from feedback loops, and the ethical + workplace implications.',
     metaTitle: 'Agentic AI Hub, Explained + Deployed | Implenix',
     metaDescription:
       'Agentic AI explained plainly, types of agents, RAG + LLM + MCP architecture, feedback loops, and workplace impact. Implenix operator notes.',
@@ -39,6 +39,9 @@ export const TOPICS: BlogTopic[] = [
       'workplace-ai-agents-employee-perspective',
       'ethical-considerations-ai-agents',
       'agentic-reasoning-ai-doctor',
+      'how-agentic-ai-improves-operational-efficiency',
+      'who-invented-ai-agents',
+      'does-google-have-an-ai-agent',
     ],
   },
   {
@@ -59,6 +62,7 @@ export const TOPICS: BlogTopic[] = [
       'ai-agents-for-finance',
       'ai-voice-agents-healthcare-medicine',
       'agentic-ai-retail-personalization',
+      'how-ai-agents-will-change-cancer-research-oncology',
     ],
   },
   {
@@ -78,6 +82,7 @@ export const TOPICS: BlogTopic[] = [
       'how-to-automate-sales-forecasting-with-ai-agents',
       'why-callers-hang-up-before-reaching-anyone',
       'ai-outbound-calling-guide',
+      'how-ai-sales-agents-enhance-lead-generation',
     ],
   },
   {
@@ -100,6 +105,29 @@ export const TOPICS: BlogTopic[] = [
       'call-center-automation',
       'can-ai-handle-sensitive-conversations',
       'ai-agent-integration-crm-erp-bi',
+      'what-is-a-voice-ai-agent-for-business-phone-systems',
+      'how-ai-enhances-agent-productivity-customer-service',
+      'how-ai-agents-recognize-human-emotions',
+      'can-ai-agents-identify-vulnerable-customers',
+    ],
+  },
+  {
+    slug: 'ai-automation',
+    name: 'AI automation',
+    heading: 'AI agents for business automation',
+    intro:
+      'How AI agents take over repetitive operations work: connecting to your CRM, ERP and BI stack, keeping data accurate, automating analysis and forecasting, and learning processes without code.',
+    metaTitle: 'AI Agents for Business Automation | Implenix',
+    metaDescription:
+      'How AI agents automate repetitive work, connect to CRM, ERP and BI systems, keep data accurate, and handle analysis and forecasting. Practical guides.',
+    primaryKeyword: 'ai agents automation',
+    postSlugs: [
+      'how-to-automate-repetitive-tasks-using-ai-agents',
+      'ai-agent-integration-crm-erp-bi',
+      'how-ai-agents-improve-data-accuracy',
+      'how-to-use-ai-agents-to-automate-data-analysis',
+      'how-to-automate-sales-forecasting-with-ai-agents',
+      'how-ai-agents-learn-processes-without-code',
     ],
   },
 ];
