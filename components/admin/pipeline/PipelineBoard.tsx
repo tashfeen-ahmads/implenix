@@ -18,7 +18,8 @@ import {
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import { Stat, TableWrap, inputClass, tdClass, thClass } from '@/components/admin/ui';
 import { errorMessage, postJson } from '@/components/admin/outreach/shared';
-import { ClientCardView, ContactCardView, type DragPayload } from './PipelineCards';
+import { ClientCardView, ContactCardView, ScoreChip, type DragPayload } from './PipelineCards';
+import { leadScore } from '@/lib/pipeline/score';
 import { MoveDialog, type MoveOptions, type PendingMove } from './MoveDialog';
 import {
   PAGE_SIZE,
@@ -62,6 +63,7 @@ function writeLayout(l: Layout) {
   }
 }
 
+const BULK = '__bulk__';
 const OPEN_SALES = new Set(['new', 'call_booked', 'no_show', 'discovery_done', 'proposal_sent', 'negotiation']);
 
 export function PipelineBoard({
@@ -108,6 +110,7 @@ export function PipelineBoard({
   const [service, setService] = useState('');
   const [owner, setOwner] = useState('');
   const [campaign, setCampaign] = useState('');
+  const [sort, setSort] = useState<'recent' | 'score'>('recent');
   const filtering = Boolean(query.trim() || service || owner || campaign);
 
   const [drag, setDrag] = useState<DragPayload | null>(null);
@@ -149,7 +152,12 @@ export function PipelineBoard({
   );
 
   const cardsFor = (col: Column) => ({
-    contacts: col.contactStage ? visibleContacts.filter((c) => c.stage === col.contactStage) : [],
+    contacts: col.contactStage
+      ? (() => {
+          const list = visibleContacts.filter((c) => c.stage === col.contactStage);
+          return sort === 'score' ? [...list].sort((a, b) => leadScore(b).score - leadScore(a).score) : list;
+        })()
+      : [],
     clients: col.clientStage ? visibleClients.filter((c) => c.stage === col.clientStage) : [],
   });
   const totalFor = (col: Column) => {
@@ -238,6 +246,56 @@ export function PipelineBoard({
       setCounts(prevCounts);
       setStatus(`Could not move ${name}: ${errorMessage(err)}`);
       setPending(null);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // ── Bulk (list view) ────────────────────────────────────────────
+  const [bulkItems, setBulkItems] = useState<BulkItem[]>([]);
+  const bulkMove = (items: BulkItem[], to: string) => {
+    const col = COLUMN_BY_ID.get(to);
+    if (!col || !items.length) return;
+    const ask: PendingMove['ask'] | null =
+      col.clientStage === 'lost' ? 'lost' : col.id === 'nurture' ? 'nurture' : col.contactStage === 'unsubscribed' ? 'unsubscribe' : null;
+    setBulkItems(items);
+    if (ask) setPending({ kind: items[0].kind, id: BULK, name: `${items.length} cards`, to, ask });
+    else void runBulk(items, to, {});
+  };
+  const runBulk = async (items: BulkItem[], to: string, opts: MoveOptions) => {
+    const col = COLUMN_BY_ID.get(to)!;
+    setBusy(true);
+    let ok = 0;
+    const failed: string[] = [];
+    for (const it of items) {
+      try {
+        await postJson('/api/admin/pipeline/move', { kind: it.kind, id: it.id, to, ...opts });
+        ok++;
+      } catch (err) {
+        failed.push(`${nameOf(it.kind, it.id)}: ${errorMessage(err)}`);
+      }
+    }
+    setBusy(false);
+    setPending(null);
+    setStatus(`Moved ${ok} of ${items.length} to ${col.label}.${failed.length ? ` Not moved: ${failed.slice(0, 3).join('; ')}${failed.length > 3 ? '…' : ''}` : ''}`);
+    router.refresh();
+  };
+  const bulkOwner = async (items: BulkItem[], ownerId: string | null) => {
+    setBusy(true);
+    const db = supabaseBrowser();
+    const ids = (k: BulkItem['kind']) => items.filter((i) => i.kind === k).map((i) => i.id);
+    try {
+      const results = await Promise.all([
+        ids('client').length ? db.from('clients').update({ owner_id: ownerId }).in('id', ids('client')) : null,
+        ids('contact').length ? db.from('contacts').update({ owner_id: ownerId }).in('id', ids('contact')) : null,
+      ]);
+      const err = results.find((r) => r?.error)?.error;
+      if (err) throw new Error(err.message);
+      const who = ownerId ? team.find((m) => m.user_id === ownerId) : null;
+      setStatus(`${items.length} ${items.length === 1 ? 'card' : 'cards'} ${who ? `assigned to ${who.full_name ?? who.email}` : 'unassigned'}.`);
+      router.refresh();
+    } catch (err) {
+      setStatus(`Could not assign: ${errorMessage(err)}`);
     } finally {
       setBusy(false);
     }
@@ -338,6 +396,11 @@ export function PipelineBoard({
             {campaigns.map(([id, name]) => (
               <option key={id} value={id}>{name}</option>
             ))}
+          </select>
+          <label htmlFor="pipe-sort" className="sr-only">Sort prospect cards</label>
+          <select id="pipe-sort" value={sort} onChange={(e) => setSort(e.target.value as 'recent' | 'score')} className={`${inputClass} sm:w-44`}>
+            <option value="recent">Newest first</option>
+            <option value="score">Highest lead score</option>
           </select>
         </div>
         <div role="group" aria-label="View" className="flex shrink-0 rounded-md border border-white/15 p-0.5 self-start">
@@ -474,14 +537,26 @@ export function PipelineBoard({
           })}
         </div>
       ) : (
-        <PipelineList clients={visibleClients} contacts={visibleContacts} byId={byId} />
+        <PipelineList
+          clients={visibleClients}
+          contacts={visibleContacts}
+          byId={byId}
+          team={team}
+          busy={busy}
+          onBulkMove={bulkMove}
+          onBulkOwner={bulkOwner}
+        />
       )}
 
       <MoveDialog
         pending={pending}
         busy={busy}
         nurtureCampaigns={nurtureCampaigns}
-        onConfirm={(opts) => pending && runMove(pending.kind, pending.id, pending.to, opts)}
+        onConfirm={(opts) => {
+          if (!pending) return;
+          if (pending.id === BULK) void runBulk(bulkItems, pending.to, opts);
+          else void runMove(pending.kind, pending.id, pending.to, opts);
+        }}
         onClose={() => {
           if (!busy) setPending(null);
         }}
@@ -603,16 +678,30 @@ function BoardColumn({
 
 const ORDER = new Map(COLUMNS.map((c, i) => [c.id, i]));
 
+type BulkItem = { kind: 'contact' | 'client'; id: string };
+
 function PipelineList({
   clients,
   contacts,
   byId,
+  team,
+  busy,
+  onBulkMove,
+  onBulkOwner,
 }: {
   clients: Client[];
   contacts: ContactCard[];
   byId: Map<string, TeamMember>;
+  team: TeamMember[];
+  busy: boolean;
+  onBulkMove: (items: BulkItem[], to: string) => void;
+  onBulkOwner: (items: BulkItem[], ownerId: string | null) => void;
 }) {
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   type Row = {
+    kind: 'contact' | 'client';
+    id: string;
+    contact?: ContactCard;
     key: string;
     href: string;
     name: string;
@@ -627,6 +716,8 @@ function PipelineList({
   const fmt = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const rows: Row[] = [
     ...clients.map((c) => ({
+      kind: 'client' as const,
+      id: c.id,
       key: `d${c.id}`,
       href: `/admin/clients/${c.id}`,
       name: [c.first_name, c.last_name].filter(Boolean).join(' '),
@@ -639,6 +730,8 @@ function PipelineList({
       next: c.next_step_at ? `${c.next_step || 'Follow up'}, ${fmt(c.next_step_at)}` : c.next_step ?? '',
     })),
     ...contacts.map((c) => ({
+      kind: 'contact' as const,
+      id: c.id,
       key: `c${c.id}`,
       href: `/admin/outreach/inbox?tab=all&contact=${c.id}`,
       name: c.company || [c.first_name, c.last_name].filter(Boolean).join(' ') || c.email,
@@ -647,6 +740,7 @@ function PipelineList({
       col: columnForContact(c.stage),
       owner: c.owner_id ? byId.get(c.owner_id)?.full_name ?? '' : '',
       value: '',
+      contact: c,
       days: daysSince(c.stage_changed_at),
       next: c.stage === 'nurture' && c.revisit_at ? `Check back ${fmt(c.revisit_at)}` : c.sequence ? c.sequence.name : '',
     })),
@@ -655,22 +749,106 @@ function PipelineList({
   if (!rows.length) {
     return <p className="py-10 text-center font-body text-sm text-white/55">No cards match these filters.</p>;
   }
+  const picked = rows.filter((r) => selected.has(r.key));
+  const items: BulkItem[] = picked.map((r) => ({ kind: r.kind, id: r.id }));
+  const kinds = new Set(picked.map((r) => r.kind));
+  const targets = COLUMNS.filter((c) => [...kinds].every((k) => canMoveTo(k, c)));
+  const allOn = rows.length > 0 && rows.every((r) => selected.has(r.key));
+  const toggle = (key: string) =>
+    setSelected((s) => {
+      const n = new Set(s);
+      if (n.has(key)) n.delete(key);
+      else n.add(key);
+      return n;
+    });
   return (
+    <>
+    {picked.length ? (
+      <div role="region" aria-label="Bulk actions" className="sticky top-14 lg:top-0 z-10 mb-3 flex flex-wrap items-center gap-3 rounded-md border border-white/15 bg-[#0b0b14] px-4 py-2.5">
+        <span className="font-body text-sm text-white">{picked.length} selected</span>
+        <label htmlFor="bulk-move" className="sr-only">Move selected to</label>
+        <select
+          id="bulk-move"
+          value=""
+          disabled={busy || !targets.length}
+          onChange={(e) => {
+            if (e.target.value) {
+              onBulkMove(items, e.target.value);
+              setSelected(new Set());
+            }
+          }}
+          className={`${inputClass} py-1.5 sm:!w-56`}
+        >
+          <option value="">{targets.length ? 'Move to…' : 'No stage fits all selected'}</option>
+          {PHASES.map((p) => {
+            const cols = targets.filter((c) => c.phase === p.id);
+            return cols.length ? (
+              <optgroup key={p.id} label={p.label}>
+                {cols.map((c) => (
+                  <option key={c.id} value={c.id}>{c.label}</option>
+                ))}
+              </optgroup>
+            ) : null;
+          })}
+        </select>
+        <label htmlFor="bulk-owner" className="sr-only">Assign selected to</label>
+        <select
+          id="bulk-owner"
+          value=""
+          disabled={busy}
+          onChange={(e) => {
+            if (e.target.value) {
+              onBulkOwner(items, e.target.value === 'none' ? null : e.target.value);
+              setSelected(new Set());
+            }
+          }}
+          className={`${inputClass} py-1.5 sm:!w-56`}
+        >
+          <option value="">Assign owner…</option>
+          {team.map((m) => (
+            <option key={m.user_id} value={m.user_id}>{m.full_name ?? m.email}</option>
+          ))}
+          <option value="none">Unassigned</option>
+        </select>
+        <button type="button" onClick={() => setSelected(new Set())} className="font-body text-sm text-white/65 hover:text-white">
+          Clear
+        </button>
+      </div>
+    ) : null}
     <TableWrap label="Pipeline as a list">
         <thead>
           <tr>
+            <th scope="col" className={`${thClass} w-10`}>
+              <input
+                type="checkbox"
+                aria-label={allOn ? 'Clear selection' : 'Select all rows'}
+                checked={allOn}
+                onChange={() => setSelected(allOn ? new Set() : new Set(rows.map((r) => r.key)))}
+                className="h-4 w-4 accent-brand-purple"
+              />
+            </th>
             <th scope="col" className={thClass}>Name</th>
             <th scope="col" className={thClass}>Stage</th>
             <th scope="col" className={thClass}>Type</th>
             <th scope="col" className={thClass}>Owner</th>
             <th scope="col" className={thClass}>Value</th>
+            <th scope="col" className={thClass}>Score</th>
             <th scope="col" className={`${thClass} text-right`}>In stage</th>
             <th scope="col" className={thClass}>Next</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.key}>
+            <tr key={r.key} className={selected.has(r.key) ? 'bg-white/[0.04]' : ''}>
+              <td className={tdClass}>
+                <input
+                  type="checkbox"
+                  aria-label={`Select ${r.name}`}
+                  checked={selected.has(r.key)}
+                  onChange={() => toggle(r.key)}
+                  className="h-4 w-4 accent-brand-purple"
+                />
+              </td>
               <td className={tdClass}>
                 <Link href={r.href} className="font-medium text-white hover:underline">{r.name}</Link>
                 <div className="text-xs text-white/55 truncate max-w-[16rem]">{r.sub}</div>
@@ -682,11 +860,13 @@ function PipelineList({
               <td className={tdClass}>{r.type}</td>
               <td className={`${tdClass} whitespace-nowrap`}>{r.owner}</td>
               <td className={`${tdClass} font-mono text-xs tabular-nums whitespace-nowrap`}>{r.value}</td>
+              <td className={tdClass}>{r.contact ? <ScoreChip c={r.contact} /> : null}</td>
               <td className={`${tdClass} text-right font-mono text-xs tabular-nums`}>{r.days}d</td>
               <td className={`${tdClass} text-xs text-white/70`}>{r.next}</td>
             </tr>
           ))}
         </tbody>
     </TableWrap>
+    </>
   );
 }

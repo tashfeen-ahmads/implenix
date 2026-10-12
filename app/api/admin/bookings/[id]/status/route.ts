@@ -13,6 +13,8 @@ import { SITE_URL } from '@/lib/seo';
 // no-show → "No-show" (optionally emailing a rebook link), completed →
 // "Discovery done". Later stages are never pulled back.
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
@@ -29,6 +31,7 @@ const NEXT_STAGE: Partial<Record<Booking['status'], { from: ClientStage[]; to: C
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const auth = await requireTeamApi();
   if (auth.error) return auth.error;
+  if (!UUID_RE.test(params.id)) return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
   const { status, sendRebook } = parsed.data;

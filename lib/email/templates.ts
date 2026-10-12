@@ -177,3 +177,41 @@ export function rebookEmail(d: { firstName: string; whenLabel: string; bookingUr
   ].join('\n');
   return { subject, html, text };
 }
+
+// Team alert when the AI reads an outreach reply as positive.
+export function hotLeadEmail(d: {
+  who: string;
+  email: string;
+  company?: string | null;
+  label: string;
+  excerpt: string;
+  summary?: string;
+  campaign?: string | null;
+  draftWaiting: boolean;
+  inboxUrl: string;
+}) {
+  // Names come from imported CSVs: keep the subject on one line.
+  const subject = `Hot lead: ${d.company || d.who} replied (${d.label.toLowerCase()})`.replace(/[\r\n\t]+/g, ' ').slice(0, 200);
+  const html = shell(
+    subject,
+    `<h1 style="margin:0 0 8px;font-size:20px;line-height:1.3">${esc(d.company || d.who)} wants to talk</h1>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#3d3a4f">${esc(d.who)} &lt;${esc(d.email)}&gt;${d.campaign ? ` replied to <strong>${esc(d.campaign)}</strong>` : ' replied'}. The AI labelled it <strong>${esc(d.label)}</strong>.</p>
+<blockquote style="margin:0 0 16px;padding:12px 14px;border-left:3px solid #c600ff;background:#faf7ff;font-size:14px;line-height:1.6;color:#14121f;white-space:pre-wrap">${esc(d.excerpt)}</blockquote>
+${d.summary ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#3d3a4f">AI summary: ${esc(d.summary)}</p>` : ''}
+<p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3d3a4f">${d.draftWaiting ? 'A reply draft is waiting for approval in the inbox.' : 'Reply while they are engaged.'}</p>
+<p style="margin:0">${button(d.inboxUrl, 'Open the conversation')}</p>`,
+  );
+  const text = [
+    `${d.company || d.who} wants to talk.`,
+    `${d.who} <${d.email}>${d.campaign ? ` replied to ${d.campaign}` : ' replied'}. Label: ${d.label}.`,
+    '',
+    d.excerpt,
+    '',
+    d.summary ? `AI summary: ${d.summary}` : '',
+    d.draftWaiting ? 'A reply draft is waiting for approval in the inbox.' : '',
+    d.inboxUrl,
+  ]
+    .filter((l) => l !== '')
+    .join('\n');
+  return { subject, html, text };
+}

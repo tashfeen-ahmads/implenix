@@ -3,7 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import type { Campaign, CampaignStep, Contact, Enrollment } from '@/lib/db/types';
 import { MAX_SENDS_PER_TICK, globalDailyLimit, outreachTimezone, sesConfigured } from './config';
-import { buildOutreachEmail, replySubject } from './render';
+import { buildOutreachEmail, replySubject, senderVars } from './render';
 import { SesSendError, sendOutreachEmail } from './ses';
 import { isSuppressed, normalizeEmail } from './suppress';
 import { inSendWindow, startOfDay } from './time';
@@ -229,7 +229,7 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
     if (!first) subjectTemplate = q.steps.get(1)?.subject ?? 'Quick question';
   }
 
-  const email = buildOutreachEmail({ subject: subjectTemplate, body: stepBody, contact });
+  const email = buildOutreachEmail({ subject: subjectTemplate, body: stepBody, contact, vars: senderVars(q.campaign.from_name) });
   let sent: { sesMessageId: string; messageId: string };
   try {
     sent = await sendOutreachEmail({

@@ -26,7 +26,7 @@ export default async function OverviewPage() {
   const weekAgo = new Date(now.getTime() - 7 * 86_400_000).toISOString();
   const weekAhead = new Date(now.getTime() + 7 * 86_400_000).toISOString();
 
-  const [clients, upcoming, activity, sent7, replies7, drafts, contactCounts, revisits] = await Promise.all([
+  const [clients, upcoming, activity, sent7, replies7, drafts, contactCounts, revisits, waiting] = await Promise.all([
     db.from('clients').select('id, first_name, last_name, company, stage, created_at, next_step, next_step_at'),
     db
       .from('bookings')
@@ -52,6 +52,18 @@ export default async function OverviewPage() {
       .lte('revisit_at', now.toISOString())
       .order('revisit_at')
       .limit(8),
+    // Replies waiting a day for review, interested leads two days without a call.
+    Promise.all(
+      ([['replied', 1], ['interested', 2]] as const).map(([stage, days]) =>
+        db
+          .from('contacts')
+          .select('id, company, first_name, last_name, email, stage, stage_changed_at')
+          .eq('stage', stage)
+          .lte('stage_changed_at', new Date(now.getTime() - days * 86_400_000).toISOString())
+          .order('stage_changed_at')
+          .limit(6),
+      ),
+    ).then((rs) => ({ data: rs.flatMap((r) => r.data ?? []) })),
   ]);
 
   type ClientRow = Pick<Client, 'id' | 'first_name' | 'last_name' | 'company' | 'stage' | 'created_at' | 'next_step' | 'next_step_at'>;
@@ -87,6 +99,13 @@ export default async function OverviewPage() {
       name: c.company || [c.first_name, c.last_name].filter(Boolean).join(' ') || c.email,
       what: 'Nurture check-back',
       at: c.revisit_at!,
+    })),
+    ...((waiting.data ?? []) as Pick<Contact, 'id' | 'company' | 'first_name' | 'last_name' | 'email' | 'stage' | 'stage_changed_at'>[]).map((c) => ({
+      key: `w${c.id}`,
+      href: `/admin/outreach/inbox?tab=all&contact=${c.id}`,
+      name: c.company || [c.first_name, c.last_name].filter(Boolean).join(' ') || c.email,
+      what: c.stage === 'interested' ? 'Interested, no call booked yet' : 'Reply waiting for review',
+      at: c.stage_changed_at,
     })),
   ].sort((a, b) => a.at.localeCompare(b.at));
   const upcomingRows = (upcoming.data ?? []) as UpcomingRow[];

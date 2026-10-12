@@ -5,7 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Contact, ContactStage } from '@/lib/db/types';
 
 export const CONTACT_CARD_FIELDS =
-  'id, email, first_name, last_name, company, website, industry, city, state, status, stage, stage_changed_at, reply_label, revisit_at, last_contacted_at, owner_id';
+  'id, email, first_name, last_name, company, website, phone, industry, city, state, custom, status, stage, stage_changed_at, reply_label, revisit_at, last_contacted_at, owner_id';
 
 export type ContactCard = Pick<
   Contact,
@@ -15,6 +15,8 @@ export type ContactCard = Pick<
   | 'last_name'
   | 'company'
   | 'website'
+  | 'phone'
+  | 'custom'
   | 'industry'
   | 'city'
   | 'state'
@@ -27,6 +29,8 @@ export type ContactCard = Pick<
   | 'owner_id'
 > & {
   sequence: { campaignId: string; name: string; step: number; steps: number; kind: 'sequence' | 'nurture' } | null;
+  opens: number;
+  clicks: number;
 };
 
 export const PAGE_SIZE = 30;
@@ -49,7 +53,7 @@ export async function loadContactCards(db: SupabaseClient, stage: ContactStage, 
     .eq('stage', stage)
     .order('stage_changed_at', { ascending: false })
     .range(from, from + PAGE_SIZE - 1);
-  const contacts = (data ?? []) as Omit<ContactCard, 'sequence'>[];
+  const contacts = (data ?? []) as Omit<ContactCard, 'sequence' | 'opens' | 'clicks'>[];
   if (!contacts.length) return [];
 
   const { data: enr } = await db
@@ -62,6 +66,21 @@ export async function loadContactCards(db: SupabaseClient, stage: ContactStage, 
   for (const r of rows) {
     const prev = pick.get(r.contact_id);
     if (!prev || (r.status === 'active' && prev.status !== 'active')) pick.set(r.contact_id, r);
+  }
+
+  // Engagement for the lead score (only non-zero when tracking is on).
+  const engagement = new Map<string, { opens: number; clicks: number }>();
+  const { data: eng } = await db
+    .from('messages')
+    .select('contact_id, open_count, click_count')
+    .in('contact_id', contacts.map((c) => c.id))
+    .eq('direction', 'outbound')
+    .or('open_count.gt.0,click_count.gt.0');
+  for (const m of (eng ?? []) as { contact_id: string; open_count: number; click_count: number }[]) {
+    const e = engagement.get(m.contact_id) ?? { opens: 0, clicks: 0 };
+    e.opens += m.open_count ?? 0;
+    e.clicks += m.click_count ?? 0;
+    engagement.set(m.contact_id, e);
   }
 
   const campaignIds = [...new Set([...pick.values()].map((r) => r.campaign_id))];
@@ -77,6 +96,8 @@ export async function loadContactCards(db: SupabaseClient, stage: ContactStage, 
     const e = pick.get(c.id);
     return {
       ...c,
+      opens: engagement.get(c.id)?.opens ?? 0,
+      clicks: engagement.get(c.id)?.clicks ?? 0,
       sequence: e
         ? {
             campaignId: e.campaign_id,

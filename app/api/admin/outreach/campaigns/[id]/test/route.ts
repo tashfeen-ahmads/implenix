@@ -4,7 +4,7 @@ import { requireTeamApi } from '@/lib/supabase/auth';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import type { Campaign, CampaignStep, Contact } from '@/lib/db/types';
 import { SITE_URL, isOnSendingDomain, sesConfigured } from '@/lib/outreach/config';
-import { buildOutreachEmail } from '@/lib/outreach/render';
+import { buildOutreachEmail, senderVars } from '@/lib/outreach/render';
 import { SesSendError, sendOutreachEmail } from '@/lib/outreach/ses';
 import { isSuppressed, isValidEmail, normalizeEmail } from '@/lib/outreach/suppress';
 
@@ -75,6 +75,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     body: step.body,
     contact,
     unsubscribeUrlOverride: `${SITE_URL}/api/outreach/unsubscribe?test=1`,
+    vars: senderVars(campaign.from_name),
   });
   try {
     await sendOutreachEmail({

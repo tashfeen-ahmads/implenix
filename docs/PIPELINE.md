@@ -127,6 +127,90 @@ Open and click events arrive at the same `/api/outreach/ses` endpoint.
 They fill `messages.opened_at` / `open_count` / `clicked_at` /
 `click_count`.
 
+## Hot-lead alerts and follow-ups
+
+- When the AI reads a reply as interested, as asking for times or as a
+  pricing question, it emails the team once per lead.
+  - The email goes to `OUTREACH_ALERT_EMAILS`, or to `BOOKING_TEAM_EMAILS`
+    if that isn't set.
+  - It contains the reply, the AI's summary and a link to the
+    conversation.
+- On the board and under "Follow-ups due" on the overview, two kinds of
+  card are flagged:
+  - replies waiting more than a day for review;
+  - interested leads with no call booked after two days.
+
+## Lead score
+
+Each prospect card shows a 0-100 score (`lib/pipeline/score.ts`). Hover it
+to see exactly where the points came from.
+
+**Fit (up to 40):**
+
+| Signal | Points |
+|---|---|
+| Has a website | +10 |
+| Has a phone number | +5 |
+| Google reviews from the lead finder | +5 to +15 |
+| Rating of 4 or more | +5 |
+| Named contact | +5 |
+
+**Engagement (up to 60):**
+
+| Signal | Points |
+|---|---|
+| Positive reply | +40 |
+| Asked a question | +25 |
+| Replied | +15 |
+| Said not now | +10 |
+| Clicked a link | +10 |
+| Opened an email | +5 |
+
+**Bands:** hot is 60 or more, warm is 30-59, cold is under 30. Opted-out,
+bounced and not-interested contacts score 0.
+
+On the board, "Highest lead score" sorts each outreach column by score.
+
+## Correcting the AI
+
+In the inbox, the "Reply label" menu on a conversation overrides the AI's
+label, and the pipeline follows:
+
+| Label | Result |
+|---|---|
+| Interested, Meeting request, Pricing | Interested, sequences stop |
+| Not interested | Not interested |
+| Not now | Nurture, using the sequence's nurture campaign |
+| Unsubscribe | Suppressed |
+| Out of office | No change |
+| Anything else | Replied · review |
+
+## Bulk actions
+
+In the board's list view:
+
+1. Tick the rows you want.
+2. **Move to…** moves them all. Lost, Nurture and Unsubscribed ask once,
+   for all of them.
+3. **Assign owner** sets the owner on all of them.
+
+The move list only offers stages that every selected row is allowed to
+move to.
+
+## Campaign templates
+
+**New campaign** offers a blank campaign or a starting template:
+- cold sequences for home services, dental, law firms, med spas, auto
+  repair and real estate;
+- a three-email nurture drip.
+
+The templates use plain text and one question per email. They contain no
+prices and no statistics. Follow-ups are threaded, and the last email is
+a polite close. Edit the wording before launch.
+
+`{{sender_first_name}}` and `{{sender_name}}` print the campaign's from
+name. "Alex at Implenix" becomes "Alex".
+
 ## Deal value and forecast
 
 Each client has:

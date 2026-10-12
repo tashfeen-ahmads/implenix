@@ -30,6 +30,7 @@ import {
   errorMessage,
   hourLabel,
   postJson,
+  previewSenderVars,
   renderPreview,
   type PreviewContact,
 } from './shared';
@@ -342,6 +343,7 @@ export function CampaignEditor({
   };
 
   const [previewVariant, setPreviewVariant] = useState<'A' | 'B'>('A');
+  const senderPreview = previewSenderVars(settings.from_name || 'Implenix');
   const baseStep = steps[Math.min(previewIndex, steps.length - 1)];
   const previewStep =
     baseStep && previewVariant === 'B' && baseStep.body_b !== null
@@ -595,15 +597,15 @@ export function CampaignEditor({
                     <dt>To</dt>
                     <dd className="text-white/85 truncate">{sample.email}</dd>
                     <dt>Subject</dt>
-                    <dd className="text-white font-medium">{renderPreview(previewStep.subject, sample) ||
+                    <dd className="text-white font-medium">{renderPreview(previewStep.subject, sample, senderPreview) ||
                         (previewIndex > 0 && steps[0]?.subject ? (
-                          `Re: ${renderPreview(steps[0].subject, sample)}`
+                          `Re: ${renderPreview(steps[0].subject, sample, senderPreview)}`
                         ) : (
                           <span className="text-white/40">(no subject)</span>
                         ))}</dd>
                   </dl>
                   <div className="px-4 py-4 font-body text-sm text-white/85 leading-relaxed whitespace-pre-wrap break-words">
-                    {renderPreview(previewStep.body, sample) || <span className="text-white/40">Write the body to see it here.</span>}
+                    {renderPreview(previewStep.body, sample, senderPreview) || <span className="text-white/40">Write the body to see it here.</span>}
                     <p className="mt-4 pt-3 border-t border-white/10 text-xs text-white/45">
                       Footer added when sent: postal address and an unsubscribe link.
                     </p>

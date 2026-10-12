@@ -75,6 +75,7 @@ export function hourLabel(h: number) {
 // Variables offered as insert chips in the sequence builder.
 export const TEMPLATE_VARIABLES = [
   { token: '{{first_name|there}}', label: 'first_name' },
+  { token: '{{sender_first_name}}', label: 'sender_first_name' },
   { token: '{{company}}', label: 'company' },
   { token: '{{website}}', label: 'website' },
   { token: '{{city}}', label: 'city' },
@@ -99,11 +100,13 @@ export const SAMPLE_CONTACT: PreviewContact = {
 
 // Client-side preview of the template syntax: {{var}} and {{var|fallback}},
 // plus {{custom.key}}. The engine does the real rendering at send time.
-export function renderPreview(template: string, contact: PreviewContact | null): string {
+export function renderPreview(template: string, contact: PreviewContact | null, vars: Record<string, string> = {}): string {
   return template.replace(/\{\{\s*([a-z_.0-9-]+)\s*(?:\|([^}]*))?\}\}/gi, (_m, rawKey: string, fallback?: string) => {
     const key = rawKey.toLowerCase();
     let value: string | null | undefined;
-    if (contact) {
+    if (key in vars) {
+      value = vars[key];
+    } else if (contact) {
       if (key.startsWith('custom.')) {
         value = contact.custom?.[rawKey.slice(7)];
       } else {
@@ -154,4 +157,10 @@ export async function postJson<T = Record<string, unknown>>(url: string, body?: 
 
 export function errorMessage(err: unknown) {
   return err instanceof Error ? err.message : 'Something went wrong';
+}
+
+// Mirrors senderVars() in lib/outreach/render.ts for the editor preview.
+export function previewSenderVars(fromName: string): Record<string, string> {
+  const name = fromName.trim();
+  return { sender_name: name, sender_first_name: name.split(/\s+(?:at|from|@|\||-)\s+|\s+/i)[0] ?? '' };
 }

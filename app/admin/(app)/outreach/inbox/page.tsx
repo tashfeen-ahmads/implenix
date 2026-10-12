@@ -6,6 +6,7 @@ import { DASHBOARD_TZ, EmptyState, PageHeader, Pill, buttonClass, formatDateTime
 import { AiDraftCard } from '@/components/admin/outreach/AiDraftCard';
 import { ReplyComposer } from '@/components/admin/outreach/ReplyComposer';
 import { ContactStatusSelect } from '@/components/admin/outreach/ContactStatusSelect';
+import { ReplyLabelSelect } from '@/components/admin/outreach/ReplyLabelSelect';
 import { CONTACT_STATUS_LABELS, CONTACT_STATUS_TONES, contactName } from '@/components/admin/outreach/shared';
 
 export const dynamic = 'force-dynamic';
@@ -242,7 +243,13 @@ async function Thread({ contactId, backHref }: { contactId: string; backHref: st
             </Link>
           ) : null}
         </div>
-        <ContactStatusSelect contactId={contact.id} email={contact.email} status={contact.status} />
+        <div className="flex flex-col sm:flex-row gap-3">
+          {sent.some((m) => m.direction === 'inbound') ? <ReplyLabelSelect contactId={contact.id} label={contact.reply_label} /> : null}
+          <div className="flex flex-col gap-1">
+            <span className="font-body text-xs font-medium text-white/70">Status</span>
+            <ContactStatusSelect contactId={contact.id} email={contact.email} status={contact.status} />
+          </div>
+        </div>
       </header>
 
       {/* Messages */}

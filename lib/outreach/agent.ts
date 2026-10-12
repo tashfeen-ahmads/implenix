@@ -10,11 +10,14 @@ import type { Campaign, Contact, ContactStage, Message } from '@/lib/db/types';
 import { SERVICES } from '@/lib/db/types';
 import { createBooking, formatWhen, listOpenSlots } from '@/lib/booking';
 import { BOOKING_CONFIG } from '@/lib/googleCalendar';
-import { BOOKING_PAGE_URL, openaiConfigured, openaiModel } from './config';
+import { BOOKING_PAGE_URL, SITE_URL, openaiConfigured, openaiModel } from './config';
 import { replySubject } from './render';
 import { stopEnrollments, suppressAndStop } from './suppress';
 import { sendThreadReply } from './thread';
 import { AUTO_FROM, moveToNurture, setContactStage } from './stage';
+import { REPLY_LABELS } from '@/lib/pipeline/stages';
+import { sendEmail } from '@/lib/email/resend';
+import { hotLeadEmail } from '@/lib/email/templates';
 
 // AI reply agent: reads the conversation with a prospect, decides what
 // they want, uses tools (calendar, booking, opt-out, handoff) and writes a
@@ -540,7 +543,7 @@ async function applyClassification(
   contact: Contact,
   campaign: Campaign,
   result: AgentResult,
-  input: { prevStage?: ContactStage; stoppedEnrollmentIds?: string[] },
+  input: { prevStage?: ContactStage; stoppedEnrollmentIds?: string[]; inboundText?: string },
 ): Promise<void> {
   await db.from('contacts').update({ reply_label: result.intent }).eq('id', contact.id);
   // Booked, unsubscribed and not-interested moves are made by the tools.
@@ -549,7 +552,14 @@ async function applyClassification(
 
   if (POSITIVE.includes(result.intent)) {
     await db.from('contacts').update({ status: 'interested' }).eq('id', contact.id).in('status', ['active', 'replied']);
-    await setContactStage(db, contact.id, 'interested', { onlyFrom: ['replied', 'nurture'] });
+    const { data: moved } = await db
+      .from('contacts')
+      .update({ stage: 'interested' })
+      .eq('id', contact.id)
+      .in('stage', ['replied', 'nurture'])
+      .select('id');
+    // Alert the team once, when the lead first turns interested.
+    if (moved?.length) await alertHotLead(contact, campaign, result, input.inboundText ?? '');
     return;
   }
 
@@ -578,6 +588,35 @@ async function applyClassification(
       revisitAt: dateFromYmd(result.resumeOn, 60),
     });
     if (res.reason) console.info('[outreach/agent] nurture:', res.reason);
+  }
+}
+
+function teamAlertRecipients(): string[] {
+  return (process.env.OUTREACH_ALERT_EMAILS || process.env.BOOKING_TEAM_EMAILS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+async function alertHotLead(contact: Contact, campaign: Campaign, result: AgentResult, text: string): Promise<void> {
+  const to = teamAlertRecipients();
+  if (!to.length) return;
+  const who = [contact.first_name, contact.last_name].filter(Boolean).join(' ') || contact.email;
+  const mail = hotLeadEmail({
+    who,
+    email: contact.email,
+    company: contact.company,
+    label: REPLY_LABELS[result.intent] ?? result.intent,
+    excerpt: text.trim().slice(0, 600),
+    summary: result.summary,
+    campaign: campaign.name,
+    draftWaiting: result.shouldReply && (campaign.ai_mode === 'draft' || Boolean(result.handoffReason)),
+    inboxUrl: `${SITE_URL}/admin/outreach/inbox?tab=all&contact=${contact.id}`,
+  });
+  try {
+    await sendEmail({ to, subject: mail.subject, html: mail.html, text: mail.text, replyTo: contact.email, tags: [{ name: 'type', value: 'hot_lead' }] });
+  } catch (err) {
+    console.error('[outreach/agent] hot lead alert failed', err instanceof Error ? err.message : err);
   }
 }
 
@@ -628,7 +667,7 @@ export async function handleInboundWithAgent(input: {
   // Record what the agent concluded on the inbound row for the inbox.
   await db.from('messages').update({ ai_meta: { ...inbound.ai_meta, agent: meta } }).eq('id', inbound.id);
 
-  await applyClassification(db, contact, campaign, result, input);
+  await applyClassification(db, contact, campaign, result, { ...input, inboundText: inbound.body_text ?? '' });
 
   if (!result.shouldReply) return { handled: result.unsubscribed ? 'unsubscribed' : 'no_reply' };
 

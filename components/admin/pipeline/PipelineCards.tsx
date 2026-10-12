@@ -5,6 +5,7 @@ import { AlarmClock, CalendarClock, Mail, MessageSquareText, RotateCcw } from 'l
 import { serviceLabel, type Client, type TeamMember } from '@/lib/db/types';
 import {
   COLUMNS,
+  CONTACT_STALL_DAYS,
   PHASES,
   REPLY_LABELS,
   STALL_DAYS,
@@ -14,6 +15,7 @@ import {
 } from '@/lib/pipeline/stages';
 import { DASHBOARD_TZ } from '@/components/admin/ui';
 import { daysSince, dealLabel, type ContactCard } from './data';
+import { leadScore } from '@/lib/pipeline/score';
 
 const fmtWhen = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: DASHBOARD_TZ });
 const fmtDay = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: DASHBOARD_TZ });
@@ -99,6 +101,21 @@ export function MoveSelect({
   );
 }
 
+const BAND_CLASS = { hot: 'border-[#b14cff]/60 text-[#e3a6ff]', warm: 'border-white/25 text-white/80', cold: 'border-white/10 text-white/50' };
+
+export function ScoreChip({ c }: { c: ContactCard }) {
+  const s = leadScore(c);
+  return (
+    <span
+      title={`Lead score ${s.score} (${s.band})\n${s.reasons.join('\n') || 'No signals yet'}`}
+      className={`inline-flex items-center gap-1 px-1.5 rounded-sm border font-mono text-[10px] leading-4 tabular-nums ${BAND_CLASS[s.band]}`}
+    >
+      {s.score}
+      <span className="font-body">{s.band}</span>
+    </span>
+  );
+}
+
 export function ContactCardView({
   c,
   owner,
@@ -157,7 +174,10 @@ export function ContactCardView({
       ) : null}
       <div className="mt-2 flex items-center justify-between gap-2">
         <span className="font-body text-[11px] text-white/50 truncate">{c.industry || c.city || ''}</span>
-        <InStage iso={c.stage_changed_at} />
+        <span className="flex items-center gap-2 shrink-0">
+          <ScoreChip c={c} />
+          <InStage iso={c.stage_changed_at} stallAfter={CONTACT_STALL_DAYS[c.stage]} />
+        </span>
       </div>
       <MoveSelect kind="contact" id={c.id} name={title} currentColumn={column?.id ?? ''} onMove={onMove} />
     </li>

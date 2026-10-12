@@ -133,3 +133,10 @@ export const STALL_DAYS: Partial<Record<ClientStage, number>> = {
   proposal_sent: 5,
   negotiation: 7,
 };
+
+// Outreach cards that need a person: a reply waiting for review, or an
+// interested lead with no call booked yet.
+export const CONTACT_STALL_DAYS: Partial<Record<ContactStage, number>> = {
+  replied: 1,
+  interested: 2,
+};

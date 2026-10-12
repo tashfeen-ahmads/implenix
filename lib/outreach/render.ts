@@ -30,13 +30,16 @@ function isStandardVar(v: string): v is StandardVar {
 
 const VAR_RE = /\{\{\s*([a-zA-Z0-9_.-]+)\s*(?:\|([^}]*))?\}\}/g;
 
-// {{first_name}}, {{first_name|there}}, {{custom.key}}, {{custom.key|fallback}}.
+// {{first_name}}, {{first_name|there}}, {{custom.key}}, {{custom.key|fallback}},
+// plus campaign-level `vars` such as {{sender_first_name}}.
 // Unknown or empty variables render as their fallback, or nothing.
-export function renderTemplate(template: string, contact: TemplateContact): string {
+export function renderTemplate(template: string, contact: TemplateContact, vars: Record<string, string> = {}): string {
   return template.replace(VAR_RE, (_m, rawName: string, fallback: string | undefined) => {
     const name = rawName.trim();
     let value: string | null | undefined;
-    if (name.startsWith('custom.')) {
+    if (name in vars) {
+      value = vars[name];
+    } else if (name.startsWith('custom.')) {
       const key = name.slice('custom.'.length);
       const custom = contact.custom ?? {};
       value = custom[key] ?? custom[key.toLowerCase()];
@@ -152,12 +155,13 @@ export function buildOutreachEmail(input: {
   contact: TemplateContact & { id: string };
   render?: boolean;
   unsubscribeUrlOverride?: string;
+  vars?: Record<string, string>;
 }): RenderedEmail {
   const doRender = input.render !== false;
-  const subject = (doRender ? renderTemplate(input.subject, input.contact) : input.subject)
+  const subject = (doRender ? renderTemplate(input.subject, input.contact, input.vars) : input.subject)
     .replace(/[\r\n]+/g, ' ')
     .trim();
-  const body = (doRender ? renderTemplate(input.body, input.contact) : input.body)
+  const body = (doRender ? renderTemplate(input.body, input.contact, input.vars) : input.body)
     .replace(/\r\n?/g, '\n')
     .trim();
   const unsub = input.unsubscribeUrlOverride ?? unsubscribeUrl(input.contact.id, input.contact.email);
@@ -167,6 +171,14 @@ export function buildOutreachEmail(input: {
     body,
   )}\n${footer.html}\n</body></html>`;
   return { subject, body, text, html, unsubscribeUrl: unsub };
+}
+
+// Campaign-level template variables: who the email is from.
+export function senderVars(fromName: string | null | undefined): Record<string, string> {
+  const name = (fromName ?? '').trim();
+  // "Alex at Implenix" -> "Alex"
+  const first = name.split(/\s+(?:at|from|@|\||-)\s+|\s+/i)[0] ?? '';
+  return { sender_name: name, sender_first_name: first };
 }
 
 // "Re: " + subject without stacking prefixes.
