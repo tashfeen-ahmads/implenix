@@ -31,6 +31,28 @@ const SUPPRESS: Partial<Record<(typeof STATUSES)[number], SuppressionReason>> = 
 };
 const STOPS = new Set(['unsubscribed', 'bounced', 'complained', 'not_interested', 'booked', 'replied', 'interested']);
 
+// Keep the pipeline stage in step with a manual status change.
+function stageForStatus(status: (typeof STATUSES)[number], contact: Contact): { stage?: Contact['stage'] } {
+  switch (status) {
+    case 'replied':
+    case 'interested':
+    case 'not_interested':
+      return { stage: status };
+    case 'booked':
+      return { stage: 'client' };
+    case 'unsubscribed':
+    case 'complained':
+      return { stage: 'unsubscribed' };
+    case 'bounced':
+      return { stage: 'bounced' };
+    case 'active':
+      // Reactivated: back to the start unless they are mid-sequence.
+      return ['replied', 'interested', 'not_interested', 'unsubscribed', 'bounced', 'client'].includes(contact.stage)
+        ? { stage: 'new' }
+        : {};
+  }
+}
+
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const auth = await requireTeamApi();
   if (auth.error) return auth.error;
@@ -59,7 +81,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   const reason = SUPPRESS[status];
   if (reason) await addSuppression(db, contact.email, reason);
-  const { error } = await db.from('contacts').update({ status }).eq('id', contact.id);
+  const { error } = await db.from('contacts').update({ status, ...stageForStatus(status, contact) }).eq('id', contact.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   if (STOPS.has(status)) await stopEnrollments(db, contact.id);
   return NextResponse.json({ ok: true });

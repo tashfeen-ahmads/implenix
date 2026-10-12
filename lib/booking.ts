@@ -213,7 +213,7 @@ async function saveToPipeline(input: BookingInput, b: Saved): Promise<string | n
   // booked, and their sequences stop.
   const { data: contact } = await db.from('contacts').select('id').ilike('email', email).maybeSingle();
   if (contact) {
-    await db.from('contacts').update({ status: 'booked' }).eq('id', contact.id);
+    await db.from('contacts').update({ status: 'booked', stage: 'client' }).eq('id', contact.id);
     await db
       .from('campaign_enrollments')
       .update({ status: 'stopped' })
@@ -239,7 +239,9 @@ async function saveToPipeline(input: BookingInput, b: Saved): Promise<string | n
   let clientId: string;
   if (existing) {
     clientId = existing.id;
-    const stage = existing.stage === 'new' || existing.stage === 'lost' ? 'call_booked' : existing.stage;
+    // A new booking reopens the deal from any pre-call or closed stage.
+    const reopen = ['new', 'no_show', 'nurture', 'lost', 'unqualified'];
+    const stage = reopen.includes(existing.stage) ? 'call_booked' : existing.stage;
     // The booking form is public, so it only fills blanks on a known
     // client. What the team has on file wins; the full submission is
     // still saved on the booking's form_data.

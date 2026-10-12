@@ -20,6 +20,12 @@ export function sesConfigured(): boolean {
   );
 }
 
+// Second SES configuration set with open/click tracking turned on. Only
+// campaigns with track_opens use it.
+export function trackingConfigured(): boolean {
+  return Boolean(process.env.SES_TRACKING_CONFIGURATION_SET?.trim());
+}
+
 export function openaiConfigured(): boolean {
   return Boolean(process.env.OPENAI_API_KEY);
 }

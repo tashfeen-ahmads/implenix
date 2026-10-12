@@ -19,10 +19,13 @@ What it does:
 - **Team dashboard at `/admin`**, behind a team login:
   - **Overview:** new leads, upcoming calls, pipeline counts, outreach
     replies, recent activity.
-  - **Pipeline:** a board with columns for New lead, Call booked,
-    Discovery done, Proposal sent, Onboarding, Live and Lost. Drag
-    cards between columns, or use each card's menu. You can also add
-    clients by hand.
+  - **Pipeline:** one board from first cold email to live client,
+    grouped into Outreach, Nurture, Sales, Delivery and Closed phases.
+    Phases and columns collapse, and there's a list view. Outreach
+    columns move on their own. Deal value, a weighted forecast,
+    next steps and lost reasons are tracked. See `docs/PIPELINE.md`.
+  - **Funnel:** where leads drop off, by campaign, step, A/B variant,
+    list, industry and week.
   - **Client page:** the onboarding form as submitted, contact details,
     every call with its status (completed / no-show / cancelled), notes
     and a full activity timeline.
@@ -38,8 +41,8 @@ What it does:
 1. Create a project at supabase.com. The free tier is fine to start.
 2. Run the migrations in order: open SQL Editor and paste in each
    file in `supabase/migrations/` (`20261012000000_team_dashboard.sql`,
-   `20261013000000_lead_finder.sql`, then
-   `20261014000000_call_reminders.sql`), or run `supabase db push`
+   `20261013000000_lead_finder.sql`, `20261014000000_call_reminders.sql`,
+   then `20261015000000_pipeline_funnel.sql`), or run `supabase db push`
    if you use the Supabase CLI.
 3. Authentication > Providers: keep Email on. Turn off "Allow new users
    to sign up", so only people you invite can get in.

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   CalendarDays,
+  Filter,
   Inbox,
   KanbanSquare,
   LayoutDashboard,
@@ -28,6 +29,7 @@ const NAV = [
   { href: '/admin/outreach/contacts', label: 'Contacts', Icon: Users },
   { href: '/admin/outreach/campaigns', label: 'Campaigns', Icon: Megaphone },
   { href: '/admin/outreach/inbox', label: 'Inbox', Icon: Inbox },
+  { href: '/admin/outreach/funnel', label: 'Funnel', Icon: Filter },
   { heading: 'Settings' },
   { href: '/admin/team', label: 'Team', Icon: UsersRound },
   { href: '/admin/account', label: 'Your account', Icon: UserCog },

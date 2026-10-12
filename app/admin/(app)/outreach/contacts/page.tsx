@@ -16,6 +16,7 @@ import {
 } from '@/components/admin/ui';
 import { CsvImporter } from '@/components/admin/outreach/CsvImporter';
 import { ContactStatusSelect } from '@/components/admin/outreach/ContactStatusSelect';
+import { contactStageLabel } from '@/lib/pipeline/stages';
 import { CONTACT_STATUSES, CONTACT_STATUS_LABELS, contactName } from '@/components/admin/outreach/shared';
 
 export const dynamic = 'force-dynamic';
@@ -154,6 +155,7 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
                 <th scope="col" className={thClass}>Location</th>
                 <th scope="col" className={thClass}>List</th>
                 <th scope="col" className={thClass}>Last contacted</th>
+                <th scope="col" className={thClass}>Pipeline</th>
                 <th scope="col" className={thClass}>Status</th>
               </tr>
             </thead>
@@ -186,6 +188,7 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
                   <td className={`${tdClass} whitespace-nowrap`}>
                     {c.last_contacted_at ? formatDate(c.last_contacted_at) : <span className="text-white/35">Never</span>}
                   </td>
+                  <td className={`${tdClass} whitespace-nowrap text-white/75`}>{c.stage ? contactStageLabel(c.stage) : ''}</td>
                   <td className={tdClass}>
                     <ContactStatusSelect contactId={c.id} email={c.email} status={c.status} />
                   </td>

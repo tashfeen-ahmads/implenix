@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Campaign, CampaignStep, ContactList } from '@/lib/db/types';
 import { Card, Stat } from '@/components/admin/ui';
+import { trackingConfigured } from '@/lib/outreach/config';
 import { CampaignEditor } from '@/components/admin/outreach/CampaignEditor';
 import { percent } from '@/components/admin/outreach/shared';
 import { countEnrolledContacts, countEnrollments, countMessages, countReplied } from '@/components/admin/outreach/stats';
@@ -13,10 +14,11 @@ export const metadata = { title: 'Campaign · Outreach' };
 
 export default async function CampaignPage({ params }: { params: { id: string } }) {
   const supabase = supabaseServer();
-  const [campaignRes, stepsRes, listsRes] = await Promise.all([
+  const [campaignRes, stepsRes, listsRes, nurtureRes] = await Promise.all([
     supabase.from('campaigns').select('*').eq('id', params.id).maybeSingle(),
     supabase.from('campaign_steps').select('*').eq('campaign_id', params.id).order('step_number'),
     supabase.from('contact_lists').select('*').order('created_at', { ascending: false }),
+    supabase.from('campaigns').select('id, name, status').eq('kind', 'nurture').neq('id', params.id).neq('status', 'completed').order('name'),
   ]);
   const campaign = campaignRes.data as Campaign | null;
   if (!campaign) notFound();
@@ -47,6 +49,13 @@ export default async function CampaignPage({ params }: { params: { id: string } 
         <Stat label="Booked" value={booked.toLocaleString()} hint={replied ? `${percent(booked, replied)} of replies` : undefined} />
         <Stat label="Unsubscribed" value={unsubscribed.toLocaleString()} />
       </div>
+      <p className="mt-3 font-body text-xs text-white/60">
+        Reply rates per step and A/B variant, and where leads drop off:{' '}
+        <Link href={`/admin/outreach/funnel?range=all&campaign=${campaign.id}`} className="text-brand-cyan hover:underline">
+          open the funnel report
+        </Link>
+        .
+      </p>
       {steps.length ? (
         <Card className="mt-3">
           <h2 className="font-body text-sm font-semibold text-white mb-3">Sent per step</h2>
@@ -79,7 +88,14 @@ export default async function CampaignPage({ params }: { params: { id: string } 
       <Link href="/admin/outreach/campaigns" className="inline-flex items-center gap-1.5 mb-4 font-body text-sm text-white/65 hover:text-white">
         <ArrowLeft size={14} aria-hidden /> All campaigns
       </Link>
-      <CampaignEditor campaign={campaign} steps={steps} lists={lists} stats={stats} />
+      <CampaignEditor
+        campaign={campaign}
+        steps={steps}
+        lists={lists}
+        stats={stats}
+        nurtureCampaigns={(nurtureRes.data ?? []) as Pick<Campaign, 'id' | 'name' | 'status'>[]}
+        trackingAvailable={trackingConfigured()}
+      />
     </>
   );
 }

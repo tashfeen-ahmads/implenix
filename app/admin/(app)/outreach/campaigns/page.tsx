@@ -39,7 +39,7 @@ export default async function CampaignsPage() {
     <>
       <PageHeader
         title="Campaigns"
-        description="Multi-step cold email sequences. Each campaign sends to one contact list inside its sending window and stops for anyone who replies."
+        description="Cold sequences send to a contact list and stop for anyone who replies. Nurture campaigns pick up leads who said not now or never answered."
         actions={<NewCampaignButton />}
       />
 
@@ -76,13 +76,15 @@ export default async function CampaignsPage() {
                   <Link href={`/admin/outreach/campaigns/${c.id}`} className="font-medium text-white hover:text-brand-cyan hover:underline underline-offset-2">
                     {c.name}
                   </Link>
-                  <p className="text-xs text-white/50">Created {formatDate(c.created_at)}</p>
+                  <p className="text-xs text-white/50">
+                    {c.kind === 'nurture' ? 'Nurture, ' : ''}created {formatDate(c.created_at)}
+                  </p>
                 </td>
                 <td className={tdClass}>
                   <Pill tone={CAMPAIGN_STATUS_TONES[c.status]}>{c.status}</Pill>
                 </td>
                 <td className={`${tdClass} whitespace-nowrap`}>
-                  {c.list_id ? listName.get(c.list_id) ?? 'Deleted list' : <span className="text-white/40">No list</span>}
+                  {c.list_id ? listName.get(c.list_id) ?? 'Deleted list' : <span className="text-white/40">{c.kind === 'nurture' ? 'Fed by other campaigns' : 'No list'}</span>}
                 </td>
                 <td className={`${tdClass} text-right tabular-nums`}>{stepCount.get(c.id) ?? 0}</td>
                 <td className={`${tdClass} text-right tabular-nums`}>{sent.toLocaleString()}</td>

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ExternalLink, Mail, Phone, Video } from 'lucide-react';
 import { supabaseServer } from '@/lib/supabase/server';
 import { BOOKING_CONFIG } from '@/lib/googleCalendar';
-import { serviceLabel, type Activity, type Booking, type Client, type TeamMember } from '@/lib/db/types';
+import { serviceLabel, type Activity, type Booking, type Campaign, type Client, type TeamMember } from '@/lib/db/types';
 import { Card, EmptyState, PageHeader, Pill, formatDate, formatDateTime, activityLabel } from '@/components/admin/ui';
 import { ClientControls } from '@/components/admin/pipeline/ClientControls';
 import { BookingStatusSelect } from '@/components/admin/pipeline/BookingStatusSelect';
@@ -30,10 +30,11 @@ export default async function ClientPage({ params }: { params: { id: string } })
   if (!client) notFound();
   const c = client as Client;
 
-  const [bookingsRes, activityRes, teamRes] = await Promise.all([
+  const [bookingsRes, activityRes, teamRes, nurtureRes] = await Promise.all([
     db.from('bookings').select('*').eq('client_id', c.id).order('start_at', { ascending: false }),
     db.from('activities').select('*').eq('client_id', c.id).order('created_at', { ascending: false }).limit(100),
     db.from('team_members').select('*').order('full_name'),
+    db.from('campaigns').select('id, name, status').eq('kind', 'nurture').neq('status', 'completed').order('name'),
   ]);
   const team = (teamRes.data ?? []) as TeamMember[];
   const bookings = (bookingsRes.data ?? []) as Booking[];
@@ -121,7 +122,7 @@ export default async function ClientPage({ params }: { params: { id: string } })
                         <Video size={14} aria-hidden /> Join
                       </a>
                     ) : null}
-                    <BookingStatusSelect clientId={c.id} bookingId={b.id} status={b.status} />
+                    <BookingStatusSelect bookingId={b.id} status={b.status} firstName={c.first_name} />
                   </li>
                 ))}
               </ul>
@@ -152,7 +153,7 @@ export default async function ClientPage({ params }: { params: { id: string } })
         </div>
 
         <div className="flex flex-col gap-6">
-          <ClientControls client={c} team={team} />
+          <ClientControls client={c} team={team} nurtureCampaigns={(nurtureRes.data ?? []) as Pick<Campaign, 'id' | 'name' | 'status'>[]} />
         </div>
       </div>
     </>

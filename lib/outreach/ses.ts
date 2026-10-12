@@ -134,6 +134,8 @@ export type SendInput = {
   inReplyTo?: string | null;
   references?: string[];
   tags?: Record<string, string>;
+  // Use the open/click tracking configuration set (campaign.track_opens).
+  track?: boolean;
 };
 
 export type SendResult = { sesMessageId: string; messageId: string };
@@ -199,7 +201,8 @@ export class SesSendError extends Error {
 export async function sendOutreachEmail(input: SendInput): Promise<SendResult> {
   const messageId = generateMessageId();
   const raw = buildRawMessage(input, messageId);
-  const configurationSet = process.env.SES_CONFIGURATION_SET?.trim();
+  const configurationSet =
+    (input.track ? process.env.SES_TRACKING_CONFIGURATION_SET?.trim() : '') || process.env.SES_CONFIGURATION_SET?.trim();
   const command = new SendEmailCommand({
     FromEmailAddress: formatAddress(input.fromName, input.fromEmail),
     Destination: { ToAddresses: [input.to] },

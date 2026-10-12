@@ -25,7 +25,11 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
   if (campaign.status === 'completed') {
     return NextResponse.json({ error: 'Campaign is completed; duplicate it to send again.' }, { status: 409 });
   }
-  if (!campaign.list_id) return NextResponse.json({ error: 'Pick a contact list first.' }, { status: 400 });
+  // Nurture campaigns can run without a list: leads are moved into them
+  // from other campaigns, the AI agent and the pipeline board.
+  if (!campaign.list_id && campaign.kind !== 'nurture') {
+    return NextResponse.json({ error: 'Pick a contact list first.' }, { status: 400 });
+  }
   if (!sesConfigured()) return NextResponse.json({ error: 'Amazon SES is not configured.' }, { status: 400 });
   if (!postalAddress()) {
     return NextResponse.json({ error: 'OUTREACH_POSTAL_ADDRESS is not set (required by CAN-SPAM).' }, { status: 400 });
@@ -43,6 +47,12 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
     .order('step_number');
   const stepNumbers = ((steps ?? []) as { step_number: number }[]).map((s) => s.step_number);
   if (!stepNumbers.includes(1)) return NextResponse.json({ error: 'Add step 1 before launching.' }, { status: 400 });
+
+  if (!campaign.list_id) {
+    const { error: upErr } = await db.from('campaigns').update({ status: 'active' }).eq('id', campaign.id);
+    if (upErr) return NextResponse.json({ error: upErr.message }, { status: 500 });
+    return NextResponse.json({ enrolled: 0 });
+  }
 
   // Everyone who should not be enrolled.
   const exclude = new Set<string>();
@@ -96,6 +106,20 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
       .upsert(rows, { onConflict: 'campaign_id,contact_id', ignoreDuplicates: true });
     if (error) return NextResponse.json({ error: error.message, enrolled }, { status: 500 });
     enrolled += rows.length;
+    // Pipeline: enrolled contacts move to Queued (nurture keeps its own stage).
+    if (campaign.kind === 'sequence') {
+      await db
+        .from('contacts')
+        .update({ stage: 'queued' })
+        .in('id', rows.map((r) => r.contact_id))
+        .in('stage', ['new', 'no_response', 'queued']);
+    } else {
+      await db
+        .from('contacts')
+        .update({ stage: 'nurture' })
+        .in('id', rows.map((r) => r.contact_id))
+        .in('stage', ['new', 'no_response', 'queued']);
+    }
   }
 
   const { error: upErr } = await db.from('campaigns').update({ status: 'active' }).eq('id', campaign.id);

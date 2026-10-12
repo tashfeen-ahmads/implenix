@@ -12,7 +12,9 @@ import {
   Rocket,
   Save,
   Send,
+  Split,
   Trash2,
+  Workflow,
 } from 'lucide-react';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import type { Campaign, CampaignStep, Contact, ContactList } from '@/lib/db/types';
@@ -45,9 +47,15 @@ type Settings = {
   send_days: number[];
   ai_mode: Campaign['ai_mode'];
   ai_instructions: string;
+  kind: Campaign['kind'];
+  nurture_campaign_id: string;
+  no_reply_grace_days: number;
+  track_opens: boolean;
+  stop_company_on_reply: boolean;
 };
 
-type StepDraft = { key: string; delay_days: number; subject: string; body: string };
+// subject_b/body_b are null when the step has no B variant.
+type StepDraft = { key: string; delay_days: number; subject: string; body: string; subject_b: string | null; body_b: string | null };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -86,28 +94,47 @@ function settingsFrom(c: Campaign): Settings {
     send_days: [...c.send_days].sort((a, b) => a - b),
     ai_mode: c.ai_mode,
     ai_instructions: c.ai_instructions ?? '',
+    kind: c.kind ?? 'sequence',
+    nurture_campaign_id: c.nurture_campaign_id ?? '',
+    no_reply_grace_days: c.no_reply_grace_days ?? 4,
+    track_opens: Boolean(c.track_opens),
+    stop_company_on_reply: c.stop_company_on_reply ?? true,
   };
 }
 
 function stepsFrom(steps: CampaignStep[]): StepDraft[] {
   return [...steps]
     .sort((a, b) => a.step_number - b.step_number)
-    .map((s) => ({ key: s.id, delay_days: s.delay_days, subject: s.subject, body: s.body }));
+    .map((s) => ({
+      key: s.id,
+      delay_days: s.delay_days,
+      subject: s.subject,
+      body: s.body,
+      subject_b: s.body_b != null ? s.subject_b ?? '' : null,
+      body_b: s.body_b ?? null,
+    }));
 }
 
-const snapshot = (s: Settings, st: StepDraft[]) =>
-  JSON.stringify({ s, st: st.map(({ delay_days, subject, body }) => ({ delay_days, subject, body })) });
+const stepContent = (st: StepDraft[]) =>
+  st.map(({ delay_days, subject, body, subject_b, body_b }) => ({ delay_days, subject, body, subject_b, body_b }));
+const snapshot = (s: Settings, st: StepDraft[]) => JSON.stringify({ s, st: stepContent(st) });
 
 export function CampaignEditor({
   campaign,
   steps: initialSteps,
   lists,
   stats,
+  nurtureCampaigns,
+  trackingAvailable,
 }: {
   campaign: Campaign;
   steps: CampaignStep[];
   lists: ContactList[];
   stats: ReactNode;
+  // Other nurture campaigns this one can hand leads to.
+  nurtureCampaigns: Pick<Campaign, 'id' | 'name' | 'status'>[];
+  // SES_TRACKING_CONFIGURATION_SET is set.
+  trackingAvailable: boolean;
 }) {
   const router = useRouter();
   const [settings, setSettings] = useState<Settings>(() => settingsFrom(campaign));
@@ -183,10 +210,12 @@ export function CampaignEditor({
   steps.forEach((s, i) => {
     if (i === 0 && !s.subject.trim()) problems.push('Step 1 needs a subject.');
     if (!s.body.trim()) problems.push(`Step ${i + 1} needs a body.`);
+    if (s.body_b !== null && !s.body_b.trim()) problems.push(`Step ${i + 1} variant B needs a body, or remove the variant.`);
   });
+  if (!(settings.no_reply_grace_days >= 0 && settings.no_reply_grace_days <= 30)) problems.push('No-reply wait must be 0 to 30 days.');
 
   const launchBlockers: string[] = [];
-  if (!campaign.list_id) launchBlockers.push('choose a contact list');
+  if (!campaign.list_id && campaign.kind !== 'nurture') launchBlockers.push('choose a contact list');
   if (!campaign.from_email) launchBlockers.push('set a from email');
   if (!initialSteps.length) launchBlockers.push('add at least one step');
 
@@ -215,13 +244,16 @@ export function CampaignEditor({
           send_days: settings.send_days,
           ai_mode: settings.ai_mode,
           ai_instructions: settings.ai_instructions.trim() || null,
+          kind: settings.kind,
+          nurture_campaign_id: settings.kind === 'sequence' ? settings.nurture_campaign_id || null : null,
+          no_reply_grace_days: Math.round(settings.no_reply_grace_days),
+          track_opens: settings.track_opens,
+          stop_company_on_reply: settings.stop_company_on_reply,
         })
         .eq('id', campaign.id);
       if (cErr) throw new Error(cErr.message);
 
-      const stepsChanged =
-        JSON.stringify(steps.map(({ delay_days, subject, body }) => ({ delay_days, subject, body }))) !==
-        JSON.stringify(stepsFrom(initialSteps).map(({ delay_days, subject, body }) => ({ delay_days, subject, body })));
+      const stepsChanged = JSON.stringify(stepContent(steps)) !== JSON.stringify(stepContent(stepsFrom(initialSteps)));
       if (stepsChanged) {
         // Replace the whole sequence: simplest way to keep step_number
         // contiguous and unique after reordering.
@@ -235,6 +267,8 @@ export function CampaignEditor({
               delay_days: Math.max(0, Math.floor(s.delay_days) || 0),
               subject: s.subject,
               body: s.body,
+              subject_b: s.body_b !== null ? s.subject_b || null : null,
+              body_b: s.body_b !== null ? s.body_b : null,
             })),
           );
           if (iErr) throw new Error(`Sequence not saved: ${iErr.message}. Your edits are still here; try Save again.`);
@@ -284,6 +318,8 @@ export function CampaignEditor({
         // Blank = sent as a reply in step 1's thread ("Re: …").
         subject: '',
         body: '',
+        subject_b: null,
+        body_b: null,
       },
     ]);
     setPreviewIndex(steps.length);
@@ -305,7 +341,12 @@ export function CampaignEditor({
     setPreviewIndex(index + dir);
   };
 
-  const previewStep = steps[Math.min(previewIndex, steps.length - 1)];
+  const [previewVariant, setPreviewVariant] = useState<'A' | 'B'>('A');
+  const baseStep = steps[Math.min(previewIndex, steps.length - 1)];
+  const previewStep =
+    baseStep && previewVariant === 'B' && baseStep.body_b !== null
+      ? { ...baseStep, subject: baseStep.subject_b?.trim() ? baseStep.subject_b : baseStep.subject, body: baseStep.body_b }
+      : baseStep;
   const dayOffsets = steps.reduce<number[]>((acc, s, i) => {
     acc.push((i ? acc[i - 1] : 0) + (Number(s.delay_days) || 0));
     return acc;
@@ -465,6 +506,47 @@ export function CampaignEditor({
                       <p className="font-body text-xs text-white/50">
                         Fallbacks: <code className="font-mono text-white/70">{'{{first_name|there}}'}</code> prints &ldquo;there&rdquo; when the first name is blank.
                       </p>
+                      {s.body_b === null ? (
+                        <div>
+                          <Button variant="ghost" onClick={() => updateStep(s.key, { subject_b: '', body_b: '' })}>
+                            <Split size={14} aria-hidden /> Add A/B variant
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="mt-1 pt-3 border-t border-white/10 flex flex-col gap-3">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <h4 className="font-body text-sm font-semibold text-white">Variant B</h4>
+                            <Button
+                              variant="ghost"
+                              onClick={() => updateStep(s.key, { subject_b: null, body_b: null })}
+                              aria-label={`Remove variant B from step ${i + 1}`}
+                              className="text-red-300 hover:text-red-200"
+                            >
+                              <Trash2 size={14} aria-hidden /> Remove variant
+                            </Button>
+                          </div>
+                          <p className="font-body text-xs text-white/55 leading-relaxed">
+                            Half of the contacts get B, and each person keeps the same variant. Judge the winner on reply rate in the funnel report; open rates are unreliable.
+                          </p>
+                          <Field label="Subject B (optional)" htmlFor={`${idBase}-subject-b`} hint="Leave blank to reuse variant A's subject.">
+                            <input
+                              id={`${idBase}-subject-b`}
+                              className={inputClass}
+                              value={s.subject_b ?? ''}
+                              onChange={(e) => updateStep(s.key, { subject_b: e.target.value })}
+                            />
+                          </Field>
+                          <Field label="Body B" htmlFor={`${idBase}-body-b`}>
+                            <textarea
+                              id={`${idBase}-body-b`}
+                              rows={6}
+                              className={`${inputClass} font-body leading-relaxed resize-y`}
+                              value={s.body_b}
+                              onChange={(e) => updateStep(s.key, { body_b: e.target.value })}
+                            />
+                          </Field>
+                        </div>
+                      )}
                     </div>
                   </li>
                 );
@@ -486,6 +568,14 @@ export function CampaignEditor({
                       ))}
                     </select>
                   </Field>
+                  {baseStep?.body_b !== null && baseStep ? (
+                    <Field label="Variant" htmlFor="preview-variant">
+                      <select id="preview-variant" className={inputClass} value={previewVariant} onChange={(e) => setPreviewVariant(e.target.value as 'A' | 'B')}>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                      </select>
+                    </Field>
+                  ) : null}
                   <Field label="Preview as" htmlFor="preview-contact" hint={samples.length ? undefined : 'Sample contact. Choose a list to preview with real contacts.'}>
                     <select id="preview-contact" className={inputClass} value={sampleIndex} onChange={(e) => setSampleIndex(Number(e.target.value))} disabled={!samples.length}>
                       {samples.length ? (
@@ -540,7 +630,7 @@ export function CampaignEditor({
             <div className="sm:col-span-2">
               <Field label="Contact list" htmlFor="c-list" hint={campaign.status !== 'draft' ? 'Changing the list after launch only affects contacts enrolled later.' : 'Every active contact in this list is enrolled at launch.'}>
                 <select id="c-list" className={inputClass} value={settings.list_id} onChange={(e) => set('list_id', e.target.value)}>
-                  <option value="">Choose a list…</option>
+                  <option value="">{settings.kind === 'nurture' ? 'No list (leads are moved in)' : 'Choose a list…'}</option>
                   {lists.map((l) => (
                     <option key={l.id} value={l.id}>{l.name}</option>
                   ))}
@@ -631,6 +721,109 @@ export function CampaignEditor({
                 })}
               </div>
             </fieldset>
+          </div>
+        </Card>
+
+        <Card title="Funnel and follow-through" className="lg:col-span-2">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <fieldset>
+              <legend className="font-body text-xs font-medium text-white/80 mb-2 flex items-center gap-1.5">
+                <Workflow size={14} aria-hidden /> Campaign type
+              </legend>
+              <div className="flex flex-col gap-2">
+                {([
+                  ['sequence', 'Cold sequence', 'Emails a contact list in order. Contacts move through Email sent and the follow-up columns on the pipeline.'],
+                  ['nurture', 'Nurture', 'Long-gap check-ins (a month or more apart) for leads who said "not now" or never replied. Leads are moved in automatically; a list is optional.'],
+                ] as const).map(([value, label, help]) => (
+                  <label
+                    key={value}
+                    className={`flex gap-3 p-3 rounded-md border cursor-pointer focus-within:outline focus-within:outline-2 focus-within:outline-brand-cyan ${
+                      settings.kind === value ? 'border-brand-purple/60 bg-brand-purple/10' : 'border-white/10 hover:bg-white/[0.03]'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="kind"
+                      value={value}
+                      checked={settings.kind === value}
+                      onChange={() => set('kind', value)}
+                      className="mt-0.5 h-4 w-4 accent-brand-purple"
+                    />
+                    <span>
+                      <span className="block font-body text-sm font-medium text-white">{label}</span>
+                      <span className="block mt-0.5 font-body text-xs text-white/60 leading-relaxed">{help}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <div className="flex flex-col gap-4">
+              {settings.kind === 'sequence' ? (
+                <>
+                  <Field
+                    label="When the sequence ends without a reply"
+                    htmlFor="c-nurture"
+                    hint={
+                      nurtureCampaigns.length
+                        ? 'The same campaign also receives leads whose reply the AI reads as "not now".'
+                        : 'Create a campaign and set its type to Nurture to hand leads over automatically.'
+                    }
+                  >
+                    <select id="c-nurture" className={inputClass} value={settings.nurture_campaign_id} onChange={(e) => set('nurture_campaign_id', e.target.value)}>
+                      <option value="">Move to No response (no more emails)</option>
+                      {nurtureCampaigns.map((c) => (
+                        <option key={c.id} value={c.id}>Move to nurture: {c.name}{c.status === 'active' ? '' : ` (${c.status})`}</option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label="Wait after the last email (days)" htmlFor="c-grace" hint="How long to wait for a late reply before calling it no response.">
+                    <input
+                      id="c-grace"
+                      type="number"
+                      min={0}
+                      max={30}
+                      inputMode="numeric"
+                      className={inputClass}
+                      value={settings.no_reply_grace_days}
+                      onChange={(e) => set('no_reply_grace_days', Math.max(0, Number(e.target.value) || 0))}
+                    />
+                  </Field>
+                </>
+              ) : (
+                <p className="font-body text-sm text-white/70 leading-relaxed">
+                  Nurture campaigns never finish on their own. Step 1&rsquo;s wait is counted from the day a lead is moved in, so set it to 30 days or more.
+                </p>
+              )}
+              <label className="flex gap-3 items-start cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 accent-brand-purple"
+                  checked={settings.stop_company_on_reply}
+                  onChange={(e) => set('stop_company_on_reply', e.target.checked)}
+                />
+                <span>
+                  <span className="block font-body text-sm text-white">Stop the whole company on reply</span>
+                  <span className="block font-body text-xs text-white/60">When one person replies, colleagues with the same email domain stop getting this outreach. Free mailboxes like Gmail are never grouped.</span>
+                </span>
+              </label>
+              <label className={`flex gap-3 items-start ${trackingAvailable ? 'cursor-pointer' : 'opacity-60'}`}>
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 accent-brand-purple"
+                  checked={settings.track_opens}
+                  disabled={!trackingAvailable && !settings.track_opens}
+                  onChange={(e) => set('track_opens', e.target.checked)}
+                />
+                <span>
+                  <span className="block font-body text-sm text-white">Track opens and clicks</span>
+                  <span className="block font-body text-xs text-white/60">
+                    {trackingAvailable
+                      ? 'Off is recommended for cold email: tracking pixels and rewritten links lower inbox placement, and Apple Mail inflates opens.'
+                      : 'Needs SES_TRACKING_CONFIGURATION_SET. See docs/OUTREACH.md.'}
+                  </span>
+                </span>
+              </label>
+            </div>
           </div>
         </Card>
 
@@ -860,10 +1053,14 @@ function CampaignControls({ campaign, dirty, blockers }: { campaign: Campaign; d
       >
         {action === 'launch' ? (
           <ul className="list-disc pl-5 space-y-1.5">
-            <li>
-              <strong className="text-white">{eligible === null ? 'Counting…' : eligible.toLocaleString()}</strong> active
-              contacts will be enrolled (unsubscribed, bounced and already-enrolled contacts are skipped).
-            </li>
+            {campaign.list_id ? (
+              <li>
+                <strong className="text-white">{eligible === null ? 'Counting…' : eligible.toLocaleString()}</strong> active
+                contacts will be enrolled (unsubscribed, bounced and already-enrolled contacts are skipped).
+              </li>
+            ) : (
+              <li>No list: the campaign starts empty and sends to leads as they are moved into nurture.</li>
+            )}
             <li>
               Up to <strong className="text-white">{campaign.daily_limit.toLocaleString()}</strong> emails a day, {hourLabel(campaign.send_hour_start)}-{campaign.send_hour_end === 24 ? 'midnight' : hourLabel(campaign.send_hour_end)}{' '}
               {TIMEZONES.find((t) => t.value === campaign.send_timezone)?.label ?? campaign.send_timezone} time,{' '}

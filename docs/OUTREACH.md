@@ -167,9 +167,13 @@ The agent never replies to auto-replies, or to unsubscribed, bounced or complain
 
 Start every new campaign in `draft` mode, and read a few dozen drafts before switching to `auto`.
 
+### Funnel automation
+
+Pipeline stages, nurture campaigns, out-of-office handling, A/B variants, open/click tracking and the funnel report are described in `docs/PIPELINE.md`.
+
 ## 9. Environment variables
 
-See the "Outreach (Amazon SES + OpenAI)" block in `.env.example`: `AWS_SES_REGION`, `AWS_SES_ACCESS_KEY_ID`, `AWS_SES_SECRET_ACCESS_KEY`, `SES_CONFIGURATION_SET`, `OUTREACH_FROM_DOMAIN`, `OUTREACH_POSTAL_ADDRESS`, `OUTREACH_GLOBAL_DAILY_LIMIT`, `OUTREACH_TIMEZONE`, `OUTREACH_UNSUBSCRIBE_SECRET`, `OUTREACH_UNSUBSCRIBE_MAILTO`, `SES_INBOUND_SNS_TOPIC_ARN`, `CRON_SECRET`, `OPENAI_API_KEY`, `OPENAI_MODEL`. The Supabase keys (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) are also required.
+See the "Outreach (Amazon SES + OpenAI)" block in `.env.example`: `AWS_SES_REGION`, `AWS_SES_ACCESS_KEY_ID`, `AWS_SES_SECRET_ACCESS_KEY`, `SES_CONFIGURATION_SET`, `SES_TRACKING_CONFIGURATION_SET` (optional, see `docs/PIPELINE.md`), `OUTREACH_FROM_DOMAIN`, `OUTREACH_POSTAL_ADDRESS`, `OUTREACH_GLOBAL_DAILY_LIMIT`, `OUTREACH_TIMEZONE`, `OUTREACH_UNSUBSCRIBE_SECRET`, `OUTREACH_UNSUBSCRIBE_MAILTO`, `SES_INBOUND_SNS_TOPIC_ARN`, `CRON_SECRET`, `OPENAI_API_KEY`, `OPENAI_MODEL`. The Supabase keys (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) are also required.
 
 ## 10. Go-live checklist
 

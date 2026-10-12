@@ -9,26 +9,69 @@ export type TeamMember = {
   created_at: string;
 };
 
+// Client (deal) stages. Grouping, labels and probabilities live in
+// lib/pipeline/stages.ts.
 export const CLIENT_STAGES = [
   'new',
   'call_booked',
+  'no_show',
   'discovery_done',
   'proposal_sent',
+  'negotiation',
   'onboarding',
+  'building',
   'live',
+  'nurture',
   'lost',
+  'unqualified',
 ] as const;
 export type ClientStage = (typeof CLIENT_STAGES)[number];
 
 export const STAGE_LABELS: Record<ClientStage, string> = {
   new: 'New lead',
   call_booked: 'Call booked',
+  no_show: 'No-show',
   discovery_done: 'Discovery done',
   proposal_sent: 'Proposal sent',
-  onboarding: 'Onboarding',
+  negotiation: 'Negotiation',
+  onboarding: 'Won · onboarding',
+  building: 'Building',
   live: 'Live',
+  nurture: 'In nurture',
   lost: 'Lost',
+  unqualified: 'Unqualified',
 };
+
+export const LOST_REASONS = [
+  { value: 'price', label: 'Price' },
+  { value: 'timing', label: 'Timing / not now' },
+  { value: 'competitor', label: 'Went with a competitor' },
+  { value: 'no_budget', label: 'No budget' },
+  { value: 'no_response', label: 'Went quiet after proposal' },
+  { value: 'not_a_fit', label: 'Not a fit' },
+  { value: 'other', label: 'Other' },
+] as const;
+export type LostReason = (typeof LOST_REASONS)[number]['value'];
+
+// Outreach stages on contacts. Most are set automatically by the send
+// engine, SES events and the AI reply agent.
+export const CONTACT_STAGES = [
+  'new',
+  'queued',
+  'email_sent',
+  'follow_up_1',
+  'follow_up_2',
+  'follow_up_3',
+  'replied',
+  'interested',
+  'nurture',
+  'client',
+  'not_interested',
+  'no_response',
+  'unsubscribed',
+  'bounced',
+] as const;
+export type ContactStage = (typeof CONTACT_STAGES)[number];
 
 export type Client = {
   id: string;
@@ -44,6 +87,12 @@ export type Client = {
   notes: string | null;
   owner_id: string | null;
   outreach_contact_id: string | null;
+  stage_changed_at: string;
+  setup_fee: number | null;
+  monthly_value: number | null;
+  lost_reason: LostReason | null;
+  next_step: string | null;
+  next_step_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -107,6 +156,11 @@ export type Contact = {
   state: string | null;
   custom: Record<string, string>;
   status: ContactStatus;
+  stage: ContactStage;
+  stage_changed_at: string;
+  reply_label: string | null;
+  revisit_at: string | null;
+  owner_id: string | null;
   last_contacted_at: string | null;
   created_at: string;
 };
@@ -126,6 +180,11 @@ export type Campaign = {
   send_days: number[];
   ai_mode: 'off' | 'draft' | 'auto';
   ai_instructions: string | null;
+  kind: 'sequence' | 'nurture';
+  nurture_campaign_id: string | null;
+  no_reply_grace_days: number;
+  track_opens: boolean;
+  stop_company_on_reply: boolean;
   created_by: string | null;
   created_at: string;
   updated_at: string;
@@ -138,6 +197,9 @@ export type CampaignStep = {
   delay_days: number;
   subject: string;
   body: string;
+  // Optional A/B variant. Blank subject_b reuses the A subject.
+  subject_b: string | null;
+  body_b: string | null;
 };
 
 export type Enrollment = {
@@ -176,6 +238,11 @@ export type Message = {
   ai_generated: boolean;
   ai_meta: Record<string, unknown>;
   sent_by: string | null;
+  variant: 'A' | 'B' | null;
+  opened_at: string | null;
+  open_count: number;
+  clicked_at: string | null;
+  click_count: number;
   created_at: string;
 };
 

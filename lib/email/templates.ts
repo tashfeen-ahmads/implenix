@@ -156,3 +156,24 @@ export function reminderEmail(d: {
     .join('\n');
   return { subject, html, text };
 }
+
+// Sent when the team marks a call as a no-show and chooses to send it.
+export function rebookEmail(d: { firstName: string; whenLabel: string; bookingUrl: string }) {
+  const subject = 'Sorry we missed you. Pick another time?';
+  const html = shell(
+    subject,
+    `<h1 style="margin:0 0 8px;font-size:22px;line-height:1.3">Sorry we missed you, ${esc(d.firstName)}.</h1>
+<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#3d3a4f">We had a call booked for ${esc(d.whenLabel)} but couldn't connect. No problem, things come up. Pick a time that works better and we'll pick up where we left off.</p>
+<p style="margin:0 0 20px">${button(d.bookingUrl, 'Pick a new time')}</p>
+<p style="margin:0;font-size:14px;line-height:1.6;color:#3d3a4f">Or just reply to this email with a couple of times that suit you.</p>`,
+  );
+  const text = [
+    `Sorry we missed you, ${d.firstName}.`,
+    '',
+    `We had a call booked for ${d.whenLabel} but couldn't connect. Pick a time that works better:`,
+    d.bookingUrl,
+    '',
+    'Or just reply with a couple of times that suit you.',
+  ].join('\n');
+  return { subject, html, text };
+}

@@ -6,6 +6,9 @@ import { isOnSendingDomain, unsubscribeMailto } from './config';
 import { handleInboundWithAgent } from './agent';
 import { bracketId, sesIdFromReference } from './ses';
 import { escapeLike, normalizeEmail, suppressAndStop } from './suppress';
+import { REPLY_FROM, pauseSequences, setContactStage, stopCompanySequences } from './stage';
+
+const OOO_PAUSE_DAYS = 7;
 
 // SES notifications delivered over SNS: sending events (bounce, complaint,
 // delivery) and inbound replies (receipt rule with an SNS action).
@@ -56,6 +59,28 @@ export async function handleSesEvent(db: SupabaseClient, payload: Json): Promise
         await db.from('messages').update({ status: 'delivered' }).eq('ses_message_id', sesId).eq('status', 'sent');
       }
       return 'delivery';
+    }
+    case 'Open':
+    case 'Click': {
+      // Only sent with the tracking configuration set (campaign.track_opens).
+      // Opens are a rough signal: Apple Mail and some scanners prefetch.
+      if (!sesId) return 'engagement_no_id';
+      const { data: row } = await db
+        .from('messages')
+        .select('id, opened_at, open_count, clicked_at, click_count')
+        .eq('ses_message_id', sesId)
+        .maybeSingle();
+      const m = row as Pick<Message, 'id' | 'opened_at' | 'open_count' | 'clicked_at' | 'click_count'> | null;
+      if (!m) return 'engagement_unknown_message';
+      const at = str(obj(type === 'Open' ? payload.open : payload.click).timestamp) || new Date().toISOString();
+      const patch =
+        type === 'Open'
+          ? { opened_at: m.opened_at ?? at, open_count: (m.open_count ?? 0) + 1 }
+          : // A click implies the email was opened.
+            { clicked_at: m.clicked_at ?? at, click_count: (m.click_count ?? 0) + 1, opened_at: m.opened_at ?? at };
+      const { error } = await db.from('messages').update(patch).eq('id', m.id);
+      if (error) console.error('[outreach/ses] engagement update failed', error.message);
+      return type === 'Open' ? 'open' : 'click';
     }
     case 'Received':
       return 'received';
@@ -243,17 +268,31 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
   const inbound = inserted as Message;
 
   if (!contact) return 'stored_unmatched';
-  if (auto) return 'auto_reply_stored';
+  if (auto) {
+    // Out-of-office and other auto-replies don't end the sequence; they
+    // pause it for a week so the next email doesn't land in an empty inbox.
+    await pauseSequences(db, contact.id, OOO_PAUSE_DAYS);
+    return 'auto_reply_stored';
+  }
 
-  // A real reply ends every running sequence for this person.
-  await db
+  // A real reply ends every running sequence for this person. The ids are
+  // kept so the agent can resume them if the reply turns out to be an
+  // out-of-office message written by hand.
+  const prevStage = contact.stage;
+  const { data: stoppedRows } = await db
     .from('campaign_enrollments')
     .update({ status: 'replied' })
     .eq('contact_id', contact.id)
-    .eq('status', 'active');
+    .eq('status', 'active')
+    .select('id');
+  const stoppedEnrollmentIds = ((stoppedRows ?? []) as { id: string }[]).map((r) => r.id);
   if (contact.status === 'active') {
     await db.from('contacts').update({ status: 'replied' }).eq('id', contact.id);
     contact = { ...contact, status: 'replied' };
+  }
+  if (REPLY_FROM.includes(contact.stage)) {
+    await setContactStage(db, contact.id, 'replied', { onlyFrom: REPLY_FROM });
+    contact = { ...contact, stage: 'replied' };
   }
 
   let { data: client } = await db
@@ -284,6 +323,11 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
     const { data } = await db.from('campaigns').select('*').eq('id', campaignId).maybeSingle();
     campaign = data as Campaign | null;
   }
-  const res = await handleInboundWithAgent({ db, contact, campaign, inbound });
+  if (campaign?.stop_company_on_reply !== false) {
+    const n = await stopCompanySequences(db, contact);
+    if (n) console.info(`[outreach/inbound] stopped ${n} sequence(s) for colleagues at the same company`);
+  }
+
+  const res = await handleInboundWithAgent({ db, contact, campaign, inbound, prevStage, stoppedEnrollmentIds });
   return `reply_${res.handled}`;
 }

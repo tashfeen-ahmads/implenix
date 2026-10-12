@@ -7,6 +7,9 @@ import { buildOutreachEmail, replySubject } from './render';
 import { SesSendError, sendOutreachEmail } from './ses';
 import { isSuppressed, normalizeEmail } from './suppress';
 import { inSendWindow, startOfDay } from './time';
+import { AUTO_FROM, moveToNurture, setContactStage } from './stage';
+import { createHash } from 'node:crypto';
+import { stageForStep } from '@/lib/pipeline/stages';
 
 // The cron-driven sequence sender. Each tick picks due enrollments of
 // active campaigns inside their send windows, honours per-campaign and
@@ -87,7 +90,9 @@ export async function runOutreachTick(now = new Date()): Promise<TickResult> {
       .select('id', { count: 'exact', head: true })
       .eq('campaign_id', campaign.id)
       .eq('status', 'active');
-    if (activeCount === 0) {
+    // Nurture campaigns are evergreen: leads keep arriving, so they never
+    // complete on their own.
+    if (activeCount === 0 && campaign.kind !== 'nurture') {
       await db.from('campaigns').update({ status: 'completed' }).eq('id', campaign.id).eq('status', 'active');
       continue;
     }
@@ -183,16 +188,30 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
   const stepNumber = e.current_step + 1;
   const step = q.steps.get(stepNumber);
   if (!step) {
+    // Sequence finished and the grace period after the last email passed
+    // without a reply.
     await setEnrollment({ status: 'completed' });
+    if (q.campaign.kind === 'sequence' && q.campaign.nurture_campaign_id) {
+      const res = await moveToNurture(db, contact, { fromCampaign: q.campaign });
+      if (!res.enrolled) await setContactStage(db, contact.id, 'no_response', { onlyFrom: AUTO_FROM });
+    } else {
+      await setContactStage(db, contact.id, 'no_response', { onlyFrom: AUTO_FROM });
+    }
     return 'completed';
   }
 
+  // A/B test: a step with a B body splits contacts 50/50. The split is
+  // stable per contact and step, so a retry sends the same variant.
+  const variant: 'A' | 'B' = step.body_b?.trim() ? pickVariant(contact.id, q.campaign.id, stepNumber) : 'A';
+  const stepSubject = variant === 'B' && step.subject_b?.trim() ? step.subject_b : step.subject;
+  const stepBody = variant === 'B' ? step.body_b! : step.body;
+
   // A blank step subject means "follow up in the same thread": reuse the
   // previous step's subject as "Re: ..." and set threading headers.
-  let subjectTemplate = step.subject;
+  let subjectTemplate = stepSubject;
   let inReplyTo: string | null = null;
   const references: string[] = [];
-  if (!step.subject.trim()) {
+  if (!stepSubject.trim()) {
     const { data: prev } = await db
       .from('messages')
       .select('subject, message_id')
@@ -210,7 +229,7 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
     if (!first) subjectTemplate = q.steps.get(1)?.subject ?? 'Quick question';
   }
 
-  const email = buildOutreachEmail({ subject: subjectTemplate, body: step.body, contact });
+  const email = buildOutreachEmail({ subject: subjectTemplate, body: stepBody, contact });
   let sent: { sesMessageId: string; messageId: string };
   try {
     sent = await sendOutreachEmail({
@@ -224,7 +243,8 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
       unsubscribeUrl: email.unsubscribeUrl,
       inReplyTo,
       references,
-      tags: { campaign_id: q.campaign.id, step: String(stepNumber), kind: 'sequence' },
+      tags: { campaign_id: q.campaign.id, step: String(stepNumber), kind: q.campaign.kind, variant },
+      track: q.campaign.track_opens,
     });
   } catch (err) {
     const code = err instanceof SesSendError ? err.code : 'Error';
@@ -238,6 +258,7 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
       to_email: contact.email,
       subject: email.subject,
       body_text: email.body,
+      variant,
       status: 'failed',
       ai_meta: { error: code, message: err instanceof Error ? err.message.slice(0, 300) : '' },
     });
@@ -261,19 +282,28 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
     message_id: sent.messageId,
     in_reply_to: inReplyTo,
     ses_message_id: sent.sesMessageId,
+    variant,
     status: 'sent',
   });
   if (msgErr) console.error('[outreach/tick] message insert failed (email was sent)', msgErr.message);
 
+  // After the last step the enrollment stays active for the grace period,
+  // so a late reply still counts as a reply to this sequence; the next
+  // tick after that marks it no-response (or hands it to nurture).
   const next = q.steps.get(stepNumber + 1);
-  await setEnrollment(
-    next
-      ? {
-          current_step: stepNumber,
-          next_send_at: new Date(Date.now() + Math.max(0, next.delay_days) * DAY_MS).toISOString(),
-        }
-      : { current_step: stepNumber, status: 'completed' },
-  );
+  const waitDays = next ? Math.max(0, next.delay_days) : Math.max(0, q.campaign.no_reply_grace_days ?? 4);
+  await setEnrollment({
+    current_step: stepNumber,
+    next_send_at: new Date(Date.now() + waitDays * DAY_MS).toISOString(),
+  });
   await db.from('contacts').update({ last_contacted_at: new Date().toISOString() }).eq('id', contact.id);
+  if (q.campaign.kind === 'sequence') {
+    await setContactStage(db, contact.id, stageForStep(stepNumber), { onlyFrom: AUTO_FROM });
+  }
   return 'sent';
+}
+
+function pickVariant(contactId: string, campaignId: string, step: number): 'A' | 'B' {
+  const h = createHash('sha256').update(`${campaignId}:${contactId}:${step}`).digest();
+  return h[0] % 2 === 0 ? 'A' : 'B';
 }

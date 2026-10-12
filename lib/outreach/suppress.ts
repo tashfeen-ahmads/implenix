@@ -74,7 +74,10 @@ export async function suppressAndStop(
   }
   const ids = (contacts ?? []).map((c: { id: string }) => c.id);
   for (const id of ids) {
-    const { error: upErr } = await db.from('contacts').update({ status: STATUS_FOR_REASON[reason] }).eq('id', id);
+    const { error: upErr } = await db
+      .from('contacts')
+      .update({ status: STATUS_FOR_REASON[reason], stage: reason === 'bounced' ? 'bounced' : 'unsubscribed' })
+      .eq('id', id);
     if (upErr) console.error('[outreach] contact status update failed', upErr.message);
     await stopEnrollments(db, id);
   }
