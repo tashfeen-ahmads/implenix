@@ -38,7 +38,8 @@ What it does:
 1. Create a project at supabase.com. The free tier is fine to start.
 2. Run the migrations in order: open SQL Editor and paste in each
    file in `supabase/migrations/` (`20261012000000_team_dashboard.sql`,
-   then `20261013000000_lead_finder.sql`), or run `supabase db push`
+   `20261013000000_lead_finder.sql`, then
+   `20261014000000_call_reminders.sql`), or run `supabase db push`
    if you use the Supabase CLI.
 3. Authentication > Providers: keep Email on. Turn off "Allow new users
    to sign up", so only people you invite can get in.
@@ -100,6 +101,10 @@ delivery of your booking confirmations.
 - Open slots are worked out in that timezone too. Before this change
   they used the server's timezone, which on most hosts is UTC, so a
   9:00-18:00 day showed as 5am-2pm New York time.
+- When an existing client books again, the form only fills fields that
+  are blank on their record. It never overwrites what the team has on
+  file, because anyone can submit the public form with any email. Every
+  submission is still kept on the booking itself.
 - If someone who books is already an outreach contact, they're linked
   to their client record, marked "booked", and their email sequences
   stop.

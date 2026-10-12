@@ -221,7 +221,11 @@ async function saveToPipeline(input: BookingInput, b: Saved): Promise<string | n
       .eq('status', 'active');
   }
 
-  const { data: existing } = await db.from('clients').select('id, stage').ilike('email', email).maybeSingle();
+  const { data: existing } = await db
+    .from('clients')
+    .select('id, stage, first_name, last_name, phone, website, service, source, outreach_contact_id')
+    .ilike('email', email)
+    .maybeSingle();
   const fields = {
     first_name: input.firstName,
     last_name: input.lastName || null,
@@ -236,7 +240,13 @@ async function saveToPipeline(input: BookingInput, b: Saved): Promise<string | n
   if (existing) {
     clientId = existing.id;
     const stage = existing.stage === 'new' || existing.stage === 'lost' ? 'call_booked' : existing.stage;
-    await db.from('clients').update({ ...fields, stage }).eq('id', clientId);
+    // The booking form is public, so it only fills blanks on a known
+    // client. What the team has on file wins; the full submission is
+    // still saved on the booking's form_data.
+    const blanks = Object.fromEntries(
+      Object.entries(fields).filter(([k]) => k !== 'email' && !(existing as Record<string, unknown>)[k]),
+    );
+    await db.from('clients').update({ ...blanks, stage }).eq('id', clientId);
   } else {
     const { data, error } = await db
       .from('clients')

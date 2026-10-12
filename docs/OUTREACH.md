@@ -45,7 +45,8 @@ In the SES console (pick one region and use it everywhere; inbound receiving nee
 1. **SNS:** create a topic, for example `implenix-ses-events`.
 2. **SES → Configuration sets → Create** `implenix-outreach`. Add an **event destination** of type SNS, pointing at the topic, with event types **Bounce, Complaint, Delivery** (Reject and Rendering failure are optional).
 3. Set `SES_CONFIGURATION_SET=implenix-outreach`. Every send passes it.
-4. **Subscribe the endpoint:** SNS topic → Create subscription → HTTPS → `https://implenix.net/api/outreach/ses`. The endpoint verifies the SNS signature and confirms the subscription automatically. Check the subscription shows "Confirmed".
+4. **Allow the topic:** add its ARN to `SES_INBOUND_SNS_TOPIC_ARN` and redeploy. This is required: the endpoint rejects every SNS message (including the subscription confirmation) from a topic that isn't listed, because any AWS account can create a topic with a valid signature.
+5. **Subscribe the endpoint:** SNS topic → Create subscription → HTTPS → `https://implenix.net/api/outreach/ses`. The endpoint verifies the SNS signature and confirms the subscription automatically. Check the subscription shows "Confirmed".
 
 What happens:
 - **Permanent bounce:** the address goes into `suppressions` (reason `bounced`), the contact becomes `bounced`, its sequences stop, and the message status becomes `bounced`. Transient bounces are ignored.
@@ -62,12 +63,13 @@ Replies must reach SES. Pick the address prospects reply to:
 - **Alternative:** a reply subdomain, for example `reply.outreach.implenix.net`, with the same MX. Set each campaign's `reply_to` to an address there, and verify that subdomain as an identity too.
 
 Then:
-1. SNS topic `implenix-ses-inbound`, subscribed over HTTPS to the same `https://implenix.net/api/outreach/ses`.
+1. SNS topic `implenix-ses-inbound`. Add its ARN to `SES_INBOUND_SNS_TOPIC_ARN` next to the events topic (comma-separated: `arn:...:implenix-ses-events,arn:...:implenix-ses-inbound`), redeploy, then subscribe it over HTTPS to the same `https://implenix.net/api/outreach/ses`.
 2. **SES → Email receiving → Rule sets:** create a rule set and make it active. Add a rule:
    - Recipients: `outreach.implenix.net` (or the reply subdomain).
    - Action: **Publish to Amazon SNS topic** → `implenix-ses-inbound`, **encoding Base64** (UTF-8 also works, but Base64 is safer for 8-bit mail).
    - Turn on spam and virus scanning. Messages that SES marks as spam or virus are dropped.
-3. Optional: `SES_INBOUND_SNS_TOPIC_ARN=arn:...:implenix-ses-inbound,arn:...:implenix-ses-events` restricts the endpoint to your topics.
+
+The endpoint also drops mail that fails DMARC (a spoofed From), and mail whose envelope recipient isn't on `OUTREACH_FROM_DOMAIN` (or its subdomains) or the `OUTREACH_UNSUBSCRIBE_MAILTO` address.
 
 Limits: the SNS action carries messages up to **150 KB**. Larger mail (big attachments) arrives without content and is logged and skipped. If you need those messages, add an S3 action as well.
 
@@ -173,7 +175,7 @@ See the "Outreach (Amazon SES + OpenAI)" block in `.env.example`: `AWS_SES_REGIO
 
 1. Apply the Supabase migration and add the team members.
 2. Verify the SES domain (DKIM, MAIL FROM, DMARC) and get production access.
-3. Set up the configuration set, the events topic and the HTTPS subscription (Confirmed).
+3. Set up the configuration set and the events topic, add both topic ARNs to `SES_INBOUND_SNS_TOPIC_ARN`, then add the HTTPS subscription (Confirmed).
 4. Set up the MX, the receipt rule, the inbound topic and the subscription (Confirmed). Send a test reply and check it appears in the inbox.
 5. Set all the env vars in Vercel and redeploy. Make sure the cron appears under Project → Cron Jobs.
 6. Create a campaign in `draft` AI mode and send test emails to Gmail and Outlook. Check that "Show original" reports SPF, DKIM and DMARC as PASS, and that the unsubscribe button appears.

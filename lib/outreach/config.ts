@@ -61,8 +61,9 @@ export function unsubscribeMailto(): string | null {
   return v && v.includes('@') ? v : null;
 }
 
-// Comma-separated SNS topic ARNs we accept messages from. Empty = any
-// topic whose signature verifies (signature checks still apply).
+// Comma-separated SNS topic ARNs we accept messages from. Required: a
+// valid SNS signature only proves the message came from *some* AWS
+// account's topic, so with this empty the SES endpoint rejects everything.
 export function allowedSnsTopics(): string[] {
   return (process.env.SES_INBOUND_SNS_TOPIC_ARN ?? '')
     .split(',')

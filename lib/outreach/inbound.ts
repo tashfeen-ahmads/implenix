@@ -2,9 +2,9 @@ import 'server-only';
 import { simpleParser, type AddressObject, type ParsedMail } from 'mailparser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Campaign, Contact, Message } from '@/lib/db/types';
-import { unsubscribeMailto } from './config';
+import { isOnSendingDomain, unsubscribeMailto } from './config';
 import { handleInboundWithAgent } from './agent';
-import { sesIdFromReference } from './ses';
+import { bracketId, sesIdFromReference } from './ses';
 import { escapeLike, normalizeEmail, suppressAndStop } from './suppress';
 
 // SES notifications delivered over SNS: sending events (bounce, complaint,
@@ -116,7 +116,7 @@ async function findReferencedMessage(db: SupabaseClient, refs: string[]): Promis
     const sesId = sesIdFromReference(ref);
     const q = sesId
       ? db.from('messages').select('*').eq('ses_message_id', sesId)
-      : db.from('messages').select('*').eq('message_id', ref.startsWith('<') ? ref : `<${ref}>`);
+      : db.from('messages').select('*').eq('message_id', ref);
     const { data } = await q.eq('direction', 'outbound').limit(1).maybeSingle();
     if (data) return data as Message;
   }
@@ -129,6 +129,15 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
   if (str(obj(receipt.spamVerdict).status) === 'FAIL' || str(obj(receipt.virusVerdict).status) === 'FAIL') {
     return 'spam_or_virus';
   }
+  // SES only reports FAIL when the sender's domain publishes DMARC and the
+  // message doesn't align: a spoofed From. Don't let it unsubscribe or
+  // reply as someone else.
+  if (str(obj(receipt.dmarcVerdict).status) === 'FAIL') return 'dmarc_fail';
+  // Only mail actually addressed to us: our sending domain or the
+  // unsubscribe mailbox.
+  const unsubAddr = unsubscribeMailto();
+  const envelopeTo = arr(receipt.recipients).map((r) => str(r).toLowerCase());
+  if (!envelopeTo.some((r) => isOnSendingDomain(r) || r === unsubAddr)) return 'not_our_recipient';
   const content = str(payload.content);
   if (!content) {
     // SNS actions drop messages over 150 KB; nothing to parse.
@@ -147,14 +156,13 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
 
   const sender = normalizeEmail(mail.from?.value[0]?.address ?? '');
   if (!sender) return 'no_sender';
-  const recipients = [
-    ...arr(receipt.recipients).map((r) => str(r).toLowerCase()),
-    ...addresses(mail.to),
-  ];
-  const messageId = mail.messageId ? (mail.messageId.startsWith('<') ? mail.messageId : `<${mail.messageId}>`) : null;
+  const recipients = [...envelopeTo, ...addresses(mail.to)];
+  // Only well-formed msg-ids are stored: these values are echoed into the
+  // In-Reply-To / References headers of our replies.
+  const messageId = bracketId(mail.messageId);
+  const inReplyTo = bracketId(mail.inReplyTo);
 
   // Mail to the List-Unsubscribe mailto address.
-  const unsubAddr = unsubscribeMailto();
   if (unsubAddr && recipients.includes(unsubAddr)) {
     await suppressAndStop(db, sender, 'unsubscribed');
     return 'unsubscribe_mailto';
@@ -177,7 +185,8 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
     ...(mail.inReplyTo ? [mail.inReplyTo] : []),
   ]
     .flatMap((r) => r.split(/\s+/))
-    .filter(Boolean);
+    .map(bracketId)
+    .filter((r): r is string => !!r);
   const referenced = refs.length ? await findReferencedMessage(db, [...refs]) : null;
 
   const { data: byEmail } = await db.from('contacts').select('*').ilike('email', escapeLike(sender)).maybeSingle();
@@ -217,7 +226,7 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
       subject: mail.subject ?? null,
       body_text: body.slice(0, 20_000),
       message_id: messageId,
-      in_reply_to: mail.inReplyTo ?? referenced?.message_id ?? null,
+      in_reply_to: inReplyTo ?? referenced?.message_id ?? null,
       status: 'received',
       ai_meta: {
         auto_reply: auto,

@@ -21,8 +21,14 @@ export async function POST(req: NextRequest) {
   const msg = parseSnsMessage(raw);
   if (!msg) return NextResponse.json({ error: 'Not an SNS message' }, { status: 400 });
 
+  // Fail closed: anyone can create an SNS topic and point it here, and its
+  // signature would verify. Only our own topics are trusted.
   const topics = allowedSnsTopics();
-  if (topics.length && !topics.includes(msg.TopicArn)) {
+  if (!topics.length) {
+    console.error('[outreach/ses] SES_INBOUND_SNS_TOPIC_ARN is not set; rejecting SNS message');
+    return NextResponse.json({ error: 'SNS topics not configured' }, { status: 503 });
+  }
+  if (!topics.includes(msg.TopicArn)) {
     console.warn('[outreach/ses] message from a topic not in SES_INBOUND_SNS_TOPIC_ARN');
     return NextResponse.json({ error: 'Topic not allowed' }, { status: 403 });
   }

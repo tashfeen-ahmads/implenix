@@ -31,10 +31,17 @@ export function generateMessageId(): string {
   return `<${Date.now().toString(36)}.${randomUUID().replace(/-/g, '')}@${domain}>`;
 }
 
-// Normalises "<id>" / "id" to "<id>".
-export function bracketId(id: string): string {
+// RFC 5322 msg-id: "<" printable ASCII without spaces or angle brackets ">".
+// Anything else (CR/LF from a decoded encoded-word, spaces, control
+// characters) could break out of the header, so it's rejected.
+const MSG_ID_RE = /^<[\x21-\x3b\x3d\x3f-\x7e]{1,500}>$/;
+
+// Normalises "<id>" / "id" to "<id>". Null when the result isn't a safe msg-id.
+export function bracketId(id: string | null | undefined): string | null {
+  if (typeof id !== 'string') return null;
   const t = id.trim();
-  return t.startsWith('<') ? t : `<${t}>`;
+  const v = t.startsWith('<') ? t : `<${t}>`;
+  return MSG_ID_RE.test(v) ? v : null;
 }
 
 // ── MIME helpers ────────────────────────────────────────────────────
@@ -70,7 +77,7 @@ function formatAddress(name: string | undefined, email: string): string {
 
 // Folds a long header (e.g. References) at spaces to stay under 78 chars.
 function foldHeader(name: string, value: string): string {
-  const parts = value.split(' ');
+  const parts = value.split(/\s+/).filter(Boolean);
   const lines: string[] = [];
   let line = `${name}:`;
   for (const p of parts) {
@@ -141,9 +148,12 @@ export function buildRawMessage(input: SendInput, messageId: string): string {
   headers.push(`Subject: ${encodeHeaderText(input.subject)}`);
   headers.push(`Date: ${new Date().toUTCString().replace('GMT', '+0000')}`);
   headers.push(`Message-ID: ${messageId}`);
-  if (input.inReplyTo) headers.push(`In-Reply-To: ${bracketId(input.inReplyTo)}`);
-  const refs = (input.references ?? []).map(bracketId).filter((r, i, a) => a.indexOf(r) === i);
-  if (input.inReplyTo && !refs.includes(bracketId(input.inReplyTo))) refs.push(bracketId(input.inReplyTo));
+  const inReplyTo = bracketId(input.inReplyTo);
+  if (inReplyTo) headers.push(`In-Reply-To: ${inReplyTo}`);
+  const refs = (input.references ?? [])
+    .map(bracketId)
+    .filter((r, i, a): r is string => !!r && a.indexOf(r) === i);
+  if (inReplyTo && !refs.includes(inReplyTo)) refs.push(inReplyTo);
   if (refs.length) headers.push(foldHeader('References', refs.slice(-20).join(' ')));
   const mailto = unsubscribeMailto();
   headers.push(
