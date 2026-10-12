@@ -20,6 +20,7 @@ import { supabaseBrowser } from '@/lib/supabase/browser';
 import type { Campaign, CampaignStep, Contact, ContactList } from '@/lib/db/types';
 import { Button, Card, Field, PageHeader, Pill, inputClass } from '@/components/admin/ui';
 import { ConfirmDialog } from './ConfirmDialog';
+import { sendableFilter } from '@/lib/outreach/sendable';
 import {
   CAMPAIGN_STATUS_TONES,
   SAMPLE_CONTACT,
@@ -53,6 +54,7 @@ type Settings = {
   no_reply_grace_days: number;
   track_opens: boolean;
   stop_company_on_reply: boolean;
+  include_risky: boolean;
 };
 
 // subject_b/body_b are null when the step has no B variant.
@@ -100,6 +102,7 @@ function settingsFrom(c: Campaign): Settings {
     no_reply_grace_days: c.no_reply_grace_days ?? 4,
     track_opens: Boolean(c.track_opens),
     stop_company_on_reply: c.stop_company_on_reply ?? true,
+    include_risky: Boolean(c.include_risky),
   };
 }
 
@@ -250,6 +253,7 @@ export function CampaignEditor({
           no_reply_grace_days: Math.round(settings.no_reply_grace_days),
           track_opens: settings.track_opens,
           stop_company_on_reply: settings.stop_company_on_reply,
+          include_risky: settings.include_risky,
         })
         .eq('id', campaign.id);
       if (cErr) throw new Error(cErr.message);
@@ -808,6 +812,20 @@ export function CampaignEditor({
                   <span className="block font-body text-xs text-white/60">When one person replies, colleagues with the same email domain stop getting this outreach. Free mailboxes like Gmail are never grouped.</span>
                 </span>
               </label>
+              <label className="flex gap-3 items-start cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 accent-brand-purple"
+                  checked={settings.include_risky}
+                  onChange={(e) => set('include_risky', e.target.checked)}
+                />
+                <span>
+                  <span className="block font-body text-sm text-white">Send to catch-all addresses</span>
+                  <span className="block font-body text-xs text-white/60">
+                    Catch-all domains accept any address, so the mailbox can&rsquo;t be confirmed and some will bounce. Leave off until your bounce rate is proven low.
+                  </span>
+                </span>
+              </label>
               <label className={`flex gap-3 items-start ${trackingAvailable ? 'cursor-pointer' : 'opacity-60'}`}>
                 <input
                   type="checkbox"
@@ -980,7 +998,7 @@ function CampaignControls({ campaign, dirty, blockers }: { campaign: Campaign; d
         .select('id', { count: 'exact', head: true })
         .eq('list_id', campaign.list_id)
         .eq('status', 'active')
-        .or('email_verdict.is.null,email_verdict.in.(deliverable,unknown)');
+        .or(sendableFilter(campaign.include_risky));
       setEligible(count ?? 0);
     }
   };

@@ -15,6 +15,8 @@ import {
   thClass,
 } from '@/components/admin/ui';
 import { CsvImporter } from '@/components/admin/outreach/CsvImporter';
+import { VerifyContactsButton } from '@/components/admin/outreach/VerifyContactsButton';
+import { countUnverified } from '@/lib/outreach/verifyContacts';
 import { ContactStatusSelect } from '@/components/admin/outreach/ContactStatusSelect';
 import { contactStageLabel } from '@/lib/pipeline/stages';
 import { CONTACT_STATUSES, CONTACT_STATUS_LABELS, contactName } from '@/components/admin/outreach/shared';
@@ -62,7 +64,7 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
   if (status) rowsQuery = rowsQuery.eq('status', status);
   if (q) rowsQuery = rowsQuery.or(`email.ilike.%${q}%,company.ilike.%${q}%`);
 
-  const [listsRes, total, active, replied, booked, lost, rowsRes] = await Promise.all([
+  const [listsRes, total, active, replied, booked, lost, rowsRes, unverified] = await Promise.all([
     supabase.from('contact_lists').select('*').order('created_at', { ascending: false }),
     countBy(),
     countBy(['active']),
@@ -70,6 +72,7 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
     countBy(['booked']),
     countBy(['unsubscribed', 'bounced', 'complained']),
     rowsQuery,
+    countUnverified(supabase, listId || null),
   ]);
 
   const lists = (listsRes.data ?? []) as ContactList[];
@@ -84,7 +87,12 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
       <PageHeader
         title="Contacts"
         description="Everyone you can reach with a campaign. Import a CSV to add a list; unsubscribes and bounces are never emailed again."
-        actions={<CsvImporter />}
+        actions={
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-start">
+            <VerifyContactsButton key={listId} listId={listId || null} unverified={unverified} />
+            <CsvImporter />
+          </div>
+        }
       />
 
       {rowsRes.error ? (
@@ -167,6 +175,7 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
                       {contactName(c)}
                     </Link>
                     {contactName(c) !== c.email ? <p className="text-xs text-white/55 break-all">{c.email}</p> : null}
+                    <EmailVerdict verdict={c.email_verdict} reason={c.email_verdict_reason} />
                   </td>
                   <td className={tdClass}>
                     {c.company ?? <span className="text-white/35">—</span>}
@@ -220,5 +229,21 @@ export default async function ContactsPage({ searchParams }: { searchParams: SP 
         </>
       )}
     </>
+  );
+}
+
+const VERDICT: Record<string, [string, string]> = {
+  deliverable: ['Verified', 'border-emerald-400/40 text-emerald-300'],
+  unknown: ['Domain OK', 'border-white/20 text-white/70'],
+  risky: ['Catch-all', 'border-amber-300/40 text-amber-300'],
+  undeliverable: ['Undeliverable', 'border-red-400/40 text-red-300'],
+};
+
+function EmailVerdict({ verdict, reason }: { verdict: string | null; reason: string | null }) {
+  const [label, cls] = verdict ? VERDICT[verdict] ?? [verdict, 'border-white/20 text-white/70'] : ['Not checked', 'border-white/10 text-white/45'];
+  return (
+    <span title={reason ?? undefined} className={`mt-1 inline-block rounded-sm border px-1.5 py-px font-body text-[11px] ${cls}`}>
+      {label}
+    </span>
   );
 }

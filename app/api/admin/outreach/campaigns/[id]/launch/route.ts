@@ -3,6 +3,7 @@ import { requireTeamApi } from '@/lib/supabase/auth';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import type { Campaign } from '@/lib/db/types';
 import { fromDomain, isOnSendingDomain, postalAddress, sesConfigured } from '@/lib/outreach/config';
+import { sendableFilter } from '@/lib/outreach/sendable';
 
 // Enrolls every eligible contact on the campaign's list and activates it.
 // Eligible: status active, not suppressed, not already in this campaign,
@@ -74,8 +75,8 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
       .select('id, email')
       .eq('list_id', campaign.list_id)
       .eq('status', 'active')
-      // Never email addresses verification marked undeliverable or catch-all.
-      .or('email_verdict.is.null,email_verdict.in.(deliverable,unknown)')
+      // Never undeliverable; catch-all only if the campaign allows it.
+      .or(sendableFilter(campaign.include_risky))
       .order('created_at')
       .range(from, from + PAGE - 1);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });

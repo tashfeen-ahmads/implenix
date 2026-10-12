@@ -7,9 +7,11 @@ import { buildOutreachEmail, replySubject, senderVars } from './render';
 import { SesSendError, sendOutreachEmail } from './ses';
 import { isSuppressed, normalizeEmail } from './suppress';
 import { verifyEmail } from '@/lib/leads/verify';
+import { blockedVerdict, saveContactVerdict } from './sendable';
 import { inSendWindow, startOfDay } from './time';
 import { AUTO_FROM, moveToNurture, setContactStage } from './stage';
 import { createHash } from 'node:crypto';
+import { enforceSendingHealth } from './health';
 import { SEQUENCE_STAGES, stageForStep } from '@/lib/pipeline/stages';
 
 // The cron-driven sequence sender. Each tick picks due enrollments of
@@ -34,6 +36,8 @@ export type TickResult = {
   campaigns: number;
   globalRemaining: number;
   errors: string[];
+  held?: string;
+  pausedForHealth?: string[];
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -80,7 +84,17 @@ export async function runOutreachTick(now = new Date()): Promise<TickResult> {
 
   const { data: campaignRows, error: cErr } = await db.from('campaigns').select('*').eq('status', 'active');
   if (cErr) throw new Error(`campaigns query failed: ${cErr.message}`);
-  const campaigns = (campaignRows ?? []) as Campaign[];
+  let campaigns = (campaignRows ?? []) as Campaign[];
+
+  // Deliverability guard: stop everything on an account hold, and pause
+  // single campaigns whose bounces or complaints are too high.
+  const health = await enforceSendingHealth(db, campaigns, now);
+  if (health.hold) return { ...result, skipped: 'sending on hold', held: health.hold.reason };
+  if (health.paused.length) {
+    const paused = new Set(health.paused.map((p) => p.id));
+    campaigns = campaigns.filter((c) => !paused.has(c.id));
+    result.pausedForHealth = health.paused.map((p) => `${p.name}: ${p.reason}`);
+  }
 
   let budget = Math.min(MAX_SENDS_PER_TICK, globalRemaining);
   const queues: Queue[] = [];
@@ -187,25 +201,22 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
   }
 
   // Email-first: an address nobody has verified yet (e.g. a CSV import)
-  // is checked before its first email. Undeliverable and catch-all
-  // addresses are skipped so they never count against the bounce rate.
+  // is checked before its first email. Undeliverable addresses, and
+  // catch-all ones unless the campaign allows them, are skipped so they
+  // never count against the bounce rate.
+  let verdict = contact.email_verdict;
   if (!contact.verified_at) {
     const v = await verifyEmail(contact.email);
-    const verdict = { email_verdict: v.verdict, email_verdict_reason: `${v.reason} (${v.checkedBy})`, verified_at: new Date().toISOString() };
-    if (v.verdict === 'undeliverable' || v.verdict === 'risky') {
-      await db
-        .from('contacts')
-        .update({
-          ...verdict,
-          ...(v.verdict === 'undeliverable'
-            ? { status: 'bounced', stage: 'bounced', reply_label: 'failed_verification' }
-            : { stage: 'no_response', reply_label: 'catch_all_skipped' }),
-        })
-        .eq('id', contact.id);
-      await setEnrollment({ status: 'stopped' });
-      return 'stopped';
+    await saveContactVerdict(db, contact, v);
+    verdict = v.verdict;
+  }
+  const blocked = blockedVerdict(verdict, q.campaign.include_risky);
+  if (blocked) {
+    if (blocked === 'risky') {
+      await db.from('contacts').update({ stage: 'no_response', reply_label: 'catch_all_skipped' }).eq('id', contact.id);
     }
-    await db.from('contacts').update(verdict).eq('id', contact.id);
+    await setEnrollment({ status: 'stopped' });
+    return 'stopped';
   }
 
   const stepNumber = e.current_step + 1;

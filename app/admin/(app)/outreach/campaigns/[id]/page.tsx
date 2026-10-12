@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, CircleAlert } from 'lucide-react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Campaign, CampaignStep, ContactList } from '@/lib/db/types';
 import { Card, Stat } from '@/components/admin/ui';
 import { trackingConfigured } from '@/lib/outreach/config';
 import { CampaignEditor } from '@/components/admin/outreach/CampaignEditor';
 import { percent } from '@/components/admin/outreach/shared';
+import { SendingHealth } from '@/components/admin/outreach/SendingHealth';
 import { countEnrolledContacts, countEnrollments, countMessages, countReplied } from '@/components/admin/outreach/stats';
 
 export const dynamic = 'force-dynamic';
@@ -88,6 +89,20 @@ export default async function CampaignPage({ params }: { params: { id: string } 
       <Link href="/admin/outreach/campaigns" className="inline-flex items-center gap-1.5 mb-4 font-body text-sm text-white/65 hover:text-white">
         <ArrowLeft size={14} aria-hidden /> All campaigns
       </Link>
+      <SendingHealth db={supabase} quiet />
+      {campaign.status === 'paused' && campaign.paused_reason ? (
+        <section role="status" className="mb-6 flex gap-3 rounded-md border border-amber-300/40 bg-amber-400/10 p-4 font-body text-sm">
+          <CircleAlert size={18} className="mt-0.5 shrink-0 text-amber-300" aria-hidden />
+          <div>
+            <p className="font-medium text-white">Paused automatically</p>
+            <p className="mt-1 text-white/75">{campaign.paused_reason}. Other campaigns keep sending.</p>
+            <p className="mt-1 text-white/60">
+              Verify this campaign&apos;s list on the Contacts page and remove bad addresses, then resume. Its rates are
+              measured afresh from the moment you resume.
+            </p>
+          </div>
+        </section>
+      ) : null}
       <CampaignEditor
         campaign={campaign}
         steps={steps}

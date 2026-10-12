@@ -94,18 +94,25 @@ finishes any search nobody is watching.
 
 - **Import** verifies any selected email that hasn't been checked yet,
   then imports Verified, Domain OK and Unconfirmed emails. Catch-all
-  emails go in only when "Include catch-all" is ticked. Undeliverable
-  emails never go in. The verdict is copied onto the contact.
-- **Campaign launch** only enrolls contacts whose verdict is sendable, or
-  contacts with no verdict (CSV uploads).
-- **Every send** checks any contact that was never verified (CSV
-  uploads) first:
+  emails go into the list only when "Include catch-all" is ticked.
+  Undeliverable emails never go in. The verdict is copied onto the
+  contact.
+- **Campaign launch** enrolls contacts whose verdict is sendable, plus
+  contacts with no verdict (CSV uploads). Catch-all contacts are enrolled
+  only when the campaign has **Send to catch-all addresses** turned on
+  (off by default).
+- **Every send** first checks any contact that was never verified (CSV
+  uploads):
   - undeliverable → marked Bounced (label "Failed verification") and
     stopped;
   - catch-all → moved to No response (label "Catch-all skipped") and
-    stopped.
+    stopped, unless the campaign sends to catch-all addresses.
 
   So an unverified CSV can't burn your bounce rate.
+- **CSV lists can be checked up front:** on the Contacts page, "Verify N
+  unchecked emails" checks the list (or all contacts) in batches. Each
+  contact then shows a badge: Verified, Domain OK, Catch-all,
+  Undeliverable or Not checked.
 
 ## Setup
 

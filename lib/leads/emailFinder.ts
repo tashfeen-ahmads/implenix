@@ -1,6 +1,10 @@
 import 'server-only';
 import { lookup } from 'node:dns/promises';
+import { lookup as dnsLookup, type LookupAddress } from 'node:dns';
+import http from 'node:http';
+import https from 'node:https';
 import { isIP } from 'node:net';
+import { Readable } from 'node:stream';
 import { cleanEmails } from './normalize';
 
 // Finds a business's email on its own website: the homepage plus up to
@@ -10,7 +14,9 @@ import { cleanEmails } from './normalize';
 //
 // The URLs come from third-party listings, so every hop is checked:
 // http(s) only, no private or internal addresses, manual redirects (each
-// re-checked), short timeouts and a size cap.
+// re-checked), short timeouts and a size cap. The address is checked
+// again when the connection opens (pinnedFetch), so a domain can't pass
+// the check and then re-point to an internal address (DNS rebinding).
 
 const UA = 'Mozilla/5.0 (compatible; ImplenixLeadBot/1.0; +https://implenix.net)';
 const MAX_BYTES = 1_500_000;
@@ -64,8 +70,48 @@ async function safeUrl(raw: string, deps: FinderDeps = {}): Promise<URL | null> 
   return u;
 }
 
+// Resolves like the OS does, but refuses private and internal addresses.
+// Runs at connect time, on the address actually used.
+function safeLookup(
+  hostname: string,
+  options: { all?: boolean; family?: number },
+  cb: (err: NodeJS.ErrnoException | null, address?: string | LookupAddress[], family?: number) => void,
+) {
+  dnsLookup(hostname, { family: options.family ?? 0, all: true }, (err, addrs) => {
+    if (err) return cb(err);
+    const list = addrs as LookupAddress[];
+    if (!list.length || list.some((a) => isPrivateIp(a.address))) {
+      return cb(Object.assign(new Error(`Blocked address for ${hostname}`), { code: 'EBLOCKED' }));
+    }
+    if (options.all) return cb(null, list);
+    cb(null, list[0].address, list[0].family);
+  });
+}
+
+// GET with the connect-time address check. Returns a standard Response.
+export function pinnedFetch(url: URL, init: { headers?: Record<string, string>; signal?: AbortSignal }): Promise<Response> {
+  return new Promise((resolve, reject) => {
+    const mod = url.protocol === 'https:' ? https : http;
+    const req = mod.request(
+      url,
+      { method: 'GET', headers: init.headers, signal: init.signal, lookup: safeLookup as never, timeout: PAGE_TIMEOUT_MS },
+      (res) => {
+        const headers = new Headers();
+        for (const [k, v] of Object.entries(res.headers)) if (v != null) headers.set(k, Array.isArray(v) ? v.join(', ') : String(v));
+        const status = Math.min(599, Math.max(200, res.statusCode ?? 500));
+        const noBody = [204, 205, 304].includes(status);
+        if (noBody) res.resume();
+        resolve(new Response(noBody ? null : (Readable.toWeb(res) as ReadableStream<Uint8Array>), { status, headers }));
+      },
+    );
+    req.on('timeout', () => req.destroy(new Error('Timed out')));
+    req.on('error', reject);
+    req.end();
+  });
+}
+
 async function fetchText(start: URL, deps: FinderDeps = {}): Promise<{ url: URL; html: string } | null> {
-  const doFetch = deps.fetchImpl ?? fetch;
+  const doFetch = deps.fetchImpl ?? (pinnedFetch as unknown as typeof fetch);
   let url: URL | null = start;
   for (let hop = 0; hop < 4 && url; hop++) {
     const res: Response = await doFetch(url, {

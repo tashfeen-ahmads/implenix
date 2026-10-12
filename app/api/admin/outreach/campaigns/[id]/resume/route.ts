@@ -6,14 +6,15 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 // resume: campaign status -> 'active'. Enrollments keep their place; the
-// cron only sends for active campaigns.
+// cron only sends for active campaigns. The deliverability guard measures
+// this campaign afresh from now, so old bounces don't pause it again.
 export async function POST(_req: Request, { params }: { params: { id: string } }) {
   const auth = await requireTeamApi();
   if (auth.error) return auth.error;
   const db = supabaseAdmin();
   const { data, error } = await db
     .from('campaigns')
-    .update({ status: 'active' })
+    .update({ status: 'active', paused_reason: null, health_since: new Date().toISOString() })
     .eq('id', params.id)
     .in('status', ['paused'])
     .select('status')

@@ -188,6 +188,10 @@ export type Campaign = {
   no_reply_grace_days: number;
   track_opens: boolean;
   stop_company_on_reply: boolean;
+  // Set when the deliverability guard paused it; cleared on resume.
+  paused_reason: string | null;
+  health_since: string | null;
+  include_risky: boolean;
   created_by: string | null;
   created_at: string;
   updated_at: string;

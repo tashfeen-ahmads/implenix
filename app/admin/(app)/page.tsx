@@ -14,6 +14,7 @@ import {
 import { WebLeadsCard } from '@/components/admin/WebLeadsCard';
 import { COLUMNS, PHASES } from '@/lib/pipeline/stages';
 import { countContactsByStage } from '@/components/admin/pipeline/data';
+import { SendingHealth } from '@/components/admin/outreach/SendingHealth';
 import { Card, EmptyState, PageHeader, Pill, Stat, formatDateTime, activityLabel } from '@/components/admin/ui';
 
 export const dynamic = 'force-dynamic';
@@ -116,6 +117,7 @@ export default async function OverviewPage() {
   return (
     <>
       <PageHeader title="Overview" description="Leads, calls and outreach at a glance." />
+      <SendingHealth db={db} quiet />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Stat label="New leads · 7 days" value={newThisWeek} />

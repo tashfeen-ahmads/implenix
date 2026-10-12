@@ -13,7 +13,7 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
   const db = supabaseAdmin();
   const { data, error } = await db
     .from('campaigns')
-    .update({ status: 'paused' })
+    .update({ status: 'paused', paused_reason: null })
     .eq('id', params.id)
     .in('status', ['active'])
     .select('status')

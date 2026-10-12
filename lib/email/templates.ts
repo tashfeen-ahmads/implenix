@@ -216,6 +216,49 @@ ${d.summary ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#3
   return { subject, html, text };
 }
 
+// Team alert when the deliverability guard stops sending.
+export function sendingAlertEmail(d: {
+  kind: 'hold' | 'campaign';
+  reason: string;
+  campaign: string | null;
+  sent: number;
+  bounced: number;
+  complained: number;
+  url: string;
+}) {
+  const subject = (d.kind === 'hold' ? 'Outreach sending stopped' : `Campaign paused: ${d.campaign ?? ''}`)
+    .replace(/[\r\n\t]+/g, ' ')
+    .slice(0, 200);
+  const what =
+    d.kind === 'hold'
+      ? 'All outreach sending is on hold to protect the Amazon SES account. Booking confirmations still go out.'
+      : `The campaign <strong>${esc(d.campaign ?? '')}</strong> was paused. Other campaigns keep sending.`;
+  const next =
+    d.kind === 'hold'
+      ? 'Check which list the bounces or complaints came from, pause or fix that campaign, then resume sending from the Campaigns page.'
+      : 'Check the list (verify it, remove bad addresses), then resume the campaign.';
+  const html = shell(
+    subject,
+    `<h1 style="margin:0 0 8px;font-size:20px;line-height:1.3">${esc(subject)}</h1>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#3d3a4f">${what}</p>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#14121f"><strong>${esc(d.reason)}.</strong></p>
+<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#3d3a4f">Sent ${d.sent} · bounced ${d.bounced} · complaints ${d.complained}</p>
+<p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3d3a4f">${esc(next)}</p>
+<p style="margin:0">${button(d.url, 'Open the dashboard')}</p>`,
+  );
+  const text = [
+    subject,
+    '',
+    what.replace(/<[^>]+>/g, ''),
+    `${d.reason}.`,
+    `Sent ${d.sent} · bounced ${d.bounced} · complaints ${d.complained}`,
+    '',
+    next,
+    d.url,
+  ].join('\n');
+  return { subject, html, text };
+}
+
 // Team alert for a lead from a website form (e.g. the missed-call audit).
 export function webLeadEmail(d: {
   source: string;

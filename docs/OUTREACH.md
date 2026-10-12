@@ -133,7 +133,24 @@ Sequence rules: step N+1 goes out `delay_days` after step N. **A step with a bla
 | 4 | 150 to 200 |
 | 5+ | +25% a week, up to what replies justify |
 
-Also: verify lists before importing (bounces destroy reputation fastest), keep each mailbox under about 50 to 100 a day, keep emails plain text with at most one link, and pause any campaign whose bounce rate goes above 3%.
+Also: verify lists before importing (bounces destroy reputation fastest), keep each mailbox under about 50 to 100 a day, and keep emails plain text with at most one link.
+
+### Deliverability guard (automatic)
+
+AWS reviews an SES account at 5% bounces or 0.1% complaints, and a paused account also stops booking confirmations. So every cron run checks the numbers before sending (`lib/outreach/health.ts`):
+
+| What | Measured over | Stops when | Effect |
+|---|---|---|---|
+| Whole account | Last 7 days, or since the last hold was cleared | Bounces ≥ 4% (at least 100 sent), or complaints ≥ 0.1% (at least 2 complaints in 200+ sent) | **Hold:** no outreach email goes out until someone clicks **Resume sending** (Campaigns page). |
+| One campaign | Last 7 days, or since it was last resumed | Bounces ≥ 5% (at least 40 sent), or complaints ≥ 0.2% (at least 2) | **That campaign pauses** with the reason. Others keep sending. |
+
+- The team gets an email (`OUTREACH_ALERT_EMAILS`) each time either one trips.
+- The Campaigns page always shows the last 7 days' sent count, bounce rate and complaint rate.
+- The Overview shows it only when something is wrong.
+- Before resuming, find the list the bounces came from. Verify it (Contacts > "Verify unchecked emails") or remove it, then resume.
+- Rates are measured afresh from the moment of resuming, so old bounces don't trip it again; new ones do.
+
+Booking confirmations and AI or manual replies are not held, because they go out through other paths.
 
 ## 7. Gmail / Yahoo bulk-sender requirements and CAN-SPAM
 

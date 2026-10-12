@@ -64,6 +64,14 @@ const priv = await finder.findEmailsOnWebsite('http://169.254.169.254/latest/met
 const privDns = await finder.findEmailsOnWebsite('https://intranet-e2e.com', { resolve: async () => [{ address: '10.0.0.5' }], fetchImpl: (() => { throw new Error('fetched'); }) as never });
 check('private and metadata addresses are never fetched', priv.pages === 0 && privDns.pages === 0 && !privDns.error?.includes('fetched'), { priv, privDns });
 
+// DNS rebinding: the real fetcher re-checks the address at connect time,
+// even if the earlier check was fooled.
+const rebind = await finder
+  .pinnedFetch(new URL('http://localhost:4010/site/joesplumbing-e2e.com/'), {})
+  .then((r) => `fetched ${r.status}`)
+  .catch((e: any) => e.code ?? e.message);
+check('connect-time check blocks a loopback address', rebind === 'EBLOCKED', rebind);
+
 // Basic verification without a mailbox verifier.
 verify.setVerifierForTests(null);
 verify.setDnsForTests({

@@ -38,6 +38,18 @@ test hooks (`setDnsForTests`, `setVerifierForTests` and
 - **Send-time verification:** a contact on a dead domain is marked
   Bounced and never sent to. A catch-all contact is skipped.
 
+`health-flow.mts` checks:
+
+- the deliverability guard:
+  - a campaign with 8% bounces pauses on its own with the reason;
+  - a 5%+ account bounce rate holds all sending and the tick sends
+    nothing;
+  - the team gets one alert per hold;
+  - clearing a hold and resuming a campaign measure afresh;
+- bulk verification of a CSV list: dead domains and blocked roles are
+  marked bounced and their sequences stop;
+- the per-campaign "Send to catch-all addresses" setting.
+
 `lead-flow.mts` checks:
 
 - a DataForSEO search (task_post, then task_get) and the mapping of its
@@ -46,7 +58,8 @@ test hooks (`setDnsForTests`, `setVerifierForTests` and
   - the website crawl (mailto, `(at)`/`[at]` spellings, Cloudflare
     protected addresses, the contact page);
   - robots.txt;
-  - blocking of private and metadata addresses;
+  - blocking of private and metadata addresses, including the check at
+    connect time (DNS rebinding);
   - verification verdicts (basic check and mailbox verifier).
 
 The import route (which needs a team login) is not covered: the rule

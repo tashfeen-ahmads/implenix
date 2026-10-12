@@ -55,7 +55,9 @@ What it does:
 2. Run the migrations in order: open SQL Editor and paste in each
    file in `supabase/migrations/` (`20261012000000_team_dashboard.sql`,
    `20261013000000_lead_finder.sql`, `20261014000000_call_reminders.sql`,
-   `20261015000000_pipeline_funnel.sql`, then `20261016000000_web_leads.sql`),
+   `20261015000000_pipeline_funnel.sql`, `20261016000000_web_leads.sql`,
+   `20261017000000_email_first_leads.sql`, then
+   `20261018000000_deliverability_guard.sql`),
    or run `supabase db push`
    if you use the Supabase CLI.
 3. Authentication > Providers: keep Email on. Turn off "Allow new users
