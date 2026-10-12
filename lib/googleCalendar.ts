@@ -303,8 +303,29 @@ export async function createBookingEvent(
 
 export type Slot = { startIso: string; endIso: string; label: string };
 
-function isWorkingDay(date: Date): boolean {
-  return BOOKING_CONFIG.workingDays.includes(date.getDay());
+// Offset (ms) of `timeZone` from UTC at the given instant.
+function tzOffsetMs(at: Date, timeZone: string): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hourCycle: 'h23',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).formatToParts(at);
+  const get = (t: string) => Number(parts.find((p) => p.type === t)?.value);
+  const asUtc = Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second'));
+  return asUtc - at.getTime();
+}
+
+// The instant when the wall clock in `timeZone` reads y-m-d h:00.
+// Runs the offset twice so DST transition days land correctly.
+export function zonedTime(y: number, m: number, d: number, h: number, timeZone: string): Date {
+  const guess = Date.UTC(y, m - 1, d, h);
+  const first = guess - tzOffsetMs(new Date(guess), timeZone);
+  return new Date(guess - tzOffsetMs(new Date(first), timeZone));
 }
 
 function overlaps(
@@ -319,32 +340,41 @@ function overlaps(
   });
 }
 
+// Start and end of a calendar day (YYYY-MM-DD) in the booking timezone.
+export function bookingDayBounds(dateStr: string): { start: Date; end: Date } | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+  if (!m) return null;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const start = zonedTime(y, mo, d, 0, BOOKING_CONFIG.timezone);
+  const next = new Date(Date.UTC(y, mo - 1, d + 1));
+  const end = zonedTime(next.getUTCFullYear(), next.getUTCMonth() + 1, next.getUTCDate(), 0, BOOKING_CONFIG.timezone);
+  return Number.isNaN(start.getTime()) ? null : { start, end };
+}
+
+// Open slots on a calendar day (YYYY-MM-DD), with working hours and
+// working days read in the booking timezone, whatever the server's own
+// timezone is.
 export function computeSlots(
-  dayStart: Date,
+  dateStr: string,
   busy: BusyRange[],
   now: Date = new Date(),
 ): Slot[] {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+  if (!m) return [];
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const weekday = new Date(Date.UTC(y, mo - 1, d)).getUTCDay();
+  if (!BOOKING_CONFIG.workingDays.includes(weekday)) return [];
+
   const slots: Slot[] = [];
   const durationMs = BOOKING_CONFIG.durationMinutes * 60_000;
-  const earliestStart = new Date(
-    now.getTime() + BOOKING_CONFIG.minLeadHours * 60 * 60_000,
-  );
+  const earliestStart = now.getTime() + BOOKING_CONFIG.minLeadHours * 60 * 60_000;
+  const open = zonedTime(y, mo, d, BOOKING_CONFIG.workingHoursStart, BOOKING_CONFIG.timezone).getTime();
+  const close = zonedTime(y, mo, d, BOOKING_CONFIG.workingHoursEnd, BOOKING_CONFIG.timezone).getTime();
 
-  if (!isWorkingDay(dayStart)) return slots;
-
-  const dayStartHour = new Date(dayStart);
-  dayStartHour.setHours(BOOKING_CONFIG.workingHoursStart, 0, 0, 0);
-  const dayEndHour = new Date(dayStart);
-  dayEndHour.setHours(BOOKING_CONFIG.workingHoursEnd, 0, 0, 0);
-
-  for (
-    let t = dayStartHour.getTime();
-    t + durationMs <= dayEndHour.getTime();
-    t += durationMs
-  ) {
+  for (let t = open; t + durationMs <= close; t += durationMs) {
     const start = new Date(t);
     const end = new Date(t + durationMs);
-    if (start < earliestStart) continue;
+    if (t < earliestStart) continue;
     if (overlaps(start, end, busy)) continue;
     const label = start.toLocaleTimeString('en-US', {
       hour: 'numeric',

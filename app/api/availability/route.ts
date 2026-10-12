@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   BOOKING_CONFIG,
+  bookingDayBounds,
   computeSlots,
   getBusyRanges,
   apiError,
@@ -19,26 +20,17 @@ export async function GET(req: NextRequest) {
     return apiError('Invalid or missing `date` parameter (YYYY-MM-DD)', 400);
   }
 
-  // Enforce lookahead window
   const now = new Date();
-  const dayStart = parseLocalDay(dateParam);
-  if (Number.isNaN(dayStart.getTime())) {
-    return apiError('Invalid date', 400);
-  }
-  const maxAllowed = new Date(
-    now.getTime() + BOOKING_CONFIG.maxLeadDays * 24 * 60 * 60_000,
-  );
-  if (dayStart > maxAllowed) {
-    return NextResponse.json({ date: dateParam, slots: [] });
-  }
-  if (dayStart.getTime() + 24 * 60 * 60_000 < now.getTime()) {
+  const bounds = bookingDayBounds(dateParam);
+  if (!bounds) return apiError('Invalid date', 400);
+  const maxAllowed = now.getTime() + BOOKING_CONFIG.maxLeadDays * 24 * 60 * 60_000;
+  if (bounds.start.getTime() > maxAllowed || bounds.end.getTime() < now.getTime()) {
     return NextResponse.json({ date: dateParam, slots: [] });
   }
 
   try {
-    const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60_000);
-    const busy = await getBusyRanges(dayStart.toISOString(), dayEnd.toISOString());
-    const slots = computeSlots(dayStart, busy, now);
+    const busy = await getBusyRanges(bounds.start.toISOString(), bounds.end.toISOString());
+    const slots = computeSlots(dateParam, busy, now);
     return NextResponse.json({
       date: dateParam,
       timezone: BOOKING_CONFIG.timezone,
@@ -51,13 +43,4 @@ export async function GET(req: NextRequest) {
       500,
     );
   }
-}
-
-// Parses YYYY-MM-DD as local time midnight in the booking timezone.
-// For simplicity we treat the date as midnight in the server's tz;
-// working-hours logic then applies inside computeSlots.
-function parseLocalDay(dateStr: string): Date {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  const dt = new Date(y, (m ?? 1) - 1, d ?? 1, 0, 0, 0, 0);
-  return dt;
 }

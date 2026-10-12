@@ -15,12 +15,33 @@ import {
 } from 'lucide-react';
 import { trackConversion, GA4_EVENTS } from '@/lib/analytics';
 import { buildIcs, googleCalendarUrl } from '@/lib/calendarLinks';
+import { SERVICES } from '@/lib/db/types';
 
 type Slot = { startIso: string; endIso: string; label: string };
 
 // Slot times are computed in the booking timezone; every later step must
 // show them in that same zone (with its label), not the browser's.
 const DEFAULT_TIMEZONE = 'America/New_York';
+type BookingForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  website: string;
+  service: string;
+  notes: string;
+};
+
+const EMPTY_FORM: BookingForm = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  website: '',
+  service: 'ai-receptionist',
+  notes: '',
+};
+
 function formatSlot(iso: string, timeZone: string): string {
   return new Date(iso).toLocaleString('en-US', {
     weekday: 'long',
@@ -103,12 +124,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
     }
     stepRef.current?.focus();
   }, [step]);
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    notes: '',
-  });
+  const [form, setForm] = useState<BookingForm>(EMPTY_FORM);
 
   const monthDate = useMemo(() => {
     const d = new Date();
@@ -183,9 +199,12 @@ export function BookingWidget({ ctaLocation, height }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: form.name,
+          firstName: form.firstName,
+          lastName: form.lastName,
           email: form.email,
           phone: form.phone,
+          website: form.website,
+          service: form.service,
           notes: form.notes,
           startIso: selectedSlot.startIso,
           ctaLocation,
@@ -467,13 +486,8 @@ function FormStep({
 }: {
   slot: Slot;
   timezone: string;
-  form: { name: string; email: string; phone: string; notes: string };
-  setForm: (f: {
-    name: string;
-    email: string;
-    phone: string;
-    notes: string;
-  }) => void;
+  form: BookingForm;
+  setForm: (f: BookingForm) => void;
   error: string | null;
   submitting: boolean;
   onSubmit: () => void;
@@ -481,10 +495,14 @@ function FormStep({
   const slotLabel = formatSlot(slot.startIso, timezone);
   const inputClass =
     'w-full bg-black border border-brand-purple/30 focus:border-brand-purple text-white px-3 py-2.5 rounded-sm font-body text-base placeholder:text-white/55';
+  const set = (key: keyof BookingForm) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => setForm({ ...form, [key]: e.target.value });
 
   return (
     <form
-      noValidate
+      // Native validation: required fields and email format are checked by
+      // the browser, which shows its message next to the field.
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
@@ -497,18 +515,32 @@ function FormStep({
         </span>
         <p className="font-body text-white text-sm mt-1">{slotLabel}</p>
       </div>
-      <Field label="Your name" htmlFor="bk-name">
-        <input
-          id="bk-name"
-          name="name"
-          type="text"
-          required
-          autoComplete="name"
-          className={inputClass}
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-      </Field>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field label="First name" htmlFor="bk-first">
+          <input
+            id="bk-first"
+            name="given-name"
+            type="text"
+            required
+            autoComplete="given-name"
+            className={inputClass}
+            value={form.firstName}
+            onChange={set('firstName')}
+          />
+        </Field>
+        <Field label="Last name" htmlFor="bk-last">
+          <input
+            id="bk-last"
+            name="family-name"
+            type="text"
+            required
+            autoComplete="family-name"
+            className={inputClass}
+            value={form.lastName}
+            onChange={set('lastName')}
+          />
+        </Field>
+      </div>
       <Field label="Email" htmlFor="bk-email">
         <input
           id="bk-email"
@@ -520,30 +552,64 @@ function FormStep({
           placeholder="you@company.com"
           className={inputClass}
           value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          onChange={set('email')}
         />
       </Field>
-      <Field label="Phone (optional)" htmlFor="bk-phone">
-        <input
-          id="bk-phone"
-          name="phone"
-          type="tel"
-          autoComplete="tel"
-          placeholder="(555) 555-1234"
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field label="Phone" htmlFor="bk-phone">
+          <input
+            id="bk-phone"
+            name="tel"
+            type="tel"
+            required
+            minLength={7}
+            autoComplete="tel"
+            placeholder="(555) 555-1234"
+            className={inputClass}
+            value={form.phone}
+            onChange={set('phone')}
+          />
+        </Field>
+        <Field label="Website (optional)" htmlFor="bk-website">
+          <input
+            id="bk-website"
+            name="url"
+            type="text"
+            inputMode="url"
+            spellCheck={false}
+            autoComplete="url"
+            placeholder="yourbusiness.com"
+            className={inputClass}
+            value={form.website}
+            onChange={set('website')}
+          />
+        </Field>
+      </div>
+      <Field label="What do you need help with?" htmlFor="bk-service">
+        <select
+          id="bk-service"
+          name="service"
+          required
           className={inputClass}
-          value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        />
+          value={form.service}
+          onChange={set('service')}
+        >
+          {SERVICES.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
+          ))}
+        </select>
       </Field>
-      <Field label="What should we cover? (optional)" htmlFor="bk-notes">
+      <Field label="Anything we should know? (optional)" htmlFor="bk-notes">
         <textarea
           id="bk-notes"
           name="notes"
           rows={3}
           className={`${inputClass} resize-none`}
-          placeholder="Industry, current call volume, biggest inbound pain point…"
+          placeholder="Industry, call volume, the problem you want solved…"
           value={form.notes}
-          onChange={(e) => setForm({ ...form, notes: e.target.value })}
+          onChange={set('notes')}
         />
       </Field>
       {error ? (
@@ -553,8 +619,6 @@ function FormStep({
       ) : null}
       <button
         type="submit"
-        // Enabled until submit so the browser's required / email checks
-        // can show their messages next to the field.
         disabled={submitting}
         data-cta-type="primary"
         className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white font-medium px-6 py-3 rounded-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -569,8 +633,8 @@ function FormStep({
           </>
         )}
       </button>
-      <p className="font-mono text-[10px] uppercase tracking-widest text-white/55 text-center">
-        ▸ We do not send marketing email. The invite goes to Google Calendar only.
+      <p className="font-body text-xs text-white/55 text-center">
+        You will get a confirmation email and a calendar invite. No marketing email.
       </p>
     </form>
   );
@@ -583,7 +647,7 @@ function ConfirmedStep({
 }: {
   booked: BookedResponse;
   timezone: string;
-  form: { name: string; email: string };
+  form: BookingForm;
 }) {
   const slotLabel = formatSlot(booked.start, timezone);
   const calendarEvent = {
@@ -615,7 +679,7 @@ function ConfirmedStep({
         <div>
           <p className="font-heading text-white text-lg">You’re booked.</p>
           <p className="font-body text-sm text-white/65">
-            Calendar invite on the way to {form.email}
+            Confirmation and calendar invite on the way to {form.email}
           </p>
         </div>
       </div>

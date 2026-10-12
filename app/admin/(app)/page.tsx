@@ -1,0 +1,157 @@
+import Link from 'next/link';
+import { Video } from 'lucide-react';
+import { supabaseServer } from '@/lib/supabase/server';
+import { BOOKING_CONFIG } from '@/lib/googleCalendar';
+import {
+  CLIENT_STAGES,
+  STAGE_LABELS,
+  serviceLabel,
+  type Activity,
+  type Booking,
+  type Client,
+} from '@/lib/db/types';
+import { Card, EmptyState, PageHeader, Pill, Stat, formatDateTime } from '@/components/admin/ui';
+
+export const dynamic = 'force-dynamic';
+export const metadata = { title: 'Overview' };
+
+type UpcomingRow = Booking & { clients: Pick<Client, 'id' | 'first_name' | 'last_name' | 'service' | 'website'> | null };
+type ActivityRow = Activity & { clients: Pick<Client, 'id' | 'first_name' | 'last_name'> | null };
+
+export default async function OverviewPage() {
+  const db = supabaseServer();
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 86_400_000).toISOString();
+  const weekAhead = new Date(now.getTime() + 7 * 86_400_000).toISOString();
+
+  const [clients, upcoming, activity, sent7, replies7, drafts] = await Promise.all([
+    db.from('clients').select('stage, created_at'),
+    db
+      .from('bookings')
+      .select('*, clients(id, first_name, last_name, service, website)')
+      .eq('status', 'scheduled')
+      .gte('start_at', now.toISOString())
+      .lte('start_at', weekAhead)
+      .order('start_at')
+      .limit(8),
+    db
+      .from('activities')
+      .select('*, clients(id, first_name, last_name)')
+      .order('created_at', { ascending: false })
+      .limit(12),
+    db.from('messages').select('id', { count: 'exact', head: true }).eq('direction', 'outbound').neq('status', 'draft').gte('created_at', weekAgo),
+    db.from('messages').select('id', { count: 'exact', head: true }).eq('direction', 'inbound').gte('created_at', weekAgo),
+    db.from('messages').select('id', { count: 'exact', head: true }).eq('status', 'draft'),
+  ]);
+
+  const rows = (clients.data ?? []) as Pick<Client, 'stage' | 'created_at'>[];
+  const byStage = Object.fromEntries(CLIENT_STAGES.map((s) => [s, rows.filter((r) => r.stage === s).length]));
+  const newThisWeek = rows.filter((r) => r.created_at >= weekAgo).length;
+  const open = rows.filter((r) => r.stage !== 'live' && r.stage !== 'lost').length;
+  const upcomingRows = (upcoming.data ?? []) as UpcomingRow[];
+
+  return (
+    <>
+      <PageHeader title="Overview" description="Leads, calls and outreach at a glance." />
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <Stat label="New leads · 7 days" value={newThisWeek} />
+        <Stat label="Calls · next 7 days" value={upcomingRows.length} />
+        <Stat label="Open pipeline" value={open} hint={`${byStage.live} live clients`} />
+        <Stat
+          label="Outreach replies · 7 days"
+          value={replies7.count ?? 0}
+          hint={`${sent7.count ?? 0} sent · ${drafts.count ?? 0} AI drafts to review`}
+        />
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <Card
+          title="Upcoming calls"
+          className="xl:col-span-2"
+          action={<Link href="/admin/calendar" className="font-body text-xs text-brand-cyan hover:underline">Calendar</Link>}
+        >
+          {upcomingRows.length === 0 ? (
+            <EmptyState title="No calls in the next 7 days" body="Bookings from the website calendar and the outreach agent show up here." />
+          ) : (
+            <ul className="divide-y divide-white/5 -my-2">
+              {upcomingRows.map((b) => (
+                <li key={b.id} className="py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <div className="sm:w-56 shrink-0 font-mono text-xs text-white/75">
+                    {formatDateTime(b.start_at, BOOKING_CONFIG.timezone)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    {b.clients ? (
+                      <Link href={`/admin/clients/${b.clients.id}`} className="font-body text-sm text-white hover:underline">
+                        {[b.clients.first_name, b.clients.last_name].filter(Boolean).join(' ')}
+                      </Link>
+                    ) : null}
+                    <p className="font-body text-xs text-white/55 truncate">
+                      {b.clients ? serviceLabel(b.clients.service) : ''}
+                      {b.clients?.website ? ` · ${b.clients.website}` : ''}
+                    </p>
+                  </div>
+                  {b.meeting_url ? (
+                    <a
+                      href={b.meeting_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-body text-xs text-brand-cyan hover:underline"
+                    >
+                      <Video size={14} aria-hidden /> Join
+                    </a>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        <Card
+          title="Pipeline"
+          action={<Link href="/admin/pipeline" className="font-body text-xs text-brand-cyan hover:underline">Open board</Link>}
+        >
+          <ul className="flex flex-col gap-2">
+            {CLIENT_STAGES.map((s) => (
+              <li key={s} className="flex items-center justify-between gap-3">
+                <span className="font-body text-sm text-white/80">{STAGE_LABELS[s]}</span>
+                <span className="font-mono text-sm text-white tabular-nums">{byStage[s]}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
+        <Card title="Recent activity" className="xl:col-span-3">
+          {(activity.data ?? []).length === 0 ? (
+            <EmptyState title="Nothing yet" body="Bookings, stage changes and notes appear here." />
+          ) : (
+            <ul className="divide-y divide-white/5 -my-2">
+              {((activity.data ?? []) as ActivityRow[]).map((a) => (
+                <li key={a.id} className="py-2.5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                  <span className="sm:w-40 shrink-0 font-mono text-[11px] text-white/55">
+                    {formatDateTime(a.created_at)}
+                  </span>
+                  <Pill tone={a.type.startsWith('booking') ? 'cyan' : a.type === 'note' ? 'neutral' : 'purple'}>
+                    {a.type.replace('.', ' ')}
+                  </Pill>
+                  <span className="font-body text-sm text-white/85 min-w-0">
+                    {a.clients ? (
+                      <Link href={`/admin/clients/${a.clients.id}`} className="text-white hover:underline">
+                        {[a.clients.first_name, a.clients.last_name].filter(Boolean).join(' ')}
+                      </Link>
+                    ) : null}
+                    {a.clients ? ' · ' : ''}
+                    {a.body}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      </div>
+      <p className="mt-6 font-body text-xs text-white/55">
+        Times shown in {BOOKING_CONFIG.timezone.replace('_', ' ')}.
+      </p>
+    </>
+  );
+}
