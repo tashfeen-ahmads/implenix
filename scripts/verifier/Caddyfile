@@ -1,0 +1,6 @@
+# HTTPS in front of the verifier service (Caddy gets the certificate
+# automatically). Replace the host name, copy to /etc/caddy/Caddyfile,
+# then: sudo systemctl reload caddy
+verify.implenix.net {
+	reverse_proxy 127.0.0.1:8787
+}

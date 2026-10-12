@@ -1,0 +1,23 @@
+# systemd unit for the verifier service. Copy to
+# /etc/systemd/system/implenix-verifier.service, put the variables in
+# /etc/implenix-verifier.env (chmod 600), then:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now implenix-verifier
+[Unit]
+Description=Implenix built-in email verifier
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=verifier
+WorkingDirectory=/opt/implenix
+EnvironmentFile=/etc/implenix-verifier.env
+ExecStart=/opt/implenix/node_modules/.bin/tsx scripts/verifier/server.ts
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

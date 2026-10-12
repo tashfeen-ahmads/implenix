@@ -50,6 +50,17 @@ test hooks (`setDnsForTests`, `setVerifierForTests` and
   marked bounced and their sequences stop;
 - the per-campaign "Send to catch-all addresses" setting.
 
+`smtp-flow.mts` checks the built-in mailbox verifier against a fake mail
+server:
+
+- existing mailbox, unknown user, catch-all, greylisting, mailbox full,
+  and Microsoft's "access denied";
+- a refusal aimed at our server (blocklist or policy) never marks an
+  address undeliverable;
+- internal MX addresses are never contacted, and no `DATA` is ever sent;
+- the verifier service's auth and limits;
+- the dashboard's `builtin` provider calling it.
+
 `lead-flow.mts` checks:
 
 - a DataForSEO search (task_post, then task_get) and the mapping of its

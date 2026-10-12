@@ -8,7 +8,9 @@ import { Button } from '@/components/admin/ui';
 type Progress = { pending: number; unverified: number; found: number; verified: number; sendable: number; done: boolean };
 
 const VERIFIER_TEXT: Record<string, string> = {
-  basic: 'Basic check (syntax and mail servers). Add a MillionVerifier or ZeroBounce key to confirm each mailbox.',
+  basic: 'Basic check (syntax and mail servers). Connect the built-in verifier (Setup page) to confirm each mailbox.',
+  builtin: 'Mailboxes verified with the built-in verifier.',
+  smtp: 'Mailboxes verified with the built-in verifier.',
   millionverifier: 'Mailboxes verified with MillionVerifier.',
   zerobounce: 'Mailboxes verified with ZeroBounce.',
 };

@@ -13,3 +13,4 @@ cd ../..
 npx tsx --tsconfig tsconfig.json --conditions=react-server scripts/e2e/outreach-flow.mts
 npx tsx --tsconfig tsconfig.json --conditions=react-server scripts/e2e/lead-flow.mts
 npx tsx --tsconfig tsconfig.json --conditions=react-server scripts/e2e/health-flow.mts
+npx tsx --tsconfig tsconfig.json --conditions=react-server scripts/e2e/smtp-flow.mts

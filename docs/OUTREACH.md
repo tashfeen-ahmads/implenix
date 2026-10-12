@@ -16,7 +16,7 @@ Code: `lib/outreach/*`, `app/api/outreach/*`, `app/api/cron/outreach`, `app/api/
 > reviews or pauses accounts at **5% bounces** or **0.1% complaints**.
 > Small, targeted B2B outreach to business addresses is commonly accepted
 > if you:
-> - verify every address (see `docs/LEAD_FINDER.md`, mailbox verifier);
+> - verify every address (the built-in verifier, `docs/EMAIL_VERIFIER.md`);
 > - honour unsubscribes instantly;
 > - keep complaints near zero.
 >
@@ -224,5 +224,5 @@ See the "Outreach (Amazon SES + OpenAI)" block in `.env.example`: `AWS_SES_REGIO
 4. Set up the MX, the receipt rule, the inbound topic and the subscription (Confirmed). Send a test reply and check it appears in the inbox.
 5. Set all the env vars in Vercel and redeploy. Make sure the cron appears under Project → Cron Jobs.
 6. Create a campaign in `draft` AI mode and send test emails to Gmail and Outlook. Check that "Show original" reports SPF, DKIM and DMARC as PASS, and that the unsubscribe button appears.
-7. Set a mailbox verifier key (`MILLIONVERIFIER_API_KEY` or `ZEROBOUNCE_API_KEY`) and check **Dashboard > Setup** shows nothing required missing.
+7. Connect a mailbox verifier, either the free built-in one (`VERIFIER_URL` + `VERIFIER_SECRET`, see `docs/EMAIL_VERIFIER.md`) or a paid key, and check **Dashboard > Setup** shows nothing required missing.
 8. Import a small verified list (50 contacts), launch the campaign, and watch the bounce and complaint numbers for a week before raising the caps.

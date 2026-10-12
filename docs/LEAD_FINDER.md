@@ -68,10 +68,12 @@ don't include one. So every search goes through these steps, in order:
      - addresses that must never get mail (abuse@, postmaster@,
        noreply@…);
      - the domain has mail servers (MX).
-   - **Mailbox check (recommended):** with `MILLIONVERIFIER_API_KEY` or
-     `ZEROBOUNCE_API_KEY`, each address is checked at the mail server. Set
-     `EMAIL_VERIFIER=millionverifier|zerobounce|off` to choose when both
-     keys are set.
+   - **Mailbox check (recommended):** each address is checked at its mail
+     server. Use the **built-in verifier** (free, runs on a small server
+     of your own; see `docs/EMAIL_VERIFIER.md`), or a paid key
+     (`MILLIONVERIFIER_API_KEY` / `ZEROBOUNCE_API_KEY`). Set
+     `EMAIL_VERIFIER=builtin|millionverifier|zerobounce|off` to choose
+     when more than one is set.
 
 The layer runs while the search page is open: it works through 12
 businesses every few seconds and can be paused. The 10-minute cron also
@@ -156,6 +158,8 @@ finishes any search nobody is watching.
 
 ### Mailbox verifier (recommended)
 
+- **Built-in (free):** set `VERIFIER_URL` and `VERIFIER_SECRET` after
+  setting up the small verifier server in `docs/EMAIL_VERIFIER.md`.
 - **MillionVerifier:** millionverifier.com > API. Set
   `MILLIONVERIFIER_API_KEY`. It has the lowest price per check.
 - **ZeroBounce:** zerobounce.net > API. Set `ZEROBOUNCE_API_KEY`.
@@ -189,8 +193,9 @@ It does not subtract free allowances.
 - **Keep bounces under 2%.** SES reviews accounts at 5% bounces or 0.1%
   complaints. The built-in basic check catches dead domains, but only a
   mailbox verifier catches dead mailboxes. Before sending at volume, set
-  `MILLIONVERIFIER_API_KEY` (about $0.0004-0.0008 per address at the
-  time of writing) or `ZEROBOUNCE_API_KEY`.
+  up the built-in verifier (`docs/EMAIL_VERIFIER.md`), or a paid key
+  (`MILLIONVERIFIER_API_KEY`, about $0.0004-0.0008 per address at the
+  time of writing, or `ZEROBOUNCE_API_KEY`).
 - **Leave catch-all off** for the first sends. Turn it on only once your
   bounce rate is proven low.
 - **Follow US anti-spam law (CAN-SPAM)** on every email:

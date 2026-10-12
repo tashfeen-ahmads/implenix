@@ -74,7 +74,7 @@ export type VerifierProvider = {
 
 // Paid mailbox verifier, when a key is set. Filled in by verifyEmail().
 let provider: VerifierProvider | null | undefined;
-export function setVerifierForTests(p: VerifierProvider | null) {
+export function setVerifierForTests(p: VerifierProvider | null | undefined) {
   provider = p;
 }
 
@@ -138,10 +138,53 @@ const zeroBounce: VerifierProvider = {
   },
 };
 
-// EMAIL_VERIFIER=millionverifier|zerobounce|off; by default whichever key is set.
+// Built-in verifier, run by our own verifier service (scripts/verifier)
+// on a server with port 25 open. Free apart from that server.
+const builtinRemote: VerifierProvider = {
+  name: 'builtin',
+  async verify(email) {
+    const base = (process.env.VERIFIER_URL ?? '').replace(/\/+$/, '');
+    const res = await fetch(`${base}/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.VERIFIER_SECRET ?? ''}` },
+      body: JSON.stringify({ emails: [email] }),
+      signal: AbortSignal.timeout(45_000),
+      cache: 'no-store',
+    });
+    if (!res.ok) throw new Error(`verifier service ${res.status}`);
+    const r = ((await res.json()) as { results?: { verdict?: string; reason?: string }[] }).results?.[0];
+    const verdict = (['deliverable', 'risky', 'undeliverable', 'unknown'] as const).find((v) => v === r?.verdict);
+    if (!verdict) throw new Error('verifier service returned no result');
+    return { verdict, reason: r?.reason ?? verdict };
+  },
+};
+
+// Same check inside the app, for hosts that allow outbound port 25 (not
+// Vercel or AWS Lambda).
+const builtinLocal: VerifierProvider = {
+  name: 'smtp',
+  async verify(email) {
+    const { probeEmail } = await import('./smtpProbe');
+    const r = await probeEmail(email, {
+      heloHost: process.env.VERIFIER_HELO_HOST ?? '',
+      mailFrom: process.env.VERIFIER_MAIL_FROM ?? '',
+    });
+    return { verdict: r.verdict, reason: r.reason };
+  },
+};
+
+const builtinRemoteConfigured = () => Boolean(process.env.VERIFIER_URL && process.env.VERIFIER_SECRET);
+const builtinLocalConfigured = () => Boolean(process.env.VERIFIER_HELO_HOST && process.env.VERIFIER_MAIL_FROM);
+
+// EMAIL_VERIFIER=builtin|smtp|millionverifier|zerobounce|off. By default
+// the built-in service when VERIFIER_URL is set, else whichever paid key
+// is set. "smtp" (in-app probing) is never picked automatically, because
+// most hosts block port 25.
 export function verifierProvider(): VerifierProvider | null {
   const choice = (process.env.EMAIL_VERIFIER ?? '').trim().toLowerCase();
   if (choice === 'off') return null;
+  if (choice === 'smtp') return builtinLocalConfigured() ? builtinLocal : null;
+  if ((choice === '' || choice === 'builtin') && builtinRemoteConfigured()) return builtinRemote;
   if ((choice === '' || choice === 'millionverifier') && process.env.MILLIONVERIFIER_API_KEY) return millionVerifier;
   if ((choice === '' || choice === 'zerobounce') && process.env.ZEROBOUNCE_API_KEY) return zeroBounce;
   return null;

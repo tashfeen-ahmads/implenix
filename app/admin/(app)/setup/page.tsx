@@ -32,10 +32,11 @@ const GROUPS: Group[] = [
   },
   {
     title: '3. Emails: find and verify',
-    doc: 'docs/LEAD_FINDER.md',
-    why: 'Website email search and the basic check (syntax and mail servers) run free with no key. A verifier confirms each mailbox and keeps bounces under 2%; strongly recommended before sending at volume.',
+    doc: 'docs/EMAIL_VERIFIER.md',
+    why: 'Website email search and the basic check (syntax and mail servers) run free with no key. A mailbox verifier confirms each address and keeps bounces under 2%; strongly recommended before sending at volume. The built-in one is free apart from a small server with port 25 open.',
     items: [
-      { label: 'Mailbox verifier (MillionVerifier or ZeroBounce)', env: ['MILLIONVERIFIER_API_KEY', 'ZEROBOUNCE_API_KEY'], anyOf: true, note: 'Recommended' },
+      { label: 'Built-in mailbox verifier (your verifier server)', env: ['VERIFIER_URL', 'VERIFIER_SECRET'], optional: true, note: 'Free · recommended' },
+      { label: 'Paid mailbox verifier (MillionVerifier or ZeroBounce)', env: ['MILLIONVERIFIER_API_KEY', 'ZEROBOUNCE_API_KEY'], anyOf: true, optional: true, note: 'Alternative' },
       { label: 'Email finder fallback (Hunter)', env: ['HUNTER_API_KEY'], optional: true, note: 'For websites that show no email' },
     ],
   },
@@ -88,6 +89,7 @@ export default function SetupPage() {
   const required = GROUPS.flatMap((g) => g.items).filter((i) => !i.optional);
   const done = required.filter((i) => state(i) === 'ok').length;
   const providers = GROUPS[1].items.filter((i) => state(i) === 'ok').length;
+  const verifiers = GROUPS[2].items.slice(0, 2).filter((i) => state(i) === 'ok').length;
 
   return (
     <>
@@ -100,10 +102,12 @@ export default function SetupPage() {
           <Card key={g.title} title={g.title}>
             <p className="-mt-1 mb-4 font-body text-sm text-white/65 leading-relaxed">{g.why}</p>
             <ul className="flex flex-col gap-3">
-              {g.items.map((i) => {
+              {g.items.map((i, ii) => {
                 let st = state(i);
                 // Group 2 needs at least one provider.
                 if (gi === 1 && st === 'optional' && providers === 0) st = 'missing';
+                // Flag the free verifier when no mailbox verifier is set at all.
+                if (gi === 2 && ii === 0 && st === 'optional' && verifiers === 0) st = 'missing';
                 return (
                   <li key={i.label} className="flex items-start gap-3">
                     {st === 'ok' ? (
