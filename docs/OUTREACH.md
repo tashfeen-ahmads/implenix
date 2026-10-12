@@ -167,6 +167,13 @@ The agent never replies to auto-replies, or to unsubscribed, bounced or complain
 
 Start every new campaign in `draft` mode, and read a few dozen drafts before switching to `auto`.
 
+### Delivery guarantees
+
+SNS can deliver the same notification more than once. Each notification
+id is recorded in `processed_sns_messages`, so a repeat delivery is
+acknowledged without being handled twice. The cron prunes ids older than
+30 days. Open and click counts are incremented atomically in SQL.
+
 ### Funnel automation
 
 Pipeline stages, nurture campaigns, out-of-office handling, A/B variants, open/click tracking and the funnel report are described in `docs/PIPELINE.md`.

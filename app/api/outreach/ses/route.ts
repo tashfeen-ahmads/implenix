@@ -65,11 +65,23 @@ export async function POST(req: NextRequest) {
 
   const db = supabaseAdmin();
   const kind = String(payload.notificationType ?? payload.eventType ?? '');
+
+  // SNS delivers at least once. Claim the notification id; a redelivery
+  // finds it taken and is acknowledged without being handled again.
+  const { data: claimed, error: claimErr } = await db
+    .from('processed_sns_messages')
+    .upsert({ message_id: msg.MessageId }, { onConflict: 'message_id', ignoreDuplicates: true })
+    .select('message_id');
+  if (claimErr) console.error('[outreach/ses] dedupe claim failed', claimErr.message);
+  else if (!claimed?.length) return NextResponse.json({ ok: true, handled: 'duplicate_delivery' });
+
   try {
     const handled =
       kind === 'Received' ? await handleInboundEmail(db, payload) : await handleSesEvent(db, payload);
     return NextResponse.json({ ok: true, handled });
   } catch (err) {
+    // Release the claim so SNS's retry is processed.
+    await db.from('processed_sns_messages').delete().eq('message_id', msg.MessageId);
     console.error('[outreach/ses] handling failed', err instanceof Error ? err.message : err);
     // 500 lets SNS retry; inbound handling is idempotent on Message-ID.
     return NextResponse.json({ error: 'Handling failed' }, { status: 500 });

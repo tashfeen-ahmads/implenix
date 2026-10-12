@@ -38,6 +38,7 @@ const people = [
   mk('four@delta-e2e.com', 'Delta'),
   mk('five@delta-e2e.com', 'Delta'), // same company as four
   mk('six@echo-e2e.com', 'Echo'),
+  mk('seven@bravo-e2e.com', 'Bravo'), // colleague of two (out of office)
 ];
 await db.from('contacts').insert(people);
 await db.from('campaign_enrollments').insert(
@@ -54,7 +55,7 @@ const makeDue = async () => {
 // ── Tick 1: step 1 to everyone ──
 const t1 = await runOutreachTick();
 const msgs1 = ((await db.from('messages').select('*').eq('campaign_id', seqId)).data ?? []) as any[];
-check('tick1 sends 6 in this campaign', msgs1.length === 6, { tick: t1.sent, here: msgs1.length });
+check('tick1 emails every enrolled contact', msgs1.length === people.length, { tick: t1.sent, here: msgs1.length });
 check('stage email_sent after step 1', (await contact(0)).stage === 'email_sent', (await contact(0)).stage);
 check('variants recorded', msgs1.every((m) => m.variant === 'A' || m.variant === 'B'), msgs1.map((m) => m.variant));
 check('B variant body used', msgs1.filter((m) => m.variant === 'B').every((m) => m.body_text.includes('Body B') && m.subject === 'Other subject'), msgs1.filter((m) => m.variant === 'B').length);
@@ -102,6 +103,8 @@ c = await contact(1);
 const e1 = await enr(1);
 check('OOO → enrollment resumed after return date', e1.status === 'active' && e1.next_send_at.startsWith('2099-01-11'), e1);
 check('OOO → stage restored, status active', c.stage === 'follow_up_1' && c.status === 'active', { stage: c.stage, status: c.status });
+const e6 = await enr(6);
+check('OOO → colleague sequence keeps running', e6.status === 'active', e6.status);
 
 // 2: not now → nurture campaign
 agentSays({ intent: 'not_now', resume_on: '2099-03-01' });
@@ -118,6 +121,8 @@ c = await contact(3);
 check('low confidence → stays Replied · review', c.stage === 'replied' && c.reply_label === 'interested', { stage: c.stage, label: c.reply_label });
 const e4 = await enr(4);
 check('same-company colleague sequence stopped', e4.status === 'stopped', e4.status);
+const c4 = await contact(4);
+check('stopped colleague leaves outreach columns', c4.stage === 'no_response' && c4.reply_label === 'colleague_replied', { stage: c4.stage, label: c4.reply_label });
 
 // 5: header auto-reply pauses the sequence a week
 const before5 = (await enr(5)).next_send_at;
@@ -132,6 +137,17 @@ const t3 = await runOutreachTick();
 const n5 = await enr(5, nurtureId);
 c = await contact(5);
 check('sequence end with no reply → nurture handoff', (await enr(5)).status === 'completed' && n5?.status === 'active' && c.stage === 'nurture', { t3, n5, stage: c.stage });
+
+// ── Nurture drip runs to its end: the lead stays In nurture ──
+const n5row = await enr(5, nurtureId);
+await db.from('campaign_enrollments').update({ next_send_at: past }).eq('id', n5row.id);
+const t4 = await runOutreachTick();
+const afterSend = await enr(5, nurtureId);
+check('nurture step sends', afterSend.current_step === 1 && t4.sent >= 1, { t4, afterSend });
+await db.from('campaign_enrollments').update({ next_send_at: past }).eq('id', n5row.id);
+await runOutreachTick();
+const c5 = await contact(5);
+check('end of nurture drip → still In nurture', (await enr(5, nurtureId)).status === 'completed' && c5.stage === 'nurture', { stage: c5.stage });
 
 for (const [name, ok, detail] of results) console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${ok ? '' : `  ${detail}`}`);
 console.log(`${results.filter((r) => r[1]).length}/${results.length} passed`);

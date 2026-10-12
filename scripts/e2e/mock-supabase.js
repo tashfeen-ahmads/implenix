@@ -53,6 +53,18 @@ http.createServer((req, res) => {
   if (url.pathname.startsWith('/auth/v1/admin/users/') && req.method === 'DELETE') { const uid = url.pathname.split('/').pop(); tables.team_members.splice(tables.team_members.findIndex((m) => m.user_id === uid), 1); return send(res, 200, {}); }
   if (url.pathname === '/auth/v1/admin/generate_link') { let b = ''; req.on('data', (c) => (b += c)); return req.on('end', () => { const body = JSON.parse(b); send(res, 200, { id: require('crypto').randomUUID(), email: body.email, aud: 'authenticated', action_link: 'http://x/verify', email_otp: '123456', hashed_token: 'hashtoken123', redirect_to: '', verification_type: body.type }); }); }
   if (url.pathname.startsWith('/auth/v1/')) return send(res, 200, {});
+  if (url.pathname === '/rest/v1/rpc/record_message_engagement') {
+    let b = ''; req.on('data', (c) => (b += c));
+    return req.on('end', () => {
+      const a = JSON.parse(b || '{}');
+      const m = tables.messages.find((x) => x.ses_message_id === a.p_ses_message_id);
+      if (!m) return send(res, 200, null);
+      if (a.p_kind === 'open') m.open_count = (m.open_count ?? 0) + 1;
+      if (a.p_kind === 'click') { m.click_count = (m.click_count ?? 0) + 1; m.clicked_at ??= a.p_at; }
+      m.opened_at ??= a.p_at;
+      send(res, 200, true);
+    });
+  }
   if (url.pathname === '/rest/v1/rpc/outreach_funnel') {
     // Mock-only approximation of public.outreach_funnel (the SQL is tested in PGlite).
     const t = tables; const sentSt = ['sent', 'delivered', 'bounced', 'complained'];
@@ -83,7 +95,17 @@ http.createServer((req, res) => {
     const p = url.searchParams; const select = p.get('select') || '*';
     let rows = data.filter((row) => [...p.entries()].every(([k, v]) => ['select', 'order', 'limit', 'offset', 'on_conflict', 'columns'].includes(k) || (k === 'or' ? orTest(row, v) : test(row, k, v))));
     const DEFAULTS = { campaigns: { status: 'draft', list_id: null, from_name: 'Implenix', reply_to: null, daily_limit: 50, send_timezone: 'America/New_York', send_hour_start: 9, send_hour_end: 17, send_days: [1, 2, 3, 4, 5], ai_mode: 'draft', ai_instructions: null, kind: 'sequence', nurture_campaign_id: null, no_reply_grace_days: 4, track_opens: false, stop_company_on_reply: true, updated_at: new Date().toISOString() }, messages: { ai_meta: {}, ai_generated: false, open_count: 0, click_count: 0 }, web_leads: { status: 'new', client_id: null, handled_by: null, details: {} } };
-    if (req.method === 'POST') { const items = [].concat(JSON.parse(body || '[]')).map((x) => ({ id: require('crypto').randomUUID(), created_at: new Date().toISOString(), ...(DEFAULTS[table] || {}), ...x })); data.push(...items); const out = items.map((r) => project(r, table, select)); return send(res, 201, (req.headers['accept'] || '').includes('vnd.pgrst.object') ? out[0] : out); }
+    if (req.method === 'POST') {
+      // Upsert: on_conflict columns + Prefer resolution (ignore or merge).
+      const conflict = (p.get('on_conflict') || '').split(',').filter(Boolean);
+      const ignore = (req.headers['prefer'] || '').includes('ignore-duplicates');
+      const items = [];
+      for (const x of [].concat(JSON.parse(body || '[]'))) {
+        const hit = conflict.length && data.find((r) => conflict.every((c) => r[c] === x[c]));
+        if (hit) { if (!ignore) { Object.assign(hit, x); items.push(hit); } continue; }
+        const row = { id: require('crypto').randomUUID(), created_at: new Date().toISOString(), ...(DEFAULTS[table] || {}), ...x };
+        data.push(row); items.push(row);
+      } const out = items.map((r) => project(r, table, select)); return send(res, 201, (req.headers['accept'] || '').includes('vnd.pgrst.object') ? out[0] : out); }
     if (req.method === 'PATCH') { const patch = JSON.parse(body || '{}'); rows.forEach((r) => Object.assign(r, patch)); const out = rows.map((r) => project(r, table, select)); if ((req.headers['accept'] || '').includes('vnd.pgrst.object')) return out.length ? send(res, 200, out[0]) : send(res, 406, { code: 'PGRST116' }); return send(res, 200, out); }
     if (req.method === 'DELETE') { rows.forEach((r) => data.splice(data.indexOf(r), 1)); return send(res, 200, rows); }
     const order = p.get('order'); if (order) { const [col, dir] = order.split(',')[0].split('.'); rows = [...rows].sort((a, b) => (a[col] === null) - (b[col] === null) || cmp(a[col] ?? '', b[col] ?? '') * (dir === 'desc' ? -1 : 1)); }

@@ -140,3 +140,10 @@ export const CONTACT_STALL_DAYS: Partial<Record<ContactStage, number>> = {
   replied: 1,
   interested: 2,
 };
+
+// Labels set by the system rather than the AI (not offered in the inbox
+// override menu).
+export const LABEL_TEXT: Record<string, string> = {
+  ...REPLY_LABELS,
+  colleague_replied: 'A colleague replied',
+};

@@ -24,3 +24,31 @@ create trigger web_leads_touch before update on public.web_leads
 alter table public.web_leads enable row level security;
 create policy team_all on public.web_leads for all to authenticated
   using (public.is_team_member()) with check (public.is_team_member());
+
+-- ── Outreach event hygiene ─────────────────────────────────────────
+-- SNS delivers at least once: remember processed notification ids so a
+-- redelivered bounce/open/reply is handled only once. Service role only.
+create table public.processed_sns_messages (
+  message_id text primary key,
+  created_at timestamptz not null default now()
+);
+alter table public.processed_sns_messages enable row level security;
+
+-- Atomic open/click counters (two events at once must both count).
+create or replace function public.record_message_engagement(p_ses_message_id text, p_kind text, p_at timestamptz)
+returns boolean
+language sql
+security invoker
+set search_path = public
+as $$
+  update public.messages
+  set
+    open_count = open_count + case when p_kind = 'open' then 1 else 0 end,
+    click_count = click_count + case when p_kind = 'click' then 1 else 0 end,
+    -- A click implies the email was opened.
+    opened_at = coalesce(opened_at, p_at),
+    clicked_at = case when p_kind = 'click' then coalesce(clicked_at, p_at) else clicked_at end
+  where ses_message_id = p_ses_message_id
+  returning true;
+$$;
+revoke execute on function public.record_message_engagement(text, text, timestamptz) from public, anon, authenticated;

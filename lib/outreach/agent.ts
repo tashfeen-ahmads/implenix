@@ -18,6 +18,7 @@ import { AUTO_FROM, moveToNurture, setContactStage } from './stage';
 import { REPLY_LABELS } from '@/lib/pipeline/stages';
 import { sendEmail } from '@/lib/email/resend';
 import { hotLeadEmail } from '@/lib/email/templates';
+import { teamAlertRecipients } from '@/lib/email/recipients';
 
 // AI reply agent: reads the conversation with a prospect, decides what
 // they want, uses tools (calendar, booking, opt-out, handoff) and writes a
@@ -591,13 +592,6 @@ async function applyClassification(
   }
 }
 
-function teamAlertRecipients(): string[] {
-  return (process.env.OUTREACH_ALERT_EMAILS || process.env.BOOKING_TEAM_EMAILS || '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
 async function alertHotLead(contact: Contact, campaign: Campaign, result: AgentResult, text: string): Promise<void> {
   const to = teamAlertRecipients();
   if (!to.length) return;
@@ -633,7 +627,7 @@ export async function handleInboundWithAgent(input: {
   prevStage?: ContactStage;
   // Enrollments this reply stopped (resumed if it was an away message).
   stoppedEnrollmentIds?: string[];
-}): Promise<{ handled: string }> {
+}): Promise<{ handled: string; intent?: Intent }> {
   const { db, contact, campaign, inbound } = input;
   if (!campaign || campaign.ai_mode === 'off') return { handled: 'ai_off' };
   if (BLOCKED.has(contact.status)) return { handled: 'contact_blocked' };
@@ -669,12 +663,13 @@ export async function handleInboundWithAgent(input: {
 
   await applyClassification(db, contact, campaign, result, { ...input, inboundText: inbound.body_text ?? '' });
 
-  if (!result.shouldReply) return { handled: result.unsubscribed ? 'unsubscribed' : 'no_reply' };
+  const intent = result.intent;
+  if (!result.shouldReply) return { handled: result.unsubscribed ? 'unsubscribed' : 'no_reply', intent };
 
   // Re-read the contact: a tool may have changed its status.
   const { data: fresh } = await db.from('contacts').select('*').eq('id', contact.id).maybeSingle();
   const current = (fresh as Contact | null) ?? contact;
-  if (BLOCKED.has(current.status)) return { handled: 'contact_blocked' };
+  if (BLOCKED.has(current.status)) return { handled: 'contact_blocked', intent };
 
   if (campaign.ai_mode === 'auto' && !result.handoffReason) {
     try {
@@ -686,7 +681,7 @@ export async function handleInboundWithAgent(input: {
         aiGenerated: true,
         aiMeta: meta,
       });
-      return { handled: 'auto_sent' };
+      return { handled: 'auto_sent', intent };
     } catch (err) {
       console.error('[outreach/agent] auto send failed, saving draft', err instanceof Error ? err.message : err);
       meta.handoff_reason = 'Auto-send failed; review and send manually.';
@@ -709,5 +704,5 @@ export async function handleInboundWithAgent(input: {
     ai_meta: meta,
   });
   if (error) console.error('[outreach/agent] draft insert failed', error.message);
-  return { handled: 'draft_saved' };
+  return { handled: 'draft_saved', intent };
 }

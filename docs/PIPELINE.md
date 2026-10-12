@@ -79,7 +79,9 @@ side effects are always the same:
   nurture with a check-back date taken from what they said, or 60 days if
   they gave none.
 - **Company stop:** when one person replies, colleagues at the same email
-  domain stop getting that outreach. Gmail and other free mailboxes are
+  domain stop getting that outreach.
+  - Their cards move to No response, labelled "A colleague replied".
+  - An out-of-office reply doesn't trigger this. Gmail and other free mailboxes are
   never grouped. You can turn this off per campaign.
 - **Low-confidence replies:** the AI's label is saved and shown on the
   card, but the card stays in Replied · review for a person to decide.
@@ -95,6 +97,8 @@ more apart, with a case study or a seasonal hook.
 - A contact list is optional.
 - Step 1's wait counts from the day the lead is moved in.
 - Nurture campaigns never complete on their own.
+- When a lead finishes the last nurture email, it stays In nurture with
+  its check-back date. A person decides what happens next.
 - Any reply takes the lead back to Replied · review, where the AI handles
   it like any other reply.
 - Opted-out, bounced and not-interested contacts are never nurtured

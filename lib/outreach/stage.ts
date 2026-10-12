@@ -2,6 +2,7 @@ import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Campaign, CampaignStep, Contact, ContactStage } from '@/lib/db/types';
 import { DAY_MS, SEQUENCE_STAGES } from '@/lib/pipeline/stages';
+import { escapeLike } from './suppress';
 
 // Automatic pipeline moves for outreach contacts, shared by the send
 // engine, SES events, inbound replies and the AI agent.
@@ -136,7 +137,7 @@ export async function stopCompanySequences(db: SupabaseClient, contact: Pick<Con
   const { data: colleagues } = await db
     .from('contacts')
     .select('id')
-    .ilike('email', `%@${domain.replace(/[\\%_]/g, (c) => `\\${c}`)}`)
+    .ilike('email', `%@${escapeLike(domain)}`)
     .neq('id', contact.id)
     .limit(200);
   const ids = ((colleagues ?? []) as { id: string }[]).map((c) => c.id);
@@ -147,7 +148,16 @@ export async function stopCompanySequences(db: SupabaseClient, contact: Pick<Con
     .in('contact_id', ids)
     .eq('status', 'active')
     .select('contact_id');
-  return (stopped ?? []).length;
+  const stoppedIds = [...new Set(((stopped ?? []) as { contact_id: string }[]).map((r) => r.contact_id))];
+  // Their sequence is over: take them out of the outreach columns.
+  if (stoppedIds.length) {
+    await db
+      .from('contacts')
+      .update({ stage: 'no_response', reply_label: 'colleague_replied' })
+      .in('id', stoppedIds)
+      .in('stage', SEQUENCE_STAGES.filter((s) => s !== 'new'));
+  }
+  return stoppedIds.length;
 }
 
 // Push a contact's running sequences out by `days` (never earlier).

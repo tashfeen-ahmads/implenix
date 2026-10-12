@@ -9,7 +9,7 @@ import { isSuppressed, normalizeEmail } from './suppress';
 import { inSendWindow, startOfDay } from './time';
 import { AUTO_FROM, moveToNurture, setContactStage } from './stage';
 import { createHash } from 'node:crypto';
-import { stageForStep } from '@/lib/pipeline/stages';
+import { SEQUENCE_STAGES, stageForStep } from '@/lib/pipeline/stages';
 
 // The cron-driven sequence sender. Each tick picks due enrollments of
 // active campaigns inside their send windows, honours per-campaign and
@@ -191,12 +191,16 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
     // Sequence finished and the grace period after the last email passed
     // without a reply.
     await setEnrollment({ status: 'completed' });
-    if (q.campaign.kind === 'sequence' && q.campaign.nurture_campaign_id) {
-      const res = await moveToNurture(db, contact, { fromCampaign: q.campaign });
-      if (!res.enrolled) await setContactStage(db, contact.id, 'no_response', { onlyFrom: AUTO_FROM });
-    } else {
-      await setContactStage(db, contact.id, 'no_response', { onlyFrom: AUTO_FROM });
+    if (q.campaign.kind === 'nurture') {
+      // End of the nurture drip: they stay In nurture with their
+      // check-back date so a person decides what happens next.
+      return 'completed';
     }
+    if (q.campaign.nurture_campaign_id) {
+      const res = await moveToNurture(db, contact, { fromCampaign: q.campaign });
+      if (res.enrolled) return 'completed';
+    }
+    await setContactStage(db, contact.id, 'no_response', { onlyFrom: SEQUENCE_STAGES });
     return 'completed';
   }
 

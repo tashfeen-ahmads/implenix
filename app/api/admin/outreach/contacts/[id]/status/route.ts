@@ -4,6 +4,7 @@ import { requireTeamApi } from '@/lib/supabase/auth';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import type { Contact } from '@/lib/db/types';
 import { addSuppression, normalizeEmail, stopEnrollments, type SuppressionReason } from '@/lib/outreach/suppress';
+import { clientForContact } from '@/lib/pipeline/convert';
 
 // Manual contact status change from the dashboard. Opt-out style statuses
 // write a suppression and stop sequences; a suppressed address cannot be
@@ -77,6 +78,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         { status: 409 },
       );
     }
+  }
+
+  // Booked by hand: make sure a client card exists for them on the pipeline.
+  if (status === 'booked') {
+    const client = await clientForContact(db, contact, 'call_booked', null);
+    if ('error' in client) return NextResponse.json({ error: client.error }, { status: 500 });
   }
 
   const reason = SUPPRESS[status];

@@ -5,7 +5,8 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 import { LOST_REASONS, STAGE_LABELS, type Client, type ClientStage, type Contact } from '@/lib/db/types';
 import { COLUMN_BY_ID, canMoveTo, contactStageLabel } from '@/lib/pipeline/stages';
 import { moveToNurture } from '@/lib/outreach/stage';
-import { normalizeEmail, stopEnrollments, suppressAndStop } from '@/lib/outreach/suppress';
+import { escapeLike, normalizeEmail, stopEnrollments, suppressAndStop } from '@/lib/outreach/suppress';
+import { clientForContact } from '@/lib/pipeline/convert';
 
 // Moves a card on the pipeline board. Every move goes through here so the
 // side effects stay consistent: stopping sequences, suppression, nurture
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
   // Into the sales pipeline: the prospect becomes a client.
   if (column.clientStage && column.id !== 'nurture') {
     const stage = column.clientStage;
-    const client = await contactForClientConversion(db, contact, stage, lostReason ?? null);
+    const client = await clientForContact(db, contact, stage, lostReason ?? null);
     if ('error' in client) return NextResponse.json({ error: client.error }, { status: 500 });
     await stopEnrollments(db, contact.id);
     await db
@@ -133,45 +134,6 @@ export async function POST(req: NextRequest) {
 
 type DB = ReturnType<typeof supabaseAdmin>;
 
-// Find or create the client for a contact moved into the sales pipeline.
-async function contactForClientConversion(
-  db: DB,
-  contact: Contact,
-  stage: ClientStage,
-  lostReason: string | null,
-): Promise<{ id: string; created: boolean } | { error: string }> {
-  const email = normalizeEmail(contact.email);
-  const { data: existing } = await db.from('clients').select('id, stage').ilike('email', email).maybeSingle();
-  if (existing) {
-    const { error } = await db
-      .from('clients')
-      .update({ stage, outreach_contact_id: contact.id, ...(stage === 'lost' ? { lost_reason: lostReason } : {}) })
-      .eq('id', (existing as { id: string }).id);
-    if (error) return { error: error.message };
-    return { id: (existing as { id: string }).id, created: false };
-  }
-  const { data, error } = await db
-    .from('clients')
-    .insert({
-      first_name: contact.first_name?.trim() || contact.company?.trim() || email.split('@')[0],
-      last_name: contact.last_name,
-      email,
-      phone: contact.phone,
-      website: contact.website,
-      company: contact.company,
-      service: 'ai-receptionist',
-      source: 'outreach',
-      stage,
-      outreach_contact_id: contact.id,
-      owner_id: contact.owner_id,
-      ...(stage === 'lost' ? { lost_reason: lostReason } : {}),
-    })
-    .select('id')
-    .single();
-  if (error || !data) return { error: error?.message ?? 'Could not create the client' };
-  return { id: (data as { id: string }).id, created: true };
-}
-
 // The outreach contact behind a client, created when missing so the client
 // can receive nurture emails.
 async function contactForClient(db: DB, client: Client): Promise<Contact | null> {
@@ -180,7 +142,7 @@ async function contactForClient(db: DB, client: Client): Promise<Contact | null>
     if (data) return data as Contact;
   }
   const email = normalizeEmail(client.email);
-  const { data: byEmail } = await db.from('contacts').select('*').ilike('email', email).maybeSingle();
+  const { data: byEmail } = await db.from('contacts').select('*').ilike('email', escapeLike(email)).limit(1).maybeSingle();
   let contact = byEmail as Contact | null;
   if (!contact) {
     const { data, error } = await db

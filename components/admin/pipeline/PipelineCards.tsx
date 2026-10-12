@@ -7,6 +7,7 @@ import {
   COLUMNS,
   CONTACT_STALL_DAYS,
   PHASES,
+  LABEL_TEXT,
   REPLY_LABELS,
   STALL_DAYS,
   canMoveTo,
@@ -135,7 +136,7 @@ export function ContactCardView({
   const title = c.company || person || c.email;
   const column = columnForContact(c.stage);
   const seq = c.sequence;
-  const label = c.reply_label ? REPLY_LABELS[c.reply_label] ?? c.reply_label : null;
+  const label = c.reply_label ? LABEL_TEXT[c.reply_label] ?? c.reply_label : null;
   const revisitDue = c.revisit_at && new Date(c.revisit_at).getTime() <= Date.now();
   return (
     <li

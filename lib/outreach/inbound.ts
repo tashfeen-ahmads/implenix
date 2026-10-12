@@ -65,21 +65,15 @@ export async function handleSesEvent(db: SupabaseClient, payload: Json): Promise
       // Only sent with the tracking configuration set (campaign.track_opens).
       // Opens are a rough signal: Apple Mail and some scanners prefetch.
       if (!sesId) return 'engagement_no_id';
-      const { data: row } = await db
-        .from('messages')
-        .select('id, opened_at, open_count, clicked_at, click_count')
-        .eq('ses_message_id', sesId)
-        .maybeSingle();
-      const m = row as Pick<Message, 'id' | 'opened_at' | 'open_count' | 'clicked_at' | 'click_count'> | null;
-      if (!m) return 'engagement_unknown_message';
       const at = str(obj(type === 'Open' ? payload.open : payload.click).timestamp) || new Date().toISOString();
-      const patch =
-        type === 'Open'
-          ? { opened_at: m.opened_at ?? at, open_count: (m.open_count ?? 0) + 1 }
-          : // A click implies the email was opened.
-            { clicked_at: m.clicked_at ?? at, click_count: (m.click_count ?? 0) + 1, opened_at: m.opened_at ?? at };
-      const { error } = await db.from('messages').update(patch).eq('id', m.id);
+      // Atomic increment in SQL (migration 20261016) so simultaneous events all count.
+      const { data: hit, error } = await db.rpc('record_message_engagement', {
+        p_ses_message_id: sesId,
+        p_kind: type === 'Open' ? 'open' : 'click',
+        p_at: at,
+      });
       if (error) console.error('[outreach/ses] engagement update failed', error.message);
+      if (!hit) return 'engagement_unknown_message';
       return type === 'Open' ? 'open' : 'click';
     }
     case 'Received':
@@ -323,11 +317,13 @@ export async function handleInboundEmail(db: SupabaseClient, payload: Json): Pro
     const { data } = await db.from('campaigns').select('*').eq('id', campaignId).maybeSingle();
     campaign = data as Campaign | null;
   }
-  if (campaign?.stop_company_on_reply !== false) {
+  const res = await handleInboundWithAgent({ db, contact, campaign, inbound, prevStage, stoppedEnrollmentIds });
+
+  // Runs after classification: an away message isn't a reply from the
+  // company, so colleagues keep getting the sequence.
+  if (campaign?.stop_company_on_reply !== false && res.intent !== 'out_of_office') {
     const n = await stopCompanySequences(db, contact);
     if (n) console.info(`[outreach/inbound] stopped ${n} sequence(s) for colleagues at the same company`);
   }
-
-  const res = await handleInboundWithAgent({ db, contact, campaign, inbound, prevStage, stoppedEnrollmentIds });
   return `reply_${res.handled}`;
 }

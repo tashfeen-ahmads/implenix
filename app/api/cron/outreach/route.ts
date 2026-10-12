@@ -32,6 +32,12 @@ export async function GET(req: NextRequest) {
     runOutreachTick().catch(log('outreach')),
     syncRunningSearches(db).catch(log('lead sync')),
     sendDueReminders(db).catch(log('reminders')),
+    // SNS redelivery window is hours, not weeks: prune old dedupe ids.
+    db
+      .from('processed_sns_messages')
+      .delete()
+      .lt('created_at', new Date(Date.now() - 30 * 86_400_000).toISOString())
+      .then(({ error }) => error && log('sns prune')(error)),
   ]);
   const ok = outreach !== null && leadSearches !== null && reminders !== null;
   return NextResponse.json({ ok, outreach, leadSearches, reminders }, { status: ok ? 200 : 500 });

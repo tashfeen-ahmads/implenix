@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { requireTeamApi } from '@/lib/supabase/auth';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { SERVICES, type WebLead } from '@/lib/db/types';
+import { escapeLike } from '@/lib/outreach/suppress';
 
 // Website lead actions from the overview: mark called, dismiss, reopen,
 // or convert into a client on the pipeline (New lead).
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   }
 
   const email = body.email.toLowerCase();
-  const { data: existing } = await db.from('clients').select('id').ilike('email', email).maybeSingle();
+  const { data: existing } = await db.from('clients').select('id').ilike('email', escapeLike(email)).limit(1).maybeSingle();
   let clientId = (existing as { id: string } | null)?.id ?? null;
   if (!clientId) {
     const { data: created, error } = await db

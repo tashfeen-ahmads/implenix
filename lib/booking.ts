@@ -14,6 +14,7 @@ import { sendEmail } from '@/lib/email/resend';
 import { clientConfirmationEmail, teamAlertEmail } from '@/lib/email/templates';
 import { adminConfigured, supabaseAdmin } from '@/lib/supabase/admin';
 import { serviceLabel } from '@/lib/db/types';
+import { escapeLike } from '@/lib/outreach/suppress';
 import { SITE_URL } from '@/lib/seo';
 
 // One booking flow for every entry point: the website calendar and the
@@ -211,7 +212,7 @@ async function saveToPipeline(input: BookingInput, b: Saved): Promise<string | n
 
   // An outreach contact who books is linked to the client and marked
   // booked, and their sequences stop.
-  const { data: contact } = await db.from('contacts').select('id').ilike('email', email).maybeSingle();
+  const { data: contact } = await db.from('contacts').select('id').ilike('email', escapeLike(email)).limit(1).maybeSingle();
   if (contact) {
     await db.from('contacts').update({ status: 'booked', stage: 'client' }).eq('id', contact.id);
     await db
@@ -224,7 +225,8 @@ async function saveToPipeline(input: BookingInput, b: Saved): Promise<string | n
   const { data: existing } = await db
     .from('clients')
     .select('id, stage, first_name, last_name, phone, website, service, source, outreach_contact_id')
-    .ilike('email', email)
+    .ilike('email', escapeLike(email))
+    .limit(1)
     .maybeSingle();
   const fields = {
     first_name: input.firstName,
