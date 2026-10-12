@@ -8,13 +8,29 @@ import {
   STAGE_LABELS,
   type Client,
   type ClientStage,
+  type TeamMember,
 } from '@/lib/db/types';
 import { Button, Card, Field, inputClass } from '@/components/admin/ui';
 import { moveStage, updateClient } from './actions';
 
-export function ClientControls({ client }: { client: Client }) {
+export function ClientControls({ client, team }: { client: Client; team: TeamMember[] }) {
   const router = useRouter();
   const [stage, setStage] = useState<ClientStage>(client.stage);
+  const [owner, setOwner] = useState(client.owner_id ?? '');
+
+  const changeOwner = async (to: string) => {
+    const prev = owner;
+    setOwner(to);
+    try {
+      await updateClient(client.id, { owner_id: to || null });
+      const who = team.find((m) => m.user_id === to);
+      setStatus(to ? `Assigned to ${who?.full_name ?? who?.email ?? 'teammate'}.` : 'Unassigned.');
+      router.refresh();
+    } catch {
+      setOwner(prev);
+      setStatus('Could not change the owner.');
+    }
+  };
   const [fields, setFields] = useState({
     phone: client.phone ?? '',
     company: client.company ?? '',
@@ -57,18 +73,29 @@ export function ClientControls({ client }: { client: Client }) {
 
   return (
     <>
-      <Card title="Stage">
-        <label htmlFor="client-stage" className="sr-only">Pipeline stage</label>
-        <select
-          id="client-stage"
-          value={stage}
-          onChange={(e) => changeStage(e.target.value as ClientStage)}
-          className={inputClass}
-        >
-          {CLIENT_STAGES.map((s) => (
-            <option key={s} value={s}>{STAGE_LABELS[s]}</option>
-          ))}
-        </select>
+      <Card title="Stage and owner">
+        <div className="flex flex-col gap-4">
+          <Field label="Pipeline stage" htmlFor="client-stage">
+            <select
+              id="client-stage"
+              value={stage}
+              onChange={(e) => changeStage(e.target.value as ClientStage)}
+              className={inputClass}
+            >
+              {CLIENT_STAGES.map((s) => (
+                <option key={s} value={s}>{STAGE_LABELS[s]}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Owner" htmlFor="client-owner" hint="The teammate responsible for this client.">
+            <select id="client-owner" value={owner} onChange={(e) => changeOwner(e.target.value)} className={inputClass}>
+              <option value="">Unassigned</option>
+              {team.map((m) => (
+                <option key={m.user_id} value={m.user_id}>{m.full_name ?? m.email}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
       </Card>
       <Card title="Details">
         <form onSubmit={save} className="flex flex-col gap-4">

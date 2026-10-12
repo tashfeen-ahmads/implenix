@@ -13,7 +13,9 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    params.get('error') === 'link' ? 'That sign-in link is invalid or has expired. Ask for a new invite, or sign in below.' : null,
+  );
   const [sent, setSent] = useState(false);
 
   if (!supabaseConfigured()) {

@@ -31,7 +31,14 @@ export async function addNote(clientId: string, body: string) {
 export async function updateClient(clientId: string, fields: Record<string, string | null>) {
   const { error } = await supabaseBrowser().from('clients').update(fields).eq('id', clientId);
   if (error) throw error;
-  await logActivity(clientId, 'client.updated', `Updated ${Object.keys(fields).join(', ')}`);
+  const keys = Object.keys(fields);
+  await logActivity(
+    clientId,
+    'client.updated',
+    keys.length === 1 && keys[0] === 'owner_id'
+      ? fields.owner_id ? 'Changed the owner' : 'Removed the owner'
+      : `Updated ${keys.map((k) => k.replace('_id', '').replace('_', ' ')).join(', ')}`,
+  );
 }
 
 export async function setBookingStatus(clientId: string, bookingId: string, status: string) {

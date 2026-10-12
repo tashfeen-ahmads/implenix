@@ -11,13 +11,34 @@ import {
   serviceLabel,
   type Client,
   type ClientStage,
+  type TeamMember,
 } from '@/lib/db/types';
 import { DASHBOARD_TZ, inputClass } from '@/components/admin/ui';
 import { moveStage } from './actions';
 
 const fmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: DASHBOARD_TZ });
 
-export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCall: Record<string, string> }) {
+const initials = (m: TeamMember) =>
+  (m.full_name ?? m.email)
+    .split(/[\s@.]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]!.toUpperCase())
+    .join('');
+
+export function PipelineBoard({
+  clients,
+  nextCall,
+  team,
+  meId,
+}: {
+  clients: Client[];
+  nextCall: Record<string, string>;
+  team: TeamMember[];
+  meId: string | null;
+}) {
+  const [owner, setOwner] = useState('');
+  const byId = useMemo(() => new Map(team.map((m) => [m.user_id, m])), [team]);
   const router = useRouter();
   const [items, setItems] = useState(clients);
   const [query, setQuery] = useState('');
@@ -31,12 +52,13 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
     return items.filter(
       (c) =>
         (!service || c.service === service) &&
+        (!owner || (owner === 'none' ? !c.owner_id : c.owner_id === owner)) &&
         (!q ||
           [c.first_name, c.last_name, c.email, c.company, c.website]
             .filter(Boolean)
             .some((v) => v!.toLowerCase().includes(q))),
     );
-  }, [items, query, service]);
+  }, [items, query, service, owner]);
 
   const move = async (id: string, to: ClientStage) => {
     const client = items.find((c) => c.id === id);
@@ -74,6 +96,15 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
           {SERVICES.map((s) => (
             <option key={s.value} value={s.value}>{s.label}</option>
           ))}
+        </select>
+        <label htmlFor="pipe-owner" className="sr-only">Filter by owner</label>
+        <select id="pipe-owner" value={owner} onChange={(e) => setOwner(e.target.value)} className={`${inputClass} sm:w-48`}>
+          <option value="">Everyone</option>
+          {meId ? <option value={meId}>Mine</option> : null}
+          {team.filter((m) => m.user_id !== meId).map((m) => (
+            <option key={m.user_id} value={m.user_id}>{m.full_name ?? m.email}</option>
+          ))}
+          <option value="none">Unassigned</option>
         </select>
       </div>
       <p role="status" aria-live="polite" className="sr-only">{status}</p>
@@ -122,9 +153,20 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
                       dragId === c.id ? 'opacity-50' : ''
                     }`}
                   >
-                    <Link href={`/admin/clients/${c.id}`} className="font-body text-sm font-medium text-white hover:underline">
-                      {[c.first_name, c.last_name].filter(Boolean).join(' ')}
-                    </Link>
+                    <div className="flex items-start justify-between gap-2">
+                      <Link href={`/admin/clients/${c.id}`} className="font-body text-sm font-medium text-white hover:underline">
+                        {[c.first_name, c.last_name].filter(Boolean).join(' ')}
+                      </Link>
+                      {c.owner_id && byId.get(c.owner_id) ? (
+                        <span
+                          title={`Owner: ${byId.get(c.owner_id)!.full_name ?? byId.get(c.owner_id)!.email}`}
+                          className="shrink-0 w-6 h-6 rounded-full bg-brand-cyan/15 text-brand-cyan font-body text-[10px] font-semibold flex items-center justify-center"
+                        >
+                          <span aria-hidden>{initials(byId.get(c.owner_id)!)}</span>
+                          <span className="sr-only">Owner: {byId.get(c.owner_id)!.full_name ?? byId.get(c.owner_id)!.email}</span>
+                        </span>
+                      ) : null}
+                    </div>
                     <p className="font-body text-xs text-white/60 truncate">{c.company || c.website || c.email}</p>
                     <p className="mt-2 font-body text-xs font-medium text-[#e3a6ff]">{serviceLabel(c.service)}</p>
                     {nextCall[c.id] ? (

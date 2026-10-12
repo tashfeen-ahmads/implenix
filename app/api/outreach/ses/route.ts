@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   if (msg.Type === 'SubscriptionConfirmation') {
     if (!isSnsUrl(msg.SubscribeURL)) return NextResponse.json({ error: 'Bad SubscribeURL' }, { status: 400 });
     try {
-      const res = await fetch(msg.SubscribeURL!, { signal: AbortSignal.timeout(8_000), redirect: 'error' });
+      const res = await fetch(msg.SubscribeURL!, { signal: AbortSignal.timeout(8_000), redirect: 'error', cache: 'no-store' });
       if (!res.ok) throw new Error(`status ${res.status}`);
       console.info('[outreach/ses] SNS subscription confirmed');
       return NextResponse.json({ ok: true, confirmed: true });

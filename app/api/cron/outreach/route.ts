@@ -3,6 +3,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { runOutreachTick } from '@/lib/outreach/send';
 import { adminConfigured, supabaseAdmin } from '@/lib/supabase/admin';
 import { syncRunningSearches } from '@/lib/leads';
+import { sendDueReminders } from '@/lib/reminders';
 
 // Vercel Cron (vercel.json, every 10 minutes) sends
 // `Authorization: Bearer ${CRON_SECRET}`.
@@ -21,16 +22,17 @@ function authorized(req: NextRequest): boolean {
 export async function GET(req: NextRequest) {
   if (!authorized(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   if (!adminConfigured()) return NextResponse.json({ ok: true, skipped: 'Supabase not configured' });
-  try {
-    const result = await runOutreachTick();
-    // Lead finder searches finish at the provider; pull in any that are done.
-    const leadSearches = await syncRunningSearches(supabaseAdmin()).catch((err) => {
-      console.error('[cron/outreach] lead sync failed', err instanceof Error ? err.message : err);
-      return 0;
-    });
-    return NextResponse.json({ ...result, leadSearches });
-  } catch (err) {
-    console.error('[cron/outreach] tick failed', err instanceof Error ? err.message : err);
-    return NextResponse.json({ ok: false, error: 'Tick failed' }, { status: 500 });
-  }
+  // Three independent jobs: one failing never blocks the others.
+  const log = (job: string) => (err: unknown) => {
+    console.error(`[cron] ${job} failed`, err instanceof Error ? err.message : err);
+    return null;
+  };
+  const db = supabaseAdmin();
+  const [outreach, leadSearches, reminders] = await Promise.all([
+    runOutreachTick().catch(log('outreach')),
+    syncRunningSearches(db).catch(log('lead sync')),
+    sendDueReminders(db).catch(log('reminders')),
+  ]);
+  const ok = outreach !== null && leadSearches !== null && reminders !== null;
+  return NextResponse.json({ ok, outreach, leadSearches, reminders }, { status: ok ? 200 : 500 });
 }

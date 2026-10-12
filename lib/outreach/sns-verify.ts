@@ -70,7 +70,7 @@ const CERT_TTL_MS = 24 * 3_600_000;
 async function fetchCert(url: string): Promise<string> {
   const hit = certCache.get(url);
   if (hit && Date.now() - hit.at < CERT_TTL_MS) return hit.pem;
-  const res = await fetch(url, { signal: AbortSignal.timeout(5_000), redirect: 'error' });
+  const res = await fetch(url, { signal: AbortSignal.timeout(5_000), redirect: 'error', cache: 'no-store' });
   if (!res.ok) throw new Error(`cert fetch ${res.status}`);
   const pem = await res.text();
   if (!pem.includes('-----BEGIN CERTIFICATE-----') || pem.length > 20_000) {

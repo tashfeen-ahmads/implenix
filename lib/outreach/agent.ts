@@ -442,6 +442,10 @@ export async function runReplyAgent(input: RunAgentInput): Promise<AgentResult> 
   if (!finished) {
     result.handoffReason ??= 'Agent did not finish within the tool-call limit';
   }
+  // A tool that failed (calendar down, booking rejected) means the reply may
+  // promise something we could not check: never auto-send it.
+  const failed = result.actions.find((a) => !a.ok && a.type !== 'handoff_to_human');
+  if (failed) result.handoffReason ??= `The ${failed.type.replace(/_/g, ' ')} step failed; check the reply before sending.`;
 
   let parsed: { should_reply?: unknown; body?: unknown; intent?: unknown; summary?: unknown } = {};
   try {
@@ -552,6 +556,8 @@ export async function handleInboundWithAgent(input: {
     }
   }
 
+  // One pending AI draft per conversation: a newer reply replaces it.
+  await db.from('messages').delete().eq('contact_id', contact.id).eq('status', 'draft').eq('ai_generated', true);
   const { error } = await db.from('messages').insert({
     contact_id: contact.id,
     campaign_id: campaign.id,

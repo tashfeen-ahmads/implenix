@@ -14,6 +14,7 @@ async function call<T>(path: string): Promise<T> {
   const res = await fetch(`${API}${path}`, {
     headers: { 'X-API-KEY': process.env.OUTSCRAPER_API_KEY ?? '' },
     signal: AbortSignal.timeout(20_000),
+    cache: 'no-store',
   });
   if (!res.ok) throw new Error(`Outscraper ${res.status}: ${(await res.text()).slice(0, 300)}`);
   return (await res.json()) as T;

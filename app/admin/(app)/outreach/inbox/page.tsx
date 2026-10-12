@@ -275,7 +275,12 @@ async function Thread({ contactId, backHref }: { contactId: string; backHref: st
                     {m.status === 'queued' ? <Pill tone="neutral">queued</Pill> : null}
                     {m.status === 'delivered' ? <Pill tone="green">delivered</Pill> : null}
                   </div>
-                  {inbound && hasMeta(m.ai_meta) ? <div className="mt-3"><AiMeta meta={m.ai_meta} /></div> : null}
+                  {inbound && hasMeta(m.ai_meta?.agent as Record<string, unknown> | undefined) ? <div className="mt-3"><AiMeta meta={m.ai_meta.agent as Record<string, unknown>} /></div> : null}
+                  {inbound && typeof m.ai_meta?.agent_error === 'string' ? (
+                    <p role="note" className="mt-3 border border-red-400/30 bg-red-500/10 rounded-sm px-3 py-2 font-body text-xs text-red-200">
+                      {m.ai_meta.agent_error}
+                    </p>
+                  ) : null}
                 </article>
               </li>
             );
@@ -312,17 +317,20 @@ function AiMeta({ meta }: { meta: Record<string, unknown> }) {
   const confidence = typeof meta.confidence === 'number' ? meta.confidence : null;
   const rawActions = Array.isArray(meta.actions) ? meta.actions : Array.isArray(meta.tool_calls) ? meta.tool_calls : [];
   const actions = rawActions.map((a) => {
-    if (typeof a === 'string') return a;
+    if (typeof a === 'string') return ACTION_LABELS[a] ?? a.replace(/_/g, ' ');
     if (a && typeof a === 'object') {
       const o = a as Record<string, unknown>;
       const name = str(o.name) || str(o.type) || str(o.tool) || 'action';
-      const detail = str(o.result) || str(o.summary) || str(o.status);
-      return detail ? `${name}: ${detail}` : name;
+      const label = ACTION_LABELS[name] ?? name.replace(/_/g, ' ');
+      const reason = str(o.reason) || str(o.error);
+      const failed = o.ok === false ? ' (did not work)' : o.pending === true ? ' (waits for your approval)' : '';
+      return `${label}${failed}${reason ? `: ${reason}` : ''}`;
     }
     return String(a);
   });
   const known = new Set(['intent', 'summary', 'reason', 'reasoning', 'confidence', 'actions', 'tool_calls']);
-  const extra = Object.entries(meta).filter(([k, v]) => !known.has(k) && v !== null && v !== '' && typeof v !== 'object');
+  const HIDDEN = new Set(['model', 'inbound_message_id', 'auto_reply', 'full_text', 'matched', 'agent_error_detail']);
+  const extra = Object.entries(meta).filter(([k, v]) => !known.has(k) && !HIDDEN.has(k) && v !== null && v !== '' && typeof v !== 'object');
 
   return (
     <div className="rounded-sm border border-white/10 bg-black/40 px-3 py-2.5 font-body text-xs text-white/70">
@@ -338,7 +346,7 @@ function AiMeta({ meta }: { meta: Record<string, unknown> }) {
           <span className="text-white/55">Actions taken:</span>
           <ul className="mt-0.5 list-disc pl-5">
             {actions.map((a, i) => (
-              <li key={i}>{ACTION_LABELS[a] ?? a.replace(/_/g, ' ')}</li>
+              <li key={i}>{a}</li>
             ))}
           </ul>
         </div>

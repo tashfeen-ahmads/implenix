@@ -14,6 +14,8 @@ import {
   MapPinned,
   Users,
   X,
+  UserCog,
+  UsersRound,
 } from 'lucide-react';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 
@@ -26,6 +28,9 @@ const NAV = [
   { href: '/admin/outreach/contacts', label: 'Contacts', Icon: Users },
   { href: '/admin/outreach/campaigns', label: 'Campaigns', Icon: Megaphone },
   { href: '/admin/outreach/inbox', label: 'Inbox', Icon: Inbox },
+  { heading: 'Settings' },
+  { href: '/admin/team', label: 'Team', Icon: UsersRound },
+  { href: '/admin/account', label: 'Your account', Icon: UserCog },
 ] as const;
 
 export function Sidebar({ name, email }: { name: string; email: string }) {

@@ -1,5 +1,6 @@
 import { supabaseServer } from '@/lib/supabase/server';
-import type { Booking, Client } from '@/lib/db/types';
+import type { Booking, Client, TeamMember } from '@/lib/db/types';
+import { getTeamMember } from '@/lib/supabase/auth';
 import { PageHeader } from '@/components/admin/ui';
 import { PipelineBoard } from '@/components/admin/pipeline/PipelineBoard';
 import { NewClientButton } from '@/components/admin/pipeline/NewClientButton';
@@ -9,7 +10,7 @@ export const metadata = { title: 'Pipeline' };
 
 export default async function PipelinePage() {
   const db = supabaseServer();
-  const [clients, bookings] = await Promise.all([
+  const [clients, bookings, team, me] = await Promise.all([
     db.from('clients').select('*').order('updated_at', { ascending: false }),
     db
       .from('bookings')
@@ -17,6 +18,8 @@ export default async function PipelinePage() {
       .eq('status', 'scheduled')
       .gte('start_at', new Date().toISOString())
       .order('start_at'),
+    db.from('team_members').select('*').order('full_name'),
+    getTeamMember(),
   ]);
   // Next scheduled call per client.
   const nextCall: Record<string, string> = {};
@@ -30,7 +33,7 @@ export default async function PipelinePage() {
         description="Every person who booked a call or was added by the team, by stage. Drag a card or use its menu to move it."
         actions={<NewClientButton />}
       />
-      <PipelineBoard clients={(clients.data ?? []) as Client[]} nextCall={nextCall} />
+      <PipelineBoard clients={(clients.data ?? []) as Client[]} nextCall={nextCall} team={(team.data ?? []) as TeamMember[]} meId={me?.user_id ?? null} />
     </>
   );
 }

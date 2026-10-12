@@ -109,3 +109,50 @@ ${d.dashboardUrl ? `<p style="margin:20px 0 0">${button(d.dashboardUrl, 'Open in
     .join('\n');
   return { subject, html, text };
 }
+
+export function teamInviteEmail(d: { name: string; invitedBy: string; url: string }) {
+  const subject = `${d.invitedBy} invited you to the Implenix team dashboard`;
+  const html = shell(
+    subject,
+    `<h1 style="margin:0 0 8px;font-size:22px;line-height:1.3">You're invited, ${esc(d.name)}.</h1>
+<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#3d3a4f">${esc(d.invitedBy)} added you to the Implenix team dashboard: client pipeline, booked calls, and outreach.</p>
+<p style="margin:0 0 20px">${button(d.url, 'Accept and sign in')}</p>
+<p style="margin:0;font-size:13px;line-height:1.6;color:#6b6880">The link works once and expires in 24 hours. After signing in, set a password on your account page. If you weren't expecting this, ignore this email.</p>`,
+  );
+  const text = `${d.invitedBy} added you to the Implenix team dashboard.\n\nAccept and sign in: ${d.url}\n\nThe link works once and expires in 24 hours.`;
+  return { subject, html, text };
+}
+
+export function reminderEmail(d: {
+  firstName: string;
+  whenLabel: string;
+  lead: '24h' | '1h';
+  meetingUrl?: string | null;
+  meetingProvider?: string | null;
+  googleCalendarUrl: string;
+}) {
+  const provider = d.meetingProvider === 'zoom' ? 'Zoom' : 'Google Meet';
+  const soon = d.lead === '1h';
+  const subject = soon ? `Starting in 1 hour: your Implenix call` : `Tomorrow: your Implenix call, ${d.whenLabel}`;
+  const html = shell(
+    subject,
+    `<h1 style="margin:0 0 8px;font-size:22px;line-height:1.3">${soon ? 'See you in an hour' : 'See you tomorrow'}, ${esc(d.firstName)}.</h1>
+<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#3d3a4f">A reminder of your call with an Implenix lead specialist.</p>
+<div style="border-left:3px solid #c600ff;background:#faf7ff;padding:14px 16px;margin:0 0 20px">
+<p style="margin:0;font-size:15px;font-weight:600">${esc(d.whenLabel)}</p>
+<p style="margin:4px 0 0;font-size:14px;color:#3d3a4f">30 minutes · ${provider}</p>
+</div>
+<p style="margin:0 0 20px">${d.meetingUrl ? button(d.meetingUrl, `Join ${provider} call`) : ''}${soon ? '' : button(d.googleCalendarUrl, 'Add to Google Calendar', !d.meetingUrl)}</p>
+<p style="margin:0;font-size:14px;line-height:1.6;color:#3d3a4f">Can't make it? Reply to this email and we'll find another time.</p>`,
+  );
+  const text = [
+    `${soon ? 'See you in an hour' : 'See you tomorrow'}, ${d.firstName}.`,
+    '',
+    `Your Implenix call: ${d.whenLabel} (30 minutes, ${provider})`,
+    d.meetingUrl ? `Join: ${d.meetingUrl}` : '',
+    "Can't make it? Reply to this email and we'll find another time.",
+  ]
+    .filter(Boolean)
+    .join('\n');
+  return { subject, html, text };
+}

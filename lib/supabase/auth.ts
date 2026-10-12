@@ -29,3 +29,15 @@ export async function requireTeamApi(): Promise<
   }
   return { member };
 }
+
+// For admin-only endpoints (team management): the admin member, or a 401/403.
+export async function requireAdminApi(): Promise<
+  { member: TeamMember; error?: undefined } | { member?: undefined; error: NextResponse }
+> {
+  const member = await getTeamMember();
+  if (!member) return { error: NextResponse.json({ error: 'Not signed in' }, { status: 401 }) };
+  if (member.role !== 'admin') {
+    return { error: NextResponse.json({ error: 'Only admins can manage the team' }, { status: 403 }) };
+  }
+  return { member };
+}

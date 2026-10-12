@@ -25,7 +25,7 @@ export async function sendEmail(input: {
     console.warn('[email] RESEND_API_KEY not set, skipped:', input.subject);
     return null;
   }
-  const res = await fetch('https://api.resend.com/emails', {
+  const res = await fetch(`${process.env.RESEND_API_BASE ?? 'https://api.resend.com'}/emails`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,

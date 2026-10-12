@@ -7,6 +7,8 @@ import { SUPABASE_ANON_KEY, SUPABASE_URL } from './env';
 export function supabaseServer() {
   const store = cookies();
   return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    // Live reads only: never Next's fetch cache.
+    global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) },
     cookies: {
       getAll: () => store.getAll(),
       setAll: (list) => {

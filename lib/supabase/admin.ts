@@ -7,6 +7,10 @@ import { SUPABASE_URL } from './env';
 // from a client component.
 let cached: SupabaseClient | null = null;
 
+// Next.js 14 caches fetch() responses in route handlers and server
+// components unless told not to. Database reads must always be live.
+export const noStoreFetch: typeof fetch = (input, init) => fetch(input, { ...init, cache: 'no-store' });
+
 export function adminConfigured(): boolean {
   return Boolean(SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
@@ -17,6 +21,7 @@ export function supabaseAdmin(): SupabaseClient {
   }
   cached ??= createClient(SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
     auth: { persistSession: false, autoRefreshToken: false },
+    global: { fetch: noStoreFetch },
   });
   return cached;
 }

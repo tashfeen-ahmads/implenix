@@ -20,6 +20,7 @@ async function call<T>(path: string, init?: RequestInit): Promise<T> {
       ...init?.headers,
     },
     signal: AbortSignal.timeout(20_000),
+    cache: 'no-store',
   });
   if (!res.ok) throw new Error(`Apify ${res.status}: ${(await res.text()).slice(0, 300)}`);
   return (await res.json()) as T;
