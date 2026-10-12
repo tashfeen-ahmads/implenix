@@ -4,6 +4,18 @@ import { CodeWindow } from '@/components/common/CodeWindow';
 import { DividedStats } from '@/components/common/DividedStats';
 import { ComparisonTable } from '@/components/common/ComparisonTable';
 import { Badge } from '@/components/common/Badge';
+import { allBlogPosts } from 'contentlayer/generated';
+
+// Posts are drip-scheduled. A link to a post that is not live yet renders
+// as plain text, so writers can cross-link ahead of the schedule without
+// creating 404s; it becomes a real link on the first build after that
+// post's publish date.
+function isScheduledPost(href: string): boolean {
+  const m = /^\/blog\/([a-z0-9-]+)\/?(?:[#?].*)?$/.exec(href);
+  if (!m) return false;
+  const post = allBlogPosts.find((p) => p.slug === m[1]);
+  return Boolean(post && new Date(post.publishedAt).getTime() > Date.now());
+}
 
 export const mdxComponents: MDXComponents = {
   CodeWindow: CodeWindow as unknown as React.ComponentType<unknown>,
@@ -68,7 +80,10 @@ export const mdxComponents: MDXComponents = {
   p: (props) => (
     <p className="font-body text-white/80 leading-relaxed my-4" {...props} />
   ),
-  a: ({ href = '#', ...props }) => (
+  a: ({ href = '#', ...props }) =>
+    isScheduledPost(href) ? (
+      <span>{props.children}</span>
+    ) : (
     <Link
       href={href}
       // Underlined by default: links in body text must not rely on

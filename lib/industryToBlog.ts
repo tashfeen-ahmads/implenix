@@ -11,16 +11,20 @@ export const INDUSTRY_TO_BLOG_POSTS: Record<
     { slug: 'hvac-ai-agent-guide', label: 'HVAC AI agent buyer\'s guide (2026)' },
     { slug: 'why-callers-hang-up-before-reaching-anyone', label: 'Why callers hang up before reaching anyone' },
     { slug: 'ai-outbound-calling-guide', label: 'AI outbound calling: compliance + ROI' },
+    { slug: 'how-ai-sales-agents-enhance-lead-generation', label: 'How AI sales agents improve lead follow-up' },
   ],
   dentists: [
     { slug: 'ai-voice-agents-healthcare-medicine', label: 'AI voice agents in healthcare, the honest scope' },
     { slug: 'can-ai-handle-sensitive-conversations', label: 'Can AI handle sensitive conversations?' },
     { slug: 'how-to-calculate-your-missed-call-cost', label: 'How to calculate your missed-call cost' },
+    { slug: 'how-ai-agents-recognize-human-emotions', label: 'How AI agents read caller emotion' },
   ],
   'medical-practices': [
     { slug: 'ai-voice-agents-healthcare-medicine', label: 'AI voice agents in healthcare' },
     { slug: 'agentic-reasoning-ai-doctor', label: 'Agentic reasoning and the AI doctor' },
     { slug: 'can-ai-handle-sensitive-conversations', label: 'Sensitive-conversation escalation rules' },
+    { slug: 'how-ai-agents-will-change-cancer-research-oncology', label: 'AI agents in cancer research and oncology' },
+    { slug: 'can-ai-agents-identify-vulnerable-customers', label: 'Can AI agents identify vulnerable callers?' },
   ],
   'real-estate': [
     { slug: 'ai-voice-agent-real-estate', label: 'Will AI replace real estate agents? (2026)' },
@@ -61,26 +65,33 @@ export const INDUSTRY_TO_BLOG_POSTS: Record<
     { slug: 'hvac-ai-agent-guide', label: 'Trades operator playbook' },
     { slug: 'how-to-calculate-your-missed-call-cost', label: 'Missed-call cost math' },
     { slug: 'ai-outbound-calling-guide', label: 'Bid follow-up compliance' },
+    { slug: 'how-to-automate-repetitive-tasks-using-ai-agents', label: 'Automating repetitive office tasks with AI' },
   ],
   'mortgage-brokers': [
     { slug: 'ai-agents-for-finance', label: 'AI agents for finance, mortgage playbook' },
     { slug: 'how-to-automate-sales-forecasting-with-ai-agents', label: 'Automating sales forecasting' },
     { slug: 'ethical-considerations-ai-agents', label: 'Ethical framework' },
+    { slug: 'can-ai-agents-identify-vulnerable-customers', label: 'Spotting vulnerable customers on the phone' },
   ],
   'insurance-agents': [
     { slug: 'ai-agents-for-finance', label: 'AI agents for finance, insurance playbook' },
     { slug: 'ai-outbound-calling-guide', label: 'Consent + outbound compliance' },
     { slug: 'can-ai-handle-sensitive-conversations', label: 'Sensitive-caller handling' },
+    { slug: 'can-ai-agents-identify-vulnerable-customers', label: 'Spotting vulnerable customers on the phone' },
+    { slug: 'ai-agent-integration-crm-erp-bi', label: 'Connecting AI agents to your CRM and systems' },
   ],
   accountants: [
     { slug: 'ai-agents-for-finance', label: 'AI agents for finance, CPA playbook' },
     { slug: 'how-to-automate-sales-forecasting-with-ai-agents', label: 'Automate revenue forecasting' },
     { slug: 'ai-agent-integration-crm-erp-bi', label: 'AI + CRM/ERP integration' },
+    { slug: 'how-to-automate-repetitive-tasks-using-ai-agents', label: 'Automating repetitive tasks with AI agents' },
   ],
   'marketing-agencies': [
     { slug: 'ai-outbound-calling-guide', label: 'AI outbound compliance + ROI' },
     { slug: 'workplace-ai-agents-employee-perspective', label: 'Workplace AI: employee POV' },
     { slug: 'how-do-ai-chatbots-compare-to-human-agents', label: 'Chatbots vs humans in service' },
+    { slug: 'how-ai-sales-agents-enhance-lead-generation', label: 'AI sales agents and lead generation' },
+    { slug: 'how-to-automate-sales-forecasting-with-ai-agents', label: 'Automating sales forecasting with AI agents' },
   ],
   'cleaning-services': [
     { slug: 'why-callers-hang-up-before-reaching-anyone', label: 'The ring-time problem' },
@@ -106,6 +117,7 @@ export const INDUSTRY_TO_BLOG_POSTS: Record<
     { slug: 'can-ai-handle-sensitive-conversations', label: 'Sensitive conversations, critical framework' },
     { slug: 'ethical-considerations-ai-agents', label: 'Ethical considerations' },
     { slug: 'ai-voice-agents-healthcare-medicine', label: 'Healthcare AI scope' },
+    { slug: 'how-ai-agents-recognize-human-emotions', label: 'How AI agents read caller emotion' },
   ],
   spas: [
     { slug: 'ai-agents-for-medspas', label: 'Med spa + spa booking playbook' },
