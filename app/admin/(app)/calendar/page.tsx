@@ -86,7 +86,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
       <div className="hidden md:block border border-white/10 rounded-md overflow-hidden">
         <div className="grid grid-cols-7 border-b border-white/10">
           {WEEKDAYS.map((d) => (
-            <div key={d} className="px-2 py-2 font-mono text-[11px] uppercase tracking-widest text-white/55">{d}</div>
+            <div key={d} className="px-2 py-2 font-body text-xs font-medium text-white/60">{d}</div>
           ))}
         </div>
         <div className="grid grid-cols-7">
@@ -112,7 +112,11 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
                       <Link
                         href={r.clients ? `/admin/clients/${r.clients.id}` : '#'}
                         className={`block truncate rounded-sm px-1.5 py-1 font-body text-[11px] leading-tight hover:opacity-90 ${
-                          r.status === 'scheduled' ? 'bg-brand-purple/25 text-white' : 'bg-white/5 text-white/60 line-through'
+                          r.status === 'scheduled'
+                            ? 'bg-brand-purple/25 text-white'
+                            : r.status === 'no_show'
+                              ? 'bg-white/5 text-white/50 line-through'
+                              : 'bg-white/5 text-white/60'
                         }`}
                       >
                         {timeFmt.format(new Date(r.start_at))} {name(r)}
@@ -136,7 +140,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
           <ol className="flex flex-col gap-5">
             {[...new Set(upcoming.map((r) => dayKey.format(new Date(r.start_at))))].map((k) => (
               <li key={k}>
-                <h3 className="font-mono text-[11px] uppercase tracking-widest text-white/60">
+                <h3 className="font-body text-xs font-semibold text-white/70">
                   {new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(
                     new Date(`${k}T12:00:00Z`),
                   )}

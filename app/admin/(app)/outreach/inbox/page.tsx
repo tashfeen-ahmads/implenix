@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, Bot, ExternalLink } from 'lucide-react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Campaign, Client, Contact, ContactStatus, Message } from '@/lib/db/types';
-import { EmptyState, PageHeader, Pill, buttonClass, formatDateTime } from '@/components/admin/ui';
+import { DASHBOARD_TZ, EmptyState, PageHeader, Pill, buttonClass, formatDateTime } from '@/components/admin/ui';
 import { AiDraftCard } from '@/components/admin/outreach/AiDraftCard';
 import { ReplyComposer } from '@/components/admin/outreach/ReplyComposer';
 import { ContactStatusSelect } from '@/components/admin/outreach/ContactStatusSelect';
@@ -11,10 +11,19 @@ import { CONTACT_STATUS_LABELS, CONTACT_STATUS_TONES, contactName } from '@/comp
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Inbox · Outreach' };
 
+// Plain-English names for the reply agent's tools.
+const ACTION_LABELS: Record<string, string> = {
+  get_open_slots: 'Checked open times on the calendar',
+  book_meeting: 'Booked a meeting',
+  mark_not_interested: 'Marked not interested and stopped the sequence',
+  unsubscribe: 'Unsubscribed them',
+  handoff_to_human: 'Handed off to the team',
+};
+
 const TABS = [
   { id: 'approval', label: 'Needs approval' },
   { id: 'replied', label: 'Replied' },
-  { id: 'interested', label: 'Interested / Booked' },
+  { id: 'interested', label: 'Interested' },
   { id: 'all', label: 'All' },
 ] as const;
 type TabId = (typeof TABS)[number]['id'];
@@ -46,7 +55,7 @@ function relTime(iso: string) {
   if (h < 24) return `${h}h`;
   const d = Math.round(h / 24);
   if (d < 7) return `${d}d`;
-  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(new Date(iso));
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: DASHBOARD_TZ }).format(new Date(iso));
 }
 
 export default async function InboxPage({ searchParams }: { searchParams: { tab?: string; contact?: string } }) {
@@ -98,7 +107,7 @@ export default async function InboxPage({ searchParams }: { searchParams: { tab?
       <div className="grid gap-6 lg:grid-cols-[22rem_minmax(0,1fr)] lg:min-h-[70vh]">
         {/* ── Conversation list ── */}
         <section aria-label="Conversations" className={`${contactId ? 'hidden lg:flex' : 'flex'} flex-col border border-white/10 rounded-md min-w-0`}>
-          <nav aria-label="Inbox filters" className="flex gap-1 p-2 border-b border-white/10 overflow-x-auto">
+          <nav aria-label="Inbox filters" className="relative flex flex-wrap gap-1 p-2 border-b border-white/10">
             {TABS.map((t) => (
               <Link
                 key={t.id}
@@ -115,10 +124,10 @@ export default async function InboxPage({ searchParams }: { searchParams: { tab?
           </nav>
           {visible.length === 0 ? (
             <div className="p-6 text-center font-body text-sm text-white/60">
-              {tab === 'approval' ? 'No AI drafts waiting. Nice.' : 'No conversations here yet.'}
+              {tab === 'approval' ? 'No AI drafts waiting for approval.' : 'No conversations here yet.'}
             </div>
           ) : (
-            <ul className="flex-1 overflow-y-auto lg:max-h-[75vh] divide-y divide-white/5">
+            <ul className="relative flex-1 overflow-y-auto lg:max-h-[75vh] divide-y divide-white/5">
               {visible.map((c) => {
                 const active = c.contact.id === contactId;
                 const preview = (c.last.body_text ?? '').replace(/\s+/g, ' ').trim().slice(0, 110);
@@ -161,7 +170,16 @@ export default async function InboxPage({ searchParams }: { searchParams: { tab?
           {contactId ? (
             <Thread contactId={contactId} backHref={tabHref(tab)} />
           ) : (
-            <EmptyState title="Pick a conversation" body="Select a contact on the left to read the thread and reply." />
+            <div className="h-full min-h-[50vh] flex items-center justify-center border border-dashed border-white/15 rounded-md p-8 text-center">
+              <div>
+                <p className="font-body text-sm font-semibold text-white">Pick a conversation</p>
+                <p className="mt-1.5 font-body text-sm text-white/60 max-w-xs">
+                  {counts.approval
+                    ? `${counts.approval} AI ${counts.approval === 1 ? 'draft is' : 'drafts are'} waiting for your approval.`
+                    : 'Select a contact on the left to read the thread and reply.'}
+                </p>
+              </div>
+            </div>
           )}
         </section>
       </div>
@@ -320,7 +338,7 @@ function AiMeta({ meta }: { meta: Record<string, unknown> }) {
           <span className="text-white/55">Actions taken:</span>
           <ul className="mt-0.5 list-disc pl-5">
             {actions.map((a, i) => (
-              <li key={i}>{a}</li>
+              <li key={i}>{ACTION_LABELS[a] ?? a.replace(/_/g, ' ')}</li>
             ))}
           </ul>
         </div>

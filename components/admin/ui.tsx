@@ -53,7 +53,7 @@ export function Card({
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
   return (
     <div className="border border-white/10 bg-white/[0.02] rounded-md px-5 py-4">
-      <p className="font-mono text-[11px] uppercase tracking-widest text-white/60">{label}</p>
+      <p className="font-body text-xs font-medium text-white/60">{label}</p>
       <p className="mt-2 font-heading text-3xl text-white tabular-nums leading-none">{value}</p>
       {hint ? <p className="mt-2 font-body text-xs text-white/55">{hint}</p> : null}
     </div>
@@ -70,7 +70,7 @@ const BUTTON_VARIANTS = {
 type ButtonVariant = keyof typeof BUTTON_VARIANTS;
 
 export function buttonClass(variant: ButtonVariant = 'primary', extra = '') {
-  return `inline-flex items-center justify-center gap-1.5 min-h-9 px-3.5 rounded-sm font-body text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-cyan ${BUTTON_VARIANTS[variant]} ${extra}`;
+  return `inline-flex items-center justify-center gap-1.5 min-h-9 px-3.5 rounded-sm font-body text-sm font-medium transition-[color,background-color,transform] duration-150 active:translate-y-px disabled:opacity-50 disabled:pointer-events-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-cyan ${BUTTON_VARIANTS[variant]} ${extra}`;
 }
 
 export function Button({
@@ -135,7 +135,7 @@ const TONES = {
 
 export function Pill({ tone = 'neutral', children }: { tone?: keyof typeof TONES; children: ReactNode }) {
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-sm font-mono text-[11px] uppercase tracking-wide ${TONES[tone]}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-sm font-body text-[11px] font-medium whitespace-nowrap ${TONES[tone]}`}>
       {children}
     </span>
   );
@@ -158,17 +158,21 @@ export function TableWrap({ label, children }: { label: string; children: ReactN
       tabIndex={0}
       role="region"
       aria-label={label}
-      className="overflow-x-auto border border-white/10 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-cyan"
+      className="relative overflow-x-auto border border-white/10 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-cyan"
     >
       <table className="w-full text-left font-body text-sm">{children}</table>
     </div>
   );
 }
 
-export const thClass = 'px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-white/60 font-normal border-b border-white/10 whitespace-nowrap';
+export const thClass = 'px-4 py-2.5 font-body text-xs font-medium text-white/60 border-b border-white/10 whitespace-nowrap';
 export const tdClass = 'px-4 py-3 text-white/85 border-b border-white/5 align-top';
 
-export function formatDateTime(iso: string, timeZone?: string) {
+// Every time on the dashboard is shown in one timezone (the booking
+// calendar's), whatever the server or browser timezone is.
+export const DASHBOARD_TZ = process.env.NEXT_PUBLIC_DASHBOARD_TIMEZONE || 'America/New_York';
+
+export function formatDateTime(iso: string, timeZone: string = DASHBOARD_TZ) {
   return new Intl.DateTimeFormat('en-US', {
     weekday: 'short',
     month: 'short',
@@ -181,7 +185,22 @@ export function formatDateTime(iso: string, timeZone?: string) {
 }
 
 export function formatDate(iso: string) {
-  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: DASHBOARD_TZ }).format(
     new Date(iso),
   );
+}
+
+// Human labels for activity types on timelines.
+export function activityLabel(type: string): string {
+  const map: Record<string, string> = {
+    'booking.created': 'Booked',
+    'booking.status': 'Call',
+    'stage.changed': 'Stage',
+    note: 'Note',
+    'client.created': 'Added',
+    'client.updated': 'Updated',
+    'email.sent': 'Email',
+    'email.received': 'Reply',
+  };
+  return map[type] ?? type.split('.')[0];
 }

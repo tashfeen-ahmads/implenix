@@ -89,17 +89,17 @@ export function ResultsTable({
         <Stat label="Imported" value={results.filter((r) => r.imported_contact_id).length} />
       </div>
 
-      <div className="flex flex-col lg:flex-row lg:items-end gap-3 mb-4">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 flex-1">
+      <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-4 mb-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <label htmlFor="lr-search" className="sr-only">Filter results</label>
-          <input id="lr-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Filter by name, city, email…" className={`${inputClass} sm:w-64`} />
+          <input id="lr-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Filter by name, city, email…" className={`${inputClass} w-full sm:w-56`} />
           <label className="flex items-center gap-2 font-body text-sm text-white/80">
             <input type="checkbox" checked={onlyEmail} onChange={(e) => setOnlyEmail(e.target.checked)} className="accent-[#c600ff]" /> Has email
           </label>
           <label className="flex items-center gap-2 font-body text-sm text-white/80">
             <input type="checkbox" checked={hideImported} onChange={(e) => setHideImported(e.target.checked)} className="accent-[#c600ff]" /> Hide imported
           </label>
-          <label className="flex items-center gap-2 font-body text-sm text-white/80">
+          <label className="flex items-center gap-2 font-body text-sm text-white/80 whitespace-nowrap">
             Min rating
             <select value={minRating} onChange={(e) => setMinRating(Number(e.target.value))} className="bg-black border border-white/15 rounded-sm px-2 py-1 text-sm text-white">
               {[0, 3, 3.5, 4, 4.5].map((v) => (
@@ -110,11 +110,11 @@ export function ResultsTable({
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:items-end">
           <div className="sm:w-64">
-            <label htmlFor="lr-list" className="block mb-1.5 font-body text-xs font-medium text-white/80">New contact list</label>
+            <label htmlFor="lr-list" className="block mb-1.5 font-body text-xs font-medium text-white/80">Import into new list</label>
             <input id="lr-list" value={listName} onChange={(e) => setListName(e.target.value)} className={inputClass} />
           </div>
-          <Button onClick={importSelected} disabled={busy || selectedWithEmail === 0 || !listName.trim()}>
-            {busy ? 'Importing…' : `Import ${selectedWithEmail} to contacts`}
+          <Button onClick={importSelected} disabled={busy || selectedWithEmail === 0 || !listName.trim()} className="whitespace-nowrap">
+            {busy ? 'Importing…' : selectedWithEmail === 0 ? 'Select businesses to import' : `Import ${selectedWithEmail} ${selectedWithEmail === 1 ? 'contact' : 'contacts'}`}
           </Button>
         </div>
       </div>

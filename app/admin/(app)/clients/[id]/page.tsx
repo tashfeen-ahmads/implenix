@@ -4,7 +4,7 @@ import { ArrowLeft, ExternalLink, Mail, Phone, Video } from 'lucide-react';
 import { supabaseServer } from '@/lib/supabase/server';
 import { BOOKING_CONFIG } from '@/lib/googleCalendar';
 import { serviceLabel, type Activity, type Booking, type Client } from '@/lib/db/types';
-import { Card, EmptyState, PageHeader, Pill, formatDate, formatDateTime } from '@/components/admin/ui';
+import { Card, EmptyState, PageHeader, Pill, formatDate, formatDateTime, activityLabel } from '@/components/admin/ui';
 import { ClientControls } from '@/components/admin/pipeline/ClientControls';
 import { BookingStatusSelect } from '@/components/admin/pipeline/BookingStatusSelect';
 import { NoteForm } from '@/components/admin/pipeline/NoteForm';
@@ -46,7 +46,7 @@ export default async function ClientPage({ params }: { params: { id: string } })
       </Link>
       <PageHeader
         title={name}
-        description={`${serviceLabel(c.service)} · added ${formatDate(c.created_at)}${c.source ? ` · from ${c.source}` : ''}`}
+        description={`${serviceLabel(c.service)} · added ${formatDate(c.created_at)}${c.source ? ` · source: ${c.source.replace(/-/g, " ")}` : ''}`}
       />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -137,7 +137,7 @@ export default async function ClientPage({ params }: { params: { id: string } })
                       <p className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-white/55">
                         {formatDateTime(a.created_at)}
                         <Pill tone={a.type === 'note' ? 'neutral' : a.type.startsWith('booking') ? 'cyan' : 'purple'}>
-                          {a.type.replace('.', ' ')}
+                          {activityLabel(a.type)}
                         </Pill>
                       </p>
                       <p className="mt-1 font-body text-sm text-white/85 whitespace-pre-wrap break-words">{a.body}</p>
@@ -160,7 +160,7 @@ export default async function ClientPage({ params }: { params: { id: string } })
 function Item({ label, wide, children }: { label: string; wide?: boolean; children: React.ReactNode }) {
   return (
     <div className={wide ? 'sm:col-span-2' : ''}>
-      <dt className="font-mono text-[11px] uppercase tracking-widest text-white/55">{label}</dt>
+      <dt className="font-body text-xs font-medium text-white/55">{label}</dt>
       <dd className="mt-1 text-white/90 whitespace-pre-wrap break-words">{children}</dd>
     </div>
   );

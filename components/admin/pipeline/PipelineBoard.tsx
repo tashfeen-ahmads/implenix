@@ -12,10 +12,10 @@ import {
   type Client,
   type ClientStage,
 } from '@/lib/db/types';
-import { inputClass } from '@/components/admin/ui';
+import { DASHBOARD_TZ, inputClass } from '@/components/admin/ui';
 import { moveStage } from './actions';
 
-const fmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const fmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: DASHBOARD_TZ });
 
 export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCall: Record<string, string> }) {
   const router = useRouter();
@@ -78,7 +78,7 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
       </div>
       <p role="status" aria-live="polite" className="sr-only">{status}</p>
 
-      <div className="flex gap-3 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 snap-x">
+      <div className="relative flex gap-3 overflow-x-auto pb-4 snap-x scroll-px-0">
         {CLIENT_STAGES.map((stage) => {
           const cards = visible.filter((c) => c.stage === stage);
           return (
@@ -87,12 +87,14 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
               aria-label={`${STAGE_LABELS[stage]}, ${cards.length} clients`}
               onDragOver={(e) => {
                 e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
                 setOverStage(stage);
               }}
               onDragLeave={() => setOverStage((s) => (s === stage ? null : s))}
               onDrop={(e) => {
                 e.preventDefault();
-                if (dragId) move(dragId, stage);
+                const id = dragId ?? e.dataTransfer.getData('text/plain');
+                if (id) move(id, stage);
                 setDragId(null);
                 setOverStage(null);
               }}
@@ -104,12 +106,17 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
                 <h2 className="font-body text-sm font-semibold text-white">{STAGE_LABELS[stage]}</h2>
                 <span className="font-mono text-xs text-white/60 tabular-nums">{cards.length}</span>
               </header>
-              <ul className="flex-1 overflow-y-auto p-2 flex flex-col gap-2 min-h-24">
+              <ul className="relative flex-1 overflow-y-auto p-2 flex flex-col gap-2 min-h-24">
                 {cards.map((c) => (
                   <li
                     key={c.id}
                     draggable
-                    onDragStart={() => setDragId(c.id)}
+                    onDragStart={(e) => {
+                      // Firefox only starts a drag when data is attached.
+                      e.dataTransfer.setData('text/plain', c.id);
+                      e.dataTransfer.effectAllowed = 'move';
+                      setDragId(c.id);
+                    }}
                     onDragEnd={() => setDragId(null)}
                     className={`rounded-sm border border-white/10 bg-black p-3 cursor-grab active:cursor-grabbing ${
                       dragId === c.id ? 'opacity-50' : ''
@@ -119,7 +126,7 @@ export function PipelineBoard({ clients, nextCall }: { clients: Client[]; nextCa
                       {[c.first_name, c.last_name].filter(Boolean).join(' ')}
                     </Link>
                     <p className="font-body text-xs text-white/60 truncate">{c.company || c.website || c.email}</p>
-                    <p className="mt-2 font-mono text-[11px] text-[#e3a6ff]">{serviceLabel(c.service)}</p>
+                    <p className="mt-2 font-body text-xs font-medium text-[#e3a6ff]">{serviceLabel(c.service)}</p>
                     {nextCall[c.id] ? (
                       <p className="mt-1.5 flex items-center gap-1 font-body text-xs text-brand-cyan">
                         <CalendarClock size={12} aria-hidden /> {fmt.format(new Date(nextCall[c.id]))}

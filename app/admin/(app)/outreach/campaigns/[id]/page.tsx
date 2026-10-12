@@ -49,7 +49,7 @@ export default async function CampaignPage({ params }: { params: { id: string } 
       </div>
       {steps.length ? (
         <Card className="mt-3">
-          <h2 className="font-mono text-[11px] uppercase tracking-widest text-white/60 mb-3">Sent per step</h2>
+          <h2 className="font-body text-sm font-semibold text-white mb-3">Sent per step</h2>
           <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => {
               const n = perStep[i] ?? 0;
@@ -58,7 +58,7 @@ export default async function CampaignPage({ params }: { params: { id: string } 
                 <li key={s.id} className="font-body text-sm">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="text-white/80 truncate">
-                      Step {s.step_number}: <span className="text-white/60">{s.subject || '(no subject)'}</span>
+                      Step {s.step_number}: <span className="text-white/60">{s.subject || 'reply in thread'}</span>
                     </span>
                     <span className="tabular-nums text-white shrink-0">{n.toLocaleString()}</span>
                   </div>

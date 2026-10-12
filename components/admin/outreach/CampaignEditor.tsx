@@ -448,7 +448,7 @@ export function CampaignEditor({
                         />
                       </Field>
                       <div role="group" aria-label={`Insert a variable into step ${i + 1}`} className="flex flex-wrap items-center gap-1.5">
-                        <span className="font-mono text-[11px] uppercase tracking-widest text-white/50 mr-1">Insert</span>
+                        <span className="font-body text-xs font-medium text-white/55 mr-1">Insert</span>
                         {[...TEMPLATE_VARIABLES.map((v) => ({ token: v.token, label: v.label })), ...customKeys.map((k) => ({ token: `{{custom.${k}}}`, label: `custom.${k}` }))].map((v) => (
                           <button
                             key={v.token}

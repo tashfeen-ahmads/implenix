@@ -10,7 +10,7 @@ import {
   type Booking,
   type Client,
 } from '@/lib/db/types';
-import { Card, EmptyState, PageHeader, Pill, Stat, formatDateTime } from '@/components/admin/ui';
+import { Card, EmptyState, PageHeader, Pill, Stat, formatDateTime, activityLabel } from '@/components/admin/ui';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Overview' };
@@ -127,12 +127,12 @@ export default async function OverviewPage() {
           ) : (
             <ul className="divide-y divide-white/5 -my-2">
               {((activity.data ?? []) as ActivityRow[]).map((a) => (
-                <li key={a.id} className="py-2.5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <li key={a.id} className="py-2.5 flex flex-col items-start sm:flex-row sm:items-center gap-1 sm:gap-4">
                   <span className="sm:w-40 shrink-0 font-mono text-[11px] text-white/55">
                     {formatDateTime(a.created_at)}
                   </span>
                   <Pill tone={a.type.startsWith('booking') ? 'cyan' : a.type === 'note' ? 'neutral' : 'purple'}>
-                    {a.type.replace('.', ' ')}
+                    {activityLabel(a.type)}
                   </Pill>
                   <span className="font-body text-sm text-white/85 min-w-0">
                     {a.clients ? (
