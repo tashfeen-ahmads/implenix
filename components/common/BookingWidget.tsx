@@ -250,7 +250,7 @@ export function BookingWidget({ ctaLocation, height }: Props) {
               Book with Implenix
             </span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-brand-cyan/80">
-              30-minute consultation · Google Meet
+              30-minute video call
             </span>
           </div>
         </div>

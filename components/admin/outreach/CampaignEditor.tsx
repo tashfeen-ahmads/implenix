@@ -181,7 +181,8 @@ export function CampaignEditor({
   if (settings.send_hour_end <= settings.send_hour_start) problems.push('Send window must end after it starts.');
   if (!settings.send_days.length) problems.push('Pick at least one sending day.');
   steps.forEach((s, i) => {
-    if (!s.subject.trim() || !s.body.trim()) problems.push(`Step ${i + 1} needs a subject and a body.`);
+    if (i === 0 && !s.subject.trim()) problems.push('Step 1 needs a subject.');
+    if (!s.body.trim()) problems.push(`Step ${i + 1} needs a body.`);
   });
 
   const launchBlockers: string[] = [];
@@ -280,7 +281,8 @@ export function CampaignEditor({
       {
         key: newKey(),
         delay_days: all.length ? 3 : 0,
-        subject: all.length ? `Re: ${all[0].subject}` : '',
+        // Blank = sent as a reply in step 1's thread ("Re: …").
+        subject: '',
         body: '',
       },
     ]);
@@ -407,7 +409,11 @@ export function CampaignEditor({
                             onChange={(e) => updateStep(s.key, { delay_days: Math.max(0, Number(e.target.value) || 0) })}
                           />
                         </Field>
-                        <Field label="Subject" htmlFor={`${idBase}-subject`}>
+                        <Field
+                          label={i === 0 ? 'Subject' : 'Subject (optional)'}
+                          htmlFor={`${idBase}-subject`}
+                          hint={i === 0 ? undefined : 'Leave blank to send as a reply in the same thread.'}
+                        >
                           <input
                             id={`${idBase}-subject`}
                             ref={(el) => {
@@ -416,7 +422,7 @@ export function CampaignEditor({
                             }}
                             className={inputClass}
                             value={s.subject}
-                            placeholder="Quick question about {{company}}"
+                            placeholder={i === 0 ? 'Quick question about {{company}}' : steps[0]?.subject ? `Re: ${steps[0].subject}` : 'Re: (step 1 subject)'}
                             onFocus={() => (lastFocused.current = { key: s.key, field: 'subject' })}
                             onChange={(e) => updateStep(s.key, { subject: e.target.value })}
                           />
@@ -499,7 +505,12 @@ export function CampaignEditor({
                     <dt>To</dt>
                     <dd className="text-white/85 truncate">{sample.email}</dd>
                     <dt>Subject</dt>
-                    <dd className="text-white font-medium">{renderPreview(previewStep.subject, sample) || <span className="text-white/40">(no subject)</span>}</dd>
+                    <dd className="text-white font-medium">{renderPreview(previewStep.subject, sample) ||
+                        (previewIndex > 0 && steps[0]?.subject ? (
+                          `Re: ${renderPreview(steps[0].subject, sample)}`
+                        ) : (
+                          <span className="text-white/40">(no subject)</span>
+                        ))}</dd>
                   </dl>
                   <div className="px-4 py-4 font-body text-sm text-white/85 leading-relaxed whitespace-pre-wrap break-words">
                     {renderPreview(previewStep.body, sample) || <span className="text-white/40">Write the body to see it here.</span>}

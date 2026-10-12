@@ -140,8 +140,9 @@ export default function ContactPage() {
               </p>
               <p className="mt-2 text-xs text-white/65 font-body leading-relaxed">
                 No newsletters or marketing lists. A calendar booking
-                captures only your name, email, phone and any notes you add,
-                so we can send the invite and prepare for the call.
+                captures only your name, email, phone, website, the service
+                you pick and any notes you add, so we can send the invite and
+                prepare for the call.
               </p>
             </div>
           </div>
