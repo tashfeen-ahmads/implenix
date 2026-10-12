@@ -6,9 +6,11 @@ import { Button, Field, inputClass } from '@/components/admin/ui';
 
 // Rough per-place costs, for a ballpark before running. Check the
 // provider's current price list; free allowances are not subtracted.
+// DataForSEO Maps: about $0.0006 per 100 results (standard queue).
 const COST = {
   apify: { place: 0.004, email: 0.002, run: 0.007 },
   outscraper: { place: 0.003, email: 0.003, run: 0 },
+  dataforseo: { place: 0.000006, email: 0, run: 0.0006 },
 } as const;
 
 export function NewSearchForm({ providers }: { providers: { value: string; label: string }[] }) {
@@ -24,14 +26,16 @@ export function NewSearchForm({ providers }: { providers: { value: string; label
   if (providers.length === 0) {
     return (
       <p className="font-body text-sm text-white/70 leading-relaxed">
-        No provider connected. Set <code className="text-brand-cyan">APIFY_TOKEN</code> or{' '}
+        No provider connected. Set <code className="text-brand-cyan">DATAFORSEO_LOGIN</code> and{' '}
+        <code className="text-brand-cyan">DATAFORSEO_PASSWORD</code>, <code className="text-brand-cyan">APIFY_TOKEN</code> or{' '}
         <code className="text-brand-cyan">OUTSCRAPER_API_KEY</code> (see docs/LEAD_FINDER.md), then reload.
       </p>
     );
   }
 
   const c = COST[provider as keyof typeof COST] ?? COST.apify;
-  const estimate = c.run + max * (c.place + (findEmails ? c.email : 0));
+  const hasEmailAddon = provider !== 'dataforseo';
+  const estimate = c.run * (provider === 'dataforseo' ? Math.ceil(max / 100) : 1) + max * (c.place + (findEmails && hasEmailAddon ? c.email : 0));
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +44,7 @@ export function NewSearchForm({ providers }: { providers: { value: string; label
     const res = await fetch('/api/admin/leads/searches', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ provider, query, location, maxResults: max, findEmails }),
+      body: JSON.stringify({ provider, query, location, maxResults: max, findEmails: hasEmailAddon && findEmails }),
     });
     const data = await res.json().catch(() => ({}));
     setBusy(false);
@@ -68,13 +72,19 @@ export function NewSearchForm({ providers }: { providers: { value: string; label
           </select>
         </Field>
       ) : null}
-      <label className="flex items-start gap-2.5 font-body text-sm text-white/85">
-        <input type="checkbox" checked={findEmails} onChange={(e) => setFindEmails(e.target.checked)} className="mt-0.5 accent-[#c600ff]" />
-        <span>
-          Find emails on each business website
-          <span className="block text-xs text-white/55">Needed for email outreach. Costs a little extra per business.</span>
-        </span>
-      </label>
+      {hasEmailAddon ? (
+        <label className="flex items-start gap-2.5 font-body text-sm text-white/85">
+          <input type="checkbox" checked={findEmails} onChange={(e) => setFindEmails(e.target.checked)} className="mt-0.5 accent-[#c600ff]" />
+          <span>
+            Also use the provider&rsquo;s paid email add-on
+            <span className="block text-xs text-white/55">Optional. Our own website email search and verification run on every search either way, free.</span>
+          </span>
+        </label>
+      ) : (
+        <p className="font-body text-xs text-white/60">
+          DataForSEO returns websites, not emails. Our email search visits each website for an address and verifies it.
+        </p>
+      )}
       <p className="font-body text-xs text-white/60">
         Estimated cost: about <span className="text-white">${estimate.toFixed(2)}</span> before any free allowance. Searches take a few minutes.
       </p>

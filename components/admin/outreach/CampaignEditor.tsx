@@ -979,7 +979,8 @@ function CampaignControls({ campaign, dirty, blockers }: { campaign: Campaign; d
         .from('contacts')
         .select('id', { count: 'exact', head: true })
         .eq('list_id', campaign.list_id)
-        .eq('status', 'active');
+        .eq('status', 'active')
+        .or('email_verdict.is.null,email_verdict.in.(deliverable,unknown)');
       setEligible(count ?? 0);
     }
   };
@@ -1058,7 +1059,7 @@ function CampaignControls({ campaign, dirty, blockers }: { campaign: Campaign; d
             {campaign.list_id ? (
               <li>
                 <strong className="text-white">{eligible === null ? 'Counting…' : eligible.toLocaleString()}</strong> active
-                contacts will be enrolled (unsubscribed, bounced and already-enrolled contacts are skipped).
+                contacts will be enrolled (unsubscribed, bounced, already-enrolled and failed-verification addresses are skipped).
               </li>
             ) : (
               <li>No list: the campaign starts empty and sends to leads as they are moved into nurture.</li>

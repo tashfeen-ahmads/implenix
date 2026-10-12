@@ -50,7 +50,7 @@ export default async function LeadsPage() {
                       <Link href={`/admin/leads/${s.id}`} className="text-white hover:underline">
                         {s.query} · {s.location}
                       </Link>
-                      <p className="text-xs text-white/50">{s.provider === 'apify' ? 'Apify' : 'Outscraper'} · up to {s.max_results}</p>
+                      <p className="text-xs text-white/50">{PROVIDERS[s.provider]?.label ?? s.provider}, up to {s.max_results}</p>
                     </td>
                     <td className={tdClass}><Pill tone={TONE[s.status]}>{s.status}</Pill></td>
                     <td className={`${tdClass} text-right tabular-nums`}>{s.status === 'succeeded' ? s.result_count : '—'}</td>

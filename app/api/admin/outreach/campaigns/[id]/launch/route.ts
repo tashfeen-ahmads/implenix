@@ -74,6 +74,8 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
       .select('id, email')
       .eq('list_id', campaign.list_id)
       .eq('status', 'active')
+      // Never email addresses verification marked undeliverable or catch-all.
+      .or('email_verdict.is.null,email_verdict.in.(deliverable,unknown)')
       .order('created_at')
       .range(from, from + PAGE - 1);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });

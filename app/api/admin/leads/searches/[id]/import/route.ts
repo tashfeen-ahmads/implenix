@@ -4,6 +4,7 @@ import { requireTeamApi } from '@/lib/supabase/auth';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { ImportError, importContacts } from '@/lib/outreach/importContacts';
 import type { LeadResult } from '@/lib/leads/types';
+import { verifyEmail } from '@/lib/leads/verify';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -12,10 +13,14 @@ export const maxDuration = 60;
 const Body = z.object({
   resultIds: z.array(z.string().uuid()).min(1).max(2000),
   listName: z.string().trim().min(1).max(200),
+  // Catch-all domains: the mailbox can't be confirmed. Off by default.
+  includeRisky: z.boolean().optional(),
 });
 
-// Imports selected results that have an email into a new contact list,
+// Imports selected results with a sendable email into a new contact list,
 // through the same import as CSV uploads (dedupe, suppression check).
+// Unverified emails are verified first; undeliverable ones are never
+// imported, and catch-all ("risky") only when asked.
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const auth = await requireTeamApi();
   if (auth.error) return auth.error;
@@ -33,9 +38,25 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     results.push(...((data ?? []) as LeadResult[]));
   }
-  const withEmail = results.filter((r) => r.email);
+  // Verify anything not checked yet (time-boxed; the rest stays out).
+  const deadline = Date.now() + 35_000;
+  for (const r of results.filter((x) => x.email && !x.verified_at)) {
+    if (Date.now() > deadline) break;
+    const v = await verifyEmail(r.email!);
+    Object.assign(r, { email_verdict: v.verdict, email_verdict_reason: `${v.reason} (${v.checkedBy})`, verified_at: new Date().toISOString() });
+    await db
+      .from('lead_results')
+      .update({ email_verdict: r.email_verdict, email_verdict_reason: r.email_verdict_reason, verified_at: r.verified_at })
+      .eq('id', r.id);
+  }
+  const allowed = new Set(['deliverable', 'unknown', ...(parsed.data.includeRisky ? ['risky'] : [])]);
+  const withEmail = results.filter((r) => r.email && r.verified_at && allowed.has(r.email_verdict ?? ''));
+  const skippedUnsendable = results.filter((r) => r.email).length - withEmail.length;
   if (withEmail.length === 0) {
-    return NextResponse.json({ error: 'None of the selected businesses has an email address.' }, { status: 400 });
+    return NextResponse.json(
+      { error: skippedUnsendable ? 'None of the selected emails passed verification.' : 'None of the selected businesses has an email address.' },
+      { status: 400 },
+    );
   }
 
   const { data: search } = await db.from('lead_searches').select('query, location').eq('id', params.id).maybeSingle();
@@ -65,16 +86,30 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       })),
     });
 
-    // Link results to the contacts they became.
+    // Link results to the contacts they became, and carry the verdict over
+    // so campaigns can skip anything that later turns undeliverable.
     const emails = withEmail.map((r) => r.email!.toLowerCase());
     const { data: contacts } = await db.from('contacts').select('id, email').in('email', emails);
     const byEmail = new Map((contacts ?? []).map((c: { id: string; email: string }) => [c.email.toLowerCase(), c.id]));
     await Promise.all(
       withEmail
         .filter((r) => byEmail.has(r.email!.toLowerCase()))
-        .map((r) => db.from('lead_results').update({ imported_contact_id: byEmail.get(r.email!.toLowerCase()) }).eq('id', r.id)),
+        .flatMap((r) => {
+          const contactId = byEmail.get(r.email!.toLowerCase())!;
+          return [
+            db.from('lead_results').update({ imported_contact_id: contactId }).eq('id', r.id),
+            db
+              .from('contacts')
+              .update({ email_verdict: r.email_verdict, email_verdict_reason: r.email_verdict_reason, verified_at: r.verified_at })
+              .eq('id', contactId),
+          ];
+        }),
     );
-    return NextResponse.json({ ...out, skippedNoEmail: results.length - withEmail.length });
+    return NextResponse.json({
+      ...out,
+      skippedNoEmail: results.filter((r) => !r.email).length,
+      skippedUnsendable,
+    });
   } catch (err) {
     if (err instanceof ImportError) return NextResponse.json({ error: err.message }, { status: err.status });
     throw err;

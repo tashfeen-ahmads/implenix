@@ -6,6 +6,7 @@ import { MAX_SENDS_PER_TICK, globalDailyLimit, outreachTimezone, sesConfigured }
 import { buildOutreachEmail, replySubject, senderVars } from './render';
 import { SesSendError, sendOutreachEmail } from './ses';
 import { isSuppressed, normalizeEmail } from './suppress';
+import { verifyEmail } from '@/lib/leads/verify';
 import { inSendWindow, startOfDay } from './time';
 import { AUTO_FROM, moveToNurture, setContactStage } from './stage';
 import { createHash } from 'node:crypto';
@@ -183,6 +184,28 @@ async function processEnrollment(db: SupabaseClient, q: Queue, e: Enrollment, no
   if (!contact || contact.status !== 'active' || (await isSuppressed(db, contact.email))) {
     await setEnrollment({ status: 'stopped' });
     return 'stopped';
+  }
+
+  // Email-first: an address nobody has verified yet (e.g. a CSV import)
+  // is checked before its first email. Undeliverable and catch-all
+  // addresses are skipped so they never count against the bounce rate.
+  if (!contact.verified_at) {
+    const v = await verifyEmail(contact.email);
+    const verdict = { email_verdict: v.verdict, email_verdict_reason: `${v.reason} (${v.checkedBy})`, verified_at: new Date().toISOString() };
+    if (v.verdict === 'undeliverable' || v.verdict === 'risky') {
+      await db
+        .from('contacts')
+        .update({
+          ...verdict,
+          ...(v.verdict === 'undeliverable'
+            ? { status: 'bounced', stage: 'bounced', reply_label: 'failed_verification' }
+            : { stage: 'no_response', reply_label: 'catch_all_skipped' }),
+        })
+        .eq('id', contact.id);
+      await setEnrollment({ status: 'stopped' });
+      return 'stopped';
+    }
+    await db.from('contacts').update(verdict).eq('id', contact.id);
   }
 
   const stepNumber = e.current_step + 1;

@@ -146,4 +146,6 @@ export const CONTACT_STALL_DAYS: Partial<Record<ContactStage, number>> = {
 export const LABEL_TEXT: Record<string, string> = {
   ...REPLY_LABELS,
   colleague_replied: 'A colleague replied',
+  failed_verification: 'Email failed verification',
+  catch_all_skipped: 'Skipped: catch-all domain',
 };

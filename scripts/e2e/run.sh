@@ -11,3 +11,4 @@ sleep 1
 set -a; . ./e2e.env; set +a
 cd ../..
 npx tsx --tsconfig tsconfig.json --conditions=react-server scripts/e2e/outreach-flow.mts
+npx tsx --tsconfig tsconfig.json --conditions=react-server scripts/e2e/lead-flow.mts

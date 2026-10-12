@@ -4,6 +4,7 @@ import { runOutreachTick } from '@/lib/outreach/send';
 import { adminConfigured, supabaseAdmin } from '@/lib/supabase/admin';
 import { syncRunningSearches } from '@/lib/leads';
 import { sendDueReminders } from '@/lib/reminders';
+import { enrichPending } from '@/lib/leads/enrich';
 
 // Vercel Cron (vercel.json, every 10 minutes) sends
 // `Authorization: Bearer ${CRON_SECRET}`.
@@ -32,6 +33,8 @@ export async function GET(req: NextRequest) {
     runOutreachTick().catch(log('outreach')),
     syncRunningSearches(db).catch(log('lead sync')),
     sendDueReminders(db).catch(log('reminders')),
+    // Email layer for lead searches nobody has open (finds + verifies emails).
+    enrichPending(db, 20_000).catch(log('lead emails')),
     // SNS redelivery window is hours, not weeks: prune old dedupe ids.
     db
       .from('processed_sns_messages')

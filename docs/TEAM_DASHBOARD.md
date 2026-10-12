@@ -39,10 +39,15 @@ What it does:
     and a full activity timeline.
   - **Calendar:** a month view plus an agenda of upcoming calls with
     join links.
-  - **Lead finder:** Google Maps business search with website emails.
-    See `docs/LEAD_FINDER.md`.
+  - **Lead finder:** Google Maps business search (DataForSEO, Apify or
+    Outscraper). Every business then goes through the email layer:
+    website crawl, finder API and verification. See
+    `docs/LEAD_FINDER.md`.
   - **Outreach:** contacts, campaigns and inbox. See
     `docs/OUTREACH.md`.
+  - **Setup:** a checklist of every integration, in the order email
+    marketing needs them. It shows only whether each key is set, never
+    the value.
 
 ## 1. Supabase (database + team logins)
 

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import {
   CalendarDays,
   Filter,
+  PlugZap,
   Inbox,
   KanbanSquare,
   LayoutDashboard,
@@ -31,6 +32,7 @@ const NAV = [
   { href: '/admin/outreach/inbox', label: 'Inbox', Icon: Inbox },
   { href: '/admin/outreach/funnel', label: 'Funnel', Icon: Filter },
   { heading: 'Settings' },
+  { href: '/admin/setup', label: 'Setup', Icon: PlugZap },
   { href: '/admin/team', label: 'Team', Icon: UsersRound },
   { href: '/admin/account', label: 'Your account', Icon: UserCog },
 ] as const;

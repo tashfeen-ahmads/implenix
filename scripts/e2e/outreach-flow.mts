@@ -8,6 +8,22 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const { supabaseAdmin } = await import('../../lib/supabase/admin.ts');
 const { runOutreachTick } = await import('../../lib/outreach/send.ts');
 const { handleInboundEmail, handleSesEvent } = await import('../../lib/outreach/inbound.ts');
+const verify = await import('../../lib/leads/verify.ts');
+// No DNS in CI: *-e2e.com domains have mail servers, dead-e2e.com doesn't
+// exist, and the "paid verifier" calls catchall@... a catch-all.
+verify.setDnsForTests({
+  mx: (async (d: string) => {
+    if (d === 'dead-e2e.com') throw Object.assign(new Error('nx'), { code: 'ENOTFOUND' });
+    return [{ exchange: `mx.${d}`, priority: 10 }];
+  }) as never,
+  a: (async () => {
+    throw Object.assign(new Error('nx'), { code: 'ENOTFOUND' });
+  }) as never,
+});
+verify.setVerifierForTests({
+  name: 'test-verifier',
+  verify: async (email: string) => (email.startsWith('catchall@') ? { verdict: 'risky', reason: 'catch_all' } : { verdict: 'deliverable', reason: 'ok' }),
+});
 const db = supabaseAdmin();
 const results: [string, boolean, string][] = [];
 const check = (name: string, ok: boolean, detail: unknown = '') => results.push([name, ok, typeof detail === 'string' ? detail : JSON.stringify(detail)]);
@@ -39,6 +55,8 @@ const people = [
   mk('five@delta-e2e.com', 'Delta'), // same company as four
   mk('six@echo-e2e.com', 'Echo'),
   mk('seven@bravo-e2e.com', 'Bravo'), // colleague of two (out of office)
+  mk('owner@dead-e2e.com', 'Dead Domain Co'), // fails verification at send time
+  mk('catchall@foxtrot-e2e.com', 'Foxtrot'), // catch-all, skipped
 ];
 await db.from('contacts').insert(people);
 await db.from('campaign_enrollments').insert(
@@ -55,7 +73,12 @@ const makeDue = async () => {
 // ── Tick 1: step 1 to everyone ──
 const t1 = await runOutreachTick();
 const msgs1 = ((await db.from('messages').select('*').eq('campaign_id', seqId)).data ?? []) as any[];
-check('tick1 emails every enrolled contact', msgs1.length === people.length, { tick: t1.sent, here: msgs1.length });
+const c7 = await contact(7);
+const c8 = await contact(8);
+check('send-time verification: dead domain never emailed', !msgs1.some((m) => m.contact_id === people[7].id) && c7.stage === 'bounced' && c7.email_verdict === 'undeliverable', { stage: c7.stage, verdict: c7.email_verdict });
+check('send-time verification: catch-all skipped', !msgs1.some((m) => m.contact_id === people[8].id) && c8.stage === 'no_response' && c8.reply_label === 'catch_all_skipped', { stage: c8.stage, label: c8.reply_label });
+check('send-time verification: good address verified and sent', (await contact(0)).email_verdict === 'deliverable', (await contact(0)).email_verdict_reason);
+check('tick1 emails every sendable contact', msgs1.length === people.length - 2, { tick: t1.sent, here: msgs1.length });
 check('stage email_sent after step 1', (await contact(0)).stage === 'email_sent', (await contact(0)).stage);
 check('variants recorded', msgs1.every((m) => m.variant === 'A' || m.variant === 'B'), msgs1.map((m) => m.variant));
 check('B variant body used', msgs1.filter((m) => m.variant === 'B').every((m) => m.body_text.includes('Body B') && m.subject === 'Other subject'), msgs1.filter((m) => m.variant === 'B').length);

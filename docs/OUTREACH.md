@@ -11,6 +11,23 @@ unsubscribe link / one-click POST ─► /api/outreach/unsubscribe ─► suppre
 
 Code: `lib/outreach/*`, `app/api/outreach/*`, `app/api/cron/outreach`, `app/api/admin/outreach/*`.
 
+> **Read this first: SES and cold email.** The AWS Acceptable Use Policy
+> and the SES service terms do not allow unsolicited bulk email, and AWS
+> reviews or pauses accounts at **5% bounces** or **0.1% complaints**.
+> Small, targeted B2B outreach to business addresses is commonly accepted
+> if you:
+> - verify every address (see `docs/LEAD_FINDER.md`, mailbox verifier);
+> - honour unsubscribes instantly;
+> - keep complaints near zero.
+>
+> When you request SES production access, describe the use honestly:
+> B2B prospecting to verified business addresses, with low volume, an
+> unsubscribe link and suppression. If AWS refuses, or you want to scale,
+> move cold sending to a cold-email platform (Instantly, Smartlead) or to
+> SMTP mailboxes. Keep SES for the warm mail: replies, nurture and
+> booking. The pipeline, inbox and AI agent don't depend on which sender
+> is used.
+
 ---
 
 ## 1. Use a separate sending domain
@@ -190,4 +207,5 @@ See the "Outreach (Amazon SES + OpenAI)" block in `.env.example`: `AWS_SES_REGIO
 4. Set up the MX, the receipt rule, the inbound topic and the subscription (Confirmed). Send a test reply and check it appears in the inbox.
 5. Set all the env vars in Vercel and redeploy. Make sure the cron appears under Project → Cron Jobs.
 6. Create a campaign in `draft` AI mode and send test emails to Gmail and Outlook. Check that "Show original" reports SPF, DKIM and DMARC as PASS, and that the unsubscribe button appears.
-7. Import a small verified list (50 contacts), launch the campaign, and watch the bounce and complaint numbers for a week before raising the caps.
+7. Set a mailbox verifier key (`MILLIONVERIFIER_API_KEY` or `ZEROBOUNCE_API_KEY`) and check **Dashboard > Setup** shows nothing required missing.
+8. Import a small verified list (50 contacts), launch the campaign, and watch the bounce and complaint numbers for a week before raising the caps.

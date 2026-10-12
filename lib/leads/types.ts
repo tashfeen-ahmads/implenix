@@ -17,7 +17,7 @@ export type LeadPlace = {
   raw: Record<string, unknown>;
 };
 
-export type LeadProvider = 'apify' | 'outscraper';
+export type LeadProvider = 'apify' | 'outscraper' | 'dataforseo';
 
 export type StartedSearch = { externalId: string; datasetId?: string | null };
 
@@ -50,5 +50,11 @@ export type LeadResult = Omit<LeadPlace, 'raw' | 'emails'> & {
   email: string | null;
   emails: string[];
   imported_contact_id: string | null;
+  email_status: 'pending' | 'found' | 'not_found' | 'no_website';
+  email_source: string | null;
+  email_verdict: 'deliverable' | 'risky' | 'undeliverable' | 'unknown' | null;
+  email_verdict_reason: string | null;
+  enriched_at: string | null;
+  verified_at: string | null;
   created_at: string;
 };

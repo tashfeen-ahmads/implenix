@@ -9,7 +9,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const Body = z.object({
-  provider: z.enum(['apify', 'outscraper']),
+  provider: z.enum(['apify', 'outscraper', 'dataforseo']),
   query: z.string().trim().min(2).max(120),
   location: z.string().trim().min(2).max(120),
   maxResults: z.number().int().min(1).max(2000),

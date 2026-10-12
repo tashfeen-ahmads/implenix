@@ -159,6 +159,9 @@ export type Contact = {
   stage: ContactStage;
   stage_changed_at: string;
   reply_label: string | null;
+  email_verdict: 'deliverable' | 'risky' | 'undeliverable' | 'unknown' | null;
+  email_verdict_reason: string | null;
+  verified_at: string | null;
   revisit_at: string | null;
   owner_id: string | null;
   last_contacted_at: string | null;

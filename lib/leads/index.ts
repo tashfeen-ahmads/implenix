@@ -2,11 +2,13 @@ import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { apifyConfigured, pollApify, startApify } from './apify';
 import { outscraperConfigured, pollOutscraper, startOutscraper } from './outscraper';
+import { dataforseoConfigured, pollDataforseo, startDataforseo } from './dataforseo';
 import type { LeadProvider, LeadSearch, PollResult, StartedSearch } from './types';
 
 export const PROVIDERS: Record<LeadProvider, { label: string; configured: () => boolean }> = {
   apify: { label: 'Apify (Google Maps Scraper)', configured: apifyConfigured },
   outscraper: { label: 'Outscraper', configured: outscraperConfigured },
+  dataforseo: { label: 'DataForSEO (Google Maps)', configured: dataforseoConfigured },
 };
 
 export function configuredProviders(): LeadProvider[] {
@@ -17,11 +19,13 @@ export function startSearch(
   provider: LeadProvider,
   input: { query: string; location: string; maxResults: number; findEmails: boolean },
 ): Promise<StartedSearch> {
+  if (provider === 'dataforseo') return startDataforseo(input);
   return provider === 'apify' ? startApify(input) : startOutscraper(input);
 }
 
 function poll(s: LeadSearch): Promise<PollResult> {
   if (!s.external_id) return Promise.resolve({ state: 'failed', error: 'Search never started' });
+  if (s.provider === 'dataforseo') return pollDataforseo(s.external_id);
   return s.provider === 'apify' ? pollApify(s.external_id, s.dataset_id) : pollOutscraper(s.external_id);
 }
 
@@ -76,6 +80,9 @@ export async function syncSearch(db: SupabaseClient, s: LeadSearch): Promise<Lea
       category: p.category,
       email: p.emails[0] ?? null,
       emails: p.emails,
+      // The email layer picks up 'pending' rows (lib/leads/enrich.ts).
+      email_status: p.emails.length ? 'found' : p.website ? 'pending' : 'no_website',
+      email_source: p.emails.length ? 'provider' : null,
       phone: p.phone,
       website: p.website,
       address: p.address,

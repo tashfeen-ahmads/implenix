@@ -9,6 +9,41 @@ import { Button, Stat, TableWrap, inputClass, tdClass, thClass } from '@/compone
 
 const href = (url: string) => (/^https?:\/\//i.test(url) ? url : `https://${url}`);
 
+// Sendable: has an email that verification hasn't ruled out. Unverified
+// emails are verified during import.
+const sendable = (r: LeadResult, includeRisky: boolean) =>
+  Boolean(r.email) && r.email_verdict !== 'undeliverable' && (includeRisky || r.email_verdict !== 'risky');
+
+const SOURCE: Record<string, string> = { provider: 'from listing', website: 'from website', hunter: 'via Hunter', outscraper: 'via Outscraper' };
+
+function EmailState({ r }: { r: LeadResult }) {
+  if (!r.email) {
+    const text = r.email_status === 'pending' ? 'Searching website…' : r.email_status === 'no_website' ? 'No website' : 'No email on website';
+    return <span className="text-white/45">{text}</span>;
+  }
+  const v = r.email_verdict;
+  const reason = r.email_verdict_reason ?? '';
+  const [label, cls] =
+    v === 'deliverable'
+      ? ['Verified', 'border-emerald-400/40 text-emerald-300']
+      : v === 'risky'
+        ? ['Catch-all', 'border-amber-400/40 text-amber-300']
+        : v === 'undeliverable'
+          ? ['Undeliverable', 'border-red-400/40 text-red-300']
+          : v === 'unknown'
+            ? [reason.startsWith('mx_ok') ? 'Domain OK' : 'Unconfirmed', 'border-white/20 text-white/70']
+            : ['Not verified yet', 'border-white/10 text-white/50'];
+  return (
+    <>
+      <span className={`break-all ${v === 'undeliverable' ? 'line-through text-white/50' : ''}`}>{r.email}</span>
+      <span className="mt-1 flex flex-wrap items-center gap-1.5">
+        <span title={reason || undefined} className={`px-1.5 rounded-sm border font-body text-[10px] leading-4 ${cls}`}>{label}</span>
+        {r.email_source ? <span className="text-[10px] text-white/45">{SOURCE[r.email_source] ?? r.email_source}</span> : null}
+      </span>
+    </>
+  );
+}
+
 export function ResultsTable({
   searchId,
   defaultListName,
@@ -20,6 +55,7 @@ export function ResultsTable({
 }) {
   const router = useRouter();
   const [onlyEmail, setOnlyEmail] = useState(true);
+  const [includeRisky, setIncludeRisky] = useState(false);
   const [hideImported, setHideImported] = useState(true);
   const [minRating, setMinRating] = useState(0);
   const [query, setQuery] = useState('');
@@ -32,12 +68,12 @@ export function ResultsTable({
     const q = query.trim().toLowerCase();
     return results.filter(
       (r) =>
-        (!onlyEmail || r.email) &&
+        (!onlyEmail || sendable(r, includeRisky)) &&
         (!hideImported || !r.imported_contact_id) &&
         (r.rating ?? 0) >= minRating &&
         (!q || [r.name, r.city, r.category, r.email].filter(Boolean).some((v) => v!.toLowerCase().includes(q))),
     );
-  }, [results, onlyEmail, hideImported, minRating, query]);
+  }, [results, onlyEmail, includeRisky, hideImported, minRating, query]);
 
   const allVisibleSelected = visible.length > 0 && visible.every((r) => selected.has(r.id));
   const toggleAll = () =>
@@ -54,7 +90,7 @@ export function ResultsTable({
       return next;
     });
 
-  const selectedWithEmail = results.filter((r) => selected.has(r.id) && r.email).length;
+  const selectedWithEmail = results.filter((r) => selected.has(r.id) && sendable(r, includeRisky)).length;
 
   const importSelected = async () => {
     setBusy(true);
@@ -62,7 +98,7 @@ export function ResultsTable({
     const res = await fetch(`/api/admin/leads/searches/${searchId}/import`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ resultIds: [...selected], listName }),
+      body: JSON.stringify({ resultIds: [...selected], listName, includeRisky }),
     });
     const data = await res.json().catch(() => ({}));
     setBusy(false);
@@ -73,19 +109,22 @@ export function ResultsTable({
       listId: data.listId,
       text: `Imported ${data.inserted} new and ${data.updated} existing contacts${
         data.skippedSuppressed ? `, skipped ${data.skippedSuppressed} unsubscribed or bounced` : ''
-      }${data.skippedNoEmail ? `, ${data.skippedNoEmail} had no email` : ''}.`,
+      }${data.skippedNoEmail ? `, ${data.skippedNoEmail} had no email` : ''}${
+        data.skippedUnsendable ? `, ${data.skippedUnsendable} failed verification` : ''
+      }.`,
     });
     router.refresh();
   };
 
   const withEmail = results.filter((r) => r.email).length;
+  const ready = results.filter((r) => sendable(r, false) && r.verified_at).length;
 
   return (
     <>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <Stat label="Businesses found" value={results.length} />
         <Stat label="With email" value={withEmail} hint={results.length ? `${Math.round((withEmail / results.length) * 100)}% hit rate` : undefined} />
-        <Stat label="With website" value={results.filter((r) => r.website).length} />
+        <Stat label="Ready to email" value={ready} hint="Email found and verified" />
         <Stat label="Imported" value={results.filter((r) => r.imported_contact_id).length} />
       </div>
 
@@ -94,7 +133,10 @@ export function ResultsTable({
           <label htmlFor="lr-search" className="sr-only">Filter results</label>
           <input id="lr-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Filter by name, city, email…" className={`${inputClass} w-full sm:w-56`} />
           <label className="flex items-center gap-2 font-body text-sm text-white/80">
-            <input type="checkbox" checked={onlyEmail} onChange={(e) => setOnlyEmail(e.target.checked)} className="accent-[#c600ff]" /> Has email
+            <input type="checkbox" checked={onlyEmail} onChange={(e) => setOnlyEmail(e.target.checked)} className="accent-[#c600ff]" /> Sendable email only
+          </label>
+          <label className="flex items-center gap-2 font-body text-sm text-white/80" title="Catch-all domains accept every address, so the mailbox can't be confirmed. Higher bounce risk.">
+            <input type="checkbox" checked={includeRisky} onChange={(e) => setIncludeRisky(e.target.checked)} className="accent-[#c600ff]" /> Include catch-all
           </label>
           <label className="flex items-center gap-2 font-body text-sm text-white/80">
             <input type="checkbox" checked={hideImported} onChange={(e) => setHideImported(e.target.checked)} className="accent-[#c600ff]" /> Hide imported
@@ -160,7 +202,7 @@ export function ResultsTable({
                 ) : null}
               </td>
               <td className={tdClass}>
-                {r.email ? <span className="break-all">{r.email}</span> : <span className="text-white/40">—</span>}
+                <EmailState r={r} />
                 {r.emails.length > 1 ? <p className="text-xs text-white/50">+{r.emails.length - 1} more</p> : null}
                 {r.imported_contact_id ? <p className="text-xs text-emerald-300">Imported</p> : null}
               </td>
